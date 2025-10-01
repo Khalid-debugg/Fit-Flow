@@ -14,9 +14,12 @@
     "@tanstack/react-query-devtools": "^5.90.2",
     "antd": "^5.27.4",
     "axios": "^1.12.2",
+    "i18next": "^25.5.2",
     "next": "15.5.4",
+    "next-i18next": "^15.4.2",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "react-i18next": "^16.0.0",
     "react-redux": "^9.2.0"
   },
   "devDependencies": {
