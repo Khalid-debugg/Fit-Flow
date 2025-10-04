@@ -16,12 +16,10 @@
     "axios": "^1.12.2",
     "dayjs": "^1.11.18",
     "firebase": "^12.3.0",
-    "i18next": "^25.5.2",
     "next": "15.5.4",
-    "next-i18next": "^15.4.2",
+    "next-intl": "^4.3.9",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "react-i18next": "^16.0.0",
     "react-redux": "^9.2.0"
   },
   "devDependencies": {
