@@ -1,58 +1,119 @@
-export type Timestamp = string | number | Date;
+// models/gym.ts
 
-export interface GymTheme {
+import { QueryDocumentSnapshot } from 'firebase-admin/firestore';
+
+export type GymStatus = 'active' | 'suspended' | 'deleted';
+export type BillingCycle = 'monthly' | 'annual';
+export type SubscriptionStatus = 'active' | 'trial' | 'expired';
+
+export interface GymBranding {
+  logoUrl: string;
   primaryColor: string;
-  logo?: string;
-  borderRadius?: number;
-  fontFamily?: string;
-}
-
-export interface GymContact {
-  timezone?: string;
-  currency?: string;
+  secondaryColor: string;
 }
 
 export interface GymFeatures {
-  classScheduling?: boolean;
-  attendance?: boolean;
-  payments?: boolean;
-  personalTraining?: boolean;
+  memberManagement: boolean;
+  staffManagement: boolean;
+  classBooking: boolean;
+  attendance: boolean;
+  payments: boolean;
 }
 
-export interface GymStats {
-  totalMembers: number;
-  activeMembers: number;
+export interface GymLimits {
+  members: number;
+  staff: number;
+  classes: number;
+}
+
+export interface GymSubscription {
+  planId: string;
+  status: SubscriptionStatus;
+  billingCycle: BillingCycle;
+  expiresAt: Date;
+  features: GymFeatures;
+  limits: GymLimits;
+}
+
+export interface DaySchedule {
+  open: string;
+  close: string;
+}
+
+export interface OperatingHours {
+  monday: DaySchedule;
+  tuesday: DaySchedule;
+  wednesday: DaySchedule;
+  thursday: DaySchedule;
+  friday: DaySchedule;
+  saturday: DaySchedule;
+  sunday: DaySchedule;
 }
 
 export interface Gym {
+  id: string;
   name: string;
-  slug: string;
+  subdomain: string;
   ownerId: string;
-  theme: GymTheme;
-  contact?: GymContact;
-  features?: GymFeatures;
-  stats: GymStats;
-  createdAt: Timestamp;
-  isActive: boolean;
+  address: string;
+  phone: string;
+  timezone: string;
+  createdAt: Date;
+  status: GymStatus;
+  branding: GymBranding;
+  subscription: GymSubscription;
+  operatingHours: OperatingHours;
 }
-export type GymWithId = Gym & { id: string };
 
-/** Input when creating a gym */
-export type CreateGymInput = Partial<Gym> & {
+export interface CreateGymInput {
   name: string;
+  subdomain: string;
   ownerId: string;
-  slug?: string;
-  createdAt?: Timestamp;
-  isActive?: boolean;
+  address: string;
+  phone: string;
+  timezone: string;
+  branding: GymBranding;
+  subscription: GymSubscription;
+  operatingHours: OperatingHours;
+}
+
+export interface UpdateGymInput {
+  name?: string;
+  address?: string;
+  phone?: string;
+  timezone?: string;
+  branding?: Partial<GymBranding>;
+  operatingHours?: Partial<OperatingHours>;
+}
+
+// Firestore converter for Gym
+export const gymConverter = {
+  toFirestore: (gym: Partial<Gym>) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { id, ...data } = gym;
+    return {
+      ...data,
+      createdAt: gym.createdAt || new Date(),
+    };
+  },
+  fromFirestore: (snapshot: QueryDocumentSnapshot): Gym => {
+    const data = snapshot.data();
+    return {
+      id: snapshot.id,
+      name: data.name,
+      subdomain: data.subdomain,
+      ownerId: data.ownerId,
+      address: data.address,
+      phone: data.phone,
+      timezone: data.timezone,
+      createdAt: data.createdAt?.toDate() || new Date(),
+      status: data.status,
+      branding: data.branding,
+      subscription: {
+        ...data.subscription,
+        expiresAt: data.subscription.expiresAt?.toDate() || new Date(),
+      },
+      operatingHours: data.operatingHours,
+    };
+  },
 };
-
-/** For updates to settings */
-export type UpdateGymSettingsInput = Partial<
-  Pick<Gym, 'name' | 'theme' | 'contact' | 'features' | 'isActive' | 'slug'>
->;
-
-/** For updating stats */
-export type UpdateGymStatsInput = Partial<GymStats>;
-
-/** For forms / client */
-export type GymInput = Pick<Gym, 'name' | 'slug' | 'ownerId'>;
