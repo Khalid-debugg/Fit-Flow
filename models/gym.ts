@@ -1,5 +1,3 @@
-// models/gym.ts
-
 import { QueryDocumentSnapshot } from 'firebase-admin/firestore';
 
 export type GymStatus = 'active' | 'suspended' | 'deleted';
@@ -86,7 +84,6 @@ export interface UpdateGymInput {
   operatingHours?: Partial<OperatingHours>;
 }
 
-// Firestore converter for Gym
 export const gymConverter = {
   toFirestore: (gym: Partial<Gym>) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

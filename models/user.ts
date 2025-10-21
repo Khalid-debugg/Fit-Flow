@@ -1,5 +1,3 @@
-// models/user.ts
-
 import { QueryDocumentSnapshot } from 'firebase-admin/firestore';
 
 export type UserRole = 'owner' | 'staff' | 'member';
