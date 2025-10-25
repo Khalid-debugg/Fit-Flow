@@ -1,45 +1,28 @@
 import { QueryDocumentSnapshot } from 'firebase-admin/firestore';
 
-export type MembershipPlanType =
-  | 'monthly'
-  | 'annual'
-  | 'drop_in'
-  | 'class_pack';
+export const MEMBERSHIP_DURATION_TYPE = ['days', 'months', 'years'] as const;
 
-export interface MembershipPlan {
+export type MembershipPlan = {
   id: string;
   gymId: string;
   name: string;
   description: string;
   price: number;
-  type: MembershipPlanType;
+  currency: string;
   duration: number;
-  benefits: string[];
-  isActive: boolean;
+  durationType: (typeof MEMBERSHIP_DURATION_TYPE)[number];
   createdAt: Date;
   updatedAt: Date;
-}
+};
 
-export interface CreateMembershipPlanInput {
-  gymId: string;
-  name: string;
-  description: string;
-  price: number;
-  type: MembershipPlanType;
-  duration: number;
-  benefits: string[];
-  isActive: boolean;
-}
+export type CreateMembershipPlanInput = Omit<
+  MembershipPlan,
+  'id' | 'createdAt' | 'updatedAt' | 'isActive'
+>;
 
-export interface UpdateMembershipPlanInput {
-  name?: string;
-  description?: string;
-  price?: number;
-  type?: MembershipPlanType;
-  duration?: number;
-  benefits?: string[];
-  isActive?: boolean;
-}
+export type UpdateMembershipPlanInput = Partial<
+  Omit<CreateMembershipPlanInput, 'gymId'>
+>;
 
 export const membershipPlanConverter = {
   toFirestore: (plan: Partial<MembershipPlan>) => {
@@ -59,10 +42,9 @@ export const membershipPlanConverter = {
       name: data.name,
       description: data.description,
       price: data.price,
-      type: data.type,
       duration: data.duration,
-      benefits: data.benefits,
-      isActive: data.isActive,
+      durationType: data.durationType,
+      currency: data.currency,
       createdAt: data.createdAt?.toDate() || new Date(),
       updatedAt: data.updatedAt?.toDate() || new Date(),
     };

@@ -1,36 +1,32 @@
-import { QueryDocumentSnapshot } from 'firebase-admin/firestore';
+import {
+  FirestoreDataConverter,
+  QueryDocumentSnapshot,
+} from 'firebase-admin/firestore';
 
-export type UserRole = 'owner' | 'staff' | 'member';
+export const USER_ROLES = ['owner', 'staff', 'member', 'admin'] as const;
+export const GENDERS = ['male', 'female'] as const;
 
-export type AuthProvider = 'email' | 'google' | 'apple';
-
-export interface User {
+export type User = {
   id: string;
   email: string;
-  password: string;
-  authProvider: AuthProvider;
   name: string;
-  phone: string;
-  createdAt: Date;
-  role: UserRole;
-}
-
-export interface CreateUserInput {
-  email: string;
-  password: string;
-  authProvider: AuthProvider;
-  name: string;
-  phone: string;
-  role: UserRole;
-}
-
-export interface UpdateUserInput {
-  name?: string;
   phone?: string;
-}
+  gender?: (typeof GENDERS)[number];
+  photoURL?: string;
+  createdAt: Date;
+  role: (typeof USER_ROLES)[number];
+};
 
-export const userConverter = {
-  toFirestore: (user: Partial<User>) => {
+export type CreateUserInput = Omit<User, 'id' | 'createdAt' | 'isActive'> & {
+  password: string;
+};
+
+export type UpdateUserInput = Partial<
+  Pick<User, 'name' | 'phone' | 'gender' | 'photoURL'>
+>;
+
+export const userConverter: FirestoreDataConverter<User> = {
+  toFirestore: (user: User) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { id, ...data } = user;
     return {
@@ -43,10 +39,10 @@ export const userConverter = {
     return {
       id: snapshot.id,
       email: data.email,
-      password: data.password,
-      authProvider: data.authProvider,
       name: data.name,
       phone: data.phone,
+      gender: data.gender,
+      photoURL: data.photoURL,
       createdAt: data.createdAt?.toDate() || new Date(),
       role: data.role,
     };

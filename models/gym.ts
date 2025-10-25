@@ -1,88 +1,33 @@
 import { QueryDocumentSnapshot } from 'firebase-admin/firestore';
 
-export type GymStatus = 'active' | 'suspended' | 'deleted';
-export type BillingCycle = 'monthly' | 'annual';
-export type SubscriptionStatus = 'active' | 'trial' | 'expired';
+export const GYM_STATUS = ['active', 'suspended'] as const;
 
-export interface GymBranding {
-  logoUrl: string;
+type GymBranding = {
+  logoUrl?: string;
   primaryColor: string;
   secondaryColor: string;
-}
+};
 
-export interface GymFeatures {
-  memberManagement: boolean;
-  staffManagement: boolean;
-  classBooking: boolean;
-  attendance: boolean;
-  payments: boolean;
-}
-
-export interface GymLimits {
-  members: number;
-  staff: number;
-  classes: number;
-}
-
-export interface GymSubscription {
-  planId: string;
-  status: SubscriptionStatus;
-  billingCycle: BillingCycle;
-  expiresAt: Date;
-  features: GymFeatures;
-  limits: GymLimits;
-}
-
-export interface DaySchedule {
-  open: string;
-  close: string;
-}
-
-export interface OperatingHours {
-  monday: DaySchedule;
-  tuesday: DaySchedule;
-  wednesday: DaySchedule;
-  thursday: DaySchedule;
-  friday: DaySchedule;
-  saturday: DaySchedule;
-  sunday: DaySchedule;
-}
-
-export interface Gym {
+export type Gym = {
   id: string;
   name: string;
   subdomain: string;
   ownerId: string;
-  address: string;
-  phone: string;
-  timezone: string;
+  description?: string;
   createdAt: Date;
-  status: GymStatus;
+  updatedAt: Date;
+  status: (typeof GYM_STATUS)[number];
   branding: GymBranding;
-  subscription: GymSubscription;
-  operatingHours: OperatingHours;
-}
+};
 
-export interface CreateGymInput {
-  name: string;
-  subdomain: string;
-  ownerId: string;
-  address: string;
-  phone: string;
-  timezone: string;
-  branding: GymBranding;
-  subscription: GymSubscription;
-  operatingHours: OperatingHours;
-}
+export type CreateGymInput = Omit<
+  Gym,
+  'id' | 'createdAt' | 'updatedAt' | 'status'
+>;
 
-export interface UpdateGymInput {
-  name?: string;
-  address?: string;
-  phone?: string;
-  timezone?: string;
-  branding?: Partial<GymBranding>;
-  operatingHours?: Partial<OperatingHours>;
-}
+export type UpdateGymInput = Partial<
+  Pick<Gym, 'name' | 'description' | 'branding'>
+>;
 
 export const gymConverter = {
   toFirestore: (gym: Partial<Gym>) => {
@@ -91,6 +36,8 @@ export const gymConverter = {
     return {
       ...data,
       createdAt: gym.createdAt || new Date(),
+      updatedAt: new Date(),
+      status: gym.status || 'active',
     };
   },
   fromFirestore: (snapshot: QueryDocumentSnapshot): Gym => {
@@ -100,17 +47,11 @@ export const gymConverter = {
       name: data.name,
       subdomain: data.subdomain,
       ownerId: data.ownerId,
-      address: data.address,
-      phone: data.phone,
-      timezone: data.timezone,
+      description: data.description,
       createdAt: data.createdAt?.toDate() || new Date(),
+      updatedAt: data.updatedAt?.toDate() || new Date(),
       status: data.status,
       branding: data.branding,
-      subscription: {
-        ...data.subscription,
-        expiresAt: data.subscription.expiresAt?.toDate() || new Date(),
-      },
-      operatingHours: data.operatingHours,
     };
   },
 };

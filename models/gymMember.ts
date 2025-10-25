@@ -1,40 +1,42 @@
 import { QueryDocumentSnapshot } from 'firebase-admin/firestore';
 
-export type MemberStatus = 'active' | 'paused' | 'cancelled';
+export const MEMBER_STATUS = [
+  'active',
+  'paused',
+  'cancelled',
+  'expired',
+] as const;
 
-export interface MemberPayment {
-  lastPayment: Date;
-  nextBilling: Date;
-  amount: number;
-}
-
-export interface GymMember {
+export type GymMember = {
   id: string;
   userId: string;
   gymId: string;
+  branchId?: string;
   membershipPlanId: string;
-  status: MemberStatus;
+  status: (typeof MEMBER_STATUS)[number];
   startDate: Date;
   expiresAt: Date;
-  payment: MemberPayment;
-}
+  lastPaymentDate?: Date;
+  nextPaymentDate?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
-export interface CreateGymMemberInput {
-  userId: string;
-  gymId: string;
-  membershipPlanId: string;
-  status: MemberStatus;
-  startDate: Date;
-  expiresAt: Date;
-  payment: MemberPayment;
-}
+export type CreateGymMemberInput = Omit<
+  GymMember,
+  'id' | 'createdAt' | 'updatedAt'
+>;
 
-export interface UpdateGymMemberInput {
-  membershipPlanId?: string;
-  status?: MemberStatus;
-  expiresAt?: Date;
-  payment?: Partial<MemberPayment>;
-}
+export type UpdateGymMemberInput = Partial<
+  Pick<
+    GymMember,
+    | 'membershipPlanId'
+    | 'status'
+    | 'expiresAt'
+    | 'lastPaymentDate'
+    | 'nextPaymentDate'
+  >
+>;
 
 export const gymMemberConverter = {
   toFirestore: (member: Partial<GymMember>) => {
@@ -42,7 +44,8 @@ export const gymMemberConverter = {
     const { id, ...data } = member;
     return {
       ...data,
-      startDate: member.startDate || new Date(),
+      createdAt: member.createdAt || new Date(),
+      updatedAt: new Date(),
     };
   },
   fromFirestore: (snapshot: QueryDocumentSnapshot): GymMember => {
@@ -51,15 +54,15 @@ export const gymMemberConverter = {
       id: snapshot.id,
       userId: data.userId,
       gymId: data.gymId,
+      branchId: data.branchId,
       membershipPlanId: data.membershipPlanId,
       status: data.status,
       startDate: data.startDate?.toDate() || new Date(),
       expiresAt: data.expiresAt?.toDate() || new Date(),
-      payment: {
-        lastPayment: data.payment.lastPayment?.toDate() || new Date(),
-        nextBilling: data.payment.nextBilling?.toDate() || new Date(),
-        amount: data.payment.amount,
-      },
+      lastPaymentDate: data.lastPaymentDate?.toDate(),
+      nextPaymentDate: data.nextPaymentDate?.toDate(),
+      createdAt: data.createdAt?.toDate() || new Date(),
+      updatedAt: data.updatedAt?.toDate() || new Date(),
     };
   },
 };

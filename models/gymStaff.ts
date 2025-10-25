@@ -1,29 +1,28 @@
 import { QueryDocumentSnapshot } from 'firebase-admin/firestore';
 
-export type StaffRole = 'manager' | 'trainer' | 'front_desk';
+export const STAFF_ROLES = ['manager', 'trainer', 'front_desk'] as const;
 
-export interface GymStaff {
+export type GymStaff = {
   id: string;
   userId: string;
   gymId: string;
-  role: StaffRole;
+  branchId?: string;
+  role: (typeof STAFF_ROLES)[number];
   permissions: string[];
+  invitedBy: string;
+  isActive: boolean;
   createdAt: Date;
-  invitedBy: string;
-}
+  updatedAt: Date;
+};
 
-export interface CreateGymStaffInput {
-  userId: string;
-  gymId: string;
-  role: StaffRole;
-  permissions: string[];
-  invitedBy: string;
-}
+export type CreateGymStaffInput = Omit<
+  GymStaff,
+  'id' | 'createdAt' | 'updatedAt' | 'isActive'
+>;
 
-export interface UpdateGymStaffInput {
-  role?: StaffRole;
-  permissions?: string[];
-}
+export type UpdateGymStaffInput = Partial<
+  Pick<GymStaff, 'role' | 'permissions' | 'branchId' | 'isActive'>
+>;
 
 export const gymStaffConverter = {
   toFirestore: (staff: Partial<GymStaff>) => {
@@ -32,6 +31,8 @@ export const gymStaffConverter = {
     return {
       ...data,
       createdAt: staff.createdAt || new Date(),
+      updatedAt: new Date(),
+      isActive: staff.isActive ?? true,
     };
   },
   fromFirestore: (snapshot: QueryDocumentSnapshot): GymStaff => {
@@ -40,10 +41,13 @@ export const gymStaffConverter = {
       id: snapshot.id,
       userId: data.userId,
       gymId: data.gymId,
+      branchId: data.branchId,
       role: data.role,
-      permissions: data.permissions,
-      createdAt: data.createdAt?.toDate() || new Date(),
+      permissions: data.permissions || [],
       invitedBy: data.invitedBy,
+      isActive: data.isActive ?? true,
+      createdAt: data.createdAt?.toDate() || new Date(),
+      updatedAt: data.updatedAt?.toDate() || new Date(),
     };
   },
 };
