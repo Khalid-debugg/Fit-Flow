@@ -1,19 +1,22 @@
-import { useState } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Dashboard from './pages/Dashboard'
+import Layout from './components/Layout/Layout'
 
-function App(): React.JSX.Element {
-  const [message, setMessage] = useState('')
-
-  const testIPC = async (): Promise<void> => {
-    const result = await window.electron.ipcRenderer.invoke('ping')
-    setMessage(result)
-  }
-
+function App() {
   return (
-    <div style={{ padding: '40px', textAlign: 'center' }}>
-      <h1>FitFlow - Gym Management</h1>
-      <button onClick={testIPC}>Test IPC</button>
-      <p>{message}</p>
-    </div>
+    <BrowserRouter>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/members" element={<div>Members Page</div>} />
+          <Route path="/plans" element={<div>Plans Page</div>} />
+          <Route path="/checkin" element={<div>Check-in Page</div>} />
+          <Route path="/payments" element={<div>Payments Page</div>} />
+          <Route path="/reports" element={<div>Reports Page</div>} />
+          <Route path="/settings" element={<div>Settings Page</div>} />
+        </Routes>
+      </Layout>
+    </BrowserRouter>
   )
 }
 
