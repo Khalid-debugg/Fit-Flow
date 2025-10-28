@@ -1,0 +1,19 @@
+{
+  "app": {
+    "name": "FitFlow",
+    "tagline": "Gym Management"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "members": "Members",
+    "plans": "Plans",
+    "checkin": "Check-in",
+    "payments": "Payments",
+    "reports": "Reports",
+    "settings": "Settings"
+  },
+  "user": {
+    "admin": "Admin",
+    "gymOwner": "Gym Owner"
+  }
+}
