@@ -15,5 +15,20 @@
   "user": {
     "admin": "المدير",
     "gymOwner": "مالك الصالة"
+  },
+  "dashboard": {
+    "welcome": "مرحباً بعودتك!",
+    "overview": "نظرة عامة",
+    "totalMembers": "إجمالي الأعضاء",
+    "activeMembers": "الأعضاء النشطين",
+    "todayCheckins": "حضور اليوم",
+    "monthlyRevenue": "الإيرادات الشهرية",
+    "recentActivity": "النشاط الأخير",
+    "expiringMemberships": "تنتهي قريباً",
+    "quickActions": "إجراءات سريعة",
+    "checkInMember": "تسجيل حضور",
+    "addMember": "إضافة عضو",
+    "recordPayment": "تسجيل دفعة",
+    "viewReports": "عرض التقارير"
   }
 }
