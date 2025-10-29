@@ -30,5 +30,23 @@
     "addMember": "Add Member",
     "recordPayment": "Record Payment",
     "viewReports": "View Reports"
+  },
+  "members": {
+    "title": "Members",
+    "addNew": "Add New Member",
+    "search": "Search members...",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "joinDate": "Join Date",
+    "status": "Status",
+    "actions": "Actions",
+    "edit": "Edit",
+    "delete": "Delete",
+    "active": "Active",
+    "inactive": "Inactive",
+    "expired": "Expired",
+    "noMembers": "No members found",
+    "loading": "Loading..."
   }
 }

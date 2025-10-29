@@ -30,5 +30,23 @@
     "addMember": "إضافة عضو",
     "recordPayment": "تسجيل دفعة",
     "viewReports": "عرض التقارير"
+  },
+  "members": {
+    "title": "الأعضاء",
+    "addNew": "إضافة عضو جديد",
+    "search": "البحث عن أعضاء...",
+    "name": "الاسم",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "joinDate": "تاريخ الانضمام",
+    "status": "الحالة",
+    "actions": "الإجراءات",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "expired": "منتهي",
+    "noMembers": "لا يوجد أعضاء",
+    "loading": "جاري التحميل..."
   }
 }
