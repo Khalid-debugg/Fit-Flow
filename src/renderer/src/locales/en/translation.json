@@ -47,6 +47,32 @@
     "inactive": "Inactive",
     "expired": "Expired",
     "noMembers": "No members found",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "memberCount_zero": "No members",
+    "memberCount_one": "{{count}} member",
+    "memberCount_other": "{{count}} members",
+    "errors": {
+      "emailExists": "This email already exists",
+      "createFailed": "Failed to create member",
+      "deleteFailed": "Failed to delete member",
+      "deleteConfirm": "Are you sure you want to delete this member?"
+    },
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "dateOfBirth": "Date of Birth",
+      "gender": "Gender",
+      "address": "Address",
+      "emergencyContact": "Emergency Contact",
+      "emergencyPhone": "Emergency Phone",
+      "notes": "Notes",
+      "selectGender": "Select Gender",
+      "male": "Male",
+      "female": "Female",
+      "cancel": "Cancel",
+      "submit": "Add Member",
+      "required": "Required"
+    }
   }
 }

@@ -47,6 +47,35 @@
     "inactive": "غير نشط",
     "expired": "منتهي",
     "noMembers": "لا يوجد أعضاء",
-    "loading": "جاري التحميل..."
+    "loading": "جاري التحميل...",
+    "memberCount_zero": "لا يوجد أعضاء",
+    "memberCount_one": "عضو واحد",
+    "memberCount_two": "عضوان",
+    "memberCount_few": "{{count}} أعضاء",
+    "memberCount_many": "{{count}} عضواً",
+    "memberCount_other": "{{count}} عضو",
+    "errors": {
+      "emailExists": "البريد الإلكتروني مستخدم بالفعل",
+      "createFailed": "فشل في إضافة العضو",
+      "deleteFailed": "فشل في حذف العضو",
+      "deleteConfirm": "هل أنت متأكد من حذف هذا العضو؟"
+    },
+    "form": {
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "dateOfBirth": "تاريخ الميلاد",
+      "gender": "الجنس",
+      "address": "العنوان",
+      "emergencyContact": "جهة الاتصال الطارئة",
+      "emergencyPhone": "هاتف الطوارئ",
+      "notes": "ملاحظات",
+      "selectGender": "اختر الجنس",
+      "male": "ذكر",
+      "female": "أنثى",
+      "cancel": "إلغاء",
+      "submit": "إضافة عضو",
+      "required": "مطلوب"
+    }
   }
 }
