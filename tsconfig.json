@@ -5,5 +5,7 @@
     "paths": {
       "@renderer/*": ["./src/renderer/src/*"]
     }
-  } 
+  },
+  "include": ["src", "src/renderer/global.d.ts"]
+
 }
