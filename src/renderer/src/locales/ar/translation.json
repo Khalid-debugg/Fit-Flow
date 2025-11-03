@@ -34,18 +34,22 @@
   "members": {
     "title": "الأعضاء",
     "addNew": "إضافة عضو جديد",
-    "search": "البحث عن أعضاء...",
+    "basicInfo": "المعلومات الأساسية",
+    "editMember": "تعديل العضو",
     "name": "الاسم",
     "email": "البريد الإلكتروني",
     "phone": "الهاتف",
+    "gender": "الجنس",
+    "male": "ذكر",
+    "female": "أنثى",
     "joinDate": "تاريخ الانضمام",
     "status": "الحالة",
     "actions": "الإجراءات",
     "edit": "تعديل",
     "delete": "حذف",
+    "index": "رقم",
     "active": "نشط",
     "inactive": "غير نشط",
-    "expired": "منتهي",
     "noMembers": "لا يوجد أعضاء",
     "loading": "جاري التحميل...",
     "memberCount_zero": "لا يوجد أعضاء",
@@ -54,28 +58,60 @@
     "memberCount_few": "{{count}} أعضاء",
     "memberCount_many": "{{count}} عضواً",
     "memberCount_other": "{{count}} عضو",
+    "membershipPlan": "الباقة",
+    "currentMembership": "الباقة الحالية",
+    "noActivePlan": "لا توجد باقة نشطة",
+    "expiresOn": "تنتهي في",
+    "startDate": "تاريخ البداية",
+    "endDate": "تاريخ الانتهاء",
+    "price": "السعر",
+    "filters": {
+      "title": "الفلاتر",
+      "search": "البحث",
+      "searchPlaceholder": "الاسم، البريد الإلكتروني، الهاتف، أو العنوان",
+      "gender": "الجنس",
+      "status": "الحالة",
+      "all": "الكل",
+      "joinDateFrom": "تاريخ الانضمام من",
+      "joinDateTo": "تاريخ الانضمام إلى",
+      "reset": "إعادة تعيين الفلاتر"
+    },
+    "pagination": {
+      "page": "صفحة",
+      "of": "من",
+      "previous": "السابق",
+      "next": "التالي"
+    },
     "errors": {
+      "errorTitle": "خطأ",
+      "ok": "حسناً",
+      "phoneExists": "رقم الهاتف مستخدم بالفعل",
       "emailExists": "البريد الإلكتروني مستخدم بالفعل",
       "createFailed": "فشل في إضافة العضو",
+      "updateFailed": "فشل في تحديث العضو",
       "deleteFailed": "فشل في حذف العضو",
       "deleteConfirm": "هل أنت متأكد من حذف هذا العضو؟"
+    },
+    "success": {
+      "createSuccess": "تم إضافة العضو بنجاح",
+      "updateSuccess": "تم تحديث العضو بنجاح",
+      "deleteSuccess": "تم حذف العضو بنجاح"
     },
     "form": {
       "name": "الاسم",
       "email": "البريد الإلكتروني",
       "phone": "الهاتف",
-      "dateOfBirth": "تاريخ الميلاد",
       "gender": "الجنس",
       "address": "العنوان",
-      "emergencyContact": "جهة الاتصال الطارئة",
-      "emergencyPhone": "هاتف الطوارئ",
       "notes": "ملاحظات",
-      "selectGender": "اختر الجنس",
-      "male": "ذكر",
-      "female": "أنثى",
       "cancel": "إلغاء",
+      "confirm": "تأكيد",
       "submit": "إضافة عضو",
-      "required": "مطلوب"
+      "update": "تحديث العضو"
+    },
+    "alert": {
+      "deleteMember": "حذف العضو",
+      "deleteMemberMessage": "هل أنت متأكد من رغبتك في حذف هذا العضو؟ لا يمكن التراجع عن هذا الإجراء."
     }
   }
 }
