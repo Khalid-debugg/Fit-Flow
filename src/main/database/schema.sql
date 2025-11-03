@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS members (
   gender TEXT NOT NULL,
   address TEXT,
   join_date DATE NOT NULL,
-  status TEXT DEFAULT 'inactive',
+  status TEXT NOT NULL,
   notes TEXT,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
