@@ -96,7 +96,7 @@ export default function MembersFilter({ filters, onChange, onReset }: MembersFil
 
         <div className="space-y-2">
           <Label htmlFor="dateFrom" className="text-gray-200 text-sm">
-            {t('members.filters.joinDateFrom')}
+            {t('members.filters.join_dateFrom')}
           </Label>
           <Input
             id="dateFrom"
@@ -109,7 +109,7 @@ export default function MembersFilter({ filters, onChange, onReset }: MembersFil
 
         <div className="space-y-2">
           <Label htmlFor="dateTo" className="text-gray-200 text-sm">
-            {t('members.filters.joinDateTo')}
+            {t('members.filters.join_dateTo')}
           </Label>
           <Input
             id="dateTo"
