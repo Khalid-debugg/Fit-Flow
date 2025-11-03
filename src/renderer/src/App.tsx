@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import Layout from './components/Layout/Layout'
 import Dashboard from './pages/Dashboard'
 import Members from './pages/Members'
+import { Toaster } from 'sonner'
 
 function App() {
   const { i18n } = useTranslation()
@@ -16,6 +17,17 @@ function App() {
   return (
     <BrowserRouter>
       <Layout>
+        <Toaster
+          toastOptions={{
+            classNames: {
+              toast: 'text-white!',
+              success: 'bg-green-600!',
+              error: 'bg-red-600!',
+              warning: 'bg-yellow-800! text-black!',
+              info: 'bg-blue-600!'
+            }
+          }}
+        />
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/members" element={<Members />} />
