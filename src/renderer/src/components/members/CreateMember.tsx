@@ -55,7 +55,7 @@ export default function CreateMember({ onSuccess }: CreateMemberProps) {
         (error as Error).message &&
         (error as Error).message.includes('UNIQUE constraint failed: members.phone')
       ) {
-        toast.error(t('members.errors.phoneExists'))
+        toast.warning(t('members.errors.phoneExists'))
       } else {
         toast.error(t('members.errors.createFailed'))
       }
