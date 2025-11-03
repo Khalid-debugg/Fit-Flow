@@ -58,7 +58,7 @@ export function registerMemberHandlers() {
         AND ms.end_date >= date('now')
       LEFT JOIN membership_plans mp ON ms.plan_id = mp.id
       ${whereClause}
-      ORDER BY m.created_at DESC
+      ORDER BY m.join_date DESC
       LIMIT ? OFFSET ?
     `
       )
@@ -142,14 +142,15 @@ export function registerMemberHandlers() {
   ipcMain.handle('members:create', async (_event, member) => {
     const db = getDatabase()
     const stmt = db.prepare(`
-      INSERT INTO members (name, email, phone, gender, address, join_date, notes)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO members (name, email, phone, gender, status, address, join_date, notes)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `)
     const result = stmt.run(
       member.name,
       member.email || null,
       member.phone,
       member.gender,
+      member.status || 'inactive',
       member.address || null,
       member.join_date,
       member.notes || null
@@ -159,22 +160,27 @@ export function registerMemberHandlers() {
 
   ipcMain.handle('members:update', async (_event, id: number, member) => {
     const db = getDatabase()
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { status, ...safeMember } = member
+
     const stmt = db.prepare(`
-      UPDATE members 
-      SET name = ?, email = ?, phone = ?, gender = ?, address = ?, status = ?, notes = ?
-      WHERE id = ?
-    `)
+    UPDATE members 
+    SET name = ?, email = ?, phone = ?, gender = ?, address = ?, notes = ?,  join_date = ?
+    WHERE id = ?
+  `)
+
     stmt.run(
-      member.name,
-      member.email || null,
-      member.phone,
-      member.gender,
-      member.address || null,
-      member.status,
-      member.notes || null,
+      safeMember.name,
+      safeMember.email || null,
+      safeMember.phone,
+      safeMember.gender,
+      safeMember.address || null,
+      safeMember.notes || null,
+      safeMember.join_date || null,
       id
     )
-    return { id, ...member }
+
+    return { id, ...safeMember }
   })
 
   ipcMain.handle('members:delete', async (_event, id: number) => {
