@@ -1,0 +1,64 @@
+{
+  "title": "الباقات",
+  "addNew": "إضافة باقة جديدة",
+  "editPlan": "تعديل الباقة",
+  "name": "الاسم",
+  "price": "السعر",
+  "duration": "المدة",
+  "days": "أيام",
+  "weeks": "أسابيع",
+  "months": "شهور",
+  "years": "سنوات",
+  "description": "الوصف",
+  "status": "الحالة",
+  "active": "نشطة",
+  "inactive": "غير نشطة",
+  "actions": "الإجراءات",
+  "edit": "تعديل",
+  "delete": "حذف",
+  "noPlans": "لا توجد باقات",
+  "loading": "جاري التحميل...",
+  "filters": {
+    "title": "الفلاتر",
+    "search": "البحث",
+    "searchPlaceholder": "البحث بالاسم أو الوصف",
+    "status": "الحالة",
+    "all": "الكل",
+    "reset": "إعادة تعيين الفلاتر"
+  },
+  "pagination": {
+    "page": "صفحة",
+    "of": "من",
+    "previous": "السابق",
+    "next": "التالي"
+  },
+  "errors": {
+    "errorTitle": "خطأ",
+    "ok": "حسناً",
+    "nameExists": "اسم الباقة مستخدم بالفعل",
+    "createFailed": "فشل في إنشاء الباقة",
+    "updateFailed": "فشل في تحديث الباقة",
+    "deleteFailed": "فشل في حذف الباقة",
+    "deleteConfirm": "هل أنت متأكد من حذف هذه الباقة؟"
+  },
+  "success": {
+    "createSuccess": "تم إنشاء الباقة بنجاح",
+    "updateSuccess": "تم تحديث الباقة بنجاح",
+    "deleteSuccess": "تم حذف الباقة بنجاح"
+  },
+  "form": {
+    "name": "الاسم",
+    "price": "السعر",
+    "duration": "المدة",
+    "description": "الوصف",
+    "status": "الحالة",
+    "cancel": "إلغاء",
+    "confirm": "تأكيد",
+    "submit": "إضافة باقة",
+    "update": "تحديث الباقة"
+  },
+  "alert": {
+    "deletePlan": "حذف الباقة",
+    "deletePlanMessage": "هل أنت متأكد من رغبتك في حذف هذه الباقة؟ لا يمكن التراجع عن هذا الإجراء."
+  }
+}

@@ -1,24 +1,22 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
-import enTranslation from './en/translation.json'
-import arTranslation from './ar/translation.json'
-
-const resources = {
-  en: {
-    translation: enTranslation
-  },
-  ar: {
-    translation: arTranslation
-  }
-}
+import commonEn from './en/common.json'
+import membersEn from './en/members.json'
+import plansEn from './en/plans.json'
+import commonAr from './ar/common.json'
+import membersAr from './ar/members.json'
+import plansAr from './ar/plans.json'
 
 i18n.use(initReactI18next).init({
-  resources,
+  resources: {
+    en: { common: commonEn, members: membersEn, plans: plansEn },
+    ar: { common: commonAr, members: membersAr, plans: plansAr }
+  },
   lng: 'ar',
-  fallbackLng: 'ar',
-  interpolation: {
-    escapeValue: false
-  }
+  fallbackLng: 'en',
+  ns: ['common', 'members', 'plans'],
+  defaultNS: 'common',
+  interpolation: { escapeValue: false }
 })
 
 export default i18n

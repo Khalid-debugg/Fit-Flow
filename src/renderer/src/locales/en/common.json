@@ -1,0 +1,34 @@
+{
+  "app": {
+    "name": "FitFlow",
+    "tagline": "Gym Management"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "members": "Members",
+    "plans": "Plans",
+    "checkin": "Check-in",
+    "payments": "Payments",
+    "reports": "Reports",
+    "settings": "Settings"
+  },
+  "user": {
+    "admin": "Admin",
+    "gymOwner": "Gym Owner"
+  },
+  "dashboard": {
+    "welcome": "Welcome Back!",
+    "overview": "Overview",
+    "totalMembers": "Total Members",
+    "activeMembers": "Active Members",
+    "todayCheckins": "Today's Check-ins",
+    "monthlyRevenue": "Monthly Revenue",
+    "recentActivity": "Recent Activity",
+    "expiringMemberships": "Expiring Soon",
+    "quickActions": "Quick Actions",
+    "checkInMember": "Check-in Member",
+    "addMember": "Add Member",
+    "recordPayment": "Record Payment",
+    "viewReports": "View Reports"
+  }
+}
