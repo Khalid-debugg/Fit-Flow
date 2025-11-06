@@ -4,7 +4,7 @@ import { Button } from '@renderer/components/ui/button'
 import { Users, UserCheck, DollarSign, TrendingUp } from 'lucide-react'
 
 export default function Dashboard() {
-  const { t } = useTranslation()
+  const { t } = useTranslation('common')
 
   const stats = [
     {
@@ -69,15 +69,15 @@ export default function Dashboard() {
               <UserCheck className="h-6 w-6" />
               <span>{t('dashboard.checkInMember')}</span>
             </Button>
-            <Button variant="secondary" className="h-24 flex flex-col gap-2">
+            <Button className="h-24 flex flex-col gap-2">
               <Users className="h-6 w-6" />
               <span>{t('dashboard.addMember')}</span>
             </Button>
-            <Button variant="outline" className="h-24 flex flex-col gap-2">
+            <Button className="h-24 flex flex-col gap-2">
               <DollarSign className="h-6 w-6" />
               <span>{t('dashboard.recordPayment')}</span>
             </Button>
-            <Button variant="outline" className="h-24 flex flex-col gap-2">
+            <Button className="h-24 flex flex-col gap-2">
               <TrendingUp className="h-6 w-6" />
               <span>{t('dashboard.viewReports')}</span>
             </Button>

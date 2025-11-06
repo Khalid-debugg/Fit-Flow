@@ -13,7 +13,7 @@ import { useDebounce } from '@renderer/hooks/useDebounce'
 import { LoaderCircle } from 'lucide-react'
 
 export default function Members() {
-  const { t } = useTranslation()
+  const { t } = useTranslation('members')
   const [members, setMembers] = useState<Member[]>([])
   const [loading, setLoading] = useState(true)
   const [filters, setFilters] = useState<MemberFilters>(DEFAULT_FILTERS)
@@ -32,7 +32,7 @@ export default function Members() {
       setTotalPages(data.totalPages)
     } catch (error) {
       console.error('Failed to load members:', error)
-      toast.error(t('members.errors.loadFailed'))
+      toast.error(t('errors.loadFailed'))
     } finally {
       setLoading(false)
     }
@@ -56,11 +56,11 @@ export default function Members() {
     async (id: number) => {
       try {
         await window.electron.ipcRenderer.invoke('members:delete', id)
-        toast.success(t('members.success.deleteSuccess'))
+        toast.success(t('success.deleteSuccess'))
         loadMembers()
       } catch (error) {
         console.error('Failed to delete member:', error)
-        toast.error(t('members.errors.deleteFailed'))
+        toast.error(t('errors.deleteFailed'))
       }
     },
     [loadMembers, t]
@@ -81,7 +81,7 @@ export default function Members() {
       />
 
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">{t('members.title')}</h1>
+        <h1 className="text-3xl font-bold">{t('title')}</h1>
         <CreateMember onSuccess={loadMembers} />
       </div>
 
@@ -92,7 +92,7 @@ export default function Members() {
           <LoaderCircle className="mx-auto h-20 w-20 animate-spin" />
         </div>
       ) : members.length === 0 ? (
-        <div className="text-center py-12 text-gray-400">{t('members.noMembers')}</div>
+        <div className="text-center py-12 text-gray-400">{t('noMembers')}</div>
       ) : (
         <div className={loading ? 'opacity-50 pointer-events-none' : ''}>
           <MembersTable

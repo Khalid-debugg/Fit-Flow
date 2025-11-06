@@ -41,7 +41,9 @@ export default function MembersTable({
   onDelete,
   onPageChange
 }: MembersTableProps) {
-  const { t } = useTranslation()
+  console.log(members, page, totalPages, onRowClick, onEdit, onDelete, onPageChange)
+
+  const { t } = useTranslation('members')
 
   const getStatusBadge = (status: string) => {
     const colors = {
@@ -57,14 +59,14 @@ export default function MembersTable({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="text-start">{t('members.index')}</TableHead>
-              <TableHead className="text-start">{t('members.name')}</TableHead>
-              <TableHead className="text-start">{t('members.phone')}</TableHead>
-              <TableHead className="text-start">{t('members.email')}</TableHead>
-              <TableHead className="text-start">{t('members.gender')}</TableHead>
-              <TableHead className="text-start">{t('members.joinDate')}</TableHead>
-              <TableHead className="text-start">{t('members.status')}</TableHead>
-              <TableHead className="text-end">{t('members.actions')}</TableHead>
+              <TableHead className="text-start">{t('index')}</TableHead>
+              <TableHead className="text-start">{t('name')}</TableHead>
+              <TableHead className="text-start">{t('phone')}</TableHead>
+              <TableHead className="text-start">{t('email')}</TableHead>
+              <TableHead className="text-start">{t('gender')}</TableHead>
+              <TableHead className="text-start">{t('joinDate')}</TableHead>
+              <TableHead className="text-start">{t('status')}</TableHead>
+              <TableHead className="text-end">{t('actions')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -80,13 +82,13 @@ export default function MembersTable({
                 <TableCell className="font-medium">{member.name}</TableCell>
                 <TableCell className="text-gray-400">{member.phone}</TableCell>
                 <TableCell className="text-gray-400">{member.email || 'N/A'}</TableCell>
-                <TableCell className="text-gray-400">{t(`members.${member.gender}`)}</TableCell>
-                <TableCell className="text-gray-400">{member.join_date}</TableCell>
+                <TableCell className="text-gray-400">{t(`${member.gender}`)}</TableCell>
+                <TableCell className="text-gray-400">{member.joinDate}</TableCell>
                 <TableCell>
                   <span
                     className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadge(member.status)}`}
                   >
-                    {t(`members.${member.status}`)}
+                    {t(`${member.status}`)}
                   </span>
                 </TableCell>
                 <TableCell className="text-end" onClick={(e) => e.stopPropagation()}>
@@ -109,15 +111,15 @@ export default function MembersTable({
                       </AlertDialogTrigger>
                       <AlertDialogContent>
                         <AlertDialogHeader>
-                          <AlertDialogTitle>{t('members.alert.deleteMember')}</AlertDialogTitle>
+                          <AlertDialogTitle>{t('alert.deleteMember')}</AlertDialogTitle>
                           <AlertDialogDescription>
-                            {t('members.alert.deleteMemberMessage')}
+                            {t('alert.deleteMemberMessage')}
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel>{t('members.form.cancel')}</AlertDialogCancel>
+                          <AlertDialogCancel>{t('form.cancel')}</AlertDialogCancel>
                           <AlertDialogAction onClick={() => onDelete(member.id!)}>
-                            {t('members.form.confirm')}
+                            {t('form.confirm')}
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>
@@ -133,7 +135,7 @@ export default function MembersTable({
       {totalPages > 1 && (
         <div className="flex items-center justify-between px-2">
           <p className="text-sm text-gray-400">
-            {t('members.pagination.page')} {page} {t('members.pagination.of')} {totalPages}
+            {t('pagination.page')} {page} {t('pagination.of')} {totalPages}
           </p>
           <div className="flex gap-2 ltr:flex-row rtl:flex-row-reverse">
             <Button
@@ -143,7 +145,7 @@ export default function MembersTable({
               disabled={page === 1}
             >
               <ChevronLeft className="h-4 w-4 " />
-              {t('members.pagination.previous')}
+              {t('pagination.previous')}
             </Button>
             <Button
               variant="primary"
@@ -152,7 +154,7 @@ export default function MembersTable({
               disabled={page === totalPages}
             >
               <ChevronRight className="h-4 w-4 " />
-              {t('members.pagination.next')}
+              {t('pagination.next')}
             </Button>
           </div>
         </div>

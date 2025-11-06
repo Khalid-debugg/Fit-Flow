@@ -13,7 +13,7 @@ interface EditMemberProps {
 }
 
 export default function EditMember({ member, open, onClose, onSuccess }: EditMemberProps) {
-  const { t } = useTranslation()
+  const { t } = useTranslation('members')
   const [formData, setFormData] = useState<Partial<Member>>({})
 
   useEffect(() => {
@@ -25,13 +25,13 @@ export default function EditMember({ member, open, onClose, onSuccess }: EditMem
     if (!member?.id) return
     try {
       await window.electron.ipcRenderer.invoke('members:update', member.id, formData)
-      toast.success(t('members.success.updateSuccess'))
+      toast.success(t('success.updateSuccess'))
       onClose()
       onSuccess()
     } catch (error) {
-      if ((error as Error).message.includes('UNIQUE constraint failed: members.phone'))
-        toast.warning(t('members.errors.phoneExists'))
-      else toast.error(t('members.errors.updateFailed'))
+      if ((error as Error).message.includes('UNIQUE constraint failed: phone'))
+        toast.warning(t('errors.phoneExists'))
+      else toast.error(t('errors.updateFailed'))
     }
   }
 
@@ -39,14 +39,14 @@ export default function EditMember({ member, open, onClose, onSuccess }: EditMem
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="bg-gray-900 border-gray-700 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{t('members.editMember')}</DialogTitle>
+          <DialogTitle>{t('editMember')}</DialogTitle>
         </DialogHeader>
         <MemberForm
           formData={formData}
           setFormData={setFormData}
           onSubmit={handleSubmit}
           onCancel={onClose}
-          submitLabel={t('members.form.update')}
+          submitLabel={t('form.update')}
         />
       </DialogContent>
     </Dialog>

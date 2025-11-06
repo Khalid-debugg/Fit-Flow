@@ -20,14 +20,14 @@ export default function MemberForm({
   onCancel,
   submitLabel
 }: MemberFormProps) {
-  const { t } = useTranslation()
+  const { t } = useTranslation('members')
 
   return (
     <form onSubmit={onSubmit} className="space-y-6">
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="name" className="text-gray-200">
-            {t('members.form.name')} *
+            {t('form.name')} *
           </Label>
           <Input
             id="name"
@@ -40,7 +40,7 @@ export default function MemberForm({
         </div>
         <div className="space-y-2">
           <Label htmlFor="phone" className="text-gray-200">
-            {t('members.form.phone')} *
+            {t('form.phone')} *
           </Label>
           <Input
             id="phone"
@@ -55,7 +55,7 @@ export default function MemberForm({
 
         <div className="space-y-2 col-span-2">
           <Label htmlFor="email" className="text-gray-200">
-            {t('members.form.email')}
+            {t('form.email')}
           </Label>
           <Input
             id="email"
@@ -68,21 +68,21 @@ export default function MemberForm({
 
         <div className="space-y-2 col-span-2">
           <Label htmlFor="join-date" className="text-gray-200">
-            {t('members.joinDate')} *
+            {t('joinDate')} *
           </Label>
           <Input
             id="join-date"
             type="date"
             required
             className="bg-gray-800 border-gray-700 text-white"
-            value={formData.join_date ?? ''}
+            value={formData.joinDate ?? ''}
             max={new Date().toISOString().split('T')[0]}
-            onChange={(e) => setFormData({ ...formData, join_date: e.target.value })}
+            onChange={(e) => setFormData({ ...formData, joinDate: e.target.value })}
           />
         </div>
 
         <div className="space-y-2 col-span-2">
-          <Label className="text-gray-200">{t('members.form.gender')} *</Label>
+          <Label className="text-gray-200">{t('form.gender')} *</Label>
           <RadioGroup
             value={formData.gender}
             onValueChange={(value) =>
@@ -93,13 +93,13 @@ export default function MemberForm({
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="male" id="male" />
               <Label htmlFor="male" className="text-gray-300 cursor-pointer">
-                {t('members.male')}
+                {t('male')}
               </Label>
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="female" id="female" />
               <Label htmlFor="female" className="text-gray-300 cursor-pointer">
-                {t('members.female')}
+                {t('female')}
               </Label>
             </div>
           </RadioGroup>
@@ -107,7 +107,7 @@ export default function MemberForm({
 
         <div className="space-y-2 col-span-2">
           <Label htmlFor="address" className="text-gray-200">
-            {t('members.form.address')}
+            {t('form.address')}
           </Label>
           <Input
             id="address"
@@ -119,7 +119,7 @@ export default function MemberForm({
 
         <div className="space-y-2 col-span-2">
           <Label htmlFor="notes" className="text-gray-200">
-            {t('members.form.notes')}
+            {t('form.notes')}
           </Label>
           <textarea
             id="notes"
@@ -132,7 +132,7 @@ export default function MemberForm({
 
       <div className="flex justify-end gap-2 pt-4">
         <Button type="button" variant="primary" onClick={onCancel}>
-          {t('members.form.cancel')}
+          {t('form.cancel')}
         </Button>
         <Button type="submit" variant="secondary">
           {submitLabel}

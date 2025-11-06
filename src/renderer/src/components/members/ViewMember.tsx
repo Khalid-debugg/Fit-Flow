@@ -20,7 +20,7 @@ interface ViewMemberProps {
 }
 
 export default function ViewMember({ member, open, onClose }: ViewMemberProps) {
-  const { t } = useTranslation()
+  const { t } = useTranslation('members')
 
   if (!member) return null
 
@@ -69,20 +69,20 @@ export default function ViewMember({ member, open, onClose }: ViewMemberProps) {
           <div>
             <h3 className="text-lg font-semibold mb-3 text-blue-400 flex items-center gap-2">
               <BadgeCheck className="w-5 h-5" />
-              {t('members.basicInfo')}
+              {t('basicInfo')}
             </h3>
             <div className="grid grid-cols-2 gap-4">
-              <InfoRow icon={Phone} label={t('members.phone')} value={member.phone} />
-              <InfoRow icon={Mail} label={t('members.email')} value={member.email} />
+              <InfoRow icon={Phone} label={t('phone')} value={member.phone} />
+              <InfoRow icon={Mail} label={t('email')} value={member.email} />
               <InfoRow
                 icon={User}
-                label={t('members.gender')}
-                value={member.gender ? t(`members.${member.gender}`) : '-'}
+                label={t('gender')}
+                value={member.gender ? t(`${member.gender}`) : '-'}
               />
               <InfoRow
                 icon={Calendar}
-                label={t('members.joinDate')}
-                value={new Date(member.join_date).toLocaleDateString()}
+                label={t('joinDate')}
+                value={new Date(member.joinDate).toLocaleDateString()}
               />
               <div className="col-span-2 flex items-center gap-2">
                 <span
@@ -90,7 +90,7 @@ export default function ViewMember({ member, open, onClose }: ViewMemberProps) {
                     member.status
                   )}`}
                 >
-                  {t(`members.${member.status}`)}
+                  {t(`${member.status}`)}
                 </span>
               </div>
             </div>
@@ -101,46 +101,46 @@ export default function ViewMember({ member, open, onClose }: ViewMemberProps) {
             <div>
               <h3 className="text-lg font-semibold mb-3 text-blue-400 flex items-center gap-2">
                 <MapPin className="w-5 h-5" />
-                {t('members.details')}
+                {t('details')}
               </h3>
               <div className="space-y-3">
                 {member.address && (
-                  <InfoRow icon={MapPin} label={t('members.form.address')} value={member.address} />
+                  <InfoRow icon={MapPin} label={t('form.address')} value={member.address} />
                 )}
                 {member.notes && (
-                  <InfoRow icon={FileText} label={t('members.form.notes')} value={member.notes} />
+                  <InfoRow icon={FileText} label={t('form.notes')} value={member.notes} />
                 )}
               </div>
             </div>
           )}
 
           {/* Membership */}
-          {member.current_membership && (
+          {member.currentMembership && (
             <div>
               <h3 className="text-lg font-semibold mb-3 text-blue-400 flex items-center gap-2">
                 <Wallet className="w-5 h-5" />
-                {t('members.currentMembership')}
+                {t('currentMembership')}
               </h3>
               <div className="grid grid-cols-2 gap-4">
                 <InfoRow
                   icon={BadgeCheck}
-                  label={t('members.membershipPlan')}
-                  value={member.current_membership.plan_name}
+                  label={t('membershipPlan')}
+                  value={member.currentMembership.planName}
                 />
                 <InfoRow
                   icon={Wallet}
-                  label={t('members.price')}
-                  value={`$${member.current_membership.plan_price}`}
+                  label={t('price')}
+                  value={`$${member.currentMembership.planPrice}`}
                 />
                 <InfoRow
                   icon={Calendar}
-                  label={t('members.startDate')}
-                  value={new Date(member.current_membership.start_date).toLocaleDateString()}
+                  label={t('startDate')}
+                  value={new Date(member.currentMembership.startDate).toLocaleDateString()}
                 />
                 <InfoRow
                   icon={Calendar}
-                  label={t('members.endDate')}
-                  value={new Date(member.current_membership.end_date).toLocaleDateString()}
+                  label={t('endDate')}
+                  value={new Date(member.currentMembership.endDate).toLocaleDateString()}
                 />
               </div>
             </div>
