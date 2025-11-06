@@ -1,8 +1,54 @@
+export const GENDER = ['male', 'female'] as const
+export const STATUS = ['active', 'inactive', 'expired'] as const
 export type Member = {
+  id?: number
+  name: string
+  email: string | null
+  phone: string
+  gender: (typeof GENDER)[number]
+  address: string | null
+  join_date: string
+  status: (typeof STATUS)[number]
+  notes: string | null
+  created_at?: string
+  current_membership?: {
+    id: number
+    plan_name: string
+    plan_price: number
+    start_date: string
+    end_date: string
+    status: string
+  }
+}
+export type MemberDbRow = {
   id: number
   name: string
-  email: string
+  email: string | null
   phone: string
+  gender: (typeof GENDER)[number]
+  address: string | null
   join_date: string
-  status: string
+  notes: string | null
+  created_at: string
+  membership_id: number | null
+  plan_name: string | null
+  plan_price: number | null
+  start_date: string | null
+  end_date: string | null
+  membership_count: number
+}
+export interface MemberFilters {
+  query: string
+  gender: 'all' | (typeof GENDER)[number]
+  status: 'all' | (typeof STATUS)[number]
+  dateFrom: string
+  dateTo: string
+}
+
+export const DEFAULT_FILTERS: MemberFilters = {
+  query: '',
+  gender: 'all',
+  status: 'all',
+  dateFrom: '',
+  dateTo: ''
 }
