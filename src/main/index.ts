@@ -4,6 +4,7 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { initDatabase, closeDatabase } from './database'
 import { registerMemberHandlers } from './handlers/members'
+import { registerPlanHandlers } from './handlers/plans'
 
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
@@ -47,6 +48,7 @@ app.whenReady().then(() => {
 
   initDatabase()
   registerMemberHandlers()
+  registerPlanHandlers()
   createWindow()
 
   app.on('activate', function () {
