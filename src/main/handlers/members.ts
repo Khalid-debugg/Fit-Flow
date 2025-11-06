@@ -1,6 +1,7 @@
 import { ipcMain } from 'electron'
 import { getDatabase } from '../database'
-import { Member, MemberFilters } from '@renderer/models/member'
+import type { MemberDbRow, MemberFilters } from '../../renderer/src/models/member'
+import { toSnake } from './utils'
 
 export function registerMemberHandlers() {
   ipcMain.handle('members:get', async (_event, page: number = 1, filters: MemberFilters) => {
@@ -11,22 +12,17 @@ export function registerMemberHandlers() {
     const whereConditions: string[] = []
     const params: (string | number)[] = []
 
-    if (filters.query && filters.query.trim()) {
+    if (filters.query?.trim()) {
+      const search = `%${filters.query.trim()}%`
       whereConditions.push(
         '(m.name LIKE ? OR m.email LIKE ? OR m.phone LIKE ? OR m.address LIKE ?)'
       )
-      const searchTerm = `%${filters.query.trim()}%`
-      params.push(searchTerm, searchTerm, searchTerm, searchTerm)
+      params.push(search, search, search, search)
     }
 
-    if (filters.gender && filters.gender !== 'all') {
+    if (filters.gender !== 'all') {
       whereConditions.push('m.gender = ?')
       params.push(filters.gender)
-    }
-
-    if (filters.status && filters.status !== 'all') {
-      whereConditions.push('m.status = ?')
-      params.push(filters.status)
     }
 
     if (filters.dateFrom) {
@@ -39,154 +35,183 @@ export function registerMemberHandlers() {
       params.push(filters.dateTo)
     }
 
-    const whereClause = whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : ''
+    const whereClause = whereConditions.length ? `WHERE ${whereConditions.join(' AND ')}` : ''
 
-    const members = db
-      .prepare(
-        `
+    const query = `
       SELECT 
         m.*,
-        ms.id as membership_id,
-        mp.name as plan_name,
-        mp.price as plan_price,
+        ms.id AS membership_id,
+        mp.name AS plan_name,
+        mp.price AS plan_price,
         ms.start_date,
         ms.end_date,
-        ms.status as membership_status
+        (
+          SELECT COUNT(*) FROM memberships WHERE member_id = m.id
+        ) AS membership_count
       FROM members m
       LEFT JOIN memberships ms ON m.id = ms.member_id 
-        AND ms.status = 'active'
         AND ms.end_date >= date('now')
       LEFT JOIN membership_plans mp ON ms.plan_id = mp.id
       ${whereClause}
-      ORDER BY m.join_date DESC
+      ORDER BY m.created_at DESC
       LIMIT ? OFFSET ?
     `
-      )
-      .all(...params, limit, offset) as Member[]
+
+    const rows = db.prepare(query).all(...params, limit, offset) as MemberDbRow[]
+
+    const processedMembers = rows.map((row) => {
+      let status: 'active' | 'inactive' | 'expired' = 'inactive'
+
+      const today = new Date().toISOString().split('T')[0]
+      if (row.membership_id && row.end_date && row.end_date >= today) {
+        status = 'active'
+      } else if (row.membership_count > 0) {
+        status = 'expired'
+      }
+
+      return {
+        id: row.id,
+        name: row.name,
+        email: row.email,
+        phone: row.phone,
+        gender: row.gender,
+        address: row.address,
+        joinDate: row.join_date,
+        notes: row.notes,
+        createdAt: row.created_at,
+        status,
+        currentMembership: row.membership_id
+          ? {
+              id: row.membership_id,
+              planName: row.plan_name!,
+              planPrice: row.plan_price!,
+              startDate: row.start_date!,
+              endDate: row.end_date!
+            }
+          : undefined
+      }
+    })
+
+    const filtered =
+      filters.status === 'all'
+        ? processedMembers
+        : processedMembers.filter((m) => m.status === filters.status)
 
     const countQuery = `SELECT COUNT(*) as total FROM members m ${whereClause}`
     const totalResult = db.prepare(countQuery).get(...params) as { total: number }
 
+    const total = filters.status === 'all' ? totalResult.total : filtered.length
+
     return {
-      members: members.map((member: Member) => ({
-        ...member,
-        current_membership: member.current_membership
-          ? {
-              id: member.current_membership.id,
-              plan_name: member.current_membership.plan_name,
-              plan_price: member.current_membership.plan_price,
-              start_date: member.current_membership.start_date,
-              end_date: member.current_membership.end_date,
-              status: member.current_membership.status
-            }
-          : null,
-        membership_id: undefined,
-        plan_name: undefined,
-        plan_price: undefined,
-        start_date: undefined,
-        end_date: undefined,
-        membership_status: undefined
-      })),
-      total: totalResult.total,
+      members: filtered,
+      total,
       page,
-      totalPages: Math.ceil(totalResult.total / limit)
+      totalPages: Math.ceil(total / limit)
     }
   })
 
   ipcMain.handle('members:getById', async (_event, id: number) => {
     const db = getDatabase()
-    const member = db
+    const row = db
       .prepare(
         `
-      SELECT 
-        m.*,
-        ms.id as membership_id,
-        mp.name as plan_name,
-        mp.price as plan_price,
-        ms.start_date,
-        ms.end_date,
-        ms.status as membership_status
-      FROM members m
-      LEFT JOIN memberships ms ON m.id = ms.member_id 
-        AND ms.status = 'active'
-        AND ms.end_date >= date('now')
-      LEFT JOIN membership_plans mp ON ms.plan_id = mp.id
-      WHERE m.id = ?
-    `
+        SELECT 
+          m.*,
+          ms.id AS membership_id,
+          mp.name AS plan_name,
+          mp.price AS plan_price,
+          ms.start_date,
+          ms.end_date,
+          (
+            SELECT COUNT(*) FROM memberships WHERE member_id = m.id
+          ) AS membership_count
+        FROM members m
+        LEFT JOIN memberships ms ON m.id = ms.member_id 
+          AND ms.end_date >= date('now')
+        LEFT JOIN membership_plans mp ON ms.plan_id = mp.id
+        WHERE m.id = ?
+        `
       )
-      .get(id) as Member
+      .get(id) as MemberDbRow | undefined
 
-    if (!member) return null
+    if (!row) return null
+
+    let status: 'active' | 'inactive' | 'expired' = 'inactive'
+    const today = new Date().toISOString().split('T')[0]
+    if (row.membership_id && row.end_date && row.end_date >= today) {
+      status = 'active'
+    } else if (row.membership_count > 0) {
+      status = 'expired'
+    }
 
     return {
-      ...member,
-      current_membership: member.current_membership
+      id: row.id,
+      name: row.name,
+      email: row.email,
+      phone: row.phone,
+      gender: row.gender,
+      address: row.address,
+      joinDate: row.join_date,
+      notes: row.notes,
+      createdAt: row.created_at,
+      status,
+      currentMembership: row.membership_id
         ? {
-            id: member.current_membership.id,
-            plan_name: member.current_membership.plan_name,
-            plan_price: member.current_membership.plan_price,
-            start_date: member.current_membership.start_date,
-            end_date: member.current_membership.end_date,
-            status: member.current_membership.status
+            id: row.membership_id,
+            planName: row.plan_name!,
+            planPrice: row.plan_price!,
+            startDate: row.start_date!,
+            endDate: row.end_date!
           }
-        : null,
-      membership_id: undefined,
-      plan_name: undefined,
-      plan_price: undefined,
-      start_date: undefined,
-      end_date: undefined,
-      membership_status: undefined
+        : undefined
     }
   })
 
   ipcMain.handle('members:create', async (_event, member) => {
     const db = getDatabase()
+    const snake = toSnake(member)
     const stmt = db.prepare(`
-      INSERT INTO members (name, email, phone, gender, status, address, join_date, notes)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO members (name, email, phone, gender, address, join_date, notes)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
     `)
+
     const result = stmt.run(
-      member.name,
-      member.email || null,
-      member.phone,
-      member.gender,
-      member.status || 'inactive',
-      member.address || null,
-      member.join_date,
-      member.notes || null
+      snake.name,
+      snake.email || null,
+      snake.phone,
+      snake.gender,
+      snake.address || null,
+      snake.join_date,
+      snake.notes || null
     )
-    return { id: result.lastInsertRowid, ...member }
+
+    return { id: Number(result.lastInsertRowid), ...member }
   })
 
   ipcMain.handle('members:update', async (_event, id: number, member) => {
     const db = getDatabase()
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { status, ...safeMember } = member
-
+    const snake = toSnake(member)
     const stmt = db.prepare(`
-    UPDATE members 
-    SET name = ?, email = ?, phone = ?, gender = ?, address = ?, notes = ?,  join_date = ?
-    WHERE id = ?
-  `)
-
+      UPDATE members
+      SET name = ?, email = ?, phone = ?, gender = ?, address = ?, notes = ?
+      WHERE id = ?
+    `)
     stmt.run(
-      safeMember.name,
-      safeMember.email || null,
-      safeMember.phone,
-      safeMember.gender,
-      safeMember.address || null,
-      safeMember.notes || null,
-      safeMember.join_date || null,
+      snake.name,
+      snake.email || null,
+      snake.phone,
+      snake.gender,
+      snake.address || null,
+      snake.notes || null,
       id
     )
 
-    return { id, ...safeMember }
+    return { id, ...member }
   })
 
   ipcMain.handle('members:delete', async (_event, id: number) => {
     const db = getDatabase()
-    const stmt = db.prepare('DELETE FROM members WHERE id = ?')
-    stmt.run(id)
+    db.prepare('DELETE FROM members WHERE id = ?').run(id)
     return { success: true }
   })
 }
