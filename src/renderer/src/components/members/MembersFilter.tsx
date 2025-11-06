@@ -21,7 +21,7 @@ export default function MembersFilter({ filters, onChange, onReset }: MembersFil
 
   return (
     <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
-      <div className="flex items-end gap-4">
+      <div className="flex flex-wrap items-end gap-4">
         <div className="flex-1 space-y-2">
           <Label htmlFor="search" className="text-gray-200 text-sm">
             {t('members.filters.search')}
@@ -96,7 +96,7 @@ export default function MembersFilter({ filters, onChange, onReset }: MembersFil
 
         <div className="space-y-2">
           <Label htmlFor="dateFrom" className="text-gray-200 text-sm">
-            {t('members.filters.join_dateFrom')}
+            {t('members.filters.joinDateFrom')}
           </Label>
           <Input
             id="dateFrom"
@@ -109,7 +109,7 @@ export default function MembersFilter({ filters, onChange, onReset }: MembersFil
 
         <div className="space-y-2">
           <Label htmlFor="dateTo" className="text-gray-200 text-sm">
-            {t('members.filters.join_dateTo')}
+            {t('members.filters.joinDateTo')}
           </Label>
           <Input
             id="dateTo"
