@@ -1,7 +1,7 @@
 import { ipcMain } from 'electron'
 import { getDatabase } from '../database'
 import { toSnake, toCamel } from './utils'
-import type { Plan, PlanDbRow, PlanFilter } from '../../renderer/src/models/plan'
+import type { Plan, PlanFilter } from '../../renderer/src/models/plan'
 
 export function registerPlanHandlers() {
   ipcMain.handle('plans:get', async (_event, page: number = 1, filter: PlanFilter = 'all') => {
@@ -25,7 +25,7 @@ export function registerPlanHandlers() {
         ORDER BY created_at DESC
         LIMIT ? OFFSET ?
       `
-    const rows = db.prepare(query).all(limit, offset) as PlanDbRow[]
+    const rows = db.prepare(query).all(limit, offset) as Plan[]
 
     const totalQuery = `
         SELECT COUNT(*) as total
@@ -45,7 +45,7 @@ export function registerPlanHandlers() {
   ipcMain.handle('plans:getById', async (_event, id: number) => {
     const db = getDatabase()
     const row = db.prepare('SELECT * FROM membership_plans WHERE id = ?').get(id) as
-      | PlanDbRow
+      | Plan
       | undefined
     return row ? (toCamel(row) as Plan) : null
   })

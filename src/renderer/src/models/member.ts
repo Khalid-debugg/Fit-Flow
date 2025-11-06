@@ -7,16 +7,16 @@ export type Member = {
   phone: string
   gender: (typeof GENDER)[number]
   address: string | null
-  join_date: string
+  joinDate: string
   status: (typeof STATUS)[number]
   notes: string | null
-  created_at?: string
-  current_membership?: {
+  createdAt?: string
+  currentMembership?: {
     id: number
-    plan_name: string
-    plan_price: number
-    start_date: string
-    end_date: string
+    planName: string
+    planPrice: number
+    startDate: string
+    endDate: string
     status: string
   }
 }
