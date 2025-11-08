@@ -23,7 +23,7 @@ export default function CreateMember({ onSuccess }: { onSuccess: () => void }) {
     gender: 'male',
     status: 'inactive',
     address: '',
-    join_date: new Date().toISOString().split('T')[0],
+    joinDate: new Date().toISOString().split('T')[0],
     notes: ''
   })
 
@@ -41,7 +41,7 @@ export default function CreateMember({ onSuccess }: { onSuccess: () => void }) {
         gender: 'male',
         status: 'inactive',
         address: '',
-        join_date: new Date().toISOString().split('T')[0],
+        joinDate: new Date().toISOString().split('T')[0],
         notes: ''
       })
     } catch (error) {

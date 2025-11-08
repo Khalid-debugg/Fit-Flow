@@ -41,8 +41,6 @@ export default function MembersTable({
   onDelete,
   onPageChange
 }: MembersTableProps) {
-  console.log(members, page, totalPages, onRowClick, onEdit, onDelete, onPageChange)
-
   const { t } = useTranslation('members')
 
   const getStatusBadge = (status: string) => {
@@ -118,7 +116,10 @@ export default function MembersTable({
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                           <AlertDialogCancel>{t('form.cancel')}</AlertDialogCancel>
-                          <AlertDialogAction onClick={() => onDelete(member.id!)}>
+                          <AlertDialogAction
+                            onClick={() => onDelete(member.id!)}
+                            className="bg-red-600 hover:bg-red-700 text-white"
+                          >
                             {t('form.confirm')}
                           </AlertDialogAction>
                         </AlertDialogFooter>
