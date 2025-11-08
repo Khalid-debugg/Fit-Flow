@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS settings (
-  id INTEGER PRIMARY KEY CHECK (id = 1),
+  id TEXT PRIMARY KEY CHECK (id = '1'),
   gym_name TEXT NOT NULL,
   gym_address TEXT,
   gym_phone TEXT,
@@ -10,8 +10,16 @@ CREATE TABLE IF NOT EXISTS settings (
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TRIGGER IF NOT EXISTS trg_settings_updated_at
+AFTER UPDATE ON settings
+BEGIN
+  UPDATE settings
+  SET updated_at = CURRENT_TIMESTAMP
+  WHERE id = NEW.id;
+END;
+
 CREATE TABLE IF NOT EXISTS members (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  id TEXT PRIMARY KEY,
   name TEXT NOT NULL,
   email TEXT,
   phone TEXT NOT NULL UNIQUE,
@@ -23,16 +31,17 @@ CREATE TABLE IF NOT EXISTS members (
 );
 
 CREATE TABLE IF NOT EXISTS membership_plans (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  id TEXT PRIMARY KEY,
   name TEXT NOT NULL,
   description TEXT,
   price REAL NOT NULL,
+  is_offer INTEGER NOT NULL CHECK (is_offer IN (0, 1)),
   duration_days INTEGER NOT NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS memberships (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  id TEXT PRIMARY KEY,
   member_id INTEGER NOT NULL,
   plan_id INTEGER NOT NULL,
   start_date DATE NOT NULL,
@@ -41,14 +50,14 @@ CREATE TABLE IF NOT EXISTS memberships (
   payment_method TEXT NOT NULL,
   payment_date DATE NOT NULL,
   notes TEXT,
-  status TEXT DEFAULT 'inactive',
+  status TEXT DEFAULT 'inactive' CHECK (status IN ('active', 'inactive', 'expired')),
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE,
   FOREIGN KEY (plan_id) REFERENCES membership_plans(id)
 );
 
 CREATE TABLE IF NOT EXISTS check_ins (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  id TEXT PRIMARY KEY,
   member_id INTEGER NOT NULL,
   check_in_time DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE
@@ -59,4 +68,5 @@ CREATE INDEX IF NOT EXISTS idx_memberships_status ON memberships(status);
 CREATE INDEX IF NOT EXISTS idx_check_ins_member_id ON check_ins(member_id);
 CREATE INDEX IF NOT EXISTS idx_members_phone ON members(phone);
 
-INSERT OR IGNORE INTO settings (id, gym_name) VALUES (1, 'My Gym');
+INSERT OR IGNORE INTO settings (id, gym_name)
+VALUES (1, 'My Gym');

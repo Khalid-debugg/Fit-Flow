@@ -1,48 +1,61 @@
 import { ipcMain } from 'electron'
 import { getDatabase } from '../database'
 import { toSnake, toCamel } from './utils'
-import type { Plan, PlanFilter } from '../../renderer/src/models/plan'
+import type { Plan, PlanDbRow, PlanFilter } from '../../renderer/src/models/plan'
+import crypto from 'crypto'
+
+function generateEncryptedId() {
+  return crypto.randomBytes(8).toString('hex') // 16-character unique hex string
+}
 
 export function registerPlanHandlers() {
   ipcMain.handle('plans:get', async (_event, page: number = 1, filter: PlanFilter = 'all') => {
     const db = getDatabase()
-    const limit = 3
+    const limit = 6
     const offset = (page - 1) * limit
 
     const durationFilter: Record<string, string> = {
-      daily: 'duration_days = 1',
-      weekly: 'duration_days = 7',
-      monthly: 'duration_days BETWEEN 28 AND 31',
-      annually: 'duration_days >= 365'
+      daily: 'duration_days >= 1 AND duration_days < 7',
+      weekly: '(duration_days % 7 = 0 AND duration_days < 30)',
+      monthly: '(duration_days BETWEEN 28 AND 31 OR duration_days % 30 = 0)',
+      annually: '(duration_days % 365 = 0 OR duration_days >= 365)',
+      custom:
+        'NOT ((duration_days >= 1 AND duration_days < 7) OR (duration_days % 7 = 0 AND duration_days < 30) OR (duration_days BETWEEN 28 AND 31 OR duration_days % 30 = 0) OR (duration_days % 365 = 0 OR duration_days >= 365))',
+      offer: 'is_offer = 1'
     }
 
     const whereClause = filter !== 'all' ? `WHERE ${durationFilter[filter]}` : ''
 
     const query = `
-        SELECT *
-        FROM membership_plans
-        ${whereClause}
-        ORDER BY created_at DESC
-        LIMIT ? OFFSET ?
-      `
-    const rows = db.prepare(query).all(limit, offset) as Plan[]
+    SELECT *
+    FROM membership_plans
+    ${whereClause}
+    ORDER BY created_at DESC
+    LIMIT ? OFFSET ?
+  `
+    const rows = db.prepare(query).all(limit, offset) as PlanDbRow[]
 
     const totalQuery = `
-        SELECT COUNT(*) as total
-        FROM membership_plans
-        ${whereClause}
-      `
+    SELECT COUNT(*) as total
+    FROM membership_plans
+    ${whereClause}
+  `
     const total = (db.prepare(totalQuery).get() as { total: number }).total
 
     return {
-      plans: rows.map(toCamel) as Plan[],
+      plans: rows.map((r) => {
+        const plan = toCamel(r)
+        plan.isOffer = Boolean(r.is_offer)
+        plan.durationDays = Number(r.duration_days)
+        return plan
+      }),
       total,
       page,
       totalPages: Math.ceil(total / limit)
     }
   })
 
-  ipcMain.handle('plans:getById', async (_event, id: number) => {
+  ipcMain.handle('plans:getById', async (_event, id: string) => {
     const db = getDatabase()
     const row = db.prepare('SELECT * FROM membership_plans WHERE id = ?').get(id) as
       | Plan
@@ -52,29 +65,46 @@ export function registerPlanHandlers() {
 
   ipcMain.handle('plans:create', async (_event, plan: Plan) => {
     const db = getDatabase()
+    const id = generateEncryptedId()
     const snake = toSnake(plan)
 
     const stmt = db.prepare(`
-      INSERT INTO membership_plans (name, description, price, duration_days)
-      VALUES (?, ?, ?, ?)
+      INSERT INTO membership_plans (id, name, description, price, duration_days, is_offer)
+      VALUES (?, ?, ?, ?, ?, ?)
     `)
-    const result = stmt.run(snake.name, snake.description || null, snake.price, snake.duration_days)
-    return { id: Number(result.lastInsertRowid), ...plan }
-  })
+    stmt.run(
+      id,
+      snake.name,
+      snake.description || null,
+      snake.price,
+      snake.duration_days,
+      snake.is_offer ? 1 : 0
+    )
 
-  ipcMain.handle('plans:update', async (_event, id: number, plan: Plan) => {
-    const db = getDatabase()
-    const snake = toSnake(plan)
-    const stmt = db.prepare(`
-      UPDATE membership_plans
-      SET name = ?, description = ?, price = ?, duration_days = ?
-      WHERE id = ?
-    `)
-    stmt.run(snake.name, snake.description || null, snake.price, snake.duration_days, id)
     return { id, ...plan }
   })
 
-  ipcMain.handle('plans:delete', async (_event, id: number) => {
+  ipcMain.handle('plans:update', async (_event, id: string, plan: Plan) => {
+    const db = getDatabase()
+    const snake = toSnake(plan)
+
+    const stmt = db.prepare(`
+      UPDATE membership_plans
+      SET name = ?, description = ?, price = ?, duration_days = ?, is_offer = ?
+      WHERE id = ?
+    `)
+    stmt.run(
+      snake.name,
+      snake.description || null,
+      snake.price,
+      snake.duration_days,
+      snake.is_offer ? 1 : 0,
+      id
+    )
+    return { id, ...plan }
+  })
+
+  ipcMain.handle('plans:delete', async (_event, id: string) => {
     const db = getDatabase()
     db.prepare('DELETE FROM membership_plans WHERE id = ?').run(id)
     return { success: true }

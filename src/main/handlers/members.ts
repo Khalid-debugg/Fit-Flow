@@ -2,6 +2,11 @@ import { ipcMain } from 'electron'
 import { getDatabase } from '../database'
 import type { MemberDbRow, MemberFilters } from '../../renderer/src/models/member'
 import { toSnake } from './utils'
+import crypto from 'crypto'
+
+function generateEncryptedId() {
+  return crypto.randomBytes(8).toString('hex') // 16-char hex string
+}
 
 export function registerMemberHandlers() {
   ipcMain.handle('members:get', async (_event, page: number = 1, filters: MemberFilters) => {
@@ -61,8 +66,8 @@ export function registerMemberHandlers() {
 
     const processedMembers = rows.map((row) => {
       let status: 'active' | 'inactive' | 'expired' = 'inactive'
-
       const today = new Date().toISOString().split('T')[0]
+
       if (row.membership_id && row.end_date && row.end_date >= today) {
         status = 'active'
       } else if (row.membership_count > 0) {
@@ -110,7 +115,7 @@ export function registerMemberHandlers() {
     }
   })
 
-  ipcMain.handle('members:getById', async (_event, id: number) => {
+  ipcMain.handle('members:getById', async (_event, id: string) => {
     const db = getDatabase()
     const row = db
       .prepare(
@@ -169,13 +174,16 @@ export function registerMemberHandlers() {
 
   ipcMain.handle('members:create', async (_event, member) => {
     const db = getDatabase()
+    const id = generateEncryptedId()
     const snake = toSnake(member)
+
     const stmt = db.prepare(`
-      INSERT INTO members (name, email, phone, gender, address, join_date, notes)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO members (id, name, email, phone, gender, address, join_date, notes)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `)
 
-    const result = stmt.run(
+    stmt.run(
+      id,
       snake.name,
       snake.email || null,
       snake.phone,
@@ -185,10 +193,10 @@ export function registerMemberHandlers() {
       snake.notes || null
     )
 
-    return { id: Number(result.lastInsertRowid), ...member }
+    return { id, ...member }
   })
 
-  ipcMain.handle('members:update', async (_event, id: number, member) => {
+  ipcMain.handle('members:update', async (_event, id: string, member) => {
     const db = getDatabase()
     const snake = toSnake(member)
     const stmt = db.prepare(`
@@ -209,7 +217,7 @@ export function registerMemberHandlers() {
     return { id, ...member }
   })
 
-  ipcMain.handle('members:delete', async (_event, id: number) => {
+  ipcMain.handle('members:delete', async (_event, id: string) => {
     const db = getDatabase()
     db.prepare('DELETE FROM members WHERE id = ?').run(id)
     return { success: true }
