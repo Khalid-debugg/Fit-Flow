@@ -5,6 +5,7 @@ import icon from '../../resources/icon.png?asset'
 import { initDatabase, closeDatabase } from './database'
 import { registerMemberHandlers } from './handlers/members'
 import { registerPlanHandlers } from './handlers/plans'
+import { registerMembershipHandlers } from './handlers/memberships'
 
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
@@ -49,6 +50,7 @@ app.whenReady().then(() => {
   initDatabase()
   registerMemberHandlers()
   registerPlanHandlers()
+  registerMembershipHandlers()
   createWindow()
 
   app.on('activate', function () {

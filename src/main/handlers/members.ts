@@ -5,7 +5,7 @@ import { toSnake } from './utils'
 import crypto from 'crypto'
 
 function generateEncryptedId() {
-  return crypto.randomBytes(8).toString('hex') // 16-char hex string
+  return crypto.randomBytes(8).toString('hex')
 }
 
 export function registerMemberHandlers() {
