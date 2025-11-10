@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard'
 import Members from './pages/Members'
 import { Toaster } from 'sonner'
 import Plans from './pages/Plans'
+import Memberships from './pages/Memberships'
 
 function App() {
   const { i18n } = useTranslation()
@@ -29,8 +30,8 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/members" element={<Members />} />
           <Route path="/plans" element={<Plans />} />
+          <Route path="/memberships" element={<Memberships />} />
           <Route path="/checkin" element={<div>Check-in Page</div>} />
-          <Route path="/payments" element={<div>Payments Page</div>} />
           <Route path="/reports" element={<div>Reports Page</div>} />
           <Route path="/settings" element={<div>Settings Page</div>} />
         </Routes>
