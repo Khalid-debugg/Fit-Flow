@@ -42,15 +42,14 @@ CREATE TABLE IF NOT EXISTS membership_plans (
 
 CREATE TABLE IF NOT EXISTS memberships (
   id TEXT PRIMARY KEY,
-  member_id INTEGER NOT NULL,
-  plan_id INTEGER NOT NULL,
+  member_id TEXT NOT NULL,
+  plan_id TEXT NOT NULL,
   start_date DATE NOT NULL,
   end_date DATE NOT NULL,
   amount_paid REAL NOT NULL,
   payment_method TEXT NOT NULL,
   payment_date DATE NOT NULL,
   notes TEXT,
-  status TEXT DEFAULT 'inactive' CHECK (status IN ('active', 'inactive', 'expired')),
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE,
   FOREIGN KEY (plan_id) REFERENCES membership_plans(id)
@@ -58,7 +57,7 @@ CREATE TABLE IF NOT EXISTS memberships (
 
 CREATE TABLE IF NOT EXISTS check_ins (
   id TEXT PRIMARY KEY,
-  member_id INTEGER NOT NULL,
+  member_id TEXT NOT NULL,
   check_in_time DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE
 );
