@@ -1,0 +1,101 @@
+{
+  "title": "الاشتراكات",
+  "addNew": "إضافة اشتراك",
+  "noMemberships": "لا توجد اشتراكات",
+  "loading": "جاري التحميل...",
+  "active": "نشط",
+  "expired": "منتهي",
+  "days": "يوم",
+
+  "table": {
+    "index": "#",
+    "member": "العضو",
+    "plan": "الخطة",
+    "startDate": "تاريخ البداية",
+    "endDate": "تاريخ الانتهاء",
+    "amountPaid": "المبلغ المدفوع",
+    "paymentMethod": "طريقة الدفع",
+    "status": "الحالة",
+    "actions": "الإجراءات"
+  },
+
+  "filter": {
+    "search": "بحث",
+    "searchPlaceholder": "ابحث باسم العضو أو رقم الهاتف...",
+    "paymentMethod": "طريقة الدفع",
+    "status": "الحالة",
+    "startDateFrom": "تاريخ البداية من",
+    "startDateTo": "تاريخ البداية إلى",
+    "all": "الكل",
+    "reset": "إعادة تعيين"
+  },
+
+  "paymentMethods": {
+    "cash": "نقدي",
+    "card": "بطاقة",
+    "transfer": "تحويل",
+    "other": "أخرى"
+  },
+
+  "form": {
+    "member": "العضو",
+    "selectMember": "اختر عضو",
+    "plan": "الخطة",
+    "selectPlan": "اختر خطة",
+    "startDate": "تاريخ البداية",
+    "endDate": "تاريخ الانتهاء",
+    "amountPaid": "المبلغ المدفوع",
+    "paymentDate": "تاريخ الدفع",
+    "paymentMethod": "طريقة الدفع",
+    "price": "سعر الخطة",
+    "phone": "الهاتف",
+    "notes": "ملاحظات",
+    "notesPlaceholder": "أضف أي ملاحظات إضافية...",
+    "cancel": "إلغاء",
+    "submit": "حفظ",
+    "update": "تحديث",
+    "confirm": "تأكيد"
+  },
+
+  "create": {
+    "title": "إضافة اشتراك جديد"
+  },
+
+  "edit": {
+    "title": "تعديل الاشتراك"
+  },
+
+  "view": {
+    "title": "تفاصيل الاشتراك",
+    "memberInfo": "معلومات العضو",
+    "planInfo": "معلومات الخطة",
+    "dates": "فترة الاشتراك",
+    "paymentInfo": "معلومات الدفع"
+  },
+
+  "delete": {
+    "title": "حذف الاشتراك",
+    "description": "هل أنت متأكد من حذف هذا الاشتراك؟ لا يمكن التراجع عن هذا الإجراء."
+  },
+
+  "pagination": {
+    "page": "صفحة",
+    "of": "من",
+    "previous": "السابق",
+    "next": "التالي"
+  },
+
+  "errors": {
+    "loadFailed": "فشل تحميل الاشتراكات",
+    "createFailed": "فشل إنشاء الاشتراك",
+    "updateFailed": "فشل تحديث الاشتراك",
+    "deleteFailed": "فشل حذف الاشتراك",
+    "requiredFields": "يرجى ملء جميع الحقول المطلوبة"
+  },
+
+  "success": {
+    "createSuccess": "تم إنشاء الاشتراك بنجاح",
+    "updateSuccess": "تم تحديث الاشتراك بنجاح",
+    "deleteSuccess": "تم حذف الاشتراك بنجاح"
+  }
+}

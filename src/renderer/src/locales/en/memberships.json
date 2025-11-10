@@ -1,0 +1,101 @@
+{
+  "title": "Memberships",
+  "addNew": "Add Membership",
+  "noMemberships": "No memberships found",
+  "loading": "Loading...",
+  "active": "Active",
+  "expired": "Expired",
+  "days": "days",
+
+  "table": {
+    "index": "#",
+    "member": "Member",
+    "plan": "Plan",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "amountPaid": "Amount Paid",
+    "paymentMethod": "Payment Method",
+    "status": "Status",
+    "actions": "Actions"
+  },
+
+  "filter": {
+    "search": "Search",
+    "searchPlaceholder": "Search by member name or phone...",
+    "paymentMethod": "Payment Method",
+    "status": "Status",
+    "startDateFrom": "Start Date From",
+    "startDateTo": "Start Date To",
+    "all": "All",
+    "reset": "Reset"
+  },
+
+  "paymentMethods": {
+    "cash": "Cash",
+    "card": "Card",
+    "transfer": "Transfer",
+    "other": "Other"
+  },
+
+  "form": {
+    "member": "Member",
+    "selectMember": "Select a member",
+    "plan": "Plan",
+    "selectPlan": "Select a plan",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "amountPaid": "Amount Paid",
+    "paymentDate": "Payment Date",
+    "paymentMethod": "Payment Method",
+    "price": "Plan Price",
+    "phone": "Phone",
+    "notes": "Notes",
+    "notesPlaceholder": "Add any additional notes...",
+    "cancel": "Cancel",
+    "submit": "Save",
+    "update": "Update",
+    "confirm": "Confirm"
+  },
+
+  "create": {
+    "title": "Add New Membership"
+  },
+
+  "edit": {
+    "title": "Edit Membership"
+  },
+
+  "view": {
+    "title": "Membership Details",
+    "memberInfo": "Member Information",
+    "planInfo": "Plan Information",
+    "dates": "Membership Period",
+    "paymentInfo": "Payment Information"
+  },
+
+  "delete": {
+    "title": "Delete Membership",
+    "description": "Are you sure you want to delete this membership? This action cannot be undone."
+  },
+
+  "pagination": {
+    "page": "Page",
+    "of": "of",
+    "previous": "Previous",
+    "next": "Next"
+  },
+
+  "errors": {
+    "loadFailed": "Failed to load memberships",
+    "createFailed": "Failed to create membership",
+    "updateFailed": "Failed to update membership",
+    "deleteFailed": "Failed to delete membership",
+    "requiredFields": "Please fill in all required fields"
+  },
+
+  "success": {
+    "createSuccess": "Membership created successfully",
+    "updateSuccess": "Membership updated successfully",
+    "deleteSuccess": "Membership deleted successfully"
+  }
+}
