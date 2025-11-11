@@ -57,7 +57,7 @@ export default function MembersTable({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="text-start">{t('index')}</TableHead>
+              <TableHead className="text-start">#</TableHead>
               <TableHead className="text-start">{t('name')}</TableHead>
               <TableHead className="text-start">{t('phone')}</TableHead>
               <TableHead className="text-start">{t('email')}</TableHead>
