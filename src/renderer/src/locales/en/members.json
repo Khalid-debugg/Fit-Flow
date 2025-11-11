@@ -15,6 +15,7 @@
   "edit": "Edit",
   "delete": "Delete",
   "active": "Active",
+  "expired": "Expired",
   "inactive": "Inactive",
   "noMembers": "No members found",
   "loading": "Loading...",

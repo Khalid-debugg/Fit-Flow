@@ -86,6 +86,12 @@ export default function MembersFilter({ filters, onChange, onReset }: MembersFil
               </Label>
             </div>
             <div className="flex items-center space-x-1.5">
+              <RadioGroupItem value="expired" id="status-expired" />
+              <Label htmlFor="status-expired" className="text-gray-300 cursor-pointer text-sm">
+                {t('expired')}
+              </Label>
+            </div>
+            <div className="flex items-center space-x-1.5">
               <RadioGroupItem value="inactive" id="status-inactive" />
               <Label htmlFor="status-inactive" className="text-gray-300 cursor-pointer text-sm">
                 {t('inactive')}
