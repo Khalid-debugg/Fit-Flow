@@ -41,7 +41,9 @@
     "all": "الكل",
     "joinDateFrom": "تاريخ الانضمام من",
     "joinDateTo": "تاريخ الانضمام إلى",
-    "reset": "إعادة تعيين الفلاتر"
+    "reset": "إعادة تعيين الفلاتر",
+    "extendMembership": "تمديد الإشتراك",
+    "renewMembership": "إضافة الإشتراك"
   },
   "pagination": {
     "page": "صفحة",

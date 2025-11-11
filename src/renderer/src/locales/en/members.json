@@ -71,7 +71,9 @@
     "cancel": "Cancel",
     "confirm": "Confirm",
     "submit": "Add Member",
-    "update": "Update Member"
+    "update": "Update Member",
+    "extendMembership": "Extend Membership",
+    "renewMembership": "Renew Membership"
   },
   "alert": {
     "deleteMember": "Delete Member",

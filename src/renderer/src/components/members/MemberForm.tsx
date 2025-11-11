@@ -121,7 +121,7 @@ export default function MemberForm({
     const today = new Date().toISOString().split('T')[0]
     const isActive = formData.currentMembership.endDate >= today
 
-    return isActive ? t('extendMembership') : t('renewMembership')
+    return isActive ? t('filters.extendMembership') : t('filters.renewMembership')
   }
 
   return (
