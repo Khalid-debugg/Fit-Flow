@@ -59,7 +59,8 @@
     "createFailed": "فشل في إضافة العضو",
     "updateFailed": "فشل في تحديث العضو",
     "deleteFailed": "فشل في حذف العضو",
-    "deleteConfirm": "هل أنت متأكد من حذف هذا العضو؟"
+    "deleteConfirm": "هل أنت متأكد من حذف هذا العضو؟",
+    "membershipOverlap": "يتداخل هذا الاشتراك مع اشتراك موجود. يرجى اختيار تواريخ مختلفة."
   },
   "success": {
     "createSuccess": "تم إضافة العضو بنجاح",

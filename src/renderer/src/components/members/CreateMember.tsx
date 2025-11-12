@@ -100,7 +100,12 @@ export default function CreateMember({ onSuccess }: { onSuccess: () => void }) {
     } catch (error) {
       if ((error as Error).message.includes('UNIQUE constraint failed: members.phone'))
         toast.warning(t('errors.phoneExists'))
-      else toast.error(t('errors.createFailed'))
+      else if ((error as Error).message.includes('MEMBERSHIP_OVERLAP')) {
+        toast.warning(tMemberships('errors.membershipOverlap'))
+      } else {
+        toast.error(t('errors.createFailed'))
+      }
+      return
     }
   }
 

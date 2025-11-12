@@ -54,7 +54,8 @@
     "createFailed": "Failed to create member",
     "updateFailed": "Failed to update member",
     "deleteFailed": "Failed to delete member",
-    "deleteConfirm": "Are you sure you want to delete this member?"
+    "deleteConfirm": "Are you sure you want to delete this member?",
+    "membershipOverlap": "This membership overlaps with an existing membership. Please choose different dates."
   },
   "success": {
     "createSuccess": "Member created successfully",

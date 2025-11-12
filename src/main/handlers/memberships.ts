@@ -155,8 +155,37 @@ export function registerMembershipHandlers() {
 
   ipcMain.handle('memberships:create', async (_event, membership: Membership) => {
     const db = getDatabase()
-    const id = generateEncryptedId()
     const snake = toSnake(membership)
+
+    // Check for overlapping memberships
+    const overlapping = db
+      .prepare(
+        `
+      SELECT id, start_date, end_date
+      FROM memberships
+      WHERE member_id = ?
+      AND (
+        (start_date <= ? AND end_date >= ?)  
+        OR (start_date <= ? AND end_date >= ?)  
+        OR (start_date >= ? AND end_date <= ?)  
+      )
+    `
+      )
+      .get(
+        snake.member_id,
+        snake.start_date,
+        snake.start_date, // Check if start_date falls within existing
+        snake.end_date,
+        snake.end_date, // Check if end_date falls within existing
+        snake.start_date,
+        snake.end_date // Check if new membership completely overlaps
+      )
+
+    if (overlapping) {
+      throw new Error('MEMBERSHIP_OVERLAP')
+    }
+
+    const id = generateEncryptedId()
 
     const stmt = db.prepare(`
       INSERT INTO memberships (
@@ -184,6 +213,36 @@ export function registerMembershipHandlers() {
   ipcMain.handle('memberships:update', async (_event, id: string, membership: Membership) => {
     const db = getDatabase()
     const snake = toSnake(membership)
+
+    // Check for overlapping memberships (excluding current one being updated)
+    const overlapping = db
+      .prepare(
+        `
+      SELECT id, start_date, end_date
+      FROM memberships
+      WHERE member_id = ?
+      AND id != ?
+      AND (
+        (start_date <= ? AND end_date >= ?)
+        OR (start_date <= ? AND end_date >= ?)
+        OR (start_date >= ? AND end_date <= ?)
+      )
+    `
+      )
+      .get(
+        snake.member_id,
+        id,
+        snake.start_date,
+        snake.start_date,
+        snake.end_date,
+        snake.end_date,
+        snake.start_date,
+        snake.end_date
+      )
+
+    if (overlapping) {
+      throw new Error('MEMBERSHIP_OVERLAP')
+    }
 
     const stmt = db.prepare(`
       UPDATE memberships

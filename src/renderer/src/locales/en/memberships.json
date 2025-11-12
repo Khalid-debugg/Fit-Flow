@@ -87,10 +87,12 @@
 
   "errors": {
     "loadFailed": "Failed to load memberships",
+    "fetchFailed": "Failed to fetch membership details",
     "createFailed": "Failed to create membership",
     "updateFailed": "Failed to update membership",
     "deleteFailed": "Failed to delete membership",
-    "requiredFields": "Please fill in all required fields"
+    "requiredFields": "Please fill in all required fields",
+    "membershipOverlap": "This membership overlaps with an existing membership for this member. Please choose different dates."
   },
 
   "success": {

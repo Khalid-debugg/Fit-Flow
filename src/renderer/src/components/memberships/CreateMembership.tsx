@@ -57,8 +57,12 @@ export default function CreateMembership({
         paymentDate: new Date().toISOString().split('T')[0]
       })
     } catch (error) {
-      console.error('Failed to create membership:', error)
-      toast.error(t('errors.createFailed'))
+      if ((error as Error).message.includes('MEMBERSHIP_OVERLAP')) {
+        toast.warning(t('errors.membershipOverlap'))
+      } else {
+        toast.error(t('errors.createFailed'))
+      }
+      return
     }
   }
 

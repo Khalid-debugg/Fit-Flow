@@ -48,8 +48,12 @@ export default function EditMembership({
       onClose()
       onSuccess()
     } catch (error) {
-      console.error('Failed to update membership:', error)
-      toast.error(t('errors.updateFailed'))
+      if ((error as Error).message.includes('MEMBERSHIP_OVERLAP')) {
+        toast.warning(t('errors.membershipOverlap'))
+      } else {
+        toast.error(t('errors.updateFailed'))
+      }
+      return
     }
   }
 
