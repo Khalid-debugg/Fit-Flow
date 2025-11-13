@@ -6,6 +6,7 @@ import { initDatabase, closeDatabase } from './database'
 import { registerMemberHandlers } from './handlers/members'
 import { registerPlanHandlers } from './handlers/plans'
 import { registerMembershipHandlers } from './handlers/memberships'
+import { registerCheckInHandlers } from './handlers/checkIns'
 
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
@@ -51,6 +52,7 @@ app.whenReady().then(() => {
   registerMemberHandlers()
   registerPlanHandlers()
   registerMembershipHandlers()
+  registerCheckInHandlers()
   createWindow()
 
   app.on('activate', function () {
