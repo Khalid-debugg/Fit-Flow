@@ -222,4 +222,60 @@ export function registerMemberHandlers() {
     db.prepare('DELETE FROM members WHERE id = ?').run(id)
     return { success: true }
   })
+  ipcMain.handle('members:getByPhone', async (_event, phone: string) => {
+    const db = getDatabase()
+    const row = db
+      .prepare(
+        `
+      SELECT 
+        m.*,
+        ms.id AS membership_id,
+        mp.name AS plan_name,
+        mp.price AS plan_price,
+        ms.start_date,
+        ms.end_date,
+        (
+          SELECT COUNT(*) FROM memberships WHERE member_id = m.id
+        ) AS membership_count
+      FROM members m
+      LEFT JOIN memberships ms ON m.id = ms.member_id 
+        AND ms.end_date >= date('now')
+      LEFT JOIN membership_plans mp ON ms.plan_id = mp.id
+      WHERE m.phone = ?
+      `
+      )
+      .get(phone) as MemberDbRow | undefined
+
+    if (!row) return null
+
+    let status: 'active' | 'inactive' | 'expired' = 'inactive'
+    const today = new Date().toISOString().split('T')[0]
+    if (row.membership_id && row.end_date && row.end_date >= today) {
+      status = 'active'
+    } else if (row.membership_count > 0) {
+      status = 'expired'
+    }
+
+    return {
+      id: row.id,
+      name: row.name,
+      email: row.email,
+      phone: row.phone,
+      gender: row.gender,
+      address: row.address,
+      joinDate: row.join_date,
+      notes: row.notes,
+      createdAt: row.created_at,
+      status,
+      currentMembership: row.membership_id
+        ? {
+            id: row.membership_id,
+            planName: row.plan_name!,
+            planPrice: row.plan_price!,
+            startDate: row.start_date!,
+            endDate: row.end_date!
+          }
+        : undefined
+    }
+  })
 }
