@@ -59,13 +59,14 @@ CREATE TABLE IF NOT EXISTS check_ins (
   id TEXT PRIMARY KEY,
   member_id TEXT NOT NULL,
   check_in_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE
 );
 
 CREATE INDEX IF NOT EXISTS idx_memberships_member_id ON memberships(member_id);
-CREATE INDEX IF NOT EXISTS idx_memberships_status ON memberships(status);
 CREATE INDEX IF NOT EXISTS idx_check_ins_member_id ON check_ins(member_id);
 CREATE INDEX IF NOT EXISTS idx_members_phone ON members(phone);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_check_ins_member_date ON check_ins(member_id, DATE(check_in_time));
 
 INSERT OR IGNORE INTO settings (id, gym_name)
-VALUES (1, 'My Gym');
+VALUES ('1', 'My Gym');
