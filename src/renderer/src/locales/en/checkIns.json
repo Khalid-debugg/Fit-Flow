@@ -1,0 +1,99 @@
+{
+  "title": "Check-ins",
+  "quickCheckIn": "Quick Check-In",
+  "scanPrompt": "Scan barcode or enter member ID",
+  "phoneNumber": "Phone Number",
+  "enterPhoneNumber": "Enter phone number...",
+  "pressEnter": "Press Enter to check-in",
+  "confirm": "Confirm Check-in",
+  "confirmCheckIn": "Confirm Check-in",
+  "cancel": "Cancel",
+  "processing": "Processing...",
+  "loading": "Loading...",
+  "noCheckIns": "No check-ins found",
+  "memberName": "Member Name",
+  "phone": "Phone",
+  "membershipStatus": "Membership Status",
+  "plan": "Plan",
+  "endDate": "End Date",
+
+  "stats": {
+    "today": "Today",
+    "week": "This Week",
+    "month": "This Month",
+    "active": "Active Members"
+  },
+
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "expired": "Expired",
+    "none": "No Membership"
+  },
+
+  "messages": {
+    "welcome": "Welcome back!",
+    "daysRemaining": "days remaining",
+    "expired": "Expired",
+    "daysAgo": "days ago",
+    "noMembership": "No active membership",
+    "expiredWarning": "This member's membership has expired. Please renew before check-in.",
+    "noMembershipWarning": "This member has no active membership. Please subscribe before check-in.",
+    "checkInSuccess": "Check-in successful!",
+    "memberNotFound": "Member not found with this phone number",
+    "alreadyCheckedIn": "Already checked in today"
+  },
+
+  "table": {
+    "index": "#",
+    "member": "Member",
+    "phone": "Phone",
+    "date": "Date",
+    "time": "Time",
+    "status": "Status",
+    "actions": "Actions"
+  },
+
+  "filter": {
+    "search": "Search",
+    "searchPlaceholder": "Search by member name or phone...",
+    "dateFrom": "Date From",
+    "dateTo": "Date To",
+    "status": "Status",
+    "all": "All",
+    "reset": "Reset"
+  },
+
+  "pagination": {
+    "page": "Page",
+    "of": "of",
+    "previous": "Previous",
+    "next": "Next"
+  },
+
+  "history": {
+    "title": "Check-in History",
+    "subtitle": "Last 30 check-ins",
+    "noHistory": "No check-in history found",
+    "showing": "Showing",
+    "records": "records"
+  },
+
+  "viewHistory": "View History",
+
+  "barcode": {
+    "title": "Membership Card",
+    "gymCard": "GYM MEMBERSHIP CARD",
+    "joined": "Joined",
+    "download": "Download PDF",
+    "print": "Print Card",
+    "downloadSuccess": "PDF downloaded successfully",
+    "downloadError": "Failed to download PDF",
+    "printError": "Failed to print card"
+  },
+
+  "errors": {
+    "loadFailed": "Failed to load check-ins",
+    "createFailed": "Failed to create check-in"
+  }
+}

@@ -8,14 +8,28 @@ import membersAr from './ar/members.json'
 import plansAr from './ar/plans.json'
 import membershipsAr from './ar/memberships.json'
 import membershipsEn from './en/memberships.json'
+import checkInsAr from './ar/checkIns.json'
+import checkInsEn from './en/checkIns.json'
 i18n.use(initReactI18next).init({
   resources: {
-    en: { common: commonEn, members: membersEn, plans: plansEn, memberships: membershipsEn },
-    ar: { common: commonAr, members: membersAr, plans: plansAr, memberships: membershipsAr }
+    en: {
+      common: commonEn,
+      members: membersEn,
+      plans: plansEn,
+      memberships: membershipsEn,
+      checkIns: checkInsEn
+    },
+    ar: {
+      common: commonAr,
+      members: membersAr,
+      plans: plansAr,
+      memberships: membershipsAr,
+      checkIns: checkInsAr
+    }
   },
   lng: 'ar',
   fallbackLng: 'en',
-  ns: ['common', 'members', 'plans', 'memberships'],
+  ns: ['common', 'members', 'plans', 'memberships', 'checkIns'],
   defaultNS: 'common',
   interpolation: { escapeValue: false }
 })

@@ -1,0 +1,100 @@
+{
+  "title": "الحضور",
+  "quickCheckIn": "تسجيل حضور سريع",
+  "scanPrompt": "امسح الباركود أو أدخل رقم العضو",
+  "phoneNumber": "رقم الهاتف",
+  "enterPhoneNumber": "أدخل رقم الهاتف...",
+  "pressEnter": "اضغط Enter لتسجيل الحضور",
+  "confirm": "تأكيد الحضور",
+  "confirmCheckIn": "تأكيد الحضور",
+  "cancel": "إلغاء",
+  "processing": "جاري المعالجة...",
+  "loading": "جاري التحميل...",
+  "noCheckIns": "لا توجد سجلات حضور",
+
+  "memberName": "اسم العضو",
+  "phone": "الهاتف",
+  "membershipStatus": "حالة الاشتراك",
+  "plan": "الخطة",
+  "endDate": "تاريخ الانتهاء",
+
+  "stats": {
+    "today": "اليوم",
+    "week": "هذا الأسبوع",
+    "month": "هذا الشهر",
+    "active": "الأعضاء النشطون"
+  },
+
+  "status": {
+    "active": "نشط",
+    "inactive": "غير مشترك",
+    "expired": "منتهي",
+    "none": "لا يوجد اشتراك"
+  },
+
+  "messages": {
+    "welcome": "مرحباً بعودتك!",
+    "daysRemaining": "يوم متبقي",
+    "expired": "منتهي منذ",
+    "daysAgo": "يوم",
+    "noMembership": "لا يوجد اشتراك نشط",
+    "expiredWarning": "اشتراك هذا العضو منتهي. يرجى التجديد قبل تسجيل الحضور.",
+    "noMembershipWarning": "هذا العضو ليس لديه اشتراك نشط. يرجى الاشتراك قبل تسجيل الحضور.",
+    "checkInSuccess": "تم تسجيل الحضور بنجاح!",
+    "memberNotFound": "العضو غير موجود بهذا رقم الهاتف",
+    "alreadyCheckedIn": "تم تسجيل الحضور اليوم بالفعل"
+  },
+
+  "table": {
+    "index": "#",
+    "member": "العضو",
+    "phone": "الهاتف",
+    "date": "التاريخ",
+    "time": "الوقت",
+    "status": "الحالة",
+    "actions": "الإجراءات"
+  },
+
+  "filter": {
+    "search": "بحث",
+    "searchPlaceholder": "ابحث باسم العضو أو رقم الهاتف...",
+    "dateFrom": "من تاريخ",
+    "dateTo": "إلى تاريخ",
+    "status": "الحالة",
+    "all": "الكل",
+    "reset": "إعادة تعيين"
+  },
+
+  "pagination": {
+    "page": "صفحة",
+    "of": "من",
+    "previous": "السابق",
+    "next": "التالي"
+  },
+
+  "history": {
+    "title": "سجل الحضور",
+    "subtitle": "آخر 30 سجل حضور",
+    "noHistory": "لا يوجد سجل حضور",
+    "showing": "عرض",
+    "records": "سجل"
+  },
+
+  "viewHistory": "عرض السجل",
+
+  "barcode": {
+    "title": "بطاقة العضوية",
+    "gymCard": "بطاقة عضوية الصالة الرياضية",
+    "joined": "تاريخ الانضمام",
+    "download": "تحميل PDF",
+    "print": "طباعة البطاقة",
+    "downloadSuccess": "تم تحميل PDF بنجاح",
+    "downloadError": "فشل تحميل PDF",
+    "printError": "فشلت الطباعة"
+  },
+
+  "errors": {
+    "loadFailed": "فشل تحميل سجلات الحضور",
+    "createFailed": "فشل تسجيل الحضور"
+  }
+}
