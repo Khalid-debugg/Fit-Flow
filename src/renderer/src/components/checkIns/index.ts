@@ -1,4 +1,4 @@
-export { default as QuickCheckIn } from './QuickCheckIn'
+export { default as QuickCheckInWidget } from './QuickCheckInWidget'
 export { default as MemberCheckInCard } from './MemberCheckInCard'
 export { default as CheckInStats } from './CheckInStats'
 export { default as CheckInsTable } from './CheckInsTable'
