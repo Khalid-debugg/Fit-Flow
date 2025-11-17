@@ -15,7 +15,7 @@ import {
   CheckInsFilter,
   CheckInsTable,
   CheckInStats,
-  QuickCheckIn
+  QuickCheckInWidget
 } from '@renderer/components/checkIns'
 
 export default function CheckIns() {
@@ -112,7 +112,7 @@ export default function CheckIns() {
 
       <CheckInStats stats={stats} />
 
-      <QuickCheckIn onCheckInSuccess={handleCheckInSuccess} />
+      <QuickCheckInWidget onCheckInSuccess={handleCheckInSuccess} />
 
       <CheckInsFilter
         filters={filters}
