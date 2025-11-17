@@ -12,10 +12,12 @@ import { Plus } from 'lucide-react'
 import { toast } from 'sonner'
 import { Plan } from '@renderer/models/plan'
 import PlanForm from './PlanForm'
+import { useSearchParams } from 'react-router-dom'
 
 export default function CreatePlan({ onSuccess }: { onSuccess: () => void }) {
   const { t } = useTranslation('plans')
-  const [dialogOpen, setDialogOpen] = useState(false)
+  const [searchParams] = useSearchParams()
+  const [dialogOpen, setDialogOpen] = useState(searchParams.get('action') === 'create')
   const [formData, setFormData] = useState<Plan>({
     name: '',
     description: '',

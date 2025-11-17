@@ -8,7 +8,8 @@ import {
   TableHeader,
   TableRow
 } from '@renderer/components/ui/table'
-import { Pencil, Trash2, ChevronLeft, ChevronRight } from 'lucide-react'
+
+import { Pencil, Trash2, ChevronLeft, ChevronRight, RefreshCcw } from 'lucide-react'
 import { Membership } from '@renderer/models/membership'
 import {
   AlertDialog,
@@ -21,7 +22,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from '@renderer/components/ui/alert-dialog'
-
+import { toast } from 'sonner'
 interface MembershipsTableProps {
   memberships: Membership[]
   page: number
@@ -43,7 +44,15 @@ export default function MembershipsTable({
 }: MembershipsTableProps) {
   const { t } = useTranslation('memberships')
   const today = new Date().toISOString().split('T')[0]
-
+  const handleRenewMembership = async (membershipId: string) => {
+    try {
+      await window.electron.ipcRenderer.invoke('memberships:extend', membershipId)
+      toast.success(t('success.extendSuccess'))
+    } catch (error) {
+      toast.warning(t('error.extendFail'))
+      console.error('Failed to load member:', error)
+    }
+  }
   const getStatusBadge = (endDate: string) => {
     const isActive = endDate >= today
     return isActive ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'
@@ -106,6 +115,34 @@ export default function MembershipsTable({
                   </TableCell>
                   <TableCell className="text-end" onClick={(e) => e.stopPropagation()}>
                     <div className="flex justify-end gap-2">
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button size="sm" variant="ghost" className="gap-2 shrink-0">
+                            <RefreshCcw className="w-3 h-3" />
+                            {t('renew')}
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>{t('alert.renewMembership')}</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              {t('alert.renewMembershipMessage')}
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>{t('form.cancel')}</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => {
+                                handleRenewMembership(membership.id!)
+                                onPageChange(1)
+                              }}
+                              className="bg-red-600 hover:bg-red-700 text-white"
+                            >
+                              {t('form.confirm')}
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                       <Button
                         variant="ghost"
                         size="icon"
