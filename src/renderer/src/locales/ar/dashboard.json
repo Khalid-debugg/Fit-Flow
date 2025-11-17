@@ -1,0 +1,66 @@
+{
+  "welcome": "مرحباً بعودتك!",
+  "subtitle": "إليك ما يحدث في صالتك اليوم",
+  "refresh": "تحديث",
+  "searchOrScan": "ابحث عن عضو أو امسح الباركود",
+  "searchMember": "بحث عن عضو",
+  "searchPlaceholder": "ابحث بالاسم أو رقم الهاتف...",
+  "barcodeReady": "جاهز لمسح الباركود أو البحث اليدوي",
+  "noMembersFound": "لم يتم العثور على أعضاء",
+  "cancel": "إلغاء",
+  "confirm": "تأكيد",
+  "revenueChart": {
+    "title": "نظرة عامة على الإيرادات",
+    "subtitle": "تحليل إيرادات آخر 30 يوم",
+    "dailyRevenue": "الإيرادات اليومية",
+    "movingAverage": "متوسط 7 أيام",
+    "thisMonth": "هذا الشهر",
+    "lastMonth": "الشهر الماضي",
+    "avgDaily": "المتوسط اليومي",
+    "highestDay": "أعلى يوم"
+  },
+
+  "recentCheckIns": {
+    "title": "أحدث عمليات الحضور",
+    "noData": "لا يوجد حضور اليوم بعد"
+  },
+
+  "expiringMemberships": {
+    "title": "إشتراكات تنتهي قريباً",
+    "noData": "لا توجد اشتراكات تنتهي في الأيام السبعة القادمة",
+    "expiringToday": "ينتهي اليوم",
+    "expiringTomorrow": "ينتهي غداً",
+    "expiringInDays": "ينتهي خلال {{days}} يوم",
+    "renew": "تجديد"
+  },
+
+  "quickActions": {
+    "title": "إجراءات سريعة",
+    "addMember": "إضافة عضو",
+    "addMembership": "إضافة اشتراك",
+    "createPlan": "إنشاء خطة",
+    "viewMembers": "عرض الأعضاء",
+    "viewMemberships": "عرض الاشتراكات",
+    "viewPlans": "عرض الخطط"
+  },
+
+  "status": {
+    "active": "نشط",
+    "expired": "منتهي",
+    "none": "لا يوجد اشتراك"
+  },
+  "errors": { "extendFail": "فشل فى تمديد الإشتراك" },
+  "success": {
+    "extendSuccess": "تم تمديد الإشتراك بنجاح"
+  },
+  "pagination": {
+    "page": "صفحة",
+    "of": "من",
+    "previous": "السابق",
+    "next": "التالي"
+  },
+  "alert": {
+    "renewMembership": "تمديد الإشتراك",
+    "renewMembershipMessage": "هل أنت متأكد من رغبتك فى تمديد هذا الإشتراك؟ لا يمكن التراجع عن هذا الإجراء."
+  }
+}

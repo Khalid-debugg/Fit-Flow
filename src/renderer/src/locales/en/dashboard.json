@@ -1,0 +1,67 @@
+{
+  "welcome": "Welcome back, Admin!",
+  "subtitle": "Here's what's happening with your gym today",
+  "refresh": "Refresh",
+  "searchOrScan": "Search member or scan barcode",
+  "searchMember": "Search Member",
+  "searchPlaceholder": "Search by name or phone...",
+  "barcodeReady": "Ready for barcode scan or manual search",
+  "noMembersFound": "No members found",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "revenueChart": {
+    "title": "Revenue Overview",
+    "subtitle": "Last 30 days revenue analysis",
+    "dailyRevenue": "Daily Revenue",
+    "movingAverage": "7-Day Average",
+    "thisMonth": "This Month",
+    "lastMonth": "Last Month",
+    "avgDaily": "Avg/Day",
+    "highestDay": "Highest Day"
+  },
+
+  "recentCheckIns": {
+    "title": "Recent Check-ins",
+    "noData": "No check-ins yet today"
+  },
+
+  "expiringMemberships": {
+    "title": "Memberships expiring Soon",
+    "noData": "No memberships expiring in the next 7 days",
+    "expiringToday": "Expiring today",
+    "expiringTomorrow": "Expiring tomorrow",
+    "expiringInDays": "Expires in {{days}} days",
+    "renew": "Renew"
+  },
+
+  "quickActions": {
+    "title": "Quick Actions",
+    "addMember": "Add Member",
+    "addMembership": "Add Membership",
+    "createPlan": "Create Plan",
+    "viewMembers": "View Members",
+    "viewMemberships": "View Memberships",
+    "viewPlans": "View Plans"
+  },
+
+  "status": {
+    "active": "Active",
+    "expired": "Expired",
+    "none": "No Membership"
+  },
+  "errors": { "extendFail": "Membership extension failed" },
+
+  "success": {
+    "extendSuccess": "The membership is extended successfully"
+  },
+  "pagination": {
+    "page": "Page",
+    "of": "of",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "alert": {
+    "renewMembership": "Renew Membership",
+    "renewMembershipMessage": "Are you sure you want to renew this membership? This action cannot be undone."
+  }
+}

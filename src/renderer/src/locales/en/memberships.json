@@ -6,6 +6,7 @@
   "active": "Active",
   "expired": "Expired",
   "days": "days",
+  "renew": "Renew",
 
   "table": {
     "index": "#",
@@ -92,12 +93,18 @@
     "updateFailed": "Failed to update membership",
     "deleteFailed": "Failed to delete membership",
     "requiredFields": "Please fill in all required fields",
-    "membershipOverlap": "This membership overlaps with an existing membership for this member. Please choose different dates."
+    "membershipOverlap": "This membership overlaps with an existing membership for this member. Please choose different dates.",
+    "extendFail": "Membership extension failed"
   },
 
   "success": {
     "createSuccess": "Membership created successfully",
     "updateSuccess": "Membership updated successfully",
-    "deleteSuccess": "Membership deleted successfully"
+    "deleteSuccess": "Membership deleted successfully",
+    "extendSuccess": "The membership is extended successfully"
+  },
+  "alert": {
+    "renewMembership": "Renew Membership",
+    "renewMembershipMessage": "Are you sure you want to renew this membership? This action cannot be undone."
   }
 }
