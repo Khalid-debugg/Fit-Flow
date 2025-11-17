@@ -57,7 +57,7 @@ export default function ViewMember({ member, open, onClose }: ViewMemberProps) {
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="bg-gray-900 border border-gray-700 text-white max-w-6xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl">
+      <DialogContent className="bg-gray-900 border border-gray-700 text-white min-w-xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl">
         <DialogHeader>
           <DialogTitle className="text-2xl font-semibold flex items-center gap-2 mt-6">
             <User className="w-6 h-6 text-blue-400" />
