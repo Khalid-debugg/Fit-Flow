@@ -194,7 +194,10 @@ export function registerMembershipHandlers() {
       )
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
-
+    const paymentDate =
+      typeof snake.payment_date === 'string' && snake.payment_date.trim() !== ''
+        ? snake.payment_date
+        : new Date().toISOString().split('T')[0]
     stmt.run(
       id,
       snake.member_id,
@@ -203,7 +206,7 @@ export function registerMembershipHandlers() {
       snake.end_date,
       snake.amount_paid,
       snake.payment_method,
-      snake.payment_date,
+      paymentDate,
       snake.notes || null
     )
 
@@ -296,5 +299,38 @@ export function registerMembershipHandlers() {
       price: r.price,
       durationDays: r.duration_days
     }))
+  })
+  ipcMain.handle('memberships:extend', async (_event, id: string) => {
+    const db = getDatabase()
+
+    const row = db
+      .prepare('SELECT start_date, end_date, amount_paid FROM memberships WHERE id = ?')
+      .get(id) as MembershipDbRow
+
+    if (!row) throw new Error('MEMBERSHIP_NOT_FOUND')
+
+    const start = new Date(row.start_date)
+    const end = new Date(row.end_date)
+    const diffDays = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))
+
+    const newEndDate = new Date(end.getTime() + diffDays * 24 * 60 * 60 * 1000)
+      .toISOString()
+      .split('T')[0]
+
+    const newAmountPaid = row.amount_paid * 2
+    const paymentDate = new Date().toISOString().split('T')[0] // IMPORTANT
+
+    db.prepare(
+      `
+    UPDATE memberships
+    SET 
+      end_date = ?,
+      amount_paid = ?,
+      payment_date = ?
+    WHERE id = ?
+  `
+    ).run(newEndDate, newAmountPaid, paymentDate, id)
+
+    return { id, newEndDate, newAmountPaid }
   })
 }
