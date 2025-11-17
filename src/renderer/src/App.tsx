@@ -1,13 +1,14 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from './components/Layout/Layout'
-import Dashboard from './pages/Dashboard'
-import Members from './pages/Members'
 import { Toaster } from 'sonner'
-import Plans from './pages/Plans'
-import Memberships from './pages/Memberships'
-import CheckIn from './pages/CheckIn'
-
+import { lazy, Suspense } from 'react'
+import { LoaderCircle } from 'lucide-react'
+const Dashboard = lazy(() => import('./pages/Dashboard'))
+const Members = lazy(() => import('./pages/Members'))
+const Memberships = lazy(() => import('./pages/Memberships'))
+const Plans = lazy(() => import('./pages/Plans'))
+const CheckIn = lazy(() => import('./pages/CheckIn'))
 function App() {
   const { i18n } = useTranslation()
 
@@ -28,13 +29,62 @@ function App() {
           }}
         />
         <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/members" element={<Members />} />
-          <Route path="/plans" element={<Plans />} />
-          <Route path="/memberships" element={<Memberships />} />
-          <Route path="/checkin" element={<CheckIn />} />
-          <Route path="/reports" element={<div>Reports Page</div>} />
-          <Route path="/settings" element={<div>Settings Page</div>} />
+          <Route
+            path="/"
+            element={
+              <Suspense fallback={<LoaderCircle className="mx-auto h-20 w-20 animate-spin" />}>
+                <Dashboard />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/members"
+            element={
+              <Suspense fallback={<LoaderCircle className="mx-auto h-20 w-20 animate-spin" />}>
+                <Members />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/plans"
+            element={
+              <Suspense fallback={<LoaderCircle className="mx-auto h-20 w-20 animate-spin" />}>
+                <Plans />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/memberships"
+            element={
+              <Suspense fallback={<LoaderCircle className="mx-auto h-20 w-20 animate-spin" />}>
+                <Memberships />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/checkin"
+            element={
+              <Suspense fallback={<LoaderCircle className="mx-auto h-20 w-20 animate-spin" />}>
+                <CheckIn />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/reports"
+            element={
+              <Suspense fallback={<LoaderCircle className="mx-auto h-20 w-20 animate-spin" />}>
+                <div>reports</div>
+              </Suspense>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <Suspense fallback={<LoaderCircle className="mx-auto h-20 w-20 animate-spin" />}>
+                <div>settings</div>
+              </Suspense>
+            }
+          />
         </Routes>
       </Layout>
     </BrowserRouter>
