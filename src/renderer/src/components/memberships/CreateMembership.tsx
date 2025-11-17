@@ -12,6 +12,7 @@ import { Plus } from 'lucide-react'
 import { toast } from 'sonner'
 import { Membership } from '@renderer/models/membership'
 import MembershipForm from './MembershipForm'
+import { useSearchParams } from 'react-router-dom'
 
 interface CreateMembershipProps {
   onSuccess: () => void
@@ -23,7 +24,8 @@ export default function CreateMembership({
   preSelectedMemberId
 }: CreateMembershipProps) {
   const { t } = useTranslation('memberships')
-  const [dialogOpen, setDialogOpen] = useState(false)
+  const [searchParams] = useSearchParams()
+  const [dialogOpen, setDialogOpen] = useState(searchParams.get('action') === 'create')
   const [formData, setFormData] = useState<Partial<Membership>>({
     paymentMethod: 'cash',
     startDate: new Date().toISOString().split('T')[0],

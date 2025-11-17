@@ -13,11 +13,13 @@ import { toast } from 'sonner'
 import { Member } from '@renderer/models/member'
 import { PAYMENT_METHODS } from '@renderer/models/membership'
 import MemberForm from './MemberForm'
+import { useSearchParams } from 'react-router-dom'
 
 export default function CreateMember({ onSuccess }: { onSuccess: () => void }) {
   const { t } = useTranslation('members')
   const { t: tMemberships } = useTranslation('memberships')
-  const [dialogOpen, setDialogOpen] = useState(false)
+  const [searchParams] = useSearchParams()
+  const [dialogOpen, setDialogOpen] = useState(searchParams.get('action') === 'create')
   const [formData, setFormData] = useState<Partial<Member>>({
     name: '',
     email: null,
