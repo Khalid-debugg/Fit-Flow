@@ -7,6 +7,7 @@ import { registerMemberHandlers } from './handlers/members'
 import { registerPlanHandlers } from './handlers/plans'
 import { registerMembershipHandlers } from './handlers/memberships'
 import { registerCheckInHandlers } from './handlers/checkIns'
+import { registerDashboardHandlers } from './handlers/dashboard'
 
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
@@ -49,6 +50,7 @@ app.whenReady().then(() => {
   })
 
   initDatabase()
+  registerDashboardHandlers()
   registerMemberHandlers()
   registerPlanHandlers()
   registerMembershipHandlers()
