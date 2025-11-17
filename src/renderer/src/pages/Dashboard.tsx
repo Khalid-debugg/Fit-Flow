@@ -1,98 +1,179 @@
+import { useEffect, useState, useCallback } from 'react'
+import { LoaderCircle } from 'lucide-react'
+import {
+  WelcomeHeader,
+  RevenueChart,
+  RecentCheckIns,
+  ExpiringMemberships,
+  QuickActions
+} from '@renderer/components/dashboard'
+import { ViewMember } from '@renderer/components/members'
+import { Member } from '@renderer/models/member'
+import { QuickCheckInWidget } from '@renderer/components/checkIns'
+import { Membership } from '@renderer/models/membership'
+import EditMembership from '@renderer/components/memberships/EditMembership'
+import { toast } from 'sonner'
 import { useTranslation } from 'react-i18next'
-import { Card, CardContent, CardHeader, CardTitle } from '@renderer/components/ui/card'
-import { Button } from '@renderer/components/ui/button'
-import { Users, UserCheck, DollarSign, TrendingUp } from 'lucide-react'
+
+interface RevenueData {
+  dailyRevenue: { date: string; revenue: number }[]
+  summary: {
+    totalThisMonth: number
+    totalLastMonth: number
+    percentageChange: number
+    averageDaily: number
+    highestDay: { date: string; revenue: number }
+  }
+}
+
+interface CheckIn {
+  id: string
+  memberId: string
+  checkInTime: string
+  memberName: string
+  memberPhone: string
+  membershipStatus: 'active' | 'expired' | 'none'
+}
+
+export type ExpiringMembership = Membership & { daysRemaining: number }
 
 export default function Dashboard() {
-  const { t } = useTranslation('common')
-
-  const stats = [
-    {
-      title: t('dashboard.totalMembers'),
-      value: '0',
-      icon: Users,
-      color: 'text-blue-500'
-    },
-    {
-      title: t('dashboard.activeMembers'),
-      value: '0',
-      icon: UserCheck,
-      color: 'text-green-500'
-    },
-    {
-      title: t('dashboard.todayCheckins'),
-      value: '0',
-      icon: TrendingUp,
-      color: 'text-purple-500'
-    },
-    {
-      title: t('dashboard.monthlyRevenue'),
-      value: '$0',
-      icon: DollarSign,
-      color: 'text-yellow-500'
+  const { t } = useTranslation('dashboard')
+  const [loading, setLoading] = useState(true)
+  const [revenueData, setRevenueData] = useState<RevenueData>({
+    dailyRevenue: [],
+    summary: {
+      totalThisMonth: 0,
+      totalLastMonth: 0,
+      percentageChange: 0,
+      averageDaily: 0,
+      highestDay: { date: '', revenue: 0 }
     }
-  ]
+  })
+
+  const [recentCheckIns, setRecentCheckIns] = useState<CheckIn[]>([])
+  const [checkInsPage, setCheckInsPage] = useState(1)
+  const [checkInsTotalPages, setCheckInsTotalPages] = useState(1)
+
+  const [expiringMemberships, setExpiringMemberships] = useState<ExpiringMembership[]>([])
+  const [expiringPage, setExpiringPage] = useState(1)
+  const [expiringTotalPages, setExpiringTotalPages] = useState(1)
+
+  // Dialog states
+  const [viewMember, setViewMember] = useState<Member | null>(null)
+  const [editMembershipId, setEditMembershipId] = useState<string | null>(null)
+  const [editMembership, setEditMembership] = useState<Membership | null>(null)
+
+  const loadCheckIns = useCallback(async (page: number) => {
+    try {
+      const result = await window.electron.ipcRenderer.invoke('dashboard:getRecentCheckIns', page)
+      setRecentCheckIns(result.data)
+      setCheckInsPage(result.page)
+      setCheckInsTotalPages(result.totalPages)
+    } catch (error) {
+      console.error('Failed to load check-ins:', error)
+    }
+  }, [])
+
+  const loadExpiringMemberships = useCallback(async (page: number) => {
+    try {
+      const result = await window.electron.ipcRenderer.invoke(
+        'dashboard:getExpiringMemberships',
+        page
+      )
+      setExpiringMemberships(result.data)
+      setExpiringPage(result.page)
+      setExpiringTotalPages(result.totalPages)
+    } catch (error) {
+      console.error('Failed to load expiring memberships:', error)
+    }
+  }, [])
+
+  const loadDashboardData = useCallback(async () => {
+    setLoading(true)
+    try {
+      const [revenue] = await Promise.all([
+        window.electron.ipcRenderer.invoke('dashboard:getRevenueData'),
+        loadCheckIns(1),
+        loadExpiringMemberships(1)
+      ])
+
+      setRevenueData(revenue)
+    } catch (error) {
+      console.error('Failed to load dashboard data:', error)
+    } finally {
+      setLoading(false)
+    }
+  }, [loadCheckIns, loadExpiringMemberships])
+
+  useEffect(() => {
+    loadDashboardData()
+  }, [loadDashboardData])
+
+  const handleViewMember = async (memberId: string) => {
+    try {
+      const member = await window.electron.ipcRenderer.invoke('members:getById', memberId)
+      setViewMember(member)
+    } catch (error) {
+      console.error('Failed to load member:', error)
+    }
+  }
+
+  const handleRenewMembership = async (membershipId: string) => {
+    try {
+      await window.electron.ipcRenderer.invoke('memberships:extend', membershipId)
+      toast.success(t('success.extendSuccess'))
+    } catch (error) {
+      toast.warning(t('error.extendFail'))
+      console.error('Failed to load member:', error)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <LoaderCircle className="w-20 h-20 animate-spin text-gray-400" />
+      </div>
+    )
+  }
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-4xl font-bold">{t('dashboard.welcome')}</h1>
-        <p className="text-muted-foreground mt-2">{t('dashboard.overview')}</p>
-      </div>
+    <div className="space-y-6">
+      <ViewMember member={viewMember} open={!!viewMember} onClose={() => setViewMember(null)} />
+      <EditMembership
+        membership={editMembership}
+        open={!!editMembershipId}
+        onClose={() => {
+          setEditMembershipId(null)
+          setEditMembership(null)
+        }}
+        onSuccess={loadDashboardData}
+      />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat) => {
-          const Icon = stat.icon
-          return (
-            <Card key={stat.title}>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
-                  {stat.title}
-                </CardTitle>
-                <Icon className={`h-5 w-5 ${stat.color}`} />
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold">{stat.value}</div>
-              </CardContent>
-            </Card>
-          )
-        })}
-      </div>
+      <WelcomeHeader />
+
+      <QuickCheckInWidget onCheckInSuccess={loadDashboardData} />
+
+      <QuickActions />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>{t('dashboard.quickActions')}</CardTitle>
-          </CardHeader>
-          <CardContent className="grid grid-cols-2 gap-4">
-            <Button className="h-24 flex flex-col gap-2">
-              <UserCheck className="h-6 w-6" />
-              <span>{t('dashboard.checkInMember')}</span>
-            </Button>
-            <Button className="h-24 flex flex-col gap-2">
-              <Users className="h-6 w-6" />
-              <span>{t('dashboard.addMember')}</span>
-            </Button>
-            <Button className="h-24 flex flex-col gap-2">
-              <DollarSign className="h-6 w-6" />
-              <span>{t('dashboard.recordPayment')}</span>
-            </Button>
-            <Button className="h-24 flex flex-col gap-2">
-              <TrendingUp className="h-6 w-6" />
-              <span>{t('dashboard.viewReports')}</span>
-            </Button>
-          </CardContent>
-        </Card>
+        <RecentCheckIns
+          data={recentCheckIns}
+          onViewMember={handleViewMember}
+          page={checkInsPage}
+          totalPages={checkInsTotalPages}
+          onPageChange={loadCheckIns}
+        />
 
-        <Card>
-          <CardHeader>
-            <CardTitle>{t('dashboard.recentActivity')}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-center text-muted-foreground py-8">No recent activity</div>
-          </CardContent>
-        </Card>
+        <ExpiringMemberships
+          data={expiringMemberships}
+          onRenew={handleRenewMembership}
+          page={expiringPage}
+          totalPages={expiringTotalPages}
+          onPageChange={loadExpiringMemberships}
+        />
       </div>
+      <RevenueChart data={revenueData} />
     </div>
   )
 }
