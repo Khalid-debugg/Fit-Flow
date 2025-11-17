@@ -279,3 +279,41 @@ export function registerMemberHandlers() {
     }
   })
 }
+
+ipcMain.handle('members:search', async (_event, query: string, page: number = 1) => {
+  const db = getDatabase()
+  const limit = 10
+  const offset = (page - 1) * limit
+
+  const search = `%${query.trim()}%`
+
+  const rows = db
+    .prepare(
+      `
+    SELECT 
+      m.id,
+      m.name,
+      m.phone,
+      m.email,
+      ms.end_date
+    FROM members m
+    LEFT JOIN memberships ms ON m.id = ms.member_id 
+      AND ms.end_date >= date('now')
+    WHERE m.name LIKE ? OR m.phone LIKE ?
+    ORDER BY m.name ASC
+    LIMIT ? OFFSET ?
+  `
+    )
+    .all(search, search, limit, offset)
+
+  const today = new Date().toISOString().split('T')[0]
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return rows.map((row: any) => ({
+    id: row.id,
+    name: row.name,
+    phone: row.phone,
+    email: row.email,
+    membershipStatus: row.end_date && row.end_date >= today ? 'active' : 'inactive'
+  }))
+})
