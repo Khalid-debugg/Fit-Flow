@@ -62,7 +62,23 @@ CREATE TABLE IF NOT EXISTS check_ins (
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE
 );
+CREATE TABLE IF NOT EXISTS reports (
+  id TEXT PRIMARY KEY,
+  report_type TEXT NOT NULL CHECK (report_type IN ('week', 'month', 'year', 'custom')),
+  start_date DATE NOT NULL,
+  end_date DATE NOT NULL,
+  total_revenue REAL NOT NULL,
+  total_members INTEGER NOT NULL,
+  new_members INTEGER NOT NULL,
+  total_memberships INTEGER NOT NULL,
+  new_memberships INTEGER NOT NULL,
+  total_check_ins INTEGER NOT NULL,
+  generated_by TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
 
+CREATE INDEX IF NOT EXISTS idx_reports_dates ON reports(start_date, end_date);
+CREATE INDEX IF NOT EXISTS idx_reports_type ON reports(report_type);
 CREATE INDEX IF NOT EXISTS idx_memberships_member_id ON memberships(member_id);
 CREATE INDEX IF NOT EXISTS idx_check_ins_member_id ON check_ins(member_id);
 CREATE INDEX IF NOT EXISTS idx_members_phone ON members(phone);
