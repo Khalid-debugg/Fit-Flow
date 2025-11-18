@@ -12,6 +12,8 @@ import checkInsAr from './ar/checkIns.json'
 import checkInsEn from './en/checkIns.json'
 import dashboardAr from './ar/dashboard.json'
 import dashboardEn from './en/dashboard.json'
+import reportsAr from './ar/reports.json'
+import reportsEn from './en/reports.json'
 i18n.use(initReactI18next).init({
   resources: {
     en: {
@@ -20,7 +22,8 @@ i18n.use(initReactI18next).init({
       plans: plansEn,
       memberships: membershipsEn,
       checkIns: checkInsEn,
-      dashboard: dashboardEn
+      dashboard: dashboardEn,
+      reports: reportsEn
     },
     ar: {
       common: commonAr,
@@ -28,12 +31,13 @@ i18n.use(initReactI18next).init({
       plans: plansAr,
       memberships: membershipsAr,
       checkIns: checkInsAr,
-      dashboard: dashboardAr
+      dashboard: dashboardAr,
+      reports: reportsAr
     }
   },
   lng: 'ar',
   fallbackLng: 'en',
-  ns: ['common', 'members', 'plans', 'memberships', 'checkIns', 'dashboard'],
+  ns: ['common', 'members', 'plans', 'memberships', 'checkIns', 'dashboard', 'reports'],
   defaultNS: 'common',
   interpolation: { escapeValue: false }
 })

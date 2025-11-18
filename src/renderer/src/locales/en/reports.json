@@ -1,0 +1,50 @@
+{
+  "title": "Reports",
+  "subtitle": "Generate and download detailed reports",
+  "filters": {
+    "title": "Report Filters",
+    "quickSelect": "Quick Select",
+    "thisWeek": "This Week",
+    "thisMonth": "This Month",
+    "thisYear": "This Year",
+    "customRange": "Custom Date Range",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "generate": "Generate Report",
+    "generating": "Generating..."
+  },
+  "preview": {
+    "title": "Report",
+    "print": "Print",
+    "download": "Save as PDF",
+    "summary": "Summary"
+  },
+  "pdf": {
+    "title": "Business Performance Report",
+    "generatedOn": "Generated on",
+    "keyMetrics": "Key Performance Indicators",
+    "additionalMetrics": "Additional Metrics",
+    "totalRevenue": "Total Revenue",
+    "newMembers": "New Members",
+    "newMemberships": "New Memberships",
+    "totalCheckIns": "Total Check-Ins",
+    "totalMembers": "Total Members",
+    "activeMembers": "Active Members",
+    "avgDailyRevenue": "Avg Daily Revenue",
+    "avgDailyCheckIns": "Avg Daily Check-Ins",
+    "previous": "Previous Period",
+    "difference": "Difference",
+    "footer": "© 2025 Gym Management System. All rights reserved."
+  },
+  "empty": {
+    "title": "No Report Generated",
+    "description": "Select a date range and click 'Generate Report' to view analytics"
+  },
+  "messages": {
+    "generated": "Report generated successfully",
+    "downloaded": "Report saved successfully",
+    "printDialog": "Opening print dialog... Select 'Save as PDF' as destination",
+    "error": "Failed to generate report",
+    "downloadError": "Failed to save report"
+  }
+}

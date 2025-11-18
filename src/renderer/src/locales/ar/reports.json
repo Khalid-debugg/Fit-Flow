@@ -1,0 +1,50 @@
+{
+  "title": "التقارير",
+  "subtitle": "إنشاء وتحميل التقارير التفصيلية",
+  "filters": {
+    "title": "فلاتر التقرير",
+    "quickSelect": "اختيار سريع",
+    "thisWeek": "هذا الأسبوع",
+    "thisMonth": "هذا الشهر",
+    "thisYear": "هذا العام",
+    "customRange": "نطاق مخصص",
+    "startDate": "تاريخ البداية",
+    "endDate": "تاريخ النهاية",
+    "generate": "إنشاء التقرير",
+    "generating": "جاري الإنشاء..."
+  },
+  "preview": {
+    "title": "تقرير",
+    "print": "طباعة",
+    "download": "حفظ كـ PDF",
+    "summary": "ملخص"
+  },
+  "pdf": {
+    "title": "تقرير الأداء التجاري",
+    "generatedOn": "تم الإنشاء في",
+    "keyMetrics": "مؤشرات الأداء الرئيسية",
+    "additionalMetrics": "مقاييس إضافية",
+    "totalRevenue": "إجمالي الإيرادات",
+    "newMembers": "أعضاء جدد",
+    "newMemberships": "اشتراكات جديدة",
+    "totalCheckIns": "إجمالي الحضور",
+    "totalMembers": "إجمالي الأعضاء",
+    "activeMembers": "الأعضاء النشطون",
+    "avgDailyRevenue": "متوسط الإيراد اليومي",
+    "avgDailyCheckIns": "متوسط الحضور اليومي",
+    "previous": "الفترة السابقة",
+    "difference": "الفرق",
+    "footer": "© 2025 نظام إدارة الصالة الرياضية. جميع الحقوق محفوظة."
+  },
+  "empty": {
+    "title": "لم يتم إنشاء تقرير",
+    "description": "اختر نطاق تاريخي واضغط 'إنشاء التقرير' لعرض التحليلات"
+  },
+  "messages": {
+    "generated": "تم إنشاء التقرير بنجاح",
+    "downloaded": "تم حفظ التقرير بنجاح",
+    "printDialog": "فتح نافذة الطباعة... اختر 'حفظ كـ PDF' كوجهة",
+    "error": "فشل في إنشاء التقرير",
+    "downloadError": "فشل في حفظ التقرير"
+  }
+}
