@@ -9,6 +9,7 @@ const Members = lazy(() => import('./pages/Members'))
 const Memberships = lazy(() => import('./pages/Memberships'))
 const Plans = lazy(() => import('./pages/Plans'))
 const CheckIn = lazy(() => import('./pages/CheckIn'))
+const Reports = lazy(() => import('./pages/Reports'))
 function App() {
   const { i18n } = useTranslation()
 
@@ -73,7 +74,7 @@ function App() {
             path="/reports"
             element={
               <Suspense fallback={<LoaderCircle className="mx-auto h-20 w-20 animate-spin" />}>
-                <div>reports</div>
+                <Reports />
               </Suspense>
             }
           />
