@@ -13,6 +13,7 @@ import {
 } from '@renderer/components/ui/select'
 import type { Membership } from '@renderer/models/membership'
 import { PAYMENT_METHODS } from '@renderer/models/membership'
+import { useSettings } from '@renderer/hooks/useSettings'
 
 interface MembershipFormProps {
   formData: Partial<Membership>
@@ -35,6 +36,7 @@ export default function MembershipForm({
   preSelectedMemberId
 }: MembershipFormProps) {
   const { t } = useTranslation('memberships')
+  const { settings } = useSettings()
   const [members, setMembers] = useState<MemberOption[]>([])
   const [plans, setPlans] = useState<PlanOption[]>([])
   const [loading, setLoading] = useState(true)
@@ -136,7 +138,13 @@ export default function MembershipForm({
             <SelectContent className="bg-gray-800 border-gray-700">
               {plans.map((plan) => (
                 <SelectItem key={plan.id} value={plan.id} className="text-white">
-                  {plan.name} - {plan.price} EGP ({plan.durationDays} {t('days')})
+                  {plan.name} -
+                  {Intl.NumberFormat(settings?.language, {
+                    style: 'currency',
+                    currency: settings?.currency,
+                    minimumFractionDigits: 0
+                  }).format(plan.price)}{' '}
+                  ({plan.durationDays} {t('days')})
                 </SelectItem>
               ))}
             </SelectContent>

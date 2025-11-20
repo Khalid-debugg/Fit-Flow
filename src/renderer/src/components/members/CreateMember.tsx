@@ -14,17 +14,19 @@ import { Member } from '@renderer/models/member'
 import { PAYMENT_METHODS } from '@renderer/models/membership'
 import MemberForm from './MemberForm'
 import { useSearchParams } from 'react-router-dom'
+import { useSettings } from '@renderer/hooks/useSettings'
 
 export default function CreateMember({ onSuccess }: { onSuccess: () => void }) {
   const { t } = useTranslation('members')
   const { t: tMemberships } = useTranslation('memberships')
+  const { settings } = useSettings()
   const [searchParams] = useSearchParams()
   const [dialogOpen, setDialogOpen] = useState(searchParams.get('action') === 'create')
   const [formData, setFormData] = useState<Partial<Member>>({
     name: '',
     email: null,
     phone: '',
-    gender: 'male',
+    gender: settings?.allowedGenders === 'female' ? 'female' : 'male',
     address: null,
     joinDate: new Date().toISOString().split('T')[0],
     notes: null
@@ -84,7 +86,7 @@ export default function CreateMember({ onSuccess }: { onSuccess: () => void }) {
         name: '',
         email: null,
         phone: '',
-        gender: 'male',
+        gender: settings?.allowedGenders === 'female' ? 'female' : 'male',
         address: null,
         joinDate: new Date().toISOString().split('T')[0],
         notes: null

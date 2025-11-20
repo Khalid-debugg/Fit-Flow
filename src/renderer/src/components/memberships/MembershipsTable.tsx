@@ -23,6 +23,7 @@ import {
   AlertDialogTrigger
 } from '@renderer/components/ui/alert-dialog'
 import { toast } from 'sonner'
+import { useSettings } from '@renderer/hooks/useSettings'
 interface MembershipsTableProps {
   memberships: Membership[]
   page: number
@@ -43,6 +44,7 @@ export default function MembershipsTable({
   onPageChange
 }: MembershipsTableProps) {
   const { t } = useTranslation('memberships')
+  const { settings } = useSettings()
   const today = new Date().toISOString().split('T')[0]
   const handleRenewMembership = async (membershipId: string) => {
     try {
@@ -59,7 +61,11 @@ export default function MembershipsTable({
   }
 
   const formatCurrency = (amount: number) => {
-    return `${amount} EGP`
+    return new Intl.NumberFormat(settings?.language, {
+      style: 'currency',
+      currency: settings?.currency,
+      minimumFractionDigits: 0
+    }).format(amount)
   }
 
   return (

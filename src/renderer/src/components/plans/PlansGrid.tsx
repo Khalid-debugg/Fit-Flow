@@ -13,6 +13,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from '../ui/alert-dialog'
+import { useSettings } from '@renderer/hooks/useSettings'
 
 interface PlansGridProps {
   plans: Plan[]
@@ -32,7 +33,7 @@ export default function PlansGrid({
   onPageChange
 }: PlansGridProps) {
   const { t, i18n } = useTranslation('plans')
-
+  const { settings } = useSettings()
   const getDurationText = (days: number) => {
     const years = Math.floor(days / 365)
     const remainingAfterYears = days % 365
@@ -114,7 +115,11 @@ export default function PlansGrid({
                           : 'text-white'
                       }`}
                     >
-                      {plan.price} EGP
+                      {Intl.NumberFormat(settings?.language, {
+                        style: 'currency',
+                        currency: settings?.currency,
+                        minimumFractionDigits: 0
+                      }).format(plan.price)}
                     </span>
                   </div>
 

@@ -4,9 +4,11 @@ import { menuItems } from './constants'
 import { useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from '../ui/button'
+import { useSettings } from '@renderer/hooks/useSettings'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation()
+  const { settings, updateSettings } = useSettings()
   const { t, i18n } = useTranslation()
   const [collapsed, setCollapsed] = useState(false)
 
@@ -14,6 +16,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     const newLang = i18n.language === 'en' ? 'ar' : 'en'
     i18n.changeLanguage(newLang)
     document.documentElement.dir = newLang === 'ar' ? 'rtl' : 'ltr'
+    updateSettings({ ...settings!, language: newLang })
   }
 
   const isRTL = i18n.language === 'ar'

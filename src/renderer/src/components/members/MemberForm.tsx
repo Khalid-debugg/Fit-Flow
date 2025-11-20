@@ -15,6 +15,7 @@ import {
 import { GENDER, Member } from '@renderer/models/member'
 import { PAYMENT_METHODS } from '@renderer/models/membership'
 import { Separator } from '@renderer/components/ui/separator'
+import { useSettings } from '@renderer/hooks/useSettings'
 
 interface SubscriptionData {
   planId: string
@@ -55,7 +56,7 @@ export default function MemberForm({
 }: MemberFormProps) {
   const { t } = useTranslation('members')
   const { t: tMemberships } = useTranslation('memberships')
-
+  const { settings } = useSettings()
   const [plans, setPlans] = useState<PlanOption[]>([])
   const [loadingPlans, setLoadingPlans] = useState(false)
 
@@ -272,8 +273,13 @@ export default function MemberForm({
                       <SelectContent className="bg-gray-800 border-gray-700">
                         {plans.map((plan) => (
                           <SelectItem key={plan.id} value={plan.id} className="text-white">
-                            {plan.name} - {plan.price} EGP ({plan.durationDays}{' '}
-                            {tMemberships('days')})
+                            {plan.name} -{' '}
+                            {Intl.NumberFormat(settings?.language, {
+                              style: 'currency',
+                              currency: settings?.currency,
+                              minimumFractionDigits: 0
+                            }).format(plan.price)}
+                            ({plan.durationDays} {tMemberships('days')})
                           </SelectItem>
                         ))}
                       </SelectContent>

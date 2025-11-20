@@ -9,6 +9,7 @@ import {
   ResponsiveContainer
 } from 'recharts'
 import { TrendingUp, TrendingDown, DollarSign, Calendar } from 'lucide-react'
+import { useSettings } from '@renderer/hooks/useSettings'
 
 interface RevenueData {
   dailyRevenue: { date: string; revenue: number }[]
@@ -27,14 +28,18 @@ interface RevenueChartProps {
 
 export default function RevenueChart({ data }: RevenueChartProps) {
   const { t } = useTranslation('dashboard')
-
+  const { settings } = useSettings()
   const chartData = data.dailyRevenue.map((item) => ({
     date: new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
     revenue: item.revenue
   }))
 
   const formatCurrency = (value: number) => {
-    return `${value.toLocaleString()} EGP`
+    return new Intl.NumberFormat(settings?.language, {
+      style: 'currency',
+      currency: settings?.currency,
+      minimumFractionDigits: 0
+    }).format(value)
   }
 
   return (

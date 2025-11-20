@@ -11,6 +11,7 @@ import {
   BadgeCheck,
   LucideIcon
 } from 'lucide-react'
+import { useSettings } from '@renderer/hooks/useSettings'
 
 interface ViewMembershipProps {
   membership: Membership | null
@@ -20,6 +21,7 @@ interface ViewMembershipProps {
 
 export default function ViewMembership({ membership, open, onClose }: ViewMembershipProps) {
   const { t } = useTranslation('memberships')
+  const { settings } = useSettings()
   const today = new Date().toISOString().split('T')[0]
 
   if (!membership) return null
@@ -33,7 +35,11 @@ export default function ViewMembership({ membership, open, onClose }: ViewMember
   }
 
   const formatCurrency = (amount: number) => {
-    return `${amount} EGP`
+    return new Intl.NumberFormat(settings?.language, {
+      style: 'currency',
+      currency: settings?.currency,
+      minimumFractionDigits: 0
+    }).format(amount)
   }
 
   const InfoRow = ({
