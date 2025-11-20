@@ -1,11 +1,18 @@
 CREATE TABLE IF NOT EXISTS settings (
   id TEXT PRIMARY KEY CHECK (id = '1'),
-  gym_name TEXT NOT NULL,
-  gym_address TEXT,
-  gym_phone TEXT,
-  gym_email TEXT,
+  
+    language TEXT DEFAULT 'ar' CHECK (language IN ('ar', 'en')),
   currency TEXT DEFAULT 'EGP',
-  language TEXT DEFAULT 'ar',
+  
+  allowed_genders TEXT DEFAULT 'both' CHECK (allowed_genders IN ('male', 'female', 'both')),
+  
+  default_payment_method TEXT DEFAULT 'cash' CHECK (default_payment_method IN ('cash', 'card', 'bank')),
+  
+  auto_backup INTEGER DEFAULT 1 CHECK (auto_backup IN (0, 1)),
+  backup_frequency TEXT DEFAULT 'daily' CHECK (backup_frequency IN ('daily', 'weekly', 'monthly')),
+  backup_folder_path TEXT, 
+  last_backup_date DATETIME,
+  
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
@@ -84,5 +91,20 @@ CREATE INDEX IF NOT EXISTS idx_check_ins_member_id ON check_ins(member_id);
 CREATE INDEX IF NOT EXISTS idx_members_phone ON members(phone);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_check_ins_member_date ON check_ins(member_id, DATE(check_in_time));
 
-INSERT OR IGNORE INTO settings (id, gym_name)
-VALUES ('1', 'My Gym');
+INSERT OR IGNORE INTO settings (
+  id, 
+  language, 
+  currency, 
+  allowed_genders,
+  default_payment_method,
+  auto_backup,
+  backup_frequency
+) VALUES (
+  '1', 
+  'ar', 
+  'EGP', 
+  'both',
+  'cash',
+  1,
+  'daily'
+);
