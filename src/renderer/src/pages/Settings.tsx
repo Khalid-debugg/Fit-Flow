@@ -70,7 +70,10 @@ export default function Settings() {
       const result = await window.electron.ipcRenderer.invoke('backup:selectFolder')
 
       if (!result.canceled && result.folderPath) {
-        setFormData({ ...formData!, backupFolderPath: result.folderPath })
+        const updatedSettings = { ...formData!, backupFolderPath: result.folderPath }
+        setFormData(updatedSettings)
+        await updateSettings(updatedSettings)
+        await loadBackupInfo()
         toast.success(t('backup.selectFolder'))
       }
     } catch (error) {
@@ -86,11 +89,11 @@ export default function Settings() {
       const result = await window.electron.ipcRenderer.invoke('backup:create')
 
       if (result.success) {
+        await window.electron.ipcRenderer.invoke('backup:cleanOld')
+        await loadBackupInfo()
         toast.success(t('backup.success'), {
           description: `${t('backup.size')}: ${(result.size / 1024).toFixed(2)} KB`
         })
-        await loadBackupInfo()
-        await window.electron.ipcRenderer.invoke('backup:cleanOld')
       } else {
         toast.error(t('backup.failed'), {
           description: result.error
