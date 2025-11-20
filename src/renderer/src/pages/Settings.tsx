@@ -9,6 +9,13 @@ import {
 } from '@renderer/models/settings'
 import { Button } from '@renderer/components/ui/button'
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@renderer/components/ui/select'
+import {
   Globe,
   DollarSign,
   Users,
@@ -205,34 +212,42 @@ export default function Settings() {
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 {t('regional.language')}
               </label>
-              <select
+              <Select
                 value={formData.language}
-                onChange={(e) =>
-                  setFormData({ ...formData, language: e.target.value as 'ar' | 'en' })
+                onValueChange={(value) =>
+                  setFormData({ ...formData, language: value as 'ar' | 'en' })
                 }
-                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="ar">{t('regional.arabic')}</option>
-                <option value="en">{t('regional.english')}</option>
-              </select>
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ar">{t('regional.arabic')}</SelectItem>
+                  <SelectItem value="en">{t('regional.english')}</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 {t('regional.currency')}
               </label>
-              <select
+              <Select
                 value={formData.currency}
-                onChange={(e) => setFormData({ ...formData, currency: e.target.value })}
-                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onValueChange={(value) => setFormData({ ...formData, currency: value })}
               >
-                {CURRENCIES.map((currency) => (
-                  <option key={currency.code} value={currency.code}>
-                    {currency.code} - {currency.name} (
-                    {i18n.language === 'ar' ? currency.arSymbol : currency.enSymbol})
-                  </option>
-                ))}
-              </select>
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {CURRENCIES.map((currency) => (
+                    <SelectItem key={currency.code} value={currency.code}>
+                      {currency.code} - {currency.name} (
+                      {i18n.language === 'ar' ? currency.arSymbol : currency.enSymbol})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </div>
@@ -248,20 +263,24 @@ export default function Settings() {
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 {t('members.allowedGenders')}
               </label>
-              <select
+              <Select
                 value={formData.allowedGenders}
-                onChange={(e) =>
+                onValueChange={(value) =>
                   setFormData({
                     ...formData,
-                    allowedGenders: e.target.value as SettingsType['allowedGenders']
+                    allowedGenders: value as SettingsType['allowedGenders']
                   })
                 }
-                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="both">{t('members.both')}</option>
-                <option value="male">{t('members.maleOnly')}</option>
-                <option value="female">{t('members.femaleOnly')}</option>
-              </select>
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="both">{t('members.both')}</SelectItem>
+                  <SelectItem value="male">{t('members.maleOnly')}</SelectItem>
+                  <SelectItem value="female">{t('members.femaleOnly')}</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="pt-4 border-t border-gray-700">
@@ -274,21 +293,25 @@ export default function Settings() {
                 <label className="block text-sm font-medium text-gray-300 mb-2">
                   {t('payment.defaultMethod')}
                 </label>
-                <select
+                <Select
                   value={formData.defaultPaymentMethod}
-                  onChange={(e) =>
+                  onValueChange={(value) =>
                     setFormData({
                       ...formData,
-                      defaultPaymentMethod: e.target.value as SettingsType['defaultPaymentMethod']
+                      defaultPaymentMethod: value as SettingsType['defaultPaymentMethod']
                     })
                   }
-                  className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="cash">{t('payment.cash')}</option>
-                  <option value="card">{t('payment.card')}</option>
-                  <option value="bank">{t('payment.bank')}</option>
-                  <option value="e-wallet">{t('payment.e-wallet')}</option>
-                </select>
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="cash">{t('payment.cash')}</SelectItem>
+                    <SelectItem value="card">{t('payment.card')}</SelectItem>
+                    <SelectItem value="bank">{t('payment.bank')}</SelectItem>
+                    <SelectItem value="e-wallet">{t('payment.e-wallet')}</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
           </div>
@@ -317,20 +340,24 @@ export default function Settings() {
                   <label className="block text-sm font-medium text-gray-300 mb-2">
                     {t('backup.frequency')}
                   </label>
-                  <select
+                  <Select
                     value={formData.backupFrequency}
-                    onChange={(e) =>
+                    onValueChange={(value) =>
                       setFormData({
                         ...formData,
-                        backupFrequency: e.target.value as SettingsType['backupFrequency']
+                        backupFrequency: value as SettingsType['backupFrequency']
                       })
                     }
-                    className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
-                    <option value="daily">{t('backup.daily')}</option>
-                    <option value="weekly">{t('backup.weekly')}</option>
-                    <option value="monthly">{t('backup.monthly')}</option>
-                  </select>
+                    <SelectTrigger className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="daily">{t('backup.daily')}</SelectItem>
+                      <SelectItem value="weekly">{t('backup.weekly')}</SelectItem>
+                      <SelectItem value="monthly">{t('backup.monthly')}</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               )}
 
