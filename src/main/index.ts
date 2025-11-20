@@ -9,7 +9,7 @@ import { registerMembershipHandlers } from './handlers/memberships'
 import { registerCheckInHandlers } from './handlers/checkIns'
 import { registerDashboardHandlers } from './handlers/dashboard'
 import { registerReportsHandlers } from './handlers/reports'
-import { registerSettingsHandlers } from './handlers/settings'
+import { registerSettingsHandlers, performAutoBackup } from './handlers/settings'
 
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
@@ -44,7 +44,7 @@ ipcMain.handle('ping', async () => {
   return 'pong from main process!'
 })
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   electronApp.setAppUserModelId('com.electron')
 
   app.on('browser-window-created', (_, window) => {
@@ -59,6 +59,8 @@ app.whenReady().then(() => {
   registerCheckInHandlers()
   registerReportsHandlers()
   registerSettingsHandlers()
+  await performAutoBackup()
+
   createWindow()
 
   app.on('activate', function () {

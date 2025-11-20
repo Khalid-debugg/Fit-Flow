@@ -4,6 +4,79 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { Settings, SettingsDbRow, BackupFile, BackupInfo } from '@renderer/models/settings'
 
+// Helper function to check if backup is needed
+function shouldCreateBackup(lastBackupDate: string | null, frequency: string): boolean {
+  if (!lastBackupDate) {
+    return true // No backup exists, create initial backup
+  }
+
+  const now = new Date()
+  const lastBackup = new Date(lastBackupDate)
+  const timeDiff = now.getTime() - lastBackup.getTime()
+  const daysDiff = timeDiff / (1000 * 3600 * 24)
+
+  switch (frequency) {
+    case 'daily':
+      return daysDiff >= 1
+    case 'weekly':
+      return daysDiff >= 7
+    case 'monthly':
+      return daysDiff >= 30
+    default:
+      return false
+  }
+}
+
+// Function to perform auto backup
+async function performAutoBackup(): Promise<void> {
+  try {
+    const db = getDatabase()
+    const settings = db.prepare('SELECT * FROM settings WHERE id = ?').get('1') as
+      | SettingsDbRow
+      | undefined
+
+    // Skip if auto backup is disabled
+    if (!settings || settings.auto_backup !== 1) {
+      return
+    }
+
+    // Check if backup is needed
+    if (!shouldCreateBackup(settings.last_backup_date, settings.backup_frequency)) {
+      return
+    }
+
+    // Perform backup
+    const dbPath = path.join(app.getPath('userData'), 'fitflow.db')
+    const backupDir =
+      settings?.backup_folder_path || path.join(app.getPath('userData'), 'backups')
+
+    if (!fs.existsSync(backupDir)) {
+      fs.mkdirSync(backupDir, { recursive: true })
+    }
+
+    const timestamp =
+      new Date().toISOString().replace(/[:.]/g, '-').split('T')[0] +
+      '_' +
+      new Date().toLocaleTimeString('en-US', { hour12: false }).replace(/:/g, '-')
+    const backupPath = path.join(backupDir, `fitflow-backup-${timestamp}.db`)
+
+    fs.copyFileSync(dbPath, backupPath)
+
+    // Update last backup date
+    db.prepare('UPDATE settings SET last_backup_date = ? WHERE id = ?').run(
+      new Date().toISOString(),
+      '1'
+    )
+
+    console.log('Auto backup created successfully:', backupPath)
+  } catch (error) {
+    console.error('Auto backup failed:', error)
+  }
+}
+
+// Export the auto backup function to be called on app initialization
+export { performAutoBackup }
+
 export function registerSettingsHandlers() {
   ipcMain.handle('settings:get', async () => {
     const db = getDatabase()
