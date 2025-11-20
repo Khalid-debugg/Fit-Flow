@@ -22,7 +22,6 @@ export interface SettingsDbRow {
 
   language: 'ar' | 'en'
   currency: string
-  date_format: 'DD/MM/YYYY' | 'MM/DD/YYYY' | 'YYYY-MM-DD'
 
   allowed_genders: 'male' | 'female' | 'both'
 
@@ -30,10 +29,8 @@ export interface SettingsDbRow {
 
   auto_backup: 0 | 1
   backup_frequency: 'daily' | 'weekly' | 'monthly'
-  backup_folder_path: string
-  backup_location: string
+  backup_folder_path: string | null
   last_backup_date: string | null
-  backup_enabled: 0 | 1
 
   created_at: string
   updated_at: string
@@ -67,11 +64,11 @@ export interface BackupFile {
   size: number
   created: string
 }
+
 export interface BackupInfo {
-  lastBackup?: string
-  nextBackup?: string
-  backupSize?: number
-  folderPath?: string
-  status: 'success' | 'failed' | 'pending' | 'uploading'
-  message?: string
+  lastBackup: string | null
+  backupCount: number
+  totalSize: number
+  backups: BackupFile[]
+  folderPath: string
 }

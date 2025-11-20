@@ -1,26 +1,25 @@
-// src/main/handlers/settingsHandlers.ts
-
 import { ipcMain, app, dialog } from 'electron'
 import { getDatabase } from '../database'
 import * as fs from 'fs'
 import * as path from 'path'
-import { Settings, SettingsDbRow } from '@renderer/models/settings'
+import { Settings, SettingsDbRow, BackupFile, BackupInfo } from '@renderer/models/settings'
 
 export function registerSettingsHandlers() {
   ipcMain.handle('settings:get', async () => {
     const db = getDatabase()
-    const settings = db.prepare('SELECT * FROM settings WHERE id = ?').get('1') as SettingsDbRow
+    const settings = db.prepare('SELECT * FROM settings WHERE id = ?').get('1') as
+      | SettingsDbRow
+      | undefined
 
     if (!settings) {
       return {
         id: '1',
-        language: 'ar',
+        language: 'ar' as const,
         currency: 'EGP',
-        dateFormat: 'DD/MM/YYYY',
-        allowedGenders: 'both',
-        defaultPaymentMethod: 'cash',
+        allowedGenders: 'both' as const,
+        defaultPaymentMethod: 'cash' as const,
         autoBackup: true,
-        backupFrequency: 'daily'
+        backupFrequency: 'daily' as const
       }
     }
 
@@ -28,13 +27,12 @@ export function registerSettingsHandlers() {
       id: settings.id,
       language: settings.language,
       currency: settings.currency,
-      dateFormat: settings.date_format,
       allowedGenders: settings.allowed_genders,
       defaultPaymentMethod: settings.default_payment_method,
       autoBackup: settings.auto_backup === 1,
       backupFrequency: settings.backup_frequency,
-      backupFolderPath: settings.backup_folder_path,
-      lastBackupDate: settings.last_backup_date,
+      backupFolderPath: settings.backup_folder_path || undefined,
+      lastBackupDate: settings.last_backup_date || undefined,
       createdAt: settings.created_at,
       updatedAt: settings.updated_at
     }
@@ -44,19 +42,7 @@ export function registerSettingsHandlers() {
     const db = getDatabase()
 
     db.prepare(
-      `
-      UPDATE settings
-      SET 
-        language = ?,
-        currency = ?,
-        date_format = ?,
-        allowed_genders = ?,
-        default_payment_method = ?,
-        auto_backup = ?,
-        backup_frequency = ?,
-        backup_folder_path = ?
-      WHERE id = '1'
-    `
+      `UPDATE settings SET language = ?, currency = ?, allowed_genders = ?, default_payment_method = ?, auto_backup = ?, backup_frequency = ?, backup_folder_path = ? WHERE id = '1'`
     ).run(
       settings.language,
       settings.currency,
@@ -87,22 +73,15 @@ export function registerSettingsHandlers() {
     }
   })
 
-  ipcMain.handle('backup:getDbPath', async () => {
-    const dbPath = path.join(app.getPath('userData'), 'database.db')
-    return dbPath
-  })
-
-  // Create backup
-  ipcMain.handle('backup:create', async (_event, customPath?: string) => {
+  ipcMain.handle('backup:create', async () => {
     try {
-      const dbPath = path.join(app.getPath('userData'), 'database.db')
+      const db = getDatabase()
+      const settings = db.prepare('SELECT * FROM settings WHERE id = ?').get('1') as
+        | SettingsDbRow
+        | undefined
 
-      let backupDir: string
-      if (customPath) {
-        backupDir = customPath
-      } else {
-        backupDir = path.join(app.getPath('userData'), 'backups')
-      }
+      const dbPath = path.join(app.getPath('userData'), 'fitflow.db')
+      const backupDir = settings?.backup_folder_path || path.join(app.getPath('userData'), 'backups')
 
       if (!fs.existsSync(backupDir)) {
         fs.mkdirSync(backupDir, { recursive: true })
@@ -119,7 +98,6 @@ export function registerSettingsHandlers() {
       const stats = fs.statSync(backupPath)
       const fileSizeInBytes = stats.size
 
-      const db = getDatabase()
       db.prepare('UPDATE settings SET last_backup_date = ? WHERE id = ?').run(
         new Date().toISOString(),
         '1'
@@ -132,22 +110,21 @@ export function registerSettingsHandlers() {
         timestamp: new Date().toISOString()
       }
     } catch (error) {
-      console.error('Backup failed:', error)
       return {
         success: false,
-        error: (error as Error).message
+        error: error instanceof Error ? error.message : 'Unknown error'
       }
     }
   })
 
-  ipcMain.handle('backup:getInfo', async (_event, customPath?: string) => {
+  ipcMain.handle('backup:getInfo', async (): Promise<BackupInfo> => {
     try {
-      let backupDir: string
-      if (customPath) {
-        backupDir = customPath
-      } else {
-        backupDir = path.join(app.getPath('userData'), 'backups')
-      }
+      const db = getDatabase()
+      const settings = db.prepare('SELECT * FROM settings WHERE id = ?').get('1') as
+        | SettingsDbRow
+        | undefined
+
+      const backupDir = settings?.backup_folder_path || path.join(app.getPath('userData'), 'backups')
 
       if (!fs.existsSync(backupDir)) {
         return {
@@ -159,7 +136,7 @@ export function registerSettingsHandlers() {
         }
       }
 
-      const files = fs
+      const files: BackupFile[] = fs
         .readdirSync(backupDir)
         .filter((f) => f.endsWith('.db'))
         .map((f) => {
@@ -177,27 +154,26 @@ export function registerSettingsHandlers() {
       const totalSize = files.reduce((sum, f) => sum + f.size, 0)
 
       return {
-        lastBackup: files[0]?.created,
+        lastBackup: files[0]?.created || null,
         backupCount: files.length,
         totalSize: totalSize,
         backups: files,
         folderPath: backupDir
       }
     } catch (error) {
-      console.error('Failed to get backup info:', error)
       return {
         lastBackup: null,
         backupCount: 0,
         totalSize: 0,
         backups: [],
-        folderPath: customPath
+        folderPath: path.join(app.getPath('userData'), 'backups')
       }
     }
   })
 
   ipcMain.handle('backup:restore', async (_event, backupPath: string) => {
     try {
-      const dbPath = path.join(app.getPath('userData'), 'database.db')
+      const dbPath = path.join(app.getPath('userData'), 'fitflow.db')
 
       if (!fs.existsSync(backupPath)) {
         return {
@@ -208,7 +184,7 @@ export function registerSettingsHandlers() {
 
       const emergencyBackupPath = path.join(
         app.getPath('userData'),
-        `database-before-restore-${Date.now()}.db`
+        `fitflow-before-restore-${Date.now()}.db`
       )
       fs.copyFileSync(dbPath, emergencyBackupPath)
 
@@ -219,15 +195,13 @@ export function registerSettingsHandlers() {
         emergencyBackupPath
       }
     } catch (error) {
-      console.error('Restore failed:', error)
       return {
         success: false,
-        error: (error as Error).message
+        error: error instanceof Error ? error.message : 'Unknown error'
       }
     }
   })
 
-  // Delete backup
   ipcMain.handle('backup:delete', async (_event, backupPath: string) => {
     try {
       if (fs.existsSync(backupPath)) {
@@ -239,23 +213,21 @@ export function registerSettingsHandlers() {
         error: 'Backup file not found'
       }
     } catch (error) {
-      console.error('Failed to delete backup:', error)
       return {
         success: false,
-        error: (error as Error).message
+        error: error instanceof Error ? error.message : 'Unknown error'
       }
     }
   })
 
-  // Clean old backups (keep last 10)
-  ipcMain.handle('backup:cleanOld', async (_event, customPath?: string) => {
+  ipcMain.handle('backup:cleanOld', async () => {
     try {
-      let backupDir: string
-      if (customPath) {
-        backupDir = customPath
-      } else {
-        backupDir = path.join(app.getPath('userData'), 'backups')
-      }
+      const db = getDatabase()
+      const settings = db.prepare('SELECT * FROM settings WHERE id = ?').get('1') as
+        | SettingsDbRow
+        | undefined
+
+      const backupDir = settings?.backup_folder_path || path.join(app.getPath('userData'), 'backups')
 
       if (!fs.existsSync(backupDir)) {
         return { success: true, deleted: 0 }
@@ -282,20 +254,18 @@ export function registerSettingsHandlers() {
         deleted: toDelete.length
       }
     } catch (error) {
-      console.error('Failed to clean old backups:', error)
       return {
         success: false,
-        error: (error as Error).message
+        error: error instanceof Error ? error.message : 'Unknown error'
       }
     }
   })
 
   ipcMain.handle('backup:openFolder', async (_event, folderPath: string) => {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const { shell } = require('electron')
+      const { shell } = await import('electron')
       if (fs.existsSync(folderPath)) {
-        shell.openPath(folderPath)
+        await shell.openPath(folderPath)
         return { success: true }
       }
       return {
@@ -305,7 +275,7 @@ export function registerSettingsHandlers() {
     } catch (error) {
       return {
         success: false,
-        error: (error as Error).message
+        error: error instanceof Error ? error.message : 'Unknown error'
       }
     }
   })
