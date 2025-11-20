@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button } from '@renderer/components/ui/button'
-import { Calendar, FileText } from 'lucide-react'
+import { Calendar as CalendarComponent } from '@renderer/components/ui/calendar'
+import { Popover, PopoverContent, PopoverTrigger } from '@renderer/components/ui/popover'
+import { Calendar, CalendarIcon, FileText } from 'lucide-react'
 import {
   format,
   startOfWeek,
@@ -11,7 +13,9 @@ import {
   startOfYear,
   endOfYear
 } from 'date-fns'
+import { ar, enUS } from 'date-fns/locale'
 import { ReportType, ReportFilters as IReportFilters } from '@renderer/models/report'
+import { cn } from '@renderer/lib/utils'
 
 interface ReportFiltersProps {
   onGenerate: (filters: IReportFilters) => void
@@ -19,10 +23,11 @@ interface ReportFiltersProps {
 }
 
 export default function ReportFilters({ onGenerate, loading }: ReportFiltersProps) {
-  const { t } = useTranslation('reports')
+  const { t, i18n } = useTranslation('reports')
   const [reportType, setReportType] = useState<ReportType>('month')
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
+  const dateLocale = i18n.language === 'ar' ? ar : enUS
 
   const handleQuickSelect = (type: ReportType) => {
     setReportType(type)
@@ -104,27 +109,67 @@ export default function ReportFilters({ onGenerate, loading }: ReportFiltersProp
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm text-gray-400 mb-2">{t('filters.startDate')}</label>
-              <input
-                type="date"
-                value={startDate}
-                onChange={(e) => {
-                  setStartDate(e.target.value)
-                  setReportType('custom')
-                }}
-                className="w-full px-3 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="primary"
+                    className={cn(
+                      'w-full justify-start text-left font-normal bg-gray-900 border-gray-700 text-white hover:bg-gray-800',
+                      !startDate && 'text-gray-400'
+                    )}
+                  >
+                    <CalendarIcon className="ltr:mr-2 rtl:ml-2 h-4 w-4" />
+                    {startDate
+                      ? format(new Date(startDate), 'MM/dd/yyyy', { locale: dateLocale })
+                      : t('filters.selectDate')}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0 bg-gray-900 border-gray-700" align="start">
+                  <CalendarComponent
+                    mode="single"
+                    selected={startDate ? new Date(startDate) : undefined}
+                    onSelect={(date) => {
+                      if (date) {
+                        setStartDate(format(date, 'yyyy-MM-dd'))
+                        setReportType('custom')
+                      }
+                    }}
+                    locale={dateLocale}
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
             <div>
               <label className="block text-sm text-gray-400 mb-2">{t('filters.endDate')}</label>
-              <input
-                type="date"
-                value={endDate}
-                onChange={(e) => {
-                  setEndDate(e.target.value)
-                  setReportType('custom')
-                }}
-                className="w-full px-3 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="primary"
+                    className={cn(
+                      'w-full justify-start text-left font-normal bg-gray-900 border-gray-700 text-white hover:bg-gray-800',
+                      !endDate && 'text-gray-400'
+                    )}
+                  >
+                    <CalendarIcon className="ltr:mr-2 rtl:ml-2 h-4 w-4" />
+                    {endDate
+                      ? format(new Date(endDate), 'MM/dd/yyyy', { locale: dateLocale })
+                      : t('filters.selectDate')}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0 bg-gray-900 border-gray-700" align="start">
+                  <CalendarComponent
+                    mode="single"
+                    selected={endDate ? new Date(endDate) : undefined}
+                    onSelect={(date) => {
+                      if (date) {
+                        setEndDate(format(date, 'yyyy-MM-dd'))
+                        setReportType('custom')
+                      }
+                    }}
+                    locale={dateLocale}
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
           </div>
         </div>

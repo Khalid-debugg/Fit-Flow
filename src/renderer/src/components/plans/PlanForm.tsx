@@ -4,6 +4,7 @@ import { Label } from '@renderer/components/ui/label'
 import { Button } from '@renderer/components/ui/button'
 import { Plan } from '@renderer/models/plan'
 import { Checkbox } from '../ui/checkbox'
+import { Textarea } from '../ui/textarea'
 
 interface PlanFormProps {
   formData: Partial<Plan>
@@ -42,11 +43,11 @@ export default function PlanForm({
         <Label htmlFor="description" className="text-gray-200">
           {t('form.description')}
         </Label>
-        <textarea
+        <Textarea
           id="description"
           value={formData.description ?? ''}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-          className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white min-h-20"
+          className="bg-gray-800 border-gray-700 text-white min-h-20"
         />
       </div>
 

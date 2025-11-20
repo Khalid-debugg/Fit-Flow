@@ -61,7 +61,8 @@
     "dateTo": "Date To",
     "status": "Status",
     "all": "All",
-    "reset": "Reset"
+    "reset": "Reset",
+    "pickDate": "Pick a date"
   },
 
   "pagination": {

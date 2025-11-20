@@ -28,7 +28,8 @@
     "startDateFrom": "Start Date From",
     "startDateTo": "Start Date To",
     "all": "All",
-    "reset": "Reset"
+    "reset": "Reset",
+    "pickDate": "Pick a date"
   },
 
   "paymentMethods": {
@@ -55,7 +56,8 @@
     "cancel": "Cancel",
     "submit": "Save",
     "update": "Update",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "pickDate": "Pick a date"
   },
 
   "create": {

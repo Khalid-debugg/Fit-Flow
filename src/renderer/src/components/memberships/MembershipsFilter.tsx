@@ -2,9 +2,14 @@ import { Input } from '@renderer/components/ui/input'
 import { Label } from '@renderer/components/ui/label'
 import { Button } from '@renderer/components/ui/button'
 import { RadioGroup, RadioGroupItem } from '@renderer/components/ui/radio-group'
-import { Search, X } from 'lucide-react'
+import { Calendar } from '@renderer/components/ui/calendar'
+import { Popover, PopoverContent, PopoverTrigger } from '@renderer/components/ui/popover'
+import { Search, X, CalendarIcon } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { format } from 'date-fns'
+import { ar, enUS } from 'date-fns/locale'
 import { MembershipFilters, PAYMENT_METHODS } from '@renderer/models/membership'
+import { cn } from '@renderer/lib/utils'
 
 interface MembershipsFilterProps {
   filters: MembershipFilters
@@ -13,7 +18,8 @@ interface MembershipsFilterProps {
 }
 
 export default function MembershipsFilter({ filters, onChange, onReset }: MembershipsFilterProps) {
-  const { t } = useTranslation('memberships')
+  const { t, i18n } = useTranslation('memberships')
+  const dateLocale = i18n.language === 'ar' ? ar : enUS
 
   const handleFilterChange = (key: keyof MembershipFilters, value: string) => {
     onChange({ ...filters, [key]: value })
@@ -97,26 +103,68 @@ export default function MembershipsFilter({ filters, onChange, onReset }: Member
           <Label htmlFor="dateFrom" className="text-gray-200 text-sm">
             {t('filter.startDateFrom')}
           </Label>
-          <Input
-            id="dateFrom"
-            type="date"
-            value={filters.dateFrom}
-            onChange={(e) => handleFilterChange('dateFrom', e.target.value)}
-            className="bg-gray-900 border-gray-700 w-40"
-          />
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="primary"
+                className={cn(
+                  'w-40 justify-start text-left font-normal bg-gray-900 border-gray-700 text-white hover:bg-gray-800',
+                  !filters.dateFrom && 'text-gray-400'
+                )}
+              >
+                <CalendarIcon className="ltr:mr-2 rtl:ml-2 h-4 w-4" />
+                {filters.dateFrom
+                  ? format(new Date(filters.dateFrom), 'MM/dd/yyyy', { locale: dateLocale })
+                  : t('filter.pickDate')}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0 bg-gray-900 border-gray-700" align="start">
+              <Calendar
+                mode="single"
+                selected={filters.dateFrom ? new Date(filters.dateFrom) : undefined}
+                onSelect={(date) => {
+                  if (date) {
+                    handleFilterChange('dateFrom', format(date, 'yyyy-MM-dd'))
+                  }
+                }}
+                locale={dateLocale}
+              />
+            </PopoverContent>
+          </Popover>
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="dateTo" className="text-gray-200 text-sm">
             {t('filter.startDateTo')}
           </Label>
-          <Input
-            id="dateTo"
-            type="date"
-            value={filters.dateTo}
-            onChange={(e) => handleFilterChange('dateTo', e.target.value)}
-            className="bg-gray-900 border-gray-700 w-40"
-          />
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="primary"
+                className={cn(
+                  'w-40 justify-start text-left font-normal bg-gray-900 border-gray-700 text-white hover:bg-gray-800',
+                  !filters.dateTo && 'text-gray-400'
+                )}
+              >
+                <CalendarIcon className="ltr:mr-2 rtl:ml-2 h-4 w-4" />
+                {filters.dateTo
+                  ? format(new Date(filters.dateTo), 'MM/dd/yyyy', { locale: dateLocale })
+                  : t('filter.pickDate')}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0 bg-gray-900 border-gray-700" align="start">
+              <Calendar
+                mode="single"
+                selected={filters.dateTo ? new Date(filters.dateTo) : undefined}
+                onSelect={(date) => {
+                  if (date) {
+                    handleFilterChange('dateTo', format(date, 'yyyy-MM-dd'))
+                  }
+                }}
+                locale={dateLocale}
+              />
+            </PopoverContent>
+          </Popover>
         </div>
 
         <Button variant="ghost" size="sm" onClick={onReset} className="gap-2">

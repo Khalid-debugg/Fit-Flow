@@ -38,7 +38,8 @@
     "all": "All",
     "joinDateFrom": "Join Date From",
     "joinDateTo": "Join Date To",
-    "reset": "Reset Filters"
+    "reset": "Reset Filters",
+    "pickDate": "Pick a date"
   },
   "pagination": {
     "page": "Page",
@@ -74,7 +75,8 @@
     "submit": "Add Member",
     "update": "Update Member",
     "extendMembership": "Extend Membership",
-    "renewMembership": "Renew Membership"
+    "renewMembership": "Renew Membership",
+    "pickDate": "Pick a date"
   },
   "alert": {
     "deleteMember": "Delete Member",

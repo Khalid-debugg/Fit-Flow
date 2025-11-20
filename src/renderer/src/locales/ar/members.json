@@ -43,7 +43,8 @@
     "joinDateTo": "تاريخ الانضمام إلى",
     "reset": "إعادة تعيين الفلاتر",
     "extendMembership": "تمديد الإشتراك",
-    "renewMembership": "إضافة الإشتراك"
+    "renewMembership": "إضافة الإشتراك",
+    "pickDate": "اختر تاريخ"
   },
   "pagination": {
     "page": "صفحة",
@@ -77,7 +78,8 @@
     "cancel": "إلغاء",
     "confirm": "تأكيد",
     "submit": "إضافة عضو",
-    "update": "تحديث العضو"
+    "update": "تحديث العضو",
+    "pickDate": "اختر تاريخ"
   },
   "alert": {
     "deleteMember": "حذف العضو",

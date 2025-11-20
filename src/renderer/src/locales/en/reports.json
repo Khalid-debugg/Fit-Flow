@@ -11,7 +11,8 @@
     "startDate": "Start Date",
     "endDate": "End Date",
     "generate": "Generate Report",
-    "generating": "Generating..."
+    "generating": "Generating...",
+    "selectDate": "Select date"
   },
   "preview": {
     "title": "Report",

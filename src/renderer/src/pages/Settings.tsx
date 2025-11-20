@@ -8,6 +8,8 @@ import {
   BackupFile
 } from '@renderer/models/settings'
 import { Button } from '@renderer/components/ui/button'
+import { Input } from '@renderer/components/ui/input'
+import { Checkbox } from '@renderer/components/ui/checkbox'
 import {
   Select,
   SelectContent,
@@ -327,11 +329,12 @@ export default function Settings() {
             <div className="space-y-4">
               <div className="flex items-center justify-between p-4 bg-gray-900 rounded-lg">
                 <span className="text-sm font-medium text-gray-300">{t('backup.autoBackup')}</span>
-                <input
-                  type="checkbox"
+                <Checkbox
                   checked={formData.autoBackup}
-                  onChange={(e) => setFormData({ ...formData, autoBackup: e.target.checked })}
-                  className="w-5 h-5 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"
+                  onCheckedChange={(checked) =>
+                    setFormData({ ...formData, autoBackup: checked as boolean })
+                  }
+                  className="w-5 h-5"
                 />
               </div>
 
@@ -366,12 +369,12 @@ export default function Settings() {
                   {t('backup.backupFolder')}
                 </label>
                 <div className="flex gap-2">
-                  <input
+                  <Input
                     type="text"
                     value={formData.backupFolderPath || ''}
                     readOnly
                     placeholder={t('backup.noFolderSelected')}
-                    className="flex-1 px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex-1 bg-gray-900 border-gray-700 text-white"
                   />
                   <Button variant="primary" onClick={handleSelectBackupFolder} className="gap-2">
                     <FolderOpen className="w-4 h-4" />

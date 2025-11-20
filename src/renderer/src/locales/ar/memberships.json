@@ -27,7 +27,8 @@
     "startDateFrom": "تاريخ البداية من",
     "startDateTo": "تاريخ البداية إلى",
     "all": "الكل",
-    "reset": "إعادة تعيين"
+    "reset": "إعادة تعيين",
+    "pickDate": "اختر تاريخ"
   },
 
   "paymentMethods": {
@@ -54,7 +55,8 @@
     "cancel": "إلغاء",
     "submit": "حفظ",
     "update": "تحديث",
-    "confirm": "تأكيد"
+    "confirm": "تأكيد",
+    "pickDate": "اختر تاريخ"
   },
 
   "create": {

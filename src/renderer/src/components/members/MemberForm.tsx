@@ -1,10 +1,16 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { format } from 'date-fns'
+import { ar, enUS } from 'date-fns/locale'
+import { CalendarIcon } from 'lucide-react'
 import { Input } from '@renderer/components/ui/input'
 import { Label } from '@renderer/components/ui/label'
 import { Button } from '@renderer/components/ui/button'
 import { RadioGroup, RadioGroupItem } from '@renderer/components/ui/radio-group'
 import { Checkbox } from '@renderer/components/ui/checkbox'
+import { Calendar } from '@renderer/components/ui/calendar'
+import { Popover, PopoverContent, PopoverTrigger } from '@renderer/components/ui/popover'
+import { Textarea } from '@renderer/components/ui/textarea'
 import {
   Select,
   SelectContent,
@@ -16,6 +22,7 @@ import { GENDER, Member } from '@renderer/models/member'
 import { PAYMENT_METHODS } from '@renderer/models/membership'
 import { Separator } from '@renderer/components/ui/separator'
 import { useSettings } from '@renderer/hooks/useSettings'
+import { cn } from '@renderer/lib/utils'
 
 interface SubscriptionData {
   planId: string
@@ -54,11 +61,12 @@ export default function MemberForm({
   addSubscription = false,
   onAddSubscriptionChange
 }: MemberFormProps) {
-  const { t } = useTranslation('members')
+  const { t, i18n } = useTranslation('members')
   const { t: tMemberships } = useTranslation('memberships')
   const { settings } = useSettings()
   const [plans, setPlans] = useState<PlanOption[]>([])
   const [loadingPlans, setLoadingPlans] = useState(false)
+  const dateLocale = i18n.language === 'ar' ? ar : enUS
 
   useEffect(() => {
     if (showSubscription && addSubscription) {
@@ -175,15 +183,35 @@ export default function MemberForm({
             <Label htmlFor="join-date" className="text-gray-200">
               {t('joinDate')} *
             </Label>
-            <Input
-              id="join-date"
-              type="date"
-              required
-              className="bg-gray-800 border-gray-700 text-white"
-              value={formData.joinDate ?? ''}
-              max={new Date().toISOString().split('T')[0]}
-              onChange={(e) => setFormData({ ...formData, joinDate: e.target.value })}
-            />
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="primary"
+                  className={cn(
+                    'w-full justify-start text-left font-normal bg-gray-800 border-gray-700 text-white hover:bg-gray-700',
+                    !formData.joinDate && 'text-gray-400'
+                  )}
+                >
+                  <CalendarIcon className="ltr:mr-2 rtl:ml-2 h-4 w-4" />
+                  {formData.joinDate
+                    ? format(new Date(formData.joinDate), 'MM/dd/yyyy', { locale: dateLocale })
+                    : t('form.pickDate')}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0 bg-gray-900 border-gray-700" align="start">
+                <Calendar
+                  mode="single"
+                  selected={formData.joinDate ? new Date(formData.joinDate) : undefined}
+                  onSelect={(date) => {
+                    if (date) {
+                      setFormData({ ...formData, joinDate: format(date, 'yyyy-MM-dd') })
+                    }
+                  }}
+                  disabled={(date) => date > new Date()}
+                  locale={dateLocale}
+                />
+              </PopoverContent>
+            </Popover>
           </div>
 
           <div className="space-y-2 col-span-2">
@@ -226,11 +254,11 @@ export default function MemberForm({
             <Label htmlFor="notes" className="text-gray-200">
               {t('form.notes')}
             </Label>
-            <textarea
+            <Textarea
               id="notes"
               value={formData.notes ?? ''}
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-              className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white min-h-20"
+              className="bg-gray-800 border-gray-700 text-white min-h-20"
             />
           </div>
         </div>
@@ -290,13 +318,41 @@ export default function MemberForm({
                     <Label htmlFor="startDate" className="text-gray-200">
                       {tMemberships('form.startDate')} *
                     </Label>
-                    <Input
-                      id="startDate"
-                      type="date"
-                      className="bg-gray-800 border-gray-700 text-white"
-                      value={subscriptionData.startDate}
-                      onChange={(e) => handleStartDateChange(e.target.value)}
-                    />
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="primary"
+                          className={cn(
+                            'w-full justify-start text-left font-normal bg-gray-800 border-gray-700 text-white hover:bg-gray-700',
+                            !subscriptionData.startDate && 'text-gray-400'
+                          )}
+                        >
+                          <CalendarIcon className="ltr:mr-2 rtl:ml-2 h-4 w-4" />
+                          {subscriptionData.startDate
+                            ? format(new Date(subscriptionData.startDate), 'MM/dd/yyyy', {
+                                locale: dateLocale
+                              })
+                            : tMemberships('form.pickDate')}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0 bg-gray-900 border-gray-700" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={
+                            subscriptionData.startDate
+                              ? new Date(subscriptionData.startDate)
+                              : undefined
+                          }
+                          onSelect={(date) => {
+                            if (date) {
+                              handleStartDateChange(format(date, 'yyyy-MM-dd'))
+                            }
+                          }}
+                          disabled={(date) => date > new Date()}
+                          locale={dateLocale}
+                        />
+                      </PopoverContent>
+                    </Popover>
                   </div>
 
                   {/* End Date */}
@@ -304,15 +360,18 @@ export default function MemberForm({
                     <Label htmlFor="endDate" className="text-gray-200">
                       {tMemberships('form.endDate')} *
                     </Label>
-                    <Input
-                      id="endDate"
-                      type="date"
-                      className="bg-gray-800 border-gray-700 text-white"
-                      value={subscriptionData.endDate}
-                      onChange={(e) =>
-                        onSubscriptionChange?.({ ...subscriptionData, endDate: e.target.value })
-                      }
-                    />
+                    <div
+                      className={cn(
+                        'flex h-10 w-full items-center rounded-lg border border-gray-700 bg-gray-700 px-3 py-2 text-sm text-gray-400 cursor-not-allowed'
+                      )}
+                    >
+                      <CalendarIcon className="ltr:mr-2 rtl:ml-2 h-4 w-4" />
+                      {subscriptionData.endDate
+                        ? format(new Date(subscriptionData.endDate), 'MM/dd/yyyy', {
+                            locale: dateLocale
+                          })
+                        : tMemberships('form.pickDate')}
+                    </div>
                   </div>
 
                   <div className="space-y-2">
@@ -339,15 +398,43 @@ export default function MemberForm({
                     <Label htmlFor="paymentDate" className="text-gray-200">
                       {tMemberships('form.paymentDate')} *
                     </Label>
-                    <Input
-                      id="paymentDate"
-                      type="date"
-                      className="bg-gray-800 border-gray-700 text-white"
-                      value={subscriptionData.paymentDate}
-                      onChange={(e) =>
-                        onSubscriptionChange?.({ ...subscriptionData, paymentDate: e.target.value })
-                      }
-                    />
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="primary"
+                          className={cn(
+                            'w-full justify-start text-left font-normal bg-gray-800 border-gray-700 text-white hover:bg-gray-700',
+                            !subscriptionData.paymentDate && 'text-gray-400'
+                          )}
+                        >
+                          <CalendarIcon className="ltr:mr-2 rtl:ml-2 h-4 w-4" />
+                          {subscriptionData.paymentDate
+                            ? format(new Date(subscriptionData.paymentDate), 'MM/dd/yyyy', {
+                                locale: dateLocale
+                              })
+                            : tMemberships('form.pickDate')}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0 bg-gray-900 border-gray-700" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={
+                            subscriptionData.paymentDate
+                              ? new Date(subscriptionData.paymentDate)
+                              : undefined
+                          }
+                          onSelect={(date) => {
+                            if (date) {
+                              onSubscriptionChange?.({
+                                ...subscriptionData,
+                                paymentDate: format(date, 'yyyy-MM-dd')
+                              })
+                            }
+                          }}
+                          locale={dateLocale}
+                        />
+                      </PopoverContent>
+                    </Popover>
                   </div>
 
                   <div className="space-y-2 col-span-2">
@@ -380,13 +467,13 @@ export default function MemberForm({
                     <Label htmlFor="subscription-notes" className="text-gray-200">
                       {tMemberships('form.notes')}
                     </Label>
-                    <textarea
+                    <Textarea
                       id="subscription-notes"
                       value={subscriptionData.notes}
                       onChange={(e) =>
                         onSubscriptionChange?.({ ...subscriptionData, notes: e.target.value })
                       }
-                      className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white min-h-16"
+                      className="bg-gray-800 border-gray-700 text-white min-h-20"
                       placeholder={tMemberships('form.notesPlaceholder')}
                     />
                   </div>
