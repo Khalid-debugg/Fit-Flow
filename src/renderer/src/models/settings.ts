@@ -1,3 +1,5 @@
+import { PAYMENT_METHODS } from './membership'
+
 export interface Settings {
   id?: string
 
@@ -6,7 +8,7 @@ export interface Settings {
 
   allowedGenders: 'male' | 'female' | 'both'
 
-  defaultPaymentMethod: 'cash' | 'card' | 'bank'
+  defaultPaymentMethod: (typeof PAYMENT_METHODS)[number]
 
   autoBackup: boolean
   backupFrequency: 'daily' | 'weekly' | 'monthly'
@@ -25,7 +27,7 @@ export interface SettingsDbRow {
 
   allowed_genders: 'male' | 'female' | 'both'
 
-  default_payment_method: 'cash' | 'card' | 'bank'
+  default_payment_method: (typeof PAYMENT_METHODS)[number]
 
   auto_backup: 0 | 1
   backup_frequency: 'daily' | 'weekly' | 'monthly'

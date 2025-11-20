@@ -23,7 +23,8 @@
     "defaultMethod": "Default Payment Method",
     "cash": "Cash",
     "card": "Card",
-    "bank": "Bank Transfer"
+    "bank": "Bank Transfer",
+    "e-wallet": "E-wallet"
   },
   "backup": {
     "title": "Backup & Data Management",

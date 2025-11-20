@@ -1,4 +1,4 @@
-export const PAYMENT_METHODS = ['cash', 'card', 'transfer', 'other'] as const
+export const PAYMENT_METHODS = ['cash', 'card', 'transfer', 'e-wallet'] as const
 
 export type Membership = {
   id?: string

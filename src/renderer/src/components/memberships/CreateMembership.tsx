@@ -13,6 +13,7 @@ import { toast } from 'sonner'
 import { Membership } from '@renderer/models/membership'
 import MembershipForm from './MembershipForm'
 import { useSearchParams } from 'react-router-dom'
+import { useSettings } from '@renderer/hooks/useSettings'
 
 interface CreateMembershipProps {
   onSuccess: () => void
@@ -25,9 +26,10 @@ export default function CreateMembership({
 }: CreateMembershipProps) {
   const { t } = useTranslation('memberships')
   const [searchParams] = useSearchParams()
+  const { settings } = useSettings()
   const [dialogOpen, setDialogOpen] = useState(searchParams.get('action') === 'create')
   const [formData, setFormData] = useState<Partial<Membership>>({
-    paymentMethod: 'cash',
+    paymentMethod: settings?.defaultPaymentMethod,
     startDate: new Date().toISOString().split('T')[0],
     paymentDate: new Date().toISOString().split('T')[0]
   })

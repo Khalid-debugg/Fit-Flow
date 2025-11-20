@@ -6,10 +6,10 @@ CREATE TABLE IF NOT EXISTS settings (
   
   allowed_genders TEXT DEFAULT 'both' CHECK (allowed_genders IN ('male', 'female', 'both')),
   
-  default_payment_method TEXT DEFAULT 'cash' CHECK (default_payment_method IN ('cash', 'card', 'bank')),
+  default_payment_method TEXT DEFAULT 'cash' CHECK (default_payment_method IN ('cash', 'card', 'transfer', 'e-wallet')),
   
   auto_backup INTEGER DEFAULT 1 CHECK (auto_backup IN (0, 1)),
-  backup_frequency TEXT DEFAULT 'daily' CHECK (backup_frequency IN ('daily', 'weekly', 'monthly')),
+  backup_frequency TEXT DEFAULT 'weekly' CHECK (backup_frequency IN ('daily', 'weekly', 'monthly')),
   backup_folder_path TEXT, 
   last_backup_date DATETIME,
   
@@ -106,5 +106,5 @@ INSERT OR IGNORE INTO settings (
   'both',
   'cash',
   1,
-  'daily'
+  'weekly'
 );

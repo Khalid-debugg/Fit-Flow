@@ -35,7 +35,7 @@
     "cash": "Cash",
     "card": "Card",
     "transfer": "Transfer",
-    "other": "Other"
+    "e-wallet": "E-wallet"
   },
 
   "form": {

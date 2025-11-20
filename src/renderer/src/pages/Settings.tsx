@@ -287,6 +287,7 @@ export default function Settings() {
                   <option value="cash">{t('payment.cash')}</option>
                   <option value="card">{t('payment.card')}</option>
                   <option value="bank">{t('payment.bank')}</option>
+                  <option value="e-wallet">{t('payment.e-wallet')}</option>
                 </select>
               </div>
             </div>
