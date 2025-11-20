@@ -9,6 +9,7 @@ import { registerMembershipHandlers } from './handlers/memberships'
 import { registerCheckInHandlers } from './handlers/checkIns'
 import { registerDashboardHandlers } from './handlers/dashboard'
 import { registerReportsHandlers } from './handlers/reports'
+import { registerSettingsHandlers } from './handlers/settings'
 
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
@@ -57,6 +58,7 @@ app.whenReady().then(() => {
   registerMembershipHandlers()
   registerCheckInHandlers()
   registerReportsHandlers()
+  registerSettingsHandlers()
   createWindow()
 
   app.on('activate', function () {
