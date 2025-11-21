@@ -212,7 +212,7 @@ export default function MembershipForm({
 
         <div className="space-y-2">
           <Label htmlFor="amountPaid" className="text-gray-200">
-            {t('form.amountPaid')} *
+            {t('form.amountPaid')} ({settings?.currency}) *
           </Label>
           <Input
             id="amountPaid"
@@ -220,6 +220,8 @@ export default function MembershipForm({
             step="0.01"
             min="0"
             required
+            disabled
+            readOnly
             className="bg-gray-800 border-gray-700 text-white"
             value={formData.amountPaid || ''}
             onChange={(e) => setFormData({ ...formData, amountPaid: parseFloat(e.target.value) })}
