@@ -2,6 +2,7 @@
   "title": "Check-ins",
   "quickCheckIn": "Quick Check-In",
   "scanPrompt": "Scan barcode or enter member ID",
+  "barcodeReady": "Barcode scanner ready",
   "phoneNumber": "Phone Number",
   "enterPhoneNumber": "Enter phone number...",
   "pressEnter": "Press Enter to check-in",
@@ -39,6 +40,7 @@
     "noMembership": "No active membership",
     "expiredWarning": "This member's membership has expired. Please renew before check-in.",
     "noMembershipWarning": "This member has no active membership. Please subscribe before check-in.",
+    "alreadyCheckedInWarning": "This member already checked in today at {{time}}. Do you want to check in again?",
     "checkInSuccess": "Check-in successful!",
     "memberNotFound": "Member not found with this phone number",
     "alreadyCheckedIn": "Already checked in today"

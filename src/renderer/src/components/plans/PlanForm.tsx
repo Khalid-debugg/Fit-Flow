@@ -5,6 +5,7 @@ import { Button } from '@renderer/components/ui/button'
 import { Plan } from '@renderer/models/plan'
 import { Checkbox } from '../ui/checkbox'
 import { Textarea } from '../ui/textarea'
+import { useSettings } from '@renderer/hooks/useSettings'
 
 interface PlanFormProps {
   formData: Partial<Plan>
@@ -22,7 +23,7 @@ export default function PlanForm({
   submitLabel
 }: PlanFormProps) {
   const { t } = useTranslation('plans')
-
+  const { settings } = useSettings()
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <div className="space-y-2">
@@ -54,7 +55,7 @@ export default function PlanForm({
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="price" className="text-gray-200">
-            {t('form.price')} *
+            {t('form.price')} ({settings?.currency}) *
           </Label>
           <Input
             id="price"

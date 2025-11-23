@@ -2,6 +2,7 @@
   "title": "الحضور",
   "quickCheckIn": "تسجيل حضور سريع",
   "scanPrompt": "امسح الباركود أو أدخل رقم العضو",
+  "barcodeReady": "ماسح الباركود جاهز",
   "phoneNumber": "رقم الهاتف",
   "enterPhoneNumber": "أدخل رقم الهاتف...",
   "pressEnter": "اضغط Enter لتسجيل الحضور",
@@ -40,6 +41,7 @@
     "noMembership": "لا يوجد اشتراك نشط",
     "expiredWarning": "اشتراك هذا العضو منتهي. يرجى التجديد قبل تسجيل الحضور.",
     "noMembershipWarning": "هذا العضو ليس لديه اشتراك نشط. يرجى الاشتراك قبل تسجيل الحضور.",
+    "alreadyCheckedInWarning": "هذا العضو سجل حضوره اليوم في الساعة {{time}}. هل تريد تسجيل الحضور مرة أخرى؟",
     "checkInSuccess": "تم تسجيل الحضور بنجاح!",
     "memberNotFound": "العضو غير موجود بهذا رقم الهاتف",
     "alreadyCheckedIn": "تم تسجيل الحضور اليوم بالفعل"

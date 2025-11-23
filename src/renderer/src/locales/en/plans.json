@@ -60,7 +60,7 @@
   "form": {
     "name": "Name",
     "price": "Price",
-    "duration": "Duration",
+    "duration": "Duration (in days)",
     "description": "Description",
     "status": "Status",
     "cancel": "Cancel",

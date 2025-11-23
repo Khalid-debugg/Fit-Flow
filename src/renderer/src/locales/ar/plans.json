@@ -76,7 +76,7 @@
   "form": {
     "name": "الاسم",
     "price": "السعر",
-    "duration": "المدة",
+    "duration": "المدة (بالأيام)",
     "description": "الوصف",
     "status": "الحالة",
     "cancel": "إلغاء",
