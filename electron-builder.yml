@@ -1,5 +1,5 @@
-appId: com.electron.app
-productName: fitflow
+appId: com.fitflow.app
+productName: FitFlow
 directories:
   buildResources: build
 files:
