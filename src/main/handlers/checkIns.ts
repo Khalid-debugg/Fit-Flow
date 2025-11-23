@@ -110,21 +110,14 @@ export function registerCheckInHandlers() {
     const id = generateEncryptedId()
     const checkInTime = new Date().toISOString()
 
-    try {
-      const stmt = db.prepare(`
-        INSERT INTO check_ins (id, member_id, check_in_time)
-        VALUES (?, ?, ?)
-      `)
+    const stmt = db.prepare(`
+      INSERT INTO check_ins (id, member_id, check_in_time)
+      VALUES (?, ?, ?)
+    `)
 
-      stmt.run(id, memberId, checkInTime)
+    stmt.run(id, memberId, checkInTime)
 
-      return { id, memberId, checkInTime }
-    } catch (error) {
-      if ((error as Error).message.includes('UNIQUE constraint failed')) {
-        throw new Error('DUPLICATE_CHECK_IN')
-      }
-      throw error
-    }
+    return { id, memberId, checkInTime }
   })
 
   ipcMain.handle('checkIns:checkToday', async (_event, memberId: string) => {

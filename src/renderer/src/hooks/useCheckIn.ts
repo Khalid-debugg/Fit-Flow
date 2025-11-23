@@ -24,12 +24,18 @@ export function useCheckIn() {
       )
 
       if (existingCheckIn) {
-        playError()
+        playWarning()
         const time = new Date(existingCheckIn.checkInTime).toLocaleTimeString('en-US', {
           hour: '2-digit',
           minute: '2-digit'
         })
-        return { success: false, error: `Already checked in today at ${time}` }
+        const memberWithCheckIn = {
+          ...member,
+          alreadyCheckedIn: true,
+          checkInTime: time
+        }
+        setMemberCard(memberWithCheckIn)
+        return { success: true, member: memberWithCheckIn }
       }
 
       // Show member card for confirmation
@@ -62,12 +68,19 @@ export function useCheckIn() {
       )
 
       if (existingCheckIn) {
-        playError()
+        playWarning()
         const time = new Date(existingCheckIn.checkInTime).toLocaleTimeString('en-US', {
           hour: '2-digit',
           minute: '2-digit'
         })
-        return { success: false, error: `Already checked in today at ${time}` }
+        // Add duplicate check-in info to member object
+        const memberWithCheckIn = {
+          ...member,
+          alreadyCheckedIn: true,
+          checkInTime: time
+        }
+        setMemberCard(memberWithCheckIn)
+        return { success: true, member: memberWithCheckIn }
       }
 
       // Show member card for confirmation
@@ -90,8 +103,10 @@ export function useCheckIn() {
       // Create check-in
       await window.electron.ipcRenderer.invoke('checkIns:create', memberCard.id)
 
-      // Play sound based on membership status
-      if (memberCard.status === 'active') {
+      // Play sound based on membership status or duplicate check-in
+      if (memberCard.alreadyCheckedIn) {
+        playWarning()
+      } else if (memberCard.status === 'active') {
         playSuccess()
       } else {
         playWarning()
@@ -103,12 +118,6 @@ export function useCheckIn() {
       return { success: true }
     } catch (error) {
       console.error('Check-in failed:', error)
-
-      if ((error as Error).message === 'DUPLICATE_CHECK_IN') {
-        playError()
-        return { success: false, error: 'Already checked in today' }
-      }
-
       playError()
       return { success: false, error: 'Failed to create check-in' }
     } finally {

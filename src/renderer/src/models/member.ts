@@ -19,6 +19,8 @@ export type Member = {
     endDate: string
     status: string
   }
+  alreadyCheckedIn?: boolean
+  checkInTime?: string
 }
 export type MemberDbRow = {
   id: number

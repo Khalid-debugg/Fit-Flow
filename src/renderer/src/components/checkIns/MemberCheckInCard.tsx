@@ -134,13 +134,15 @@ export default function MemberCheckInCard({
             )}
           </div>
 
-          {(member.status === 'expired' || member.status === 'inactive') && (
+          {(member.status === 'expired' || member.status === 'inactive' || member.alreadyCheckedIn) && (
             <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3 flex items-start gap-3">
               <AlertCircle className="w-5 h-5 text-yellow-400 mt-0.5 shrink-0" />
               <p className="text-sm text-yellow-200">
-                {member.status === 'expired'
-                  ? t('messages.expiredWarning')
-                  : t('messages.noMembershipWarning')}
+                {member.alreadyCheckedIn
+                  ? t('messages.alreadyCheckedInWarning', { time: member.checkInTime })
+                  : member.status === 'expired'
+                    ? t('messages.expiredWarning')
+                    : t('messages.noMembershipWarning')}
               </p>
             </div>
           )}
