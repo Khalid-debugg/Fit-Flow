@@ -10,6 +10,7 @@ import { registerCheckInHandlers } from './handlers/checkIns'
 import { registerDashboardHandlers } from './handlers/dashboard'
 import { registerReportsHandlers } from './handlers/reports'
 import { registerSettingsHandlers, performAutoBackup } from './handlers/settings'
+import { registerLicenseHandlers } from './license'
 
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
@@ -53,6 +54,7 @@ app.whenReady().then(async () => {
   })
 
   initDatabase()
+  registerLicenseHandlers()
   registerDashboardHandlers()
   registerMemberHandlers()
   registerPlanHandlers()

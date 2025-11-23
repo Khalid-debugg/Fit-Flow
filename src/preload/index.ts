@@ -1,8 +1,15 @@
-import { contextBridge } from 'electron'
+import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
 // Custom APIs for renderer
-const api = {}
+const api = {
+  license: {
+    getHardwareId: () => ipcRenderer.invoke('license:getHardwareId'),
+    isLicensed: () => ipcRenderer.invoke('license:isLicensed'),
+    activate: (licenseKey: string) => ipcRenderer.invoke('license:activate', licenseKey),
+    getStatus: () => ipcRenderer.invoke('license:getStatus')
+  }
+}
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise

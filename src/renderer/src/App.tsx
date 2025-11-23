@@ -5,6 +5,8 @@ import { Toaster } from 'sonner'
 import { lazy, Suspense } from 'react'
 import { LoaderCircle } from 'lucide-react'
 import { SettingsProvider } from './contexts/SettingsContext'
+import { LicenseActivation } from './components/license/LicenseActivation'
+import { useLicense } from './hooks/useLicense'
 const Dashboard = lazy(() => import('./pages/Dashboard'))
 const Members = lazy(() => import('./pages/Members'))
 const Memberships = lazy(() => import('./pages/Memberships'))
@@ -14,8 +16,30 @@ const Reports = lazy(() => import('./pages/Reports'))
 const Settings = lazy(() => import('./pages/Settings'))
 function App() {
   const { i18n } = useTranslation()
+  const { isLicensed, isCheckingLicense, setIsLicensed } = useLicense()
 
   document.documentElement.dir = i18n.language === 'ar' ? 'rtl' : 'ltr'
+
+  const handleActivated = (): void => {
+    setIsLicensed(true)
+  }
+
+  if (isCheckingLicense) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-gray-50">
+        <LoaderCircle className="h-20 w-20 animate-spin text-gray-700" />
+      </div>
+    )
+  }
+
+  if (!isLicensed) {
+    return (
+      <div className="h-screen bg-gray-50">
+        <Toaster />
+        <LicenseActivation open={true} onActivated={handleActivated} />
+      </div>
+    )
+  }
 
   return (
     <HashRouter>
