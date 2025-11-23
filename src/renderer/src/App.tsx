@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { HashRouter, Routes, Route } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from './components/Layout/Layout'
 import { Toaster } from 'sonner'
@@ -18,7 +18,7 @@ function App() {
   document.documentElement.dir = i18n.language === 'ar' ? 'rtl' : 'ltr'
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <SettingsProvider>
         <Layout>
           <Toaster
@@ -92,7 +92,7 @@ function App() {
           </Routes>
         </Layout>
       </SettingsProvider>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
