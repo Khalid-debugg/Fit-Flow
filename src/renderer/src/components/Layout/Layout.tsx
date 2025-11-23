@@ -1,10 +1,10 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { menuItems } from './constants'
 import { useState } from 'react'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Dumbbell, Languages, ShieldUser } from 'lucide-react'
 import { Button } from '../ui/button'
 import { useSettings } from '@renderer/hooks/useSettings'
+import { menuItems } from './constants'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation()
@@ -23,91 +23,220 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex h-screen bg-gray-900 text-white" dir={isRTL ? 'rtl' : 'ltr'}>
-      {/* Sidebar */}
       <aside
-        className={`relative bg-gray-800 border-r border-gray-700 flex flex-col transition-[width] duration-300 ${
+        className={`relative bg-gray-800 border-r border-gray-700 flex flex-col transition-[width] duration-300 ease-in-out ${
           collapsed ? 'w-20' : 'w-64'
         }`}
       >
-        {/* Toggle Arrow */}
         <Button
           onClick={() => setCollapsed(!collapsed)}
-          className={`absolute top-6 bg-gray-700 hover:bg-gray-600 rounded-full p-2 transition-colors w-10 h-10 ${
-            isRTL ? '-left-5' : '-right-5'
-          }`}
+          className={`absolute top-6 z-10 w-10 h-10 p-0 rounded-full
+            bg-gradient-to-br from-gray-700/80 to-gray-800/80 backdrop-blur-sm
+            border border-gray-600/50 shadow-lg
+            hover:from-blue-600/80 hover:to-purple-600/80 hover:border-blue-500/50
+            hover:shadow-blue-500/20 hover:shadow-xl hover:scale-110
+            active:scale-95
+            transition-all duration-300 ease-in-out
+            ${isRTL ? '-left-5' : '-right-5'}
+          `}
         >
-          {/* Flip arrow direction correctly */}
-          {isRTL ? (
-            collapsed ? (
-              <ChevronLeft />
+          <div className="transition-transform duration-300 ease-in-out">
+            {isRTL ? (
+              collapsed ? (
+                <ChevronLeft className="w-5 h-5" />
+              ) : (
+                <ChevronRight className="w-5 h-5" />
+              )
+            ) : collapsed ? (
+              <ChevronRight className="w-5 h-5" />
             ) : (
-              <ChevronRight />
-            )
-          ) : collapsed ? (
-            <ChevronRight />
-          ) : (
-            <ChevronLeft />
-          )}
+              <ChevronLeft className="w-5 h-5" />
+            )}
+          </div>
         </Button>
 
-        {/* Header */}
-        <div className="p-6 border-b border-gray-700 flex items-center gap-2">
-          <span className="text-2xl">🏋️</span>
+        <div
+          className={`border-b border-gray-700/50 flex items-center relative overflow-hidden group transition-all duration-300 ${
+            collapsed ? 'pt-20 pb-4 px-3 justify-center' : 'p-6 gap-3'
+          }`}
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 via-purple-600/5 to-pink-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+          <div className="relative flex items-center justify-center transition-all duration-300">
+            <div
+              className={`absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity duration-300 ${
+                collapsed ? '' : 'animate-pulse'
+              }`}
+            />
+            <div
+              className={`relative rounded-xl bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 shadow-lg shadow-blue-500/30 group-hover:shadow-blue-500/50 group-hover:scale-110 transition-all duration-300 ring-2 ring-blue-400/20 group-hover:ring-blue-400/40 ${
+                collapsed ? 'w-12 h-12 p-2.5' : 'w-12 h-12 p-2.5'
+              }`}
+            >
+              <Dumbbell className="w-full h-full text-white drop-shadow-lg group-hover:rotate-12 transition-transform duration-300" />
+            </div>
+          </div>
+
           {!collapsed && (
-            <div>
-              <h1 className="text-2xl font-bold bg-linear-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+            <div className="relative flex-1 transition-all duration-300">
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent drop-shadow-sm group-hover:from-blue-300 group-hover:via-purple-300 group-hover:to-pink-300 transition-all duration-300">
                 {t('app.name')}
               </h1>
-              <p className="text-sm text-gray-400 mt-1">{t('app.tagline')}</p>
+              <p className="text-xs text-gray-400 mt-0.5 group-hover:text-gray-300 transition-colors duration-300 font-medium">
+                {t('app.tagline')}
+              </p>
             </div>
+          )}
+
+          {!collapsed && (
+            <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-blue-500/10 to-purple-500/10 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           )}
         </div>
 
-        {/* Menu */}
-        <nav className="flex-1 p-4 space-y-2">
+        <nav className={`flex-1 space-y-2 ${collapsed ? 'px-2 py-4' : 'p-4'}`}>
           {menuItems.map((item) => {
             const isActive = location?.pathname === item.path
             return (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                  isActive ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-700'
-                }`}
+                className={`
+                  flex items-center rounded-lg
+                  transition-all duration-300 ease-in-out
+                  group relative overflow-hidden
+                  ${collapsed ? 'justify-center p-3' : 'gap-3 px-4 py-3'}
+                  ${
+                    isActive
+                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/30'
+                      : 'text-gray-300 hover:bg-gray-700/50 hover:text-white hover:shadow-md hover:translate-x-1'
+                  }
+                `}
               >
-                <span className="text-xl">{item.icon}</span>
-                {!collapsed && <span className="font-medium">{t(item.label)}</span>}
+                <div
+                  className={`
+                  relative flex items-center justify-center w-9 h-9 rounded-lg
+                  transition-all duration-300 ease-in-out
+                  ${
+                    isActive
+                      ? 'bg-white/20 shadow-lg shadow-white/20'
+                      : 'group-hover:bg-blue-500/20 group-hover:shadow-md group-hover:shadow-blue-500/30'
+                  }
+                `}
+                >
+                  <span
+                    className={`
+                    text-xl transition-all duration-300 ease-in-out
+                    ${
+                      isActive
+                        ? 'scale-110 drop-shadow-[0_0_8px_rgba(255,255,255,0.6)] animate-pulse'
+                        : 'group-hover:scale-125 group-hover:drop-shadow-[0_0_6px_rgba(96,165,250,0.8)]'
+                    }
+                  `}
+                  >
+                    {item.icon}
+                  </span>
+                  <div
+                    className={`
+                    absolute inset-0 rounded-lg
+                    transition-all duration-300
+                    ${
+                      isActive
+                        ? 'ring-2 ring-white/40 ring-offset-2 ring-offset-blue-600/50'
+                        : 'group-hover:ring-2 group-hover:ring-blue-400/40'
+                    }
+                  `}
+                  />
+                </div>
+
+                {!collapsed && (
+                  <span className="font-medium transition-all duration-300">{t(item.label)}</span>
+                )}
+                {isActive && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
+                )}
               </Link>
             )
           })}
         </nav>
 
-        {/* Footer */}
         <div className="p-4 border-t border-gray-700 space-y-4">
           <Button
             onClick={toggleLanguage}
             variant="default"
-            className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors text-sm"
+            className="w-full group relative overflow-hidden
+              bg-gradient-to-br from-gray-700 to-gray-800
+              hover:from-blue-600 hover:to-purple-600
+              border border-gray-600/50
+              hover:border-blue-500/50
+              shadow-md hover:shadow-lg hover:shadow-blue-500/20
+              rounded-lg px-4 py-2.5
+              transition-all duration-300 ease-in-out
+              hover:scale-105 active:scale-95
+            "
           >
-            <span>🌐</span>
-            {!collapsed && <span>{i18n.language === 'en' ? 'العربية' : 'English'}</span>}
+            <div className="flex items-center justify-center gap-2 relative z-10">
+              <span className="text-lg transition-transform duration-300 group-hover:rotate-12">
+                <Languages />
+              </span>
+              {!collapsed && (
+                <span className="font-medium text-sm">
+                  {i18n.language === 'en' ? 'العربية' : 'English'}
+                </span>
+              )}
+            </div>
           </Button>
 
-          <div className={`flex items-center ${collapsed ? 'justify-center' : 'gap-3 px-2'} py-3`}>
-            <div className="w-10 h-10 rounded-full bg-linear-to-r from-blue-500 to-purple-500 flex items-center justify-center">
-              <span className="text-lg">👤</span>
+          <div
+            className={`
+              group flex items-center ${collapsed ? 'justify-center' : 'gap-3 px-3'} py-3
+              rounded-lg cursor-pointer
+              transition-all duration-300 ease-in-out
+              hover:bg-gray-700/50
+              relative overflow-hidden
+            `}
+          >
+            <div className="relative">
+              <div
+                className="
+                w-11 h-11 rounded-full
+                bg-linear-to-r from-blue-500 to-purple-500
+                flex items-center justify-center
+                shadow-lg shadow-blue-500/30
+                ring-2 ring-gray-700
+                group-hover:ring-blue-400/50
+                group-hover:shadow-blue-500/50
+                group-hover:scale-110
+                transition-all duration-300 ease-in-out
+              "
+              >
+                <span className="text-lg text-white transition-transform duration-300 group-hover:scale-110">
+                  <ShieldUser className="w-5 h-5" />
+                </span>
+              </div>
+              <div
+                className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-gray-800
+                group-hover:scale-110 transition-transform duration-300
+                shadow-lg shadow-green-500/50
+              "
+              />
             </div>
+
             {!collapsed && (
-              <div>
-                <p className="font-medium">{t('user.admin')}</p>
-                <p className="text-xs text-gray-400">{t('user.gymOwner')}</p>
+              <div className="transition-all duration-300 flex-1">
+                <p className="font-semibold text-white group-hover:text-blue-400 transition-colors duration-300">
+                  {t('user.admin')}
+                </p>
+                <p className="text-xs text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
+                  {t('user.gymOwner')}
+                </p>
               </div>
             )}
+
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/0 via-purple-600/5 to-blue-600/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
           </div>
         </div>
       </aside>
 
-      {/* Main content */}
       <main className="flex-1 overflow-auto">
         <div className="p-8">{children}</div>
       </main>
