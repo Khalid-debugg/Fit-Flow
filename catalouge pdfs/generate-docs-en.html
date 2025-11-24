@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FitFlow User Guide - English</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
+          'Helvetica Neue', sans-serif;
+        background: #0a0a0a;
+        color: #ffffff;
+      }
+
+      .page {
+        width: 210mm;
+        min-height: 297mm;
+        padding: 20mm;
+        background: #1a1a1a;
+        page-break-after: always;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* Cover Page */
+      .cover {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+
+      .logo {
+        font-size: 72px;
+        font-weight: 900;
+        background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 20px;
+        letter-spacing: -2px;
+      }
+
+      .subtitle {
+        font-size: 32px;
+        font-weight: 600;
+        color: #9ca3af;
+        margin-bottom: 40px;
+      }
+
+      .version {
+        font-size: 18px;
+        color: #6b7280;
+        margin-top: 60px;
+      }
+
+      /* Content Pages */
+      .content {
+        position: relative;
+        z-index: 1;
+      }
+
+      h1 {
+        font-size: 42px;
+        font-weight: 900;
+        color: #ffffff;
+        margin-bottom: 30px;
+        border-left: 6px solid #3b82f6;
+        padding: 15px 20px;
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
+        border-radius: 8px;
+      }
+
+      h2 {
+        font-size: 28px;
+        font-weight: 700;
+        color: #ffffff;
+        margin: 30px 0 20px 0;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #374151;
+      }
+
+      h3 {
+        font-size: 20px;
+        font-weight: 600;
+        color: #3b82f6;
+        margin: 20px 0 15px 0;
+      }
+
+      p,
+      li {
+        font-size: 16px;
+        line-height: 1.8;
+        color: #e5e7eb;
+        margin-bottom: 15px;
+      }
+
+      ul {
+        list-style: none;
+        padding-left: 0;
+      }
+
+      li {
+        padding-left: 25px;
+        position: relative;
+      }
+
+      li::before {
+        content: '→';
+        position: absolute;
+        left: 0;
+        color: #3b82f6;
+        font-weight: 700;
+      }
+
+      .feature-box {
+        background: #1e293b;
+        border: 1px solid #374151;
+        border-radius: 12px;
+        padding: 20px;
+        margin: 20px 0;
+      }
+
+      .feature-box h3 {
+        margin-top: 0;
+        color: #60a5fa;
+      }
+
+      .step {
+        background: #1e293b;
+        border-left: 4px solid #3b82f6;
+        padding: 15px 20px;
+        margin: 15px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .step strong {
+        color: #3b82f6;
+        font-weight: 700;
+      }
+
+      .badge {
+        display: inline-block;
+        background: #3b82f6;
+        color: #ffffff;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        margin: 0 5px 5px 0;
+      }
+
+      .badge.purple {
+        background: #8b5cf6;
+      }
+
+      .badge.green {
+        background: #10b981;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #374151;
+      }
+
+      th {
+        background: rgba(59, 130, 246, 0.1);
+        color: #3b82f6;
+        font-weight: 700;
+      }
+
+      .footer {
+        position: absolute;
+        bottom: 20mm;
+        left: 20mm;
+        right: 20mm;
+        font-size: 12px;
+        color: #6b7280;
+        border-top: 1px solid #374151;
+        padding-top: 10px;
+      }
+
+      @media print {
+        .page {
+          page-break-after: always;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Cover Page -->
+    <div class="page cover">
+      <div class="logo">FitFlow</div>
+      <div class="subtitle">Gym Management System</div>
+      <div style="font-size: 24px; color: #9ca3af; margin: 20px 0">User Guide</div>
+      <div style="margin-top: 40px">
+        <span class="badge">Member Management</span>
+        <span class="badge purple">Plans & Memberships</span>
+        <span class="badge green">Check-In System</span>
+        <span class="badge">Reports & Analytics</span>
+      </div>
+      <div class="version">Version 1.0 | 2025</div>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="page content">
+      <h1>Table of Contents</h1>
+      <div style="margin-top: 40px">
+        <h3 style="color: #60a5fa; margin-bottom: 30px">Quick Start</h3>
+        <ul style="font-size: 16px">
+          <li>Dashboard Overview</li>
+          <li>First-Time Setup</li>
+        </ul>
+
+        <h3 style="color: #60a5fa; margin: 30px 0">Core Features</h3>
+        <ul style="font-size: 16px">
+          <li>Member Management</li>
+          <li>Plans Management</li>
+          <li>Memberships Management</li>
+          <li>Check-In System</li>
+          <li>Reports & Analytics</li>
+          <li>Settings & Backup</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="page content">
+      <h1>Dashboard</h1>
+
+      <p>Your central hub for monitoring gym operations at a glance.</p>
+
+      <div class="feature-box">
+        <h3>Key Metrics</h3>
+        <ul>
+          <li><strong>Active Members:</strong> Current count of members with active memberships</li>
+          <li><strong>Today's Check-Ins:</strong> Real-time check-in counter</li>
+          <li><strong>Monthly Revenue:</strong> Current month earnings</li>
+          <li><strong>Expiring Soon:</strong> Memberships expiring in the next 7 days</li>
+        </ul>
+      </div>
+
+      <h2>Quick Actions</h2>
+      <div class="step">
+        <strong>Add New Member:</strong> Quickly register a new gym member with or without immediate
+        subscription
+      </div>
+      <div class="step">
+        <strong>Quick Check-In:</strong> Fast member check-in using barcode scanning or manual
+        search
+      </div>
+
+      <h2>Revenue Chart</h2>
+      <p>
+        Visual representation of monthly revenue trends. Track your gym's financial performance over
+        the last 6 months.
+      </p>
+
+      <h2>Expiring Memberships Alert</h2>
+      <p>
+        Proactive list of members whose subscriptions are ending soon. Take action to retain members
+        before expiration.
+      </p>
+    </div>
+
+    <!-- First-Time Setup -->
+    <div class="page content">
+      <h1>First-Time Setup</h1>
+
+      <p>
+        Welcome to FitFlow! Follow these steps to get your gym management system up and running
+        quickly.
+      </p>
+
+      <h2>Step 1: Configure Gym Information</h2>
+      <div class="step">
+        <strong>Navigate to Settings:</strong> Go to the Settings section from the main navigation
+      </div>
+      <div class="step">
+        <strong>Enter Gym Details:</strong>
+        <ul style="margin-top: 10px">
+          <li>Gym Name (displayed on reports and member cards)</li>
+          <li>Phone Number</li>
+          <li>Address</li>
+          <li>Gender Restrictions (Mixed/Male Only/Female Only)</li>
+          <li>Preferred Language (English/Arabic)</li>
+        </ul>
+      </div>
+
+      <h2>Step 2: Create Your First Plans</h2>
+      <p>
+        Set up membership plans before adding members. Common plans include monthly, quarterly, and
+        annual subscriptions.
+      </p>
+      <div class="step">
+        <strong>Go to Plans Section:</strong> Click on "Plans" in the navigation
+      </div>
+      <div class="step">
+        <strong>Add Plans:</strong> Create at least 2-3 basic plans (e.g., Monthly - 30 days,
+        Quarterly - 90 days)
+      </div>
+    </div>
+    <div class="page content">
+      <h2>Step 3: Add Your First Members</h2>
+      <p>
+        Start building your member database. You can import existing members or add them one by one.
+      </p>
+
+      <h2>Step 4: Enable Auto Backup</h2>
+      <div class="feature-box">
+        <h3>Data Protection</h3>
+        <p>
+          FitFlow automatically creates daily backups when you launch the app. Backups are stored in
+          Documents/FitFlow/Backups and kept for 30 days.
+        </p>
+      </div>
+
+      <h2>You're Ready!</h2>
+      <p>
+        Your gym management system is now set up. Start by adding members, creating subscriptions,
+        and tracking check-ins. Explore the dashboard to monitor your gym's performance.
+      </p>
+    </div>
+
+    <!-- Members Management -->
+    <div class="page content">
+      <h1>Member Management</h1>
+
+      <h2>Adding New Members</h2>
+
+      <div class="step"><strong>Step 1:</strong> Click "Add New" button in Members section</div>
+      <div class="step">
+        <strong>Step 2:</strong> Fill in member details:
+        <ul style="margin-top: 10px">
+          <li>Name (required)</li>
+          <li>Phone (required, unique)</li>
+          <li>Email (optional)</li>
+          <li>Gender</li>
+          <li>Address (optional)</li>
+          <li>Join Date</li>
+          <li>Notes (optional)</li>
+        </ul>
+      </div>
+      <div class="step"><strong>Step 3:</strong> Optionally add subscription immediately</div>
+      <div class="step"><strong>Step 4:</strong> Click "Add Member"</div>
+    </div>
+
+    <div class="page content">
+      <div class="feature-box">
+        <h3>Member Features</h3>
+        <ul>
+          <li><strong>Unique Barcode:</strong> Auto-generated for each member</li>
+          <li><strong>Member Card:</strong> Printable with barcode for quick check-ins</li>
+          <li><strong>Full History:</strong> View all memberships and check-ins</li>
+          <li>
+            <strong>Status Tracking:</strong> Active (has valid membership) / Inactive (never had
+            membership) / Expired (had memberships, all expired)
+          </li>
+        </ul>
+      </div>
+
+      <h2>Editing Members</h2>
+      <p>Click the edit icon on any member row. Update details and save changes.</p>
+
+      <h2>Viewing Member Details</h2>
+      <p>Click member name to view complete profile including:</p>
+      <ul>
+        <li>Personal information</li>
+        <li>Active and past memberships</li>
+        <li>Check-in history</li>
+        <li>Payment records</li>
+      </ul>
+    </div>
+
+    <!-- Plans Management -->
+    <div class="page content">
+      <h1>Plans Management</h1>
+
+      <h2>Creating Plans</h2>
+
+      <div class="step"><strong>Step 1:</strong> Navigate to Plans section</div>
+      <div class="step"><strong>Step 2:</strong> Click "Add New Plan"</div>
+      <div class="step">
+        <strong>Step 3:</strong> Configure plan:
+        <ul style="margin-top: 10px">
+          <li>Plan Name</li>
+          <li>Duration (days)</li>
+          <li>Price</li>
+          <li>Features (optional)</li>
+          <li>Description (optional)</li>
+        </ul>
+      </div>
+      <div class="step"><strong>Step 4:</strong> Save the plan</div>
+    </div>
+    <div class="page content">
+      <div class="feature-box">
+        <h3>Plan Types Examples</h3>
+        <table>
+          <tr>
+            <th>Plan Name</th>
+            <th>Duration</th>
+            <th>Typical Price</th>
+          </tr>
+          <tr>
+            <td>Monthly</td>
+            <td>30 days</td>
+            <td>Variable</td>
+          </tr>
+          <tr>
+            <td>Quarterly</td>
+            <td>90 days</td>
+            <td>Discounted</td>
+          </tr>
+          <tr>
+            <td>Annual</td>
+            <td>365 days</td>
+            <td>Best Value</td>
+          </tr>
+          <tr>
+            <td>Student</td>
+            <td>30 days</td>
+            <td>Discounted</td>
+          </tr>
+        </table>
+      </div>
+
+      <h2>Managing Plans</h2>
+      <ul>
+        <li>
+          <strong>Edit:</strong> Modify plan details (price changes don't affect existing
+          memberships)
+        </li>
+        <li>
+          <strong>Deactivate:</strong> Hide plans from new subscriptions while keeping historical
+          data
+        </li>
+        <li><strong>Filter:</strong> View active or all plans</li>
+      </ul>
+    </div>
+
+    <!-- Memberships Management -->
+    <div class="page content">
+      <h1>Memberships Management</h1>
+
+      <h2>Creating Memberships</h2>
+
+      <div class="step"><strong>Step 1:</strong> Go to Memberships section or Member profile</div>
+      <div class="step"><strong>Step 2:</strong> Click "Add New Membership"</div>
+      <div class="step"><strong>Step 3:</strong> Select member and plan</div>
+      <div class="step">
+        <strong>Step 4:</strong> Set dates:
+        <ul style="margin-top: 10px">
+          <li>Start Date</li>
+          <li>End Date (auto-calculated based on plan)</li>
+        </ul>
+      </div>
+      <div class="step">
+        <strong>Step 5:</strong> Enter payment details:
+        <ul style="margin-top: 10px">
+          <li>Amount Paid</li>
+          <li>Payment Method (Cash/Card/Bank Transfer)</li>
+          <li>Payment Date</li>
+          <li>Notes (optional)</li>
+        </ul>
+      </div>
+      <div class="step"><strong>Step 6:</strong> Save membership</div>
+    </div>
+    <div class="page content">
+      <div class="feature-box">
+        <h3>Membership Status</h3>
+        <ul>
+          <li><span class="badge green">Active</span> Currently valid subscription</li>
+          <li><span class="badge purple">Upcoming</span> Starts in the future</li>
+          <li><span class="badge">Expired</span> Past end date</li>
+        </ul>
+      </div>
+
+      <h2>Renewing Memberships</h2>
+      <p>From member profile, create a new membership with start date after current expiration.</p>
+
+      <h2>Filtering Memberships</h2>
+      <ul>
+        <li>Filter by status (Active/Expired/All)</li>
+        <li>Search by member name</li>
+        <li>Sort by date or member</li>
+      </ul>
+    </div>
+
+    <!-- Check-In System -->
+    <div class="page content">
+      <h1>Check-In System</h1>
+
+      <h2>Quick Check-In Widget</h2>
+
+      <div class="step">
+        <strong>Method 1 - Barcode Scan:</strong> Scan member's barcode card for instant check-in
+      </div>
+      <div class="step">
+        <strong>Method 2 - Manual Search:</strong> Search by name or phone number
+      </div>
+      <div class="step"><strong>Method 3 - Member ID:</strong> Enter member ID directly</div>
+
+      <div class="feature-box">
+        <h3>Check-In Validation</h3>
+        <ul>
+          <li><strong>Active Membership:</strong> Member must have valid subscription</li>
+          <li><strong>Warning:</strong> Shows warning if member already checked in today</li>
+          <li><strong>Real-time:</strong> Instant feedback on success/failure</li>
+        </ul>
+      </div>
+    </div>
+    <div class="page content">
+      <h2>Check-In History</h2>
+      <p>View complete check-in log with:</p>
+      <ul>
+        <li>Member name</li>
+        <li>Check-in date and time</li>
+        <li>Member status at check-in</li>
+        <li>Filter by date range</li>
+        <li>Export to PDF report</li>
+      </ul>
+
+      <h2>Member Check-In Card</h2>
+      <p>Print member cards directly from member profile. Cards include:</p>
+      <ul>
+        <li>Member name</li>
+        <li>Unique barcode</li>
+        <li>Member ID</li>
+        <li>Professional design</li>
+      </ul>
+    </div>
+
+    <!-- Reports & Analytics -->
+    <div class="page content">
+      <h1>Reports & Analytics</h1>
+
+      <h2>Available Reports</h2>
+
+      <div class="feature-box">
+        <h3>1. Members Report</h3>
+        <ul>
+          <li>Complete member list</li>
+          <li>Status (Active/Inactive/Expired)</li>
+          <li>Join dates</li>
+          <li>Contact information</li>
+        </ul>
+      </div>
+
+      <div class="feature-box">
+        <h3>2. Memberships Report</h3>
+        <ul>
+          <li>All subscriptions</li>
+          <li>Active vs expired</li>
+          <li>Plan distribution</li>
+          <li>Revenue breakdown</li>
+        </ul>
+      </div>
+    </div>
+    <div class="page content">
+      <div class="feature-box">
+        <h3>3. Check-Ins Report</h3>
+        <ul>
+          <li>Daily/weekly/monthly attendance</li>
+          <li>Member activity patterns</li>
+          <li>Peak hours analysis</li>
+          <li>Date range filtering</li>
+        </ul>
+      </div>
+
+      <div class="feature-box">
+        <h3>4. Revenue Report</h3>
+        <ul>
+          <li>Payment collection summary</li>
+          <li>Payment method breakdown</li>
+          <li>Date range analysis</li>
+          <li>Month-over-month comparison</li>
+        </ul>
+      </div>
+
+      <h2>Generating Reports</h2>
+      <div class="step"><strong>Step 1:</strong> Select report type</div>
+      <div class="step"><strong>Step 2:</strong> Apply filters (dates, status, etc.)</div>
+      <div class="step"><strong>Step 3:</strong> Preview on screen</div>
+      <div class="step"><strong>Step 4:</strong> Export to PDF</div>
+    </div>
+
+    <!-- Settings & Backup -->
+    <div class="page content">
+      <h1>Settings & Configuration</h1>
+
+      <h2>General Settings</h2>
+
+      <div class="feature-box">
+        <h3>Gym Information</h3>
+        <ul>
+          <li>Gym Name</li>
+          <li>Phone Number</li>
+          <li>Address</li>
+          <li>Displayed on reports and member cards</li>
+        </ul>
+      </div>
+
+      <div class="feature-box">
+        <h3>Gender Restrictions</h3>
+        <ul>
+          <li><strong>Mixed:</strong> Accept all members</li>
+          <li><strong>Male Only:</strong> Restrict to male members</li>
+          <li><strong>Female Only:</strong> Restrict to female members</li>
+        </ul>
+      </div>
+
+      <div class="feature-box">
+        <h3>Language</h3>
+        <ul>
+          <li>English</li>
+          <li>Arabic (RTL support)</li>
+          <li>Instant UI switch</li>
+        </ul>
+      </div>
+    </div>
+    <div class="page content">
+      <h2>Backup & Restore</h2>
+
+      <h3>Manual Backup</h3>
+      <div class="step"><strong>Step 1:</strong> Go to Settings</div>
+      <div class="step"><strong>Step 2:</strong> Click "Create Backup"</div>
+      <div class="step"><strong>Step 3:</strong> Choose save location</div>
+      <div class="step"><strong>Step 4:</strong> Backup file created with timestamp</div>
+
+      <h3>Auto Backup</h3>
+      <ul>
+        <li>Automatically runs on app launch</li>
+        <li>Creates daily backup</li>
+        <li>Keeps last 30 backups</li>
+        <li>Stored in Documents/FitFlow/Backups</li>
+      </ul>
+
+      <h3>Restore from Backup</h3>
+      <div class="step"><strong>Step 1:</strong> Click "Restore Backup"</div>
+      <div class="step"><strong>Step 2:</strong> Select backup file</div>
+      <div class="step"><strong>Step 3:</strong> Confirm restoration</div>
+      <div class="step"><strong>Step 4:</strong> App restarts with restored data</div>
+    </div>
+
+    <!-- Tips & Best Practices -->
+    <div class="page content">
+      <h1>Tips & Best Practices</h1>
+
+      <div class="feature-box">
+        <h3>🎯 Daily Operations</h3>
+        <ul>
+          <li>Check dashboard first thing every morning</li>
+          <li>Review expiring memberships weekly</li>
+          <li>Use quick check-in for efficiency</li>
+          <li>Print member cards for new members immediately</li>
+        </ul>
+      </div>
+
+      <div class="feature-box">
+        <h3>💰 Financial Management</h3>
+        <ul>
+          <li>Record payments immediately</li>
+          <li>Generate monthly revenue reports</li>
+          <li>Track payment methods for reconciliation</li>
+          <li>Review plan pricing regularly</li>
+        </ul>
+      </div>
+    </div>
+    <div class="page content">
+      <div class="feature-box">
+        <h3>🔒 Data Security</h3>
+        <ul>
+          <li>Create manual backups before major changes</li>
+          <li>Keep backup files in multiple locations</li>
+          <li>Test restore process periodically</li>
+          <li>Never delete backup files</li>
+        </ul>
+      </div>
+
+      <div class="feature-box">
+        <h3>📊 Growth Strategies</h3>
+        <ul>
+          <li>Monitor check-in trends to identify peak hours</li>
+          <li>Track member retention through renewal rates</li>
+          <li>Use expiring list for retention campaigns</li>
+          <li>Analyze plan popularity to optimize pricing</li>
+        </ul>
+      </div>
+
+      <h2>Keyboard Shortcuts</h2>
+      <table>
+        <tr>
+          <th>Action</th>
+          <th>Shortcut</th>
+        </tr>
+        <tr>
+          <td>Quick Check-In</td>
+          <td>Focus on barcode input (always active)</td>
+        </tr>
+        <tr>
+          <td>Search Members</td>
+          <td>Click search box</td>
+        </tr>
+        <tr>
+          <td>Add New Item</td>
+          <td>Click "Add New" button</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Support Page -->
+    <div class="page content">
+      <h1>Support & Contact</h1>
+
+      <div class="feature-box">
+        <h3>Common Issues</h3>
+
+        <h3 style="color: #fff; margin-top: 20px">Check-in not working</h3>
+        <ul>
+          <li>Verify member has active membership</li>
+          <li>Check barcode is scanning correctly</li>
+          <li>Try manual search instead</li>
+        </ul>
+
+        <h3 style="color: #fff; margin-top: 20px">Member shows as inactive</h3>
+        <ul>
+          <li>Check membership end date</li>
+          <li>Create new membership if expired</li>
+          <li>Verify payment was recorded</li>
+        </ul>
+
+        <h3 style="color: #fff; margin-top: 20px">Backup fails</h3>
+        <ul>
+          <li>Check disk space</li>
+          <li>Verify write permissions</li>
+          <li>Close the app and restart</li>
+        </ul>
+      </div>
+
+      <h2>System Requirements</h2>
+      <ul>
+        <li><strong>Operating System:</strong> Windows 10/11 (64-bit)</li>
+        <li><strong>RAM:</strong> 4GB minimum, 8GB recommended</li>
+        <li><strong>Storage:</strong> 500MB free space</li>
+      </ul>
+    </div>
+  </body>
+</html>
