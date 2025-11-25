@@ -4,6 +4,8 @@ import { Download, Printer } from 'lucide-react'
 import Barcode from 'react-barcode'
 import { generateBarcodePDF, printBarcode } from '@renderer/utils/barcodeGenerator'
 import { toast } from 'sonner'
+import { useSettings } from '@renderer/hooks/useSettings'
+import { useState, useEffect } from 'react'
 
 interface MemberBarcodeCardProps {
   memberId: string
@@ -17,10 +19,41 @@ export default function MemberBarcodeCard({
   joinDate
 }: MemberBarcodeCardProps) {
   const { t } = useTranslation('checkIns')
+  const { settings } = useSettings()
+  const [logoPreview, setLogoPreview] = useState<string | null>(null)
+
+  useEffect(() => {
+    const loadLogo = async () => {
+      if (settings?.gymLogoPath) {
+        try {
+          const result = await window.electron.ipcRenderer.invoke(
+            'gym:getLogoPreview',
+            settings.gymLogoPath
+          )
+          if (result.success && result.previewUrl) {
+            setLogoPreview(result.previewUrl)
+          }
+        } catch (error) {
+          console.error('Failed to load logo:', error)
+        }
+      }
+    }
+    loadLogo()
+  }, [settings?.gymLogoPath])
+
+  const gymInfo = settings
+    ? {
+        gymName: settings.gymName,
+        gymAddress: settings.gymAddress,
+        gymPhone: settings.gymPhone,
+        gymLogoPath: settings.gymLogoPath,
+        logoPreview: logoPreview
+      }
+    : undefined
 
   const handleDownloadPDF = async () => {
     try {
-      await generateBarcodePDF(memberId, memberName, joinDate)
+      await generateBarcodePDF(memberId, memberName, joinDate, gymInfo)
       toast.success(t('barcode.downloadSuccess'))
     } catch (error) {
       console.error('Failed to generate PDF:', error)
@@ -30,7 +63,7 @@ export default function MemberBarcodeCard({
 
   const handlePrint = () => {
     try {
-      printBarcode(memberId, memberName, joinDate)
+      printBarcode(memberId, memberName, joinDate, gymInfo)
     } catch (error) {
       console.error('Failed to print:', error)
       toast.error(t('barcode.printError'))
@@ -38,26 +71,59 @@ export default function MemberBarcodeCard({
   }
 
   return (
-    <div className="bg-gray-800/40 rounded-xl p-4 border border-gray-700">
+    <div className="bg-gray-800/40 rounded-xl p-4 border border-gray-700 max-w-[28rem]">
       <h3 className="text-lg font-semibold mb-4 text-blue-400 flex items-center gap-2">
         {t('barcode.title')}
       </h3>
 
-      <div className="bg-white p-4 rounded-lg flex flex-col items-center gap-3">
-        <div className="text-center">
-          <p className="text-sm font-semibold text-gray-800">{t('barcode.gymCard')}</p>
-          <p className="text-lg font-bold text-gray-900 mt-1">{memberName}</p>
+      <div className="relative bg-gradient-to-br from-slate-50 to-blue-50 rounded-lg overflow-hidden shadow-lg">
+        {/* Modern header with gradient */}
+        <div className="bg-gradient-to-r from-blue-500 to-blue-400 px-4 py-3 flex items-center gap-3">
+          {logoPreview && (
+            <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center overflow-hidden flex-shrink-0 p-1">
+              <img
+                src={logoPreview}
+                alt="Gym Logo"
+                className="max-w-full max-h-full w-auto h-auto object-contain"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement
+                  target.style.display = 'none'
+                }}
+              />
+            </div>
+          )}
+          <p className="text-sm font-bold text-white tracking-wide">
+            {gymInfo?.gymName || 'MEMBER CARD'}
+          </p>
         </div>
 
-        <div className="my-2">
-          <Barcode
-            value={memberId}
-            width={2}
-            height={60}
-            fontSize={12}
-            background="#ffffff"
-            lineColor="#000000"
-          />
+        {/* Card content */}
+        <div className="bg-white m-2 rounded-lg p-4 shadow-sm">
+          <div className="text-center mb-3">
+            <p className="text-base font-bold text-slate-800">{memberName}</p>
+            <div className="w-3/4 h-px bg-slate-200 mx-auto mt-2"></div>
+          </div>
+
+          <div className="flex justify-center my-3">
+            <Barcode
+              value={memberId}
+              width={1.2}
+              height={50}
+              fontSize={11}
+              background="#ffffff"
+              lineColor="#000000"
+            />
+          </div>
+
+          <div className="text-center text-xs text-slate-500">
+            Member since {new Date(joinDate).toLocaleDateString('en-GB')}
+          </div>
+
+          {(gymInfo?.gymPhone || gymInfo?.gymAddress) && (
+            <div className="text-center text-[10px] text-slate-400 mt-1">
+              {[gymInfo.gymPhone, gymInfo.gymAddress].filter(Boolean).join(' • ')}
+            </div>
+          )}
         </div>
       </div>
 

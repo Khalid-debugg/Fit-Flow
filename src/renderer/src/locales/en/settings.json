@@ -3,6 +3,7 @@
   "subtitle": "Configure your gym management system",
   "save": "Save Changes",
   "saving": "Saving...",
+  "gymSettings": "Gym Settings",
   "regional": {
     "title": "Regional Settings",
     "language": "Language",
@@ -10,6 +11,20 @@
     "english": "English",
     "currency": "Currency",
     "dateFormat": "Date Format"
+  },
+  "gym": {
+    "title": "Gym Information",
+    "name": "Gym Name",
+    "namePlaceholder": "Enter gym name",
+    "address": "Address (Optional)",
+    "addressPlaceholder": "Enter gym address",
+    "phone": "Phone Number (Optional)",
+    "phonePlaceholder": "Enter phone number",
+    "logo": "Gym Logo",
+    "selectLogo": "Select Logo",
+    "changeLogo": "Change Logo",
+    "defaultLogo": "Using default FitFlow logo",
+    "logoTip": "This logo will appear on member barcodes and receipts"
   },
   "members": {
     "title": "Member Settings",
