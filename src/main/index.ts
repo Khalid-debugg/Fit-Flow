@@ -11,6 +11,7 @@ import { registerDashboardHandlers } from './handlers/dashboard'
 import { registerReportsHandlers } from './handlers/reports'
 import { registerSettingsHandlers, performAutoBackup } from './handlers/settings'
 import { registerLicenseHandlers } from './license'
+import { registerSeedHandlers } from './handlers/seed'
 
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
@@ -62,6 +63,7 @@ app.whenReady().then(async () => {
   registerCheckInHandlers()
   registerReportsHandlers()
   registerSettingsHandlers()
+  registerSeedHandlers()
   await performAutoBackup()
 
   createWindow()

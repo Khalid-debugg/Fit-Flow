@@ -8,6 +8,14 @@ const api = {
     isLicensed: () => ipcRenderer.invoke('license:isLicensed'),
     activate: (licenseKey: string) => ipcRenderer.invoke('license:activate', licenseKey),
     getStatus: () => ipcRenderer.invoke('license:getStatus')
+  },
+  seed: {
+    database: (options?: {
+      numMembers?: number
+      numPlans?: number
+      checkInRate?: number
+      clearExisting?: boolean
+    }) => ipcRenderer.invoke('seed:database', options)
   }
 }
 
