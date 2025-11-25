@@ -130,10 +130,11 @@ const planTemplates = [
   { name: 'Day Pass', duration: 1, price: 15 }
 ]
 
-const paymentMethods: Array<'cash' | 'card' | 'bank_transfer'> = [
+const paymentMethods: Array<'cash' | 'card' | 'transfer' | 'e-wallet'> = [
   'cash',
   'card',
-  'bank_transfer'
+  'transfer',
+  'e-wallet'
 ]
 
 interface SeedOptions {
@@ -215,7 +216,9 @@ function seedDatabase(options: SeedOptions = {}): SeedResult {
       usedPhones.add(phone)
 
       const email =
-        Math.random() > 0.3 ? `${firstName.toLowerCase()}.${lastName.toLowerCase()}@email.com` : null
+        Math.random() > 0.3
+          ? `${firstName.toLowerCase()}.${lastName.toLowerCase()}@email.com`
+          : null
       const address = Math.random() > 0.5 ? getRandom(addresses) : null
       const joinDate = formatDate(getRandomDate(new Date(2023, 0, 1), new Date(2025, 0, 1)))
       const note = getRandom(notes)
