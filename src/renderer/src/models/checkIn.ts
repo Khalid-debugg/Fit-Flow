@@ -28,8 +28,8 @@ export interface CheckInFilters {
 
 export const DEFAULT_FILTERS: CheckInFilters = {
   query: '',
-  dateFrom: new Date().toISOString().split('T')[0],
-  dateTo: new Date().toISOString().split('T')[0],
+  dateFrom: '',
+  dateTo: '',
   status: 'all'
 }
 
