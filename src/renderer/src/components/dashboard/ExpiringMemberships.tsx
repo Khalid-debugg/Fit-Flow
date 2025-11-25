@@ -13,6 +13,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from '../ui/alert-dialog'
+import { format } from 'date-fns'
+import { ar, enUS } from 'date-fns/locale'
 
 export type ExpiringMembership = Membership & { daysRemaining: number }
 
@@ -31,7 +33,16 @@ export default function ExpiringMemberships({
   totalPages,
   onPageChange
 }: ExpiringMembershipsProps) {
-  const { t } = useTranslation('dashboard')
+  const { t, i18n } = useTranslation('dashboard')
+  const dateLocale = i18n.language === 'ar' ? ar : enUS
+
+  const calculateNewEndDate = (membership: ExpiringMembership) => {
+    const start = new Date(membership.startDate)
+    const end = new Date(membership.endDate)
+    const diffDays = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))
+    const newEndDate = new Date(end.getTime() + diffDays * 24 * 60 * 60 * 1000)
+    return format(newEndDate, 'PPP', { locale: dateLocale })
+  }
 
   const getDaysColor = (days: number) => {
     if (days <= 2) return 'text-red-400'
@@ -92,7 +103,10 @@ export default function ExpiringMemberships({
                       <AlertDialogHeader>
                         <AlertDialogTitle>{t('alert.renewMembership')}</AlertDialogTitle>
                         <AlertDialogDescription>
-                          {t('alert.renewMembershipMessage')}
+                          {t('alert.renewMembershipMessage', {
+                            memberName: membership.memberName,
+                            newEndDate: calculateNewEndDate(membership)
+                          })}
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>

@@ -62,6 +62,6 @@
   },
   "alert": {
     "renewMembership": "Renew Membership",
-    "renewMembershipMessage": "Are you sure you want to renew this membership? This action cannot be undone."
+    "renewMembershipMessage": "Are you sure you want to renew {{memberName}}'s membership? The new end date will be {{newEndDate}}. This action cannot be undone."
   }
 }
