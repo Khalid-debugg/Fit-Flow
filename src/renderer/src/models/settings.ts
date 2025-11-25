@@ -6,6 +6,11 @@ export interface Settings {
   language: 'ar' | 'en'
   currency: string
 
+  gymName: string
+  gymAddress?: string
+  gymPhone?: string
+  gymLogoPath?: string
+
   allowedGenders: 'male' | 'female' | 'both'
 
   defaultPaymentMethod: (typeof PAYMENT_METHODS)[number]
@@ -24,6 +29,11 @@ export interface SettingsDbRow {
 
   language: 'ar' | 'en'
   currency: string
+
+  gym_name: string
+  gym_address: string | null
+  gym_phone: string | null
+  gym_logo_path: string | null
 
   allowed_genders: 'male' | 'female' | 'both'
 

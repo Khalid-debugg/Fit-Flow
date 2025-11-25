@@ -19,8 +19,6 @@ import {
 } from '@renderer/components/ui/select'
 import {
   Globe,
-  DollarSign,
-  Users,
   Shield,
   Save,
   Loader2,
@@ -29,7 +27,11 @@ import {
   Clock,
   FolderOpen,
   RotateCcw,
-  Trash2
+  Trash2,
+  Code2,
+  Building2,
+  Upload,
+  Image as ImageIcon
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { format } from 'date-fns'
@@ -43,13 +45,33 @@ export default function Settings() {
   const [backupInfo, setBackupInfo] = useState<BackupInfo | null>(null)
   const [creatingBackup, setCreatingBackup] = useState(false)
   const [restoringBackup, setRestoringBackup] = useState(false)
+  const [seeding, setSeeding] = useState(false)
+  const [logoPreview, setLogoPreview] = useState<string | null>(null)
   const dateLocale = i18n.language === 'ar' ? ar : enUS
 
   useEffect(() => {
     if (contextSettings) {
       setFormData(contextSettings)
+      if (contextSettings.gymLogoPath) {
+        loadLogoPreview(contextSettings.gymLogoPath)
+      }
     }
   }, [contextSettings])
+
+  const loadLogoPreview = async (logoPath: string) => {
+    try {
+      const result = await window.electron.ipcRenderer.invoke('gym:getLogoPreview', logoPath)
+      if (result.success && result.previewUrl) {
+        setLogoPreview(result.previewUrl)
+      } else {
+        console.error('Failed to load logo preview:', result.error)
+        setLogoPreview(null)
+      }
+    } catch (error) {
+      console.error('Failed to load logo preview:', error)
+      setLogoPreview(null)
+    }
+  }
 
   useEffect(() => {
     loadBackupInfo()
@@ -76,6 +98,25 @@ export default function Settings() {
       toast.error(t('messages.error'))
     } finally {
       setSaving(false)
+    }
+  }
+
+  const handleSelectLogo = async () => {
+    try {
+      const result = await window.electron.ipcRenderer.invoke('gym:selectLogo')
+
+      if (!result.canceled && result.logoPath) {
+        setFormData({ ...formData!, gymLogoPath: result.logoPath })
+        if (result.previewUrl) {
+          setLogoPreview(result.previewUrl)
+        }
+        toast.success('Logo selected successfully')
+      } else if (result.error) {
+        toast.error('Failed to select logo: ' + result.error)
+      }
+    } catch (error) {
+      console.error('Failed to select logo:', error)
+      toast.error('Failed to select logo')
     }
   }
 
@@ -172,6 +213,39 @@ export default function Settings() {
     }
   }
 
+  const handleSeedDatabase = async (numMembers: number) => {
+    if (
+      !confirm(
+        `This will clear all existing data and create ${numMembers} test members. Are you sure?`
+      )
+    ) {
+      return
+    }
+
+    setSeeding(true)
+    try {
+      const result = await window.api.seed.database({
+        numMembers,
+        numPlans: 10,
+        checkInRate: 0.7,
+        clearExisting: true
+      })
+
+      if (result.success) {
+        toast.success(
+          `Database seeded! Created ${result.stats?.members} members, ${result.stats?.memberships} memberships, ${result.stats?.checkIns} check-ins`
+        )
+      } else {
+        toast.error(result.message)
+      }
+    } catch (error) {
+      console.error('Failed to seed database:', error)
+      toast.error('Failed to seed database')
+    } finally {
+      setSeeding(false)
+    }
+  }
+
   if (contextLoading || !formData) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -203,10 +277,101 @@ export default function Settings() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Gym Information */}
+        <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">
+          <div className="flex items-center gap-3 mb-6">
+            <Building2 className="w-6 h-6 text-blue-400" />
+            <h2 className="text-xl font-semibold text-white">{t('gym.title')}</h2>
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                {t('gym.name')} <span className="text-red-400">*</span>
+              </label>
+              <Input
+                type="text"
+                value={formData.gymName}
+                onChange={(e) => setFormData({ ...formData, gymName: e.target.value })}
+                placeholder={t('gym.namePlaceholder')}
+                className="bg-gray-900 border-gray-700 text-white"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                {t('gym.address')}
+              </label>
+              <Input
+                type="text"
+                value={formData.gymAddress || ''}
+                onChange={(e) => setFormData({ ...formData, gymAddress: e.target.value })}
+                placeholder={t('gym.addressPlaceholder')}
+                className="bg-gray-900 border-gray-700 text-white"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                {t('gym.phone')}
+              </label>
+              <Input
+                type="text"
+                value={formData.gymPhone || ''}
+                onChange={(e) => setFormData({ ...formData, gymPhone: e.target.value })}
+                placeholder={t('gym.phonePlaceholder')}
+                className="bg-gray-900 border-gray-700 text-white"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                {t('gym.logo')}
+              </label>
+              <div className="space-y-3">
+                {logoPreview && (
+                  <div className="relative w-32 h-32 bg-gray-900 rounded-lg border border-gray-700 overflow-hidden flex items-center justify-center p-3">
+                    <img
+                      src={logoPreview}
+                      alt="Gym Logo"
+                      className="max-w-full max-h-full w-auto h-auto object-contain"
+                      onError={(e) => {
+                        console.error('Failed to load image preview')
+                        const target = e.target as HTMLImageElement
+                        target.style.display = 'none'
+                        toast.error('Failed to display logo preview')
+                      }}
+                    />
+                  </div>
+                )}
+                <Button
+                  type="button"
+                  variant="primary"
+                  onClick={handleSelectLogo}
+                  className="gap-2"
+                >
+                  <Upload className="w-4 h-4" />
+                  {logoPreview ? t('gym.changeLogo') : t('gym.selectLogo')}
+                </Button>
+                {!logoPreview && (
+                  <p className="text-xs text-gray-400 flex items-center gap-2">
+                    <ImageIcon className="w-3 h-3" />
+                    {t('gym.defaultLogo')}
+                  </p>
+                )}
+                <p className="text-xs text-blue-300 bg-blue-900/20 border border-blue-700/50 rounded p-2">
+                  {t('gym.logoTip')}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Gym Settings */}
         <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">
           <div className="flex items-center gap-3 mb-6">
             <Globe className="w-6 h-6 text-green-400" />
-            <h2 className="text-xl font-semibold text-white">{t('regional.title')}</h2>
+            <h2 className="text-xl font-semibold text-white">{t('gymSettings')}</h2>
           </div>
 
           <div className="space-y-4">
@@ -251,16 +416,7 @@ export default function Settings() {
                 </SelectContent>
               </Select>
             </div>
-          </div>
-        </div>
 
-        <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">
-          <div className="flex items-center gap-3 mb-6">
-            <Users className="w-6 h-6 text-purple-400" />
-            <h2 className="text-xl font-semibold text-white">{t('members.title')}</h2>
-          </div>
-
-          <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 {t('members.allowedGenders')}
@@ -285,36 +441,29 @@ export default function Settings() {
               </Select>
             </div>
 
-            <div className="pt-4 border-t border-gray-700">
-              <div className="flex items-center gap-3 mb-4">
-                <DollarSign className="w-5 h-5 text-yellow-400" />
-                <h3 className="text-lg font-semibold text-white">{t('payment.title')}</h3>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  {t('payment.defaultMethod')}
-                </label>
-                <Select
-                  value={formData.defaultPaymentMethod}
-                  onValueChange={(value) =>
-                    setFormData({
-                      ...formData,
-                      defaultPaymentMethod: value as SettingsType['defaultPaymentMethod']
-                    })
-                  }
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="cash">{t('payment.cash')}</SelectItem>
-                    <SelectItem value="card">{t('payment.card')}</SelectItem>
-                    <SelectItem value="bank">{t('payment.bank')}</SelectItem>
-                    <SelectItem value="e-wallet">{t('payment.e-wallet')}</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                {t('payment.defaultMethod')}
+              </label>
+              <Select
+                value={formData.defaultPaymentMethod}
+                onValueChange={(value) =>
+                  setFormData({
+                    ...formData,
+                    defaultPaymentMethod: value as SettingsType['defaultPaymentMethod']
+                  })
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="cash">{t('payment.cash')}</SelectItem>
+                  <SelectItem value="card">{t('payment.card')}</SelectItem>
+                  <SelectItem value="bank">{t('payment.bank')}</SelectItem>
+                  <SelectItem value="e-wallet">{t('payment.e-wallet')}</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </div>
@@ -518,6 +667,105 @@ export default function Settings() {
                 <p>{t('backup.noBackups')}</p>
               </div>
             )}
+          </div>
+        </div>
+
+        <div className="lg:col-span-2 bg-gray-800 p-6 rounded-lg border border-gray-700">
+          <div className="flex items-center gap-3 mb-6">
+            <Code2 className="w-6 h-6 text-cyan-400" />
+            <h2 className="text-xl font-semibold text-white">Developer Tools</h2>
+          </div>
+
+          <div className="bg-yellow-900/20 border border-yellow-700/50 rounded-lg p-4 mb-6">
+            <p className="text-sm text-yellow-300 font-medium mb-2">⚠️ Warning</p>
+            <p className="text-xs text-yellow-200">
+              These tools are for development and testing only. They will clear all existing data
+              and populate the database with test data.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <h3 className="text-lg font-semibold text-white mb-3">Seed Database</h3>
+              <p className="text-sm text-gray-400 mb-4">
+                Generate test data to test app scalability with various member scenarios (active,
+                expired, expiring, inactive members).
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <Button
+                  variant="primary"
+                  onClick={() => handleSeedDatabase(50)}
+                  disabled={seeding}
+                  className="gap-2"
+                >
+                  {seeding ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Seeding...
+                    </>
+                  ) : (
+                    <>
+                      <Database className="w-4 h-4" />
+                      Seed 50 Members
+                    </>
+                  )}
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={() => handleSeedDatabase(100)}
+                  disabled={seeding}
+                  className="gap-2"
+                >
+                  {seeding ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Seeding...
+                    </>
+                  ) : (
+                    <>
+                      <Database className="w-4 h-4" />
+                      Seed 100 Members
+                    </>
+                  )}
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={() => handleSeedDatabase(500)}
+                  disabled={seeding}
+                  className="gap-2"
+                >
+                  {seeding ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Seeding...
+                    </>
+                  ) : (
+                    <>
+                      <Database className="w-4 h-4" />
+                      Seed 500 Members
+                    </>
+                  )}
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={() => handleSeedDatabase(1000)}
+                  disabled={seeding}
+                  className="gap-2 bg-orange-600 hover:bg-orange-700"
+                >
+                  {seeding ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Seeding...
+                    </>
+                  ) : (
+                    <>
+                      <Database className="w-4 h-4" />
+                      Seed 1000 Members
+                    </>
+                  )}
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
