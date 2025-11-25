@@ -13,6 +13,7 @@ import {
   LucideIcon
 } from 'lucide-react'
 import MemberBarcodeCard from '../checkIns/MemberBarcodeCard'
+import { useSettings } from '@renderer/hooks/useSettings'
 
 interface ViewMemberProps {
   member: Member | null
@@ -22,7 +23,7 @@ interface ViewMemberProps {
 
 export default function ViewMember({ member, open, onClose }: ViewMemberProps) {
   const { t } = useTranslation('members')
-
+  const { settings } = useSettings()
   if (!member) return null
 
   const getStatusBadge = (status: string) => {
@@ -131,7 +132,11 @@ export default function ViewMember({ member, open, onClose }: ViewMemberProps) {
                 <InfoRow
                   icon={Wallet}
                   label={t('price')}
-                  value={`$${member.currentMembership.planPrice}`}
+                  value={`${Intl.NumberFormat(settings?.language, {
+                    style: 'currency',
+                    currency: settings?.currency,
+                    minimumFractionDigits: 0
+                  }).format(member.currentMembership.planPrice)}`}
                 />
                 <InfoRow
                   icon={Calendar}

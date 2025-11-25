@@ -10,6 +10,8 @@ import {
 } from '@renderer/components/ui/table'
 import { History, ChevronLeft, ChevronRight } from 'lucide-react'
 import { CheckIn } from '@renderer/models/checkIn'
+import { format } from 'date-fns'
+import { ar, enUS } from 'date-fns/locale'
 
 interface CheckInsTableProps {
   checkIns: CheckIn[]
@@ -26,7 +28,8 @@ export default function CheckInsTable({
   onPageChange,
   onViewHistory
 }: CheckInsTableProps) {
-  const { t } = useTranslation('checkIns')
+  const { t, i18n } = useTranslation('checkIns')
+  const dateLocale = i18n.language === 'ar' ? ar : enUS
 
   const getStatusBadge = (status: string) => {
     const colors = {
@@ -38,14 +41,11 @@ export default function CheckInsTable({
   }
 
   const formatTime = (dateTime: string) => {
-    return new Date(dateTime).toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit'
-    })
+    return format(new Date(dateTime), 'p', { locale: dateLocale })
   }
 
   const formatDate = (dateTime: string) => {
-    return new Date(dateTime).toLocaleDateString()
+    return format(new Date(dateTime), 'PPP', { locale: dateLocale })
   }
 
   return (

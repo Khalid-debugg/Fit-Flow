@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@renderer/components/ui/dialog'
 import { CheckIn } from '@renderer/models/checkIn'
 import { Calendar, Clock } from 'lucide-react'
+import { format } from 'date-fns'
+import { ar, enUS } from 'date-fns/locale'
 
 interface CheckInHistoryProps {
   memberId: string | null
@@ -17,9 +19,10 @@ export default function CheckInHistory({
   open,
   onClose
 }: CheckInHistoryProps) {
-  const { t } = useTranslation('checkIns')
+  const { t, i18n } = useTranslation('checkIns')
   const [history, setHistory] = useState<CheckIn[]>([])
   const [loading, setLoading] = useState(false)
+  const dateLocale = i18n.language === 'ar' ? ar : enUS
 
   useEffect(() => {
     if (open && memberId) {
@@ -45,11 +48,8 @@ export default function CheckInHistory({
   const formatDateTime = (dateTime: string) => {
     const date = new Date(dateTime)
     return {
-      date: date.toLocaleDateString(),
-      time: date.toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit'
-      })
+      date: format(date, 'PPP', { locale: dateLocale }),
+      time: format(date, 'p', { locale: dateLocale })
     }
   }
 

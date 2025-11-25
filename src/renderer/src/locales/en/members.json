@@ -38,7 +38,7 @@
     "all": "All",
     "joinDateFrom": "Join Date From",
     "joinDateTo": "Join Date To",
-    "reset": "Reset Filters",
+    "reset": "Reset",
     "pickDate": "Pick a date"
   },
   "pagination": {

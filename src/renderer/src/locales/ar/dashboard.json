@@ -31,7 +31,7 @@
     "expiringToday": "ينتهي اليوم",
     "expiringTomorrow": "ينتهي غداً",
     "expiringInDays": "ينتهي خلال {{days}} يوم",
-    "renew": "تجديد"
+    "renew": "تمديد"
   },
 
   "quickActions": {

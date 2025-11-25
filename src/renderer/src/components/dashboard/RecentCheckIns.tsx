@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { Button } from '@renderer/components/ui/button'
 import { Clock, ChevronLeft, ChevronRight, RefreshCcw } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
+import { ar, enUS } from 'date-fns/locale'
 
 interface CheckIn {
   id: string
@@ -27,7 +28,8 @@ export default function RecentCheckIns({
   totalPages,
   onPageChange
 }: RecentCheckInsProps) {
-  const { t } = useTranslation('dashboard')
+  const { t, i18n } = useTranslation('dashboard')
+  const dateLocale = i18n.language === 'ar' ? ar : enUS
 
   const getStatusBadge = (status: string) => {
     const colors = {
@@ -40,7 +42,7 @@ export default function RecentCheckIns({
 
   const getTimeAgo = (dateTime: string) => {
     try {
-      return formatDistanceToNow(new Date(dateTime), { addSuffix: true })
+      return formatDistanceToNow(new Date(dateTime), { addSuffix: true, locale: dateLocale })
     } catch {
       return new Date(dateTime).toLocaleTimeString()
     }
