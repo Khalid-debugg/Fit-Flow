@@ -6,8 +6,14 @@ import { readFileSync } from 'fs'
 let db: Database.Database | null = null
 
 export function initDatabase(): Database.Database {
-  const userDataPath = app.getPath('userData')
-  const dbPath = join(userDataPath, 'fitflow.db')
+  const dataPath = join(app.getPath('documents'), 'FitFlow', 'backups')
+  const dbPath = join(dataPath, 'fitflow.db')
+
+  // Ensure the backups directory exists
+  const fs = require('fs')
+  if (!fs.existsSync(dataPath)) {
+    fs.mkdirSync(dataPath, { recursive: true })
+  }
 
   db = new Database(dbPath)
 
