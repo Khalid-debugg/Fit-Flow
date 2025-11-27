@@ -41,17 +41,18 @@ export function registerCheckInHandlers() {
     const whereClause = whereConditions.length ? `WHERE ${whereConditions.join(' AND ')}` : ''
 
     const query = `
-      SELECT 
+      SELECT
         ci.id,
         ci.member_id,
         ci.check_in_time,
         ci.created_at,
         m.name AS member_name,
+        m.country_code AS member_country_code,
         m.phone AS member_phone,
         ms.end_date AS membership_end_date
       FROM check_ins ci
       INNER JOIN members m ON ci.member_id = m.id
-      LEFT JOIN memberships ms ON m.id = ms.member_id 
+      LEFT JOIN memberships ms ON m.id = ms.member_id
         AND ms.end_date >= date('now')
       ${whereClause}
       ORDER BY ci.check_in_time DESC

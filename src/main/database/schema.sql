@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS settings (
 
   gym_name TEXT DEFAULT 'FitFlow Gym',
   gym_address TEXT,
+  gym_country_code TEXT DEFAULT '+20',
   gym_phone TEXT,
   gym_logo_path TEXT,
 
@@ -34,6 +35,7 @@ CREATE TABLE IF NOT EXISTS members (
   id TEXT PRIMARY KEY,
   name TEXT NOT NULL,
   email TEXT,
+  country_code TEXT DEFAULT '+20',
   phone TEXT NOT NULL UNIQUE,
   gender TEXT NOT NULL CHECK (gender IN ('male', 'female')),
   address TEXT,
@@ -117,3 +119,4 @@ INSERT OR IGNORE INTO settings (
   'weekly',
   CURRENT_TIMESTAMP
 );
+

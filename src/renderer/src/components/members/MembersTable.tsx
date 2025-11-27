@@ -79,7 +79,10 @@ export default function MembersTable({
                   {members.length === 1 ? '-' : idx + 1 + (page - 1) * 10}
                 </TableCell>
                 <TableCell className="font-medium">{member.name}</TableCell>
-                <TableCell className="text-gray-400">{member.phone}</TableCell>
+                <TableCell className="text-gray-400">
+                  {member.countryCode}
+                  {member.phone}
+                </TableCell>
                 <TableCell className="text-gray-400">{member.email || 'N/A'}</TableCell>
                 <TableCell className="text-gray-400">{t(`${member.gender}`)}</TableCell>
                 <TableCell className="text-gray-400">{member.joinDate}</TableCell>

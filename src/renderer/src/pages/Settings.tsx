@@ -17,6 +17,8 @@ import {
   SelectTrigger,
   SelectValue
 } from '@renderer/components/ui/select'
+import { Combobox, type ComboboxOption } from '@renderer/components/ui/combobox'
+import { PhoneInput } from '@renderer/components/ui/phone-input'
 import {
   Globe,
   Shield,
@@ -278,15 +280,13 @@ export default function Settings() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                {t('gym.phone')}
-              </label>
-              <Input
-                type="text"
-                value={formData.gymPhone || ''}
-                onChange={(e) => setFormData({ ...formData, gymPhone: e.target.value })}
-                placeholder={t('gym.phonePlaceholder')}
-                className="bg-gray-900 border-gray-700 text-white"
+              <PhoneInput
+                countryCode={formData.gymCountryCode || '+20'}
+                phoneNumber={formData.gymPhone || ''}
+                onCountryCodeChange={(code) => setFormData({ ...formData, gymCountryCode: code })}
+                onPhoneNumberChange={(number) => setFormData({ ...formData, gymPhone: number })}
+                label={t('gym.phone')}
+                required={false}
               />
             </div>
 
@@ -365,22 +365,21 @@ export default function Settings() {
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 {t('regional.currency')}
               </label>
-              <Select
+              <Combobox
+                className="bg-gray-900 hover:bg-gray-900"
+                options={CURRENCIES.map(
+                  (currency): ComboboxOption => ({
+                    value: currency.code,
+                    label: `${currency.code} - ${currency.name} (${i18n.language === 'ar' ? currency.arSymbol : currency.enSymbol})`,
+                    searchText: `${currency.code} ${currency.name}`
+                  })
+                )}
                 value={formData.currency}
                 onValueChange={(value) => setFormData({ ...formData, currency: value })}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {CURRENCIES.map((currency) => (
-                    <SelectItem key={currency.code} value={currency.code}>
-                      {currency.code} - {currency.name} (
-                      {i18n.language === 'ar' ? currency.arSymbol : currency.enSymbol})
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                placeholder={t('regional.currency')}
+                searchPlaceholder={t('regional.searchCurrency')}
+                emptyText={t('regional.noCurrencyFound')}
+              />
             </div>
 
             <div>
@@ -426,7 +425,7 @@ export default function Settings() {
                 <SelectContent>
                   <SelectItem value="cash">{t('payment.cash')}</SelectItem>
                   <SelectItem value="card">{t('payment.card')}</SelectItem>
-                  <SelectItem value="bank">{t('payment.bank')}</SelectItem>
+                  <SelectItem value="bank">{t('payment.transfer')}</SelectItem>
                   <SelectItem value="e-wallet">{t('payment.e-wallet')}</SelectItem>
                 </SelectContent>
               </Select>

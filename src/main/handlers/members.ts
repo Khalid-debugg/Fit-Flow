@@ -20,7 +20,7 @@ export function registerMemberHandlers() {
     if (filters.query?.trim()) {
       const search = `%${filters.query.trim()}%`
       whereConditions.push(
-        '(m.name LIKE ? OR m.email LIKE ? OR m.phone LIKE ? OR m.address LIKE ?)'
+        "(m.name LIKE ? OR m.email LIKE ? OR (REPLACE(m.country_code, '+', '') || m.phone) LIKE ? OR m.address LIKE ?)"
       )
       params.push(search, search, search, search)
     }
@@ -78,6 +78,7 @@ export function registerMemberHandlers() {
         id: row.id,
         name: row.name,
         email: row.email,
+        countryCode: row.country_code,
         phone: row.phone,
         gender: row.gender,
         address: row.address,
@@ -120,7 +121,7 @@ export function registerMemberHandlers() {
     const row = db
       .prepare(
         `
-        SELECT 
+        SELECT
           m.*,
           ms.id AS membership_id,
           mp.name AS plan_name,
@@ -131,7 +132,7 @@ export function registerMemberHandlers() {
             SELECT COUNT(*) FROM memberships WHERE member_id = m.id
           ) AS membership_count
         FROM members m
-        LEFT JOIN memberships ms ON m.id = ms.member_id 
+        LEFT JOIN memberships ms ON m.id = ms.member_id
           AND ms.end_date >= date('now')
         LEFT JOIN membership_plans mp ON ms.plan_id = mp.id
         WHERE m.id = ?
@@ -153,6 +154,7 @@ export function registerMemberHandlers() {
       id: row.id,
       name: row.name,
       email: row.email,
+      countryCode: row.country_code,
       phone: row.phone,
       gender: row.gender,
       address: row.address,
@@ -178,14 +180,15 @@ export function registerMemberHandlers() {
     const snake = toSnake(member)
 
     const stmt = db.prepare(`
-      INSERT INTO members (id, name, email, phone, gender, address, join_date, notes)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO members (id, name, email, country_code, phone, gender, address, join_date, notes)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
 
     stmt.run(
       id,
       snake.name,
       snake.email || null,
+      snake.country_code || '+20',
       snake.phone,
       snake.gender,
       snake.address || null,
@@ -201,12 +204,13 @@ export function registerMemberHandlers() {
     const snake = toSnake(member)
     const stmt = db.prepare(`
       UPDATE members
-      SET name = ?, email = ?, phone = ?, gender = ?, address = ?, notes = ?
+      SET name = ?, email = ?, country_code = ?, phone = ?, gender = ?, address = ?, notes = ?
       WHERE id = ?
     `)
     stmt.run(
       snake.name,
       snake.email || null,
+      snake.country_code || '+20',
       snake.phone,
       snake.gender,
       snake.address || null,
@@ -260,6 +264,7 @@ export function registerMemberHandlers() {
       id: row.id,
       name: row.name,
       email: row.email,
+      countryCode: row.country_code,
       phone: row.phone,
       gender: row.gender,
       address: row.address,
@@ -290,16 +295,17 @@ ipcMain.handle('members:search', async (_event, query: string, page: number = 1)
   const rows = db
     .prepare(
       `
-    SELECT 
+    SELECT
       m.id,
       m.name,
+      m.country_code,
       m.phone,
       m.email,
       ms.end_date
     FROM members m
-    LEFT JOIN memberships ms ON m.id = ms.member_id 
+    LEFT JOIN memberships ms ON m.id = ms.member_id
       AND ms.end_date >= date('now')
-    WHERE m.name LIKE ? OR m.phone LIKE ?
+    WHERE m.name LIKE ? OR (REPLACE(m.country_code, '+', '') || m.phone) LIKE ?
     ORDER BY m.name ASC
     LIMIT ? OFFSET ?
   `
@@ -312,6 +318,7 @@ ipcMain.handle('members:search', async (_event, query: string, page: number = 1)
   return rows.map((row: any) => ({
     id: row.id,
     name: row.name,
+    countryCode: row.country_code,
     phone: row.phone,
     email: row.email,
     membershipStatus: row.end_date && row.end_date >= today ? 'active' : 'inactive'

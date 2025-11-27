@@ -60,7 +60,7 @@ export default function ViewMember({ member, open, onClose }: ViewMemberProps) {
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="bg-gray-900 border border-gray-700 text-white max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-semibold flex items-center gap-2 mt-6">
+          <DialogTitle className="text-2xl font-semibold flex items-center gap-2">
             <User className="w-6 h-6 text-blue-400" />
             {member.name}
           </DialogTitle>
@@ -74,7 +74,11 @@ export default function ViewMember({ member, open, onClose }: ViewMemberProps) {
               {t('basicInfo')}
             </h3>
             <div className="grid grid-cols-2 gap-4">
-              <InfoRow icon={Phone} label={t('phone')} value={member.phone} />
+              <InfoRow
+                icon={Phone}
+                label={t('phone')}
+                value={`${member.countryCode}${member.phone}`}
+              />
               <InfoRow icon={Mail} label={t('email')} value={member.email} />
               <InfoRow
                 icon={User}

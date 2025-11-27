@@ -90,7 +90,10 @@ export default function MemberCheckInCard({
               </div>
               <div>
                 <p className="text-sm text-gray-400">{t('phone')}</p>
-                <p className="text-lg font-medium text-white">{member.phone}</p>
+                <p className="text-lg font-medium text-white">
+                  {member.countryCode}
+                  {member.phone}
+                </p>
               </div>
             </div>
           </div>
@@ -134,7 +137,9 @@ export default function MemberCheckInCard({
             )}
           </div>
 
-          {(member.status === 'expired' || member.status === 'inactive' || member.alreadyCheckedIn) && (
+          {(member.status === 'expired' ||
+            member.status === 'inactive' ||
+            member.alreadyCheckedIn) && (
             <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3 flex items-start gap-3">
               <AlertCircle className="w-5 h-5 text-yellow-400 mt-0.5 shrink-0" />
               <p className="text-sm text-yellow-200">

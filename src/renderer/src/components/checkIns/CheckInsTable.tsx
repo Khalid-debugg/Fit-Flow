@@ -77,7 +77,10 @@ export default function CheckInsTable({
                     {checkIns.length === 1 ? '-' : idx + 1 + (page - 1) * 10}
                   </TableCell>
                   <TableCell className="font-medium">{checkIn.memberName}</TableCell>
-                  <TableCell className="text-gray-400">{checkIn.memberPhone}</TableCell>
+                  <TableCell className="text-gray-400">
+                    {checkIn.memberCountryCode}
+                    {checkIn.memberPhone}
+                  </TableCell>
                   <TableCell className="text-gray-400">{formatDate(checkIn.checkInTime)}</TableCell>
                   <TableCell className="text-gray-400">{formatTime(checkIn.checkInTime)}</TableCell>
                   <TableCell>

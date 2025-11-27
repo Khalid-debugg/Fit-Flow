@@ -4,6 +4,7 @@ export type Member = {
   id?: number
   name: string
   email: string | null
+  countryCode: string
   phone: string
   gender: (typeof GENDER)[number]
   address: string | null
@@ -26,6 +27,7 @@ export type MemberDbRow = {
   id: number
   name: string
   email: string | null
+  country_code: string
   phone: string
   gender: (typeof GENDER)[number]
   address: string | null
