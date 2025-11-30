@@ -42,8 +42,20 @@ export function registerMemberHandlers() {
 
     const whereClause = whereConditions.length ? `WHERE ${whereConditions.join(' AND ')}` : ''
 
+    // Build status filter condition for SQL
+    let statusCondition = ''
+    if (filters.status !== 'all') {
+      if (filters.status === 'active') {
+        statusCondition = 'AND ms.end_date >= date(\'now\')'
+      } else if (filters.status === 'inactive') {
+        statusCondition = `AND ms.id IS NULL AND (SELECT COUNT(*) FROM memberships WHERE member_id = m.id) = 0`
+      } else if (filters.status === 'expired') {
+        statusCondition = `AND (ms.id IS NULL OR ms.end_date < date('now')) AND (SELECT COUNT(*) FROM memberships WHERE member_id = m.id) > 0`
+      }
+    }
+
     const query = `
-      SELECT 
+      SELECT
         m.*,
         ms.id AS membership_id,
         mp.name AS plan_name,
@@ -54,10 +66,11 @@ export function registerMemberHandlers() {
           SELECT COUNT(*) FROM memberships WHERE member_id = m.id
         ) AS membership_count
       FROM members m
-      LEFT JOIN memberships ms ON m.id = ms.member_id 
+      LEFT JOIN memberships ms ON m.id = ms.member_id
         AND ms.end_date >= date('now')
       LEFT JOIN membership_plans mp ON ms.plan_id = mp.id
       ${whereClause}
+      ${statusCondition}
       ORDER BY m.created_at DESC
       LIMIT ? OFFSET ?
     `
@@ -98,21 +111,22 @@ export function registerMemberHandlers() {
       }
     })
 
-    const filtered =
-      filters.status === 'all'
-        ? processedMembers
-        : processedMembers.filter((m) => m.status === filters.status)
-
-    const countQuery = `SELECT COUNT(*) as total FROM members m ${whereClause}`
+    // Count query should also include status condition
+    const countQuery = `
+      SELECT COUNT(*) as total
+      FROM members m
+      LEFT JOIN memberships ms ON m.id = ms.member_id
+        AND ms.end_date >= date('now')
+      ${whereClause}
+      ${statusCondition}
+    `
     const totalResult = db.prepare(countQuery).get(...params) as { total: number }
 
-    const total = filters.status === 'all' ? totalResult.total : filtered.length
-
     return {
-      members: filtered,
-      total,
+      members: processedMembers,
+      total: totalResult.total,
       page,
-      totalPages: Math.ceil(total / limit)
+      totalPages: Math.ceil(totalResult.total / limit)
     }
   })
 
