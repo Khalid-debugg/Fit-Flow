@@ -6,16 +6,24 @@ export function registerDashboardHandlers() {
   ipcMain.handle('dashboard:getRevenueData', async () => {
     const db = getDatabase()
 
+    // Generate all dates for the last 30 days and join with actual revenue
     const dailyRevenue = db
       .prepare(
         `
-      SELECT 
-        DATE(payment_date) as date,
-        SUM(amount_paid) as revenue
-      FROM memberships
-      WHERE payment_date >= DATE('now', '-30 days')
-      GROUP BY DATE(payment_date)
-      ORDER BY date ASC
+      WITH RECURSIVE dates(date) AS (
+        SELECT DATE('now', '-29 days')
+        UNION ALL
+        SELECT DATE(date, '+1 day')
+        FROM dates
+        WHERE date < DATE('now')
+      )
+      SELECT
+        dates.date,
+        COALESCE(SUM(m.amount_paid), 0) as revenue
+      FROM dates
+      LEFT JOIN memberships m ON DATE(m.payment_date) = dates.date
+      GROUP BY dates.date
+      ORDER BY dates.date ASC
     `
       )
       .all() as { date: string; revenue: number }[]
