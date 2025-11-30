@@ -24,6 +24,8 @@ import {
 } from '@renderer/components/ui/alert-dialog'
 import { toast } from 'sonner'
 import { useSettings } from '@renderer/hooks/useSettings'
+import { format } from 'date-fns'
+import { ar, enUS } from 'date-fns/locale'
 interface MembershipsTableProps {
   memberships: Membership[]
   page: number
@@ -43,9 +45,39 @@ export default function MembershipsTable({
   onDelete,
   onPageChange
 }: MembershipsTableProps) {
-  const { t } = useTranslation('memberships')
+  const { t, i18n } = useTranslation('memberships')
   const { settings } = useSettings()
   const today = new Date().toISOString().split('T')[0]
+  const dateLocale = i18n.language === 'ar' ? ar : enUS
+
+  const calculateNewEndDate = (membership: Membership) => {
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+
+    const endDate = new Date(membership.endDate)
+    endDate.setHours(0, 0, 0, 0)
+
+    // Calculate membership duration in days
+    const start = new Date(membership.startDate)
+    const end = new Date(membership.endDate)
+    const durationDays = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))
+
+    // Determine new start date
+    let newStartDate: Date
+    if (endDate < today) {
+      // If membership has expired, start from today
+      newStartDate = new Date(today)
+    } else {
+      // If membership is still active, start from day after end date
+      newStartDate = new Date(endDate.getTime() + 24 * 60 * 60 * 1000)
+    }
+
+    // Calculate new end date by adding duration to new start date
+    const newEndDate = new Date(newStartDate.getTime() + durationDays * 24 * 60 * 60 * 1000)
+
+    return format(newEndDate, 'PPP', { locale: dateLocale })
+  }
+
   const handleRenewMembership = async (membershipId: string) => {
     try {
       await window.electron.ipcRenderer.invoke('memberships:extend', membershipId)
@@ -57,7 +89,7 @@ export default function MembershipsTable({
   }
   const getStatusBadge = (endDate: string) => {
     const isActive = endDate >= today
-    return isActive ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'
+    return isActive ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
   }
 
   const formatCurrency = (amount: number) => {
@@ -132,7 +164,10 @@ export default function MembershipsTable({
                           <AlertDialogHeader>
                             <AlertDialogTitle>{t('alert.renewMembership')}</AlertDialogTitle>
                             <AlertDialogDescription>
-                              {t('alert.renewMembershipMessage')}
+                              {t('alert.renewMembershipMessage', {
+                                memberName: membership.memberName,
+                                newEndDate: calculateNewEndDate(membership)
+                              })}
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>

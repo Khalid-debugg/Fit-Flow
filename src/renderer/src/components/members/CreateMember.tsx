@@ -25,6 +25,7 @@ export default function CreateMember({ onSuccess }: { onSuccess: () => void }) {
   const [formData, setFormData] = useState<Partial<Member>>({
     name: '',
     email: null,
+    countryCode: '+20',
     phone: '',
     gender: settings?.allowedGenders === 'female' ? 'female' : 'male',
     address: null,
@@ -85,6 +86,7 @@ export default function CreateMember({ onSuccess }: { onSuccess: () => void }) {
       setFormData({
         name: '',
         email: null,
+        countryCode: '+20',
         phone: '',
         gender: settings?.allowedGenders === 'female' ? 'female' : 'male',
         address: null,
