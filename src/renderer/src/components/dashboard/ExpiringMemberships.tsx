@@ -37,10 +37,30 @@ export default function ExpiringMemberships({
   const dateLocale = i18n.language === 'ar' ? ar : enUS
 
   const calculateNewEndDate = (membership: ExpiringMembership) => {
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+
+    const endDate = new Date(membership.endDate)
+    endDate.setHours(0, 0, 0, 0)
+
+    // Calculate membership duration in days
     const start = new Date(membership.startDate)
     const end = new Date(membership.endDate)
-    const diffDays = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))
-    const newEndDate = new Date(end.getTime() + diffDays * 24 * 60 * 60 * 1000)
+    const durationDays = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))
+
+    // Determine new start date
+    let newStartDate: Date
+    if (endDate < today) {
+      // If membership has expired, start from today
+      newStartDate = new Date(today)
+    } else {
+      // If membership is still active, start from day after end date
+      newStartDate = new Date(endDate.getTime() + 24 * 60 * 60 * 1000)
+    }
+
+    // Calculate new end date by adding duration to new start date
+    const newEndDate = new Date(newStartDate.getTime() + durationDays * 24 * 60 * 60 * 1000)
+
     return format(newEndDate, 'PPP', { locale: dateLocale })
   }
 
@@ -61,7 +81,7 @@ export default function ExpiringMemberships({
           variant="ghost"
           size="sm"
           onClick={() => onPageChange(1)}
-          className="gap-2 text-blue-400 hover:text-blue-300"
+          className="gap-2 text-yellow-400 hover:text-yellow-300"
         >
           {t('refresh')}
           <RefreshCcw className="w-4 h-4" />
