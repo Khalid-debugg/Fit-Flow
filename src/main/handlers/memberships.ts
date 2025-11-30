@@ -51,10 +51,31 @@ export function registerMembershipHandlers() {
         params.push(filters.dateTo)
       }
 
+      // Filter by status (active/expired)
+      const today = new Date().toISOString().split('T')[0]
+      if (filters.status === 'active') {
+        whereConditions.push('ms.end_date >= ?')
+        params.push(today)
+      } else if (filters.status === 'expired') {
+        whereConditions.push('ms.end_date < ?')
+        params.push(today)
+      }
+
       const whereClause = whereConditions.length ? `WHERE ${whereConditions.join(' AND ')}` : ''
 
+      // Get total count first (before applying limit/offset)
+      const countQuery = `
+      SELECT COUNT(*) as total
+      FROM memberships ms
+      INNER JOIN members m ON ms.member_id = m.id
+      INNER JOIN membership_plans mp ON ms.plan_id = mp.id
+      ${whereClause}
+    `
+      const totalResult = db.prepare(countQuery).get(...params) as { total: number }
+      const total = totalResult.total
+
       const query = `
-      SELECT 
+      SELECT
         ms.*,
         m.name AS member_name,
         m.phone AS member_phone,
@@ -70,7 +91,6 @@ export function registerMembershipHandlers() {
 
       const rows = db.prepare(query).all(...params, limit, offset) as MembershipDbRow[]
 
-      const today = new Date().toISOString().split('T')[0]
       const processedMemberships = rows.map((row) => {
         const membership = toCamel(row) as Membership
         membership.id = row.id
@@ -88,26 +108,8 @@ export function registerMembershipHandlers() {
         return membership
       })
 
-      const filtered =
-        filters.status === 'all'
-          ? processedMemberships
-          : processedMemberships.filter((ms) => {
-              const isActive = ms.endDate >= today
-              return filters.status === 'active' ? isActive : !isActive
-            })
-
-      const countQuery = `
-      SELECT COUNT(*) as total 
-      FROM memberships ms
-      INNER JOIN members m ON ms.member_id = m.id
-      INNER JOIN membership_plans mp ON ms.plan_id = mp.id
-      ${whereClause}
-    `
-      const totalResult = db.prepare(countQuery).get(...params) as { total: number }
-      const total = filters.status === 'all' ? totalResult.total : filtered.length
-
       return {
-        memberships: filtered,
+        memberships: processedMemberships,
         total,
         page,
         totalPages: Math.ceil(total / limit)
@@ -309,21 +311,39 @@ export function registerMembershipHandlers() {
 
     if (!row) throw new Error('MEMBERSHIP_NOT_FOUND')
 
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+
+    const endDate = new Date(row.end_date)
+    endDate.setHours(0, 0, 0, 0)
+
+    // Calculate membership duration in days
     const start = new Date(row.start_date)
     const end = new Date(row.end_date)
-    const diffDays = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))
+    const durationDays = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))
 
-    const newEndDate = new Date(end.getTime() + diffDays * 24 * 60 * 60 * 1000)
+    // Determine new start date
+    let newStartDate: Date
+    if (endDate < today) {
+      // If membership has expired, start from today
+      newStartDate = new Date(today)
+    } else {
+      // If membership is still active, start from day after end date
+      newStartDate = new Date(endDate.getTime() + 24 * 60 * 60 * 1000)
+    }
+
+    // Calculate new end date by adding duration to new start date
+    const newEndDate = new Date(newStartDate.getTime() + durationDays * 24 * 60 * 60 * 1000)
       .toISOString()
       .split('T')[0]
 
     const newAmountPaid = row.amount_paid * 2
-    const paymentDate = new Date().toISOString().split('T')[0] // IMPORTANT
+    const paymentDate = new Date().toISOString().split('T')[0]
 
     db.prepare(
       `
     UPDATE memberships
-    SET 
+    SET
       end_date = ?,
       amount_paid = ?,
       payment_date = ?
