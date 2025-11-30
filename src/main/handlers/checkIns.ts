@@ -38,7 +38,40 @@ export function registerCheckInHandlers() {
       params.push(filters.dateTo)
     }
 
+    // Filter by membership status using a subquery to get the latest membership
+    const today = new Date().toISOString().split('T')[0]
+
+    // Build the status filter for the WHERE clause
+    if (filters.status === 'active') {
+      whereConditions.push('latest_ms.end_date >= ?')
+      params.push(today)
+    } else if (filters.status === 'expired') {
+      whereConditions.push('latest_ms.end_date < ?')
+      params.push(today)
+    } else if (filters.status === 'none') {
+      whereConditions.push('latest_ms.end_date IS NULL')
+    }
+
     const whereClause = whereConditions.length ? `WHERE ${whereConditions.join(' AND ')}` : ''
+
+    // Join with the most recent membership per member (not just active ones)
+    const membershipJoin = `
+      LEFT JOIN (
+        SELECT member_id, MAX(end_date) as end_date
+        FROM memberships
+        GROUP BY member_id
+      ) latest_ms ON m.id = latest_ms.member_id`
+
+    // Get total count first (before applying limit/offset)
+    const countQuery = `
+      SELECT COUNT(*) as total
+      FROM check_ins ci
+      INNER JOIN members m ON ci.member_id = m.id
+      ${membershipJoin}
+      ${whereClause}
+    `
+    const totalResult = db.prepare(countQuery).get(...params) as { total: number }
+    const total = totalResult.total
 
     const query = `
       SELECT
@@ -49,11 +82,10 @@ export function registerCheckInHandlers() {
         m.name AS member_name,
         m.country_code AS member_country_code,
         m.phone AS member_phone,
-        ms.end_date AS membership_end_date
+        latest_ms.end_date AS membership_end_date
       FROM check_ins ci
       INNER JOIN members m ON ci.member_id = m.id
-      LEFT JOIN memberships ms ON m.id = ms.member_id
-        AND ms.end_date >= date('now')
+      ${membershipJoin}
       ${whereClause}
       ORDER BY ci.check_in_time DESC
       LIMIT ? OFFSET ?
@@ -61,7 +93,6 @@ export function registerCheckInHandlers() {
 
     const rows = db.prepare(query).all(...params, limit, offset) as CheckInDbRow[]
 
-    const today = new Date().toISOString().split('T')[0]
     const processedCheckIns = rows.map((row) => {
       const checkIn = toCamel(row) as CheckIn
       checkIn.id = row.id
@@ -82,24 +113,8 @@ export function registerCheckInHandlers() {
       return checkIn
     })
 
-    const filtered =
-      filters.status === 'all'
-        ? processedCheckIns
-        : processedCheckIns.filter((ci) => ci.membershipStatus === filters.status)
-
-    const countQuery = `
-      SELECT COUNT(*) as total 
-      FROM check_ins ci
-      INNER JOIN members m ON ci.member_id = m.id
-      LEFT JOIN memberships ms ON m.id = ms.member_id 
-        AND ms.end_date >= date('now')
-      ${whereClause}
-    `
-    const totalResult = db.prepare(countQuery).get(...params) as { total: number }
-    const total = filters.status === 'all' ? totalResult.total : filtered.length
-
     return {
-      checkIns: filtered,
+      checkIns: processedCheckIns,
       total,
       page,
       totalPages: Math.ceil(total / limit)
