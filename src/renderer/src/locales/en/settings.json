@@ -10,7 +10,9 @@
     "arabic": "العربية (Arabic)",
     "english": "English",
     "currency": "Currency",
-    "dateFormat": "Date Format"
+    "dateFormat": "Date Format",
+    "searchCurrency": "Search by currency code or name...",
+    "noCurrencyFound": "No currency found"
   },
   "gym": {
     "title": "Gym Information",
@@ -38,7 +40,7 @@
     "defaultMethod": "Default Payment Method",
     "cash": "Cash",
     "card": "Card",
-    "bank": "Bank Transfer",
+    "transfer": "Bank Transfer",
     "e-wallet": "E-wallet"
   },
   "backup": {

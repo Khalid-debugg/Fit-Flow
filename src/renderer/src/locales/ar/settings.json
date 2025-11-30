@@ -10,7 +10,9 @@
     "arabic": "العربية",
     "english": "English (الإنجليزية)",
     "currency": "العملة",
-    "dateFormat": "تنسيق التاريخ"
+    "dateFormat": "تنسيق التاريخ",
+    "searchCurrency": "ابحث برمز أو اسم العملة...",
+    "noCurrencyFound": "لم يتم العثور على عملة"
   },
   "gym": {
     "title": "معلومات الصالة الرياضية",
@@ -38,7 +40,7 @@
     "defaultMethod": "طريقة الدفع الافتراضية",
     "cash": "نقدي",
     "card": "بطاقة",
-    "bank": "تحويل بنكي",
+    "transfer": "تحويل بنكي",
     "e-wallet": "محفظة إلكترونية"
   },
   "backup": {

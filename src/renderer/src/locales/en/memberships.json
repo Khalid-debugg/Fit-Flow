@@ -42,8 +42,12 @@
   "form": {
     "member": "Member",
     "selectMember": "Select a member",
+    "searchMember": "Search by name or phone...",
+    "noMembersFound": "No members found",
     "plan": "Plan",
     "selectPlan": "Select a plan",
+    "searchPlan": "Search by plan name...",
+    "noPlansFound": "No plans found",
     "startDate": "Start Date",
     "endDate": "End Date",
     "amountPaid": "Amount Paid",
@@ -107,6 +111,6 @@
   },
   "alert": {
     "renewMembership": "Renew Membership",
-    "renewMembershipMessage": "Are you sure you want to renew this membership? This action cannot be undone."
+    "renewMembershipMessage": "Are you sure you want to renew {{memberName}}'s membership? The new end date will be {{newEndDate}}. This action cannot be undone."
   }
 }

@@ -38,10 +38,10 @@
     "title": "إجراءات سريعة",
     "addMember": "إضافة عضو",
     "addMembership": "إضافة اشتراك",
-    "createPlan": "إنشاء خطة",
+    "createPlan": "إنشاء باقة",
     "viewMembers": "عرض الأعضاء",
     "viewMemberships": "عرض الاشتراكات",
-    "viewPlans": "عرض الخطط"
+    "viewPlans": "عرض الباقات"
   },
 
   "status": {

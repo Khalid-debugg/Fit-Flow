@@ -10,7 +10,7 @@
   "table": {
     "index": "#",
     "member": "العضو",
-    "plan": "الخطة",
+    "plan": "الباقة",
     "startDate": "تاريخ البداية",
     "endDate": "تاريخ الانتهاء",
     "amountPaid": "المبلغ المدفوع",
@@ -41,14 +41,18 @@
   "form": {
     "member": "العضو",
     "selectMember": "اختر عضو",
-    "plan": "الخطة",
-    "selectPlan": "اختر خطة",
+    "searchMember": "ابحث بالاسم أو رقم الهاتف...",
+    "noMembersFound": "لم يتم العثور على أعضاء",
+    "plan": "الباقة",
+    "selectPlan": "اختر باقة",
+    "searchPlan": "ابحث باسم الباقة...",
+    "noPlansFound": "لم يتم العثور على خطط",
     "startDate": "تاريخ البداية",
     "endDate": "تاريخ الانتهاء",
     "amountPaid": "المبلغ المدفوع",
     "paymentDate": "تاريخ الدفع",
     "paymentMethod": "طريقة الدفع",
-    "price": "سعر الخطة",
+    "price": "سعر الباقة",
     "phone": "الهاتف",
     "notes": "ملاحظات",
     "notesPlaceholder": "أضف أي ملاحظات إضافية...",
@@ -70,7 +74,7 @@
   "view": {
     "title": "تفاصيل الاشتراك",
     "memberInfo": "معلومات العضو",
-    "planInfo": "معلومات الخطة",
+    "planInfo": "معلومات الباقة",
     "dates": "فترة الاشتراك",
     "paymentInfo": "معلومات الدفع"
   },
@@ -106,6 +110,6 @@
   },
   "alert": {
     "renewMembership": "تمديد الإشتراك",
-    "renewMembershipMessage": "هل أنت متأكد من رغبتك فى تمديد هذا الإشتراك؟ لا يمكن التراجع عن هذا الإجراء."
+    "renewMembershipMessage": "هل أنت متأكد من رغبتك في تمديد اشتراك {{memberName}}؟ تاريخ الانتهاء الجديد سيكون {{newEndDate}}. لا يمكن التراجع عن هذا الإجراء."
   }
 }
