@@ -10,13 +10,7 @@ import { RadioGroup, RadioGroupItem } from '@renderer/components/ui/radio-group'
 import { Calendar } from '@renderer/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@renderer/components/ui/popover'
 import { Textarea } from '@renderer/components/ui/textarea'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@renderer/components/ui/select'
+import { Combobox, type ComboboxOption } from '@renderer/components/ui/combobox'
 import type { Membership } from '@renderer/models/membership'
 import { PAYMENT_METHODS } from '@renderer/models/membership'
 import { useSettings } from '@renderer/hooks/useSettings'
@@ -117,46 +111,45 @@ export default function MembershipForm({
           <Label htmlFor="memberId" className="text-gray-200">
             {t('form.member')} *
           </Label>
-          <Select
+          <Combobox
+            options={members.map(
+              (member): ComboboxOption => ({
+                value: member.id,
+                label: `${member.name} - ${member.phone}`,
+                searchText: `${member.name} ${member.phone}`
+              })
+            )}
             value={formData.memberId}
             onValueChange={(value) => setFormData({ ...formData, memberId: value })}
+            placeholder={t('form.selectMember')}
+            searchPlaceholder={t('form.searchMember')}
+            emptyText={t('form.noMembersFound')}
             disabled={!!preSelectedMemberId}
-          >
-            <SelectTrigger id="memberId" className="bg-gray-800 border-gray-700 text-white">
-              <SelectValue placeholder={t('form.selectMember')} />
-            </SelectTrigger>
-            <SelectContent className="bg-gray-800 border-gray-700">
-              {members.map((member) => (
-                <SelectItem key={member.id} value={member.id} className="text-white">
-                  {member.name} - {member.phone}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          />
         </div>
 
         <div className="space-y-2 col-span-2">
           <Label htmlFor="planId" className="text-gray-200">
             {t('form.plan')} *
           </Label>
-          <Select value={formData.planId} onValueChange={handlePlanSelect}>
-            <SelectTrigger id="planId" className="bg-gray-800 border-gray-700 text-white">
-              <SelectValue placeholder={t('form.selectPlan')} />
-            </SelectTrigger>
-            <SelectContent className="bg-gray-800 border-gray-700">
-              {plans.map((plan) => (
-                <SelectItem key={plan.id} value={plan.id} className="text-white">
-                  {plan.name} -
-                  {Intl.NumberFormat(settings?.language, {
-                    style: 'currency',
-                    currency: settings?.currency,
-                    minimumFractionDigits: 0
-                  }).format(plan.price)}{' '}
-                  ({plan.durationDays} {t('days')})
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Combobox
+            options={plans.map(
+              (plan): ComboboxOption => ({
+                value: plan.id,
+                label: `${plan.name} - ${Intl.NumberFormat(settings?.language, {
+                  style: 'currency',
+                  currency: settings?.currency,
+                  minimumFractionDigits: 0
+                }).format(plan.price)} (${plan.durationDays} ${t('days')})`,
+                searchText: plan.name
+              })
+            )}
+            value={formData.planId}
+            onValueChange={handlePlanSelect}
+            placeholder={t('form.selectPlan')}
+            searchPlaceholder={t('form.searchPlan')}
+            emptyText={t('form.noPlansFound')}
+          />
         </div>
 
         <div className="space-y-2">

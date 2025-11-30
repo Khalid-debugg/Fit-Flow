@@ -46,8 +46,8 @@ export default function MembersTable({
   const getStatusBadge = (status: string) => {
     const colors = {
       active: 'bg-green-500/20 text-green-400',
-      expired: 'bg-red-500/20 text-red-400',
-      inactive: 'bg-gray-500/20 text-gray-400'
+      expired: 'bg-yellow-500/20 text-yellow-400',
+      inactive: 'bg-red-500/20 text-red-400'
     }
     return colors[status] || colors.inactive
   }

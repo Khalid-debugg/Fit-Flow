@@ -33,8 +33,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           className={`absolute top-6 z-10 w-10 h-10 p-0 rounded-full
             bg-gradient-to-br from-gray-700/80 to-gray-800/80 backdrop-blur-sm
             border border-gray-600/50 shadow-lg
-            hover:from-blue-600/80 hover:to-purple-600/80 hover:border-blue-500/50
-            hover:shadow-blue-500/20 hover:shadow-xl hover:scale-110
+            hover:from-yellow-600/80 hover:to-orange-600/80 hover:border-yellow-500/50
+            hover:shadow-yellow-500/20 hover:shadow-xl hover:scale-110
             active:scale-95
             transition-all duration-300 ease-in-out
             ${isRTL ? '-left-5' : '-right-5'}
@@ -60,16 +60,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             collapsed ? 'pt-20 pb-4 px-3 justify-center' : 'p-6 gap-3'
           }`}
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 via-purple-600/5 to-pink-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="absolute inset-0 bg-gradient-to-br from-yellow-600/5 via-orange-600/5 to-red-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
           <div className="relative flex items-center justify-center transition-all duration-300">
             <div
-              className={`absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity duration-300 ${
+              className={`absolute inset-0 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-xl blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-300 ${
                 collapsed ? '' : 'animate-pulse'
               }`}
             />
             <div
-              className={`relative rounded-xl bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 shadow-lg shadow-blue-500/30 group-hover:shadow-blue-500/50 group-hover:scale-110 transition-all duration-300 ring-2 ring-blue-400/20 group-hover:ring-blue-400/40 ${
+              className={`relative rounded-xl bg-gradient-to-br from-yellow-500 via-orange-500 to-red-500 shadow-lg shadow-yellow-500/20 group-hover:shadow-yellow-500/30 group-hover:scale-110 transition-all duration-300 ring-2 ring-yellow-400/10 group-hover:ring-yellow-400/20 ${
                 collapsed ? 'w-12 h-12 p-2.5' : 'w-12 h-12 p-2.5'
               }`}
             >
@@ -79,7 +79,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
           {!collapsed && (
             <div className="relative flex-1 transition-all duration-300">
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent drop-shadow-sm group-hover:from-blue-300 group-hover:via-purple-300 group-hover:to-pink-300 transition-all duration-300">
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 bg-clip-text text-transparent drop-shadow-sm group-hover:from-yellow-300 group-hover:via-orange-300 group-hover:to-red-300 transition-all duration-300">
                 {t('app.name')}
               </h1>
               <p className="text-xs text-gray-400 mt-0.5 group-hover:text-gray-300 transition-colors duration-300 font-medium">
@@ -89,7 +89,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           )}
 
           {!collapsed && (
-            <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-blue-500/10 to-purple-500/10 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-yellow-500/10 to-orange-500/10 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           )}
         </div>
 
@@ -107,7 +107,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   ${collapsed ? 'justify-center p-3' : 'gap-3 px-4 py-3'}
                   ${
                     isActive
-                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/30'
+                      ? 'bg-gradient-to-r from-yellow-600 to-orange-600 text-white shadow-lg shadow-yellow-500/20'
                       : 'text-gray-300 hover:bg-gray-700/50 hover:text-white hover:shadow-md hover:translate-x-1'
                   }
                 `}
@@ -119,7 +119,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   ${
                     isActive
                       ? 'bg-white/20 shadow-lg shadow-white/20'
-                      : 'group-hover:bg-blue-500/20 group-hover:shadow-md group-hover:shadow-blue-500/30'
+                      : 'group-hover:bg-yellow-500/10 group-hover:shadow-md group-hover:shadow-yellow-500/20'
                   }
                 `}
                 >
@@ -129,7 +129,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     ${
                       isActive
                         ? 'scale-110 drop-shadow-[0_0_8px_rgba(255,255,255,0.6)] animate-pulse'
-                        : 'group-hover:scale-125 group-hover:drop-shadow-[0_0_6px_rgba(96,165,250,0.8)]'
+                        : 'group-hover:scale-125 group-hover:drop-shadow-[0_0_6px_rgba(251,191,36,0.8)]'
                     }
                   `}
                   >
@@ -141,8 +141,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     transition-all duration-300
                     ${
                       isActive
-                        ? 'ring-2 ring-white/40 ring-offset-2 ring-offset-blue-600/50'
-                        : 'group-hover:ring-2 group-hover:ring-blue-400/40'
+                        ? 'ring-2 ring-white/40 ring-offset-2 ring-offset-yellow-600/50'
+                        : 'group-hover:ring-2 group-hover:ring-yellow-400/40'
                     }
                   `}
                   />
@@ -165,10 +165,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             variant="default"
             className="w-full group relative overflow-hidden
               bg-gradient-to-br from-gray-700 to-gray-800
-              hover:from-blue-600 hover:to-purple-600
+              hover:from-yellow-600 hover:to-orange-600
               border border-gray-600/50
-              hover:border-blue-500/50
-              shadow-md hover:shadow-lg hover:shadow-blue-500/20
+              hover:border-yellow-500/50
+              shadow-md hover:shadow-lg hover:shadow-yellow-500/10
               rounded-lg px-4 py-2.5
               transition-all duration-300 ease-in-out
               hover:scale-105 active:scale-95
@@ -199,12 +199,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <div
                 className="
                 w-11 h-11 rounded-full
-                bg-linear-to-r from-blue-500 to-purple-500
+                bg-linear-to-r from-yellow-500 to-orange-500
                 flex items-center justify-center
-                shadow-lg shadow-blue-500/30
+                shadow-lg shadow-yellow-500/20
                 ring-2 ring-gray-700
-                group-hover:ring-blue-400/50
-                group-hover:shadow-blue-500/50
+                group-hover:ring-yellow-400/30
+                group-hover:shadow-yellow-500/30
                 group-hover:scale-110
                 transition-all duration-300 ease-in-out
               "
@@ -223,7 +223,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
             {!collapsed && (
               <div className="transition-all duration-300 flex-1">
-                <p className="font-semibold text-white group-hover:text-blue-400 transition-colors duration-300">
+                <p className="font-semibold text-white group-hover:text-yellow-400 transition-colors duration-300">
                   {t('user.admin')}
                 </p>
                 <p className="text-xs text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
@@ -232,7 +232,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </div>
             )}
 
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/0 via-purple-600/5 to-blue-600/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-r from-yellow-600/0 via-orange-600/5 to-yellow-600/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
           </div>
         </div>
       </aside>

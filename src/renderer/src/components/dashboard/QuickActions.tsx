@@ -11,52 +11,34 @@ export default function QuickActions() {
     {
       label: t('quickActions.addMember'),
       icon: UserPlus,
-      onClick: () => navigate('/members?action=create'),
-      color: 'blue'
+      onClick: () => navigate('/members?action=create')
     },
     {
       label: t('quickActions.addMembership'),
       icon: CreditCard,
-      onClick: () => navigate('/memberships?action=create'),
-      color: 'green'
+      onClick: () => navigate('/memberships?action=create')
     },
     {
       label: t('quickActions.createPlan'),
       icon: Package,
-      onClick: () => navigate('/plans?action=create'),
-      color: 'purple'
+      onClick: () => navigate('/plans?action=create')
     },
     {
       label: t('quickActions.viewMembers'),
       icon: Users,
-      onClick: () => navigate('/members'),
-      color: 'orange'
+      onClick: () => navigate('/members')
     },
     {
       label: t('quickActions.viewMemberships'),
       icon: FileText,
-      onClick: () => navigate('/memberships'),
-      color: 'pink'
+      onClick: () => navigate('/memberships')
     },
     {
       label: t('quickActions.viewPlans'),
       icon: Grid,
-      onClick: () => navigate('/plans'),
-      color: 'indigo'
+      onClick: () => navigate('/plans')
     }
   ]
-
-  const getColorClasses = (color: string) => {
-    const colors = {
-      blue: 'bg-blue-500/20 text-blue-400 hover:bg-blue-500/30',
-      green: 'bg-green-500/20 text-green-400 hover:bg-green-500/30',
-      purple: 'bg-purple-500/20 text-purple-400 hover:bg-purple-500/30',
-      orange: 'bg-orange-500/20 text-orange-400 hover:bg-orange-500/30',
-      pink: 'bg-pink-500/20 text-pink-400 hover:bg-pink-500/30',
-      indigo: 'bg-indigo-500/20 text-indigo-400 hover:bg-indigo-500/30'
-    }
-    return colors[color] || colors.blue
-  }
 
   return (
     <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">
@@ -71,7 +53,7 @@ export default function QuickActions() {
             key={action.label}
             variant="ghost"
             onClick={action.onClick}
-            className={`h-auto py-4 flex flex-col items-center gap-2 ${getColorClasses(action.color)} border border-gray-700`}
+            className="h-auto py-4 flex flex-col items-center gap-2 bg-gray-900/50 text-gray-300 border border-gray-700 hover:bg-gradient-to-br hover:from-yellow-500/20 hover:to-orange-500/20 hover:border-yellow-500/50 hover:text-yellow-400 hover:scale-105 hover:shadow-lg hover:shadow-yellow-500/10 transition-all duration-300"
           >
             <action.icon className="w-6 h-6" />
             <span className="text-xs font-medium text-center">{action.label}</span>

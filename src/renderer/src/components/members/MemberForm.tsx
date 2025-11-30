@@ -11,13 +11,8 @@ import { Checkbox } from '@renderer/components/ui/checkbox'
 import { Calendar } from '@renderer/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@renderer/components/ui/popover'
 import { Textarea } from '@renderer/components/ui/textarea'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@renderer/components/ui/select'
+import { PhoneInput } from '@renderer/components/ui/phone-input'
+import { Combobox, type ComboboxOption } from '@renderer/components/ui/combobox'
 import { GENDER, Member } from '@renderer/models/member'
 import { PAYMENT_METHODS } from '@renderer/models/membership'
 import { Separator } from '@renderer/components/ui/separator'
@@ -137,7 +132,7 @@ export default function MemberForm({
     <form onSubmit={onSubmit} className="space-y-6">
       <div>
         <h3 className="text-lg font-semibold mb-4 text-gray-200">{t('basicInfo')}</h3>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="flex flex-col gap-4">
           <div className="space-y-2">
             <Label htmlFor="name" className="text-gray-200">
               {t('form.name')} *
@@ -152,17 +147,13 @@ export default function MemberForm({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="phone" className="text-gray-200">
-              {t('form.phone')} *
-            </Label>
-            <Input
-              id="phone"
-              required
-              type="number"
-              maxLength={15}
-              className="bg-gray-800 border-gray-700 text-white"
-              value={formData.phone ?? ''}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            <PhoneInput
+              countryCode={formData.countryCode || '+20'}
+              phoneNumber={formData.phone || ''}
+              onCountryCodeChange={(code) => setFormData({ ...formData, countryCode: code })}
+              onPhoneNumberChange={(number) => setFormData({ ...formData, phone: number })}
+              label={t('form.phone')}
+              required={true}
             />
           </div>
 
@@ -294,24 +285,24 @@ export default function MemberForm({
                     <Label htmlFor="planId" className="text-gray-200">
                       {tMemberships('form.plan')} *
                     </Label>
-                    <Select value={subscriptionData.planId} onValueChange={handlePlanSelect}>
-                      <SelectTrigger id="planId" className="bg-gray-800 border-gray-700 text-white">
-                        <SelectValue placeholder={tMemberships('form.selectPlan')} />
-                      </SelectTrigger>
-                      <SelectContent className="bg-gray-800 border-gray-700">
-                        {plans.map((plan) => (
-                          <SelectItem key={plan.id} value={plan.id} className="text-white">
-                            {plan.name} -{' '}
-                            {Intl.NumberFormat(settings?.language, {
-                              style: 'currency',
-                              currency: settings?.currency,
-                              minimumFractionDigits: 0
-                            }).format(plan.price)}
-                            ({plan.durationDays} {tMemberships('days')})
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <Combobox
+                      options={plans.map(
+                        (plan): ComboboxOption => ({
+                          value: plan.id,
+                          label: `${plan.name} - ${Intl.NumberFormat(settings?.language, {
+                            style: 'currency',
+                            currency: settings?.currency,
+                            minimumFractionDigits: 0
+                          }).format(plan.price)} (${plan.durationDays} ${tMemberships('days')})`,
+                          searchText: plan.name
+                        })
+                      )}
+                      value={subscriptionData.planId}
+                      onValueChange={handlePlanSelect}
+                      placeholder={tMemberships('form.selectPlan')}
+                      searchPlaceholder={tMemberships('form.searchPlan')}
+                      emptyText={tMemberships('form.noPlansFound')}
+                    />
                   </div>
 
                   <div className="space-y-2">
@@ -335,7 +326,10 @@ export default function MemberForm({
                             : tMemberships('form.pickDate')}
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0 bg-gray-900 border-gray-700" align="start">
+                      <PopoverContent
+                        className="w-auto p-0 bg-gray-900 border-gray-700"
+                        align="start"
+                      >
                         <Calendar
                           mode="single"
                           selected={
@@ -415,7 +409,10 @@ export default function MemberForm({
                             : tMemberships('form.pickDate')}
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0 bg-gray-900 border-gray-700" align="start">
+                      <PopoverContent
+                        className="w-auto p-0 bg-gray-900 border-gray-700"
+                        align="start"
+                      >
                         <Calendar
                           mode="single"
                           selected={

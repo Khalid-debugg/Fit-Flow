@@ -27,7 +27,7 @@ export function PhoneInput({
   disabled = false,
   className
 }: PhoneInputProps) {
-  const { t, i18n } = useTranslation()
+  const { i18n } = useTranslation()
   const [error, setError] = useState<string | null>(null)
 
   // Validate phone number when it changes

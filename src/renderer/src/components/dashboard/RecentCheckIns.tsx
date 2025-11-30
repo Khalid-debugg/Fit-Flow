@@ -52,14 +52,14 @@ export default function RecentCheckIns({
     <div className="flex flex-col bg-gray-800 p-6 min-h-140 rounded-lg border border-gray-700">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Clock className="w-5 h-5 text-blue-400" />
+          <Clock className="w-5 h-5 text-yellow-400" />
           <h3 className="text-lg font-semibold text-white">{t('recentCheckIns.title')}</h3>
         </div>
         <Button
           variant="ghost"
           size="sm"
           onClick={() => onPageChange(1)}
-          className="gap-2 text-blue-400 hover:text-blue-300"
+          className="gap-2 text-yellow-400 hover:text-yellow-300"
         >
           {t('refresh')}
           <RefreshCcw className="w-4 h-4" />

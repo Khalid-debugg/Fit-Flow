@@ -155,6 +155,7 @@ export default function Dashboard() {
       <QuickCheckInWidget onCheckInSuccess={loadDashboardData} />
 
       <QuickActions />
+      <RevenueChart data={revenueData} />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <RecentCheckIns
@@ -173,7 +174,6 @@ export default function Dashboard() {
           onPageChange={loadExpiringMemberships}
         />
       </div>
-      <RevenueChart data={revenueData} />
     </div>
   )
 }

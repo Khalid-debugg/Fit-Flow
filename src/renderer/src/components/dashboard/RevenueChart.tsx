@@ -55,8 +55,8 @@ export default function RevenueChart({ data }: RevenueChartProps) {
           <AreaChart data={chartData}>
             <defs>
               <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.4} />
-                <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.4} />
+                <stop offset="95%" stopColor="#f59e0b" stopOpacity={0} />
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -78,7 +78,7 @@ export default function RevenueChart({ data }: RevenueChartProps) {
             <Area
               type="monotone"
               dataKey="revenue"
-              stroke="#3b82f6"
+              stroke="#f59e0b"
               strokeWidth={2}
               fillOpacity={1}
               fill="url(#colorRevenue)"
@@ -125,7 +125,7 @@ export default function RevenueChart({ data }: RevenueChartProps) {
         <div className="bg-gray-900/50 p-4 rounded-lg border border-gray-700">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm text-gray-400">{t('revenueChart.avgDaily')}</span>
-            <DollarSign className="w-4 h-4 text-blue-400" />
+            <DollarSign className="w-4 h-4 text-yellow-400" />
           </div>
           <p className="text-2xl font-bold text-white">
             {formatCurrency(data.summary.averageDaily)}
@@ -135,7 +135,7 @@ export default function RevenueChart({ data }: RevenueChartProps) {
         <div className="bg-gray-900/50 p-4 rounded-lg border border-gray-700">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm text-gray-400">{t('revenueChart.highestDay')}</span>
-            <Calendar className="w-4 h-4 text-purple-400" />
+            <Calendar className="w-4 h-4 text-orange-400" />
           </div>
           <p className="text-2xl font-bold text-white">
             {formatCurrency(data.summary.highestDay.revenue)}

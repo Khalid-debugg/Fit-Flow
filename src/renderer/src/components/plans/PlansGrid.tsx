@@ -66,7 +66,7 @@ export default function PlansGrid({
                 relative rounded-2xl p-6 transition-all duration-300
                 ${
                   plan.isOffer
-                    ? 'bg-linear-to-br from-purple-900/40 via-pink-900/30 to-purple-900/40 border-2 border-purple-500/50 shadow-lg shadow-purple-500/20 hover:shadow-purple-500/40 hover:scale-105'
+                    ? 'bg-linear-to-br from-yellow-900/40 via-orange-900/30 to-yellow-900/40 border-2 border-orange-500/50 shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 hover:scale-105'
                     : 'bg-gray-800 border border-gray-700 hover:border-gray-600 hover:shadow-lg'
                 }
               `}
@@ -74,8 +74,8 @@ export default function PlansGrid({
               {plan.isOffer && (
                 <div className="absolute -top-3 -right-3">
                   <div className="relative">
-                    <div className="absolute inset-0 bg-linear-to-r from-purple-600 to-pink-600 rounded-full blur-md opacity-75 animate-pulse"></div>
-                    <div className="relative bg-linear-to-r from-purple-600 to-pink-600 text-white px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-lg">
+                    <div className="absolute inset-0 bg-linear-to-r from-yellow-600 to-orange-600 rounded-full blur-md opacity-75 animate-pulse"></div>
+                    <div className="relative bg-linear-to-r from-yellow-600 to-orange-600 text-white px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-lg">
                       <Sparkles className="w-3 h-3" />
                       {t('specialOffer')}
                     </div>
@@ -89,7 +89,7 @@ export default function PlansGrid({
                     <h3
                       className={`text-2xl font-bold mb-2 ${
                         plan.isOffer
-                          ? 'bg-linear-to-r from-purple-200 to-pink-200 bg-clip-text text-transparent'
+                          ? 'bg-linear-to-r from-yellow-200 to-orange-200 bg-clip-text text-transparent'
                           : 'text-white'
                       }`}
                     >
@@ -111,7 +111,7 @@ export default function PlansGrid({
                     <span
                       className={`text-4xl font-bold ${
                         plan.isOffer
-                          ? 'bg-linear-to-r from-purple-200 to-pink-200 bg-clip-text text-transparent'
+                          ? 'bg-linear-to-r from-yellow-200 to-orange-200 bg-clip-text text-transparent'
                           : 'text-white'
                       }`}
                     >
@@ -136,10 +136,8 @@ export default function PlansGrid({
                       </AlertDialogTrigger>
                       <AlertDialogContent className="bg-gray-900 border-gray-700">
                         <AlertDialogHeader>
-                          <AlertDialogTitle className="text-white">
-                            {t('alert.deletePlan')}
-                          </AlertDialogTitle>
-                          <AlertDialogDescription className="text-gray-300">
+                          <AlertDialogTitle>{t('alert.deletePlan')}</AlertDialogTitle>
+                          <AlertDialogDescription>
                             {t('alert.deletePlanMessage')}
                           </AlertDialogDescription>
                         </AlertDialogHeader>
