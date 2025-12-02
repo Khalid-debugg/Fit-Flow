@@ -7,3 +7,6 @@ out
 .claude
 FitFlow-Portable.zip
 CLAUDE.md
+
+generate-license.js
+.env*
