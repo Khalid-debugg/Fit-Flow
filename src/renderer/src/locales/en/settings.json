@@ -26,7 +26,10 @@
     "selectLogo": "Select Logo",
     "changeLogo": "Change Logo",
     "defaultLogo": "Using default FitFlow logo",
-    "logoTip": "This logo will appear on member barcodes and receipts"
+    "logoTip": "This logo will appear on member barcodes and receipts",
+    "barcodeSize": "Barcode Card Size",
+    "keychainSize": "Keychain (54x32mm)",
+    "cardSize": "ID Card (85.6x54mm)"
   },
   "members": {
     "title": "Member Settings",

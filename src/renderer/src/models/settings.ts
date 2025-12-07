@@ -11,6 +11,7 @@ export interface Settings {
   gymCountryCode?: string
   gymPhone?: string
   gymLogoPath?: string
+  barcodeSize?: 'keychain' | 'card'
 
   allowedGenders: 'male' | 'female' | 'both'
 
@@ -36,6 +37,7 @@ export interface SettingsDbRow {
   gym_country_code: string | null
   gym_phone: string | null
   gym_logo_path: string | null
+  barcode_size: 'keychain' | 'card' | null
 
   allowed_genders: 'male' | 'female' | 'both'
 

@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS settings (
   gym_country_code TEXT DEFAULT '+20',
   gym_phone TEXT,
   gym_logo_path TEXT,
+  barcode_size TEXT DEFAULT 'keychain' CHECK (barcode_size IN ('keychain', 'card')),
 
   allowed_genders TEXT DEFAULT 'both' CHECK (allowed_genders IN ('male', 'female', 'both')),
 

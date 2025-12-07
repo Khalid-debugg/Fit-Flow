@@ -47,7 +47,8 @@ export default function MemberBarcodeCard({
         gymAddress: settings.gymAddress,
         gymPhone: settings.gymPhone,
         gymLogoPath: settings.gymLogoPath,
-        logoPreview: logoPreview
+        logoPreview: logoPreview,
+        barcodeSize: settings.barcodeSize || 'keychain'
       }
     : undefined
 

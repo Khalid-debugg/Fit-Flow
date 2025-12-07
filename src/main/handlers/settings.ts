@@ -123,6 +123,7 @@ export function registerSettingsHandlers() {
       gymCountryCode: settings.gym_country_code || '+20',
       gymPhone: settings.gym_phone || undefined,
       gymLogoPath: settings.gym_logo_path || undefined,
+      barcodeSize: settings.barcode_size || 'keychain',
       allowedGenders: settings.allowed_genders,
       defaultPaymentMethod: settings.default_payment_method,
       autoBackup: settings.auto_backup === 1,
@@ -138,7 +139,7 @@ export function registerSettingsHandlers() {
     const db = getDatabase()
 
     db.prepare(
-      `UPDATE settings SET language = ?, currency = ?, gym_name = ?, gym_address = ?, gym_country_code = ?, gym_phone = ?, gym_logo_path = ?, allowed_genders = ?, default_payment_method = ?, auto_backup = ?, backup_frequency = ?, backup_folder_path = ? WHERE id = '1'`
+      `UPDATE settings SET language = ?, currency = ?, gym_name = ?, gym_address = ?, gym_country_code = ?, gym_phone = ?, gym_logo_path = ?, barcode_size = ?, allowed_genders = ?, default_payment_method = ?, auto_backup = ?, backup_frequency = ?, backup_folder_path = ? WHERE id = '1'`
     ).run(
       settings.language,
       settings.currency,
@@ -147,6 +148,7 @@ export function registerSettingsHandlers() {
       settings.gymCountryCode || '+20',
       settings.gymPhone || null,
       settings.gymLogoPath || null,
+      settings.barcodeSize || 'keychain',
       settings.allowedGenders,
       settings.defaultPaymentMethod,
       settings.autoBackup ? 1 : 0,

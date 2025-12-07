@@ -430,6 +430,29 @@ export default function Settings() {
                 </SelectContent>
               </Select>
             </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                {t('gym.barcodeSize')}
+              </label>
+              <Select
+                value={formData.barcodeSize || 'keychain'}
+                onValueChange={(value) =>
+                  setFormData({
+                    ...formData,
+                    barcodeSize: value as 'keychain' | 'card'
+                  })
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="keychain">{t('gym.keychainSize')}</SelectItem>
+                  <SelectItem value="card">{t('gym.cardSize')}</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
 
