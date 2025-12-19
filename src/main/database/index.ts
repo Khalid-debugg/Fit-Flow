@@ -1,7 +1,7 @@
 import Database from 'better-sqlite3'
 import { app } from 'electron'
 import { join } from 'path'
-import { readFileSync } from 'fs'
+import { MigrationRunner } from './migrationRunner'
 
 let db: Database.Database | null = null
 
@@ -17,10 +17,9 @@ export function initDatabase(): Database.Database {
 
   db = new Database(dbPath)
 
-  const schemaPath = join(__dirname, 'schema.sql')
-  const schema = readFileSync(schemaPath, 'utf-8')
-
-  db.exec(schema)
+  // Run migrations
+  const migrationRunner = new MigrationRunner(db)
+  migrationRunner.runMigrations()
 
   console.log('Database initialized at:', dbPath)
 

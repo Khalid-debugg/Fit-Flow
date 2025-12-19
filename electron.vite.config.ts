@@ -13,6 +13,10 @@ export default defineConfig({
           {
             src: 'src/main/database/schema.sql',
             dest: '.'
+          },
+          {
+            src: 'src/main/database/migrations',
+            dest: '.'
           }
         ]
       })
