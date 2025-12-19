@@ -14,6 +14,7 @@ const Plans = lazy(() => import('./pages/Plans'))
 const CheckIn = lazy(() => import('./pages/CheckIn'))
 const Reports = lazy(() => import('./pages/Reports'))
 const Settings = lazy(() => import('./pages/Settings'))
+const Accounts = lazy(() => import('./pages/Accounts'))
 function App() {
   const { i18n } = useTranslation()
   const { isLicensed, isCheckingLicense, setIsLicensed } = useLicense()
@@ -105,6 +106,14 @@ function App() {
                 </Suspense>
               }
             />
+<Route
+          path="/accounts"
+          element={
+            <Suspense fallback={<LoaderCircle className="mx-auto h-20 w-20 animate-spin" />}>
+              <Accounts />
+            </Suspense>
+          }
+        />
             <Route
               path="/settings"
               element={

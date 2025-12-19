@@ -1,0 +1,159 @@
+{
+  "title": "Accounts",
+  "descripton": "Manage user accounts and permissions",
+  "addNew": "Create Account",
+  "basicInfo": "Basic Information",
+  "editAccount": "Edit Account",
+  "viewAccount": "Account Details",
+  "username": "Username",
+  "fullName": "Full Name",
+  "email": "Email",
+  "role": "Role",
+  "status": "Status",
+  "actions": "Actions",
+  "edit": "Edit",
+  "delete": "Delete",
+  "admin": "Admin",
+  "administrator": "Administrator",
+  "user": "User",
+  "active": "Active",
+  "inactive": "Inactive",
+  "createdAt": "Created At",
+  "lastLogin": "Last Login",
+  "never": "Never",
+  "noAccounts": "No accounts found",
+  "loading": "Loading...",
+  "permissionsCount": "permissions",
+  "requiredByOtherPermissions": "Required by other enabled permissions",
+  "filters": {
+    "search": "Search",
+    "searchPlaceholder": "Username, name, or email",
+    "role": "Role",
+    "status": "Status",
+    "all": "All",
+    "reset": "Reset"
+  },
+  "pagination": {
+    "page": "Page",
+    "of": "of",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "errors": {
+    "usernameExists": "Username already exists",
+    "usernameInvalidCharacters": "Username contains invalid characters",
+    "createFailed": "Failed to create account",
+    "updateFailed": "Failed to update account",
+    "deleteFailed": "Failed to delete account",
+    "requiredFields": "Please fill in all required fields",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "passwordTooShort": "Password must be at least 6 characters"
+  },
+  "success": {
+    "createSuccess": "Account created successfully",
+    "updateSuccess": "Account updated successfully",
+    "deleteSuccess": "Account deleted successfully"
+  },
+  "form": {
+    "username": "Username",
+    "fullName": "Full Name",
+    "email": "Email (Optional)",
+    "password": "Password",
+    "newPassword": "New Password",
+    "changePassword": "Change Password",
+    "confirmPassword": "Confirm Password",
+    "isAdmin": "Administrator (Full Access)",
+    "isActive": "Active",
+    "role": "Role",
+    "selectRole": "Select a role",
+    "roleAndPermissions": "Role & Permissions",
+    "permissions": "Permissions",
+    "permissionsDescription": "Select the permissions for this account. All permissions are enabled by default.",
+    "customPermissionsDescription": "Configure custom permissions for this account",
+    "rolePermissionsReadOnly": "These permissions are set based on the selected role. Select 'Custom' role to modify permissions.",
+    "roleCustomHint": "Configure permissions manually below",
+    "roleAutoHint": "Permissions will be automatically set based on the selected role",
+    "cancel": "Cancel",
+    "submit": "Create Account",
+    "update": "Update Account",
+    "confirm": "Confirm"
+  },
+  "alert": {
+    "deleteAccount": "Delete Account",
+    "deleteAccountMessage": "Are you sure you want to delete account \"{{username}}\"? This action cannot be undone."
+  },
+  "permissions": {
+    "title": "Permissions",
+    "adminFullAccess": "Administrator Account - Full Access to All Features"
+  },
+  "roles": {
+    "admin": {
+      "label": "Administrator",
+      "description": "Full access to all features and settings"
+    },
+    "manager": {
+      "label": "Manager",
+      "description": "Access to operations and reports, limited system settings"
+    },
+    "coach": {
+      "label": "Coach",
+      "description": "Access to members, memberships, plans, and check-ins"
+    },
+    "receptionist": {
+      "label": "Receptionist",
+      "description": "Access to check-ins and basic member information"
+    },
+    "custom": {
+      "label": "Custom",
+      "description": "Custom permissions configured manually"
+    }
+  },
+  "pages": {
+    "dashboard": "Dashboard",
+    "members": "Members",
+    "memberships": "Memberships",
+    "plans": "Plans",
+    "checkins": "Check-ins",
+    "reports": "Reports",
+    "settings": "Settings",
+    "accounts": "Accounts"
+  },
+  "permissionLabels": {
+    "dashboard.view_financial": "Can view financial data",
+    "members.view": "Can view members list",
+    "members.create": "Can create members",
+    "members.edit": "Can edit members",
+    "members.delete": "Can delete members",
+    "members.view_details": "Can view member details",
+    "memberships.view": "Can view memberships list",
+    "memberships.create": "Can create memberships",
+    "memberships.edit": "Can edit memberships",
+    "memberships.delete": "Can delete memberships",
+    "memberships.view_details": "Can view membership details",
+    "memberships.extend": "Can extend memberships",
+    "memberships.view_payments": "Can view payment history",
+    "memberships.add_payment": "Can add payments",
+    "memberships.complete_payment": "Can complete scheduled payments",
+    "memberships.modify_price": "Can modify membership prices",
+    "plans.view": "Can view plans list",
+    "plans.create": "Can create plans",
+    "plans.edit": "Can edit plans",
+    "plans.delete": "Can delete plans",
+    "checkins.view": "Can view check-ins list",
+    "checkins.create": "Can perform check-ins",
+    "reports.generate": "Can generate reports",
+    "reports.view": "Can view reports",
+    "reports.save": "Can save/download reports",
+    "reports.delete": "Can delete reports",
+    "settings.view": "Can view settings",
+    "settings.edit": "Can edit settings",
+    "settings.manage_backups": "Can manage backups",
+    "accounts.view": "Can view user accounts",
+    "accounts.create": "Can create user accounts",
+    "accounts.edit": "Can edit user accounts",
+    "accounts.delete": "Can delete user accounts",
+    "accounts.manage_permissions": "Can manage permissions",
+    "accounts.change_password": "Can change passwords",
+    "accounts.manage_admin": "Can manage admin status"
+  }
+}

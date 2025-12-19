@@ -3,9 +3,11 @@ import { initReactI18next } from 'react-i18next'
 import commonEn from './en/common.json'
 import membersEn from './en/members.json'
 import plansEn from './en/plans.json'
+import accountsEn from './en/accounts.json'
 import commonAr from './ar/common.json'
 import membersAr from './ar/members.json'
 import plansAr from './ar/plans.json'
+import accountsAr from './ar/accounts.json'
 import membershipsAr from './ar/memberships.json'
 import membershipsEn from './en/memberships.json'
 import checkInsAr from './ar/checkIns.json'
@@ -22,6 +24,7 @@ i18n.use(initReactI18next).init({
       common: commonEn,
       members: membersEn,
       plans: plansEn,
+      accounts: accountsEn,
       memberships: membershipsEn,
       checkIns: checkInsEn,
       dashboard: dashboardEn,
@@ -32,6 +35,7 @@ i18n.use(initReactI18next).init({
       common: commonAr,
       members: membersAr,
       plans: plansAr,
+      accounts: accountsAr,
       memberships: membershipsAr,
       checkIns: checkInsAr,
       dashboard: dashboardAr,
@@ -41,7 +45,17 @@ i18n.use(initReactI18next).init({
   },
   lng: 'ar',
   fallbackLng: 'en',
-  ns: ['common', 'members', 'plans', 'memberships', 'checkIns', 'dashboard', 'reports', 'settings'],
+  ns: [
+    'common',
+    'members',
+    'plans',
+    'accounts',
+    'memberships',
+    'checkIns',
+    'dashboard',
+    'reports',
+    'settings'
+  ],
   defaultNS: 'common',
   interpolation: { escapeValue: false }
 })

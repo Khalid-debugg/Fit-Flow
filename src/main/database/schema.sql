@@ -92,6 +92,31 @@ CREATE TABLE IF NOT EXISTS reports (
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS users (
+  id TEXT PRIMARY KEY,
+  username TEXT NOT NULL UNIQUE,
+  password_hash TEXT NOT NULL,
+  full_name TEXT NOT NULL,
+  email TEXT,
+  is_admin INTEGER NOT NULL DEFAULT 0 CHECK (is_admin IN (0, 1)),
+  is_active INTEGER NOT NULL DEFAULT 1 CHECK (is_active IN (0, 1)),
+  permissions TEXT NOT NULL DEFAULT '{}',
+  last_login DATETIME,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TRIGGER IF NOT EXISTS trg_users_updated_at
+AFTER UPDATE ON users
+BEGIN
+  UPDATE users
+  SET updated_at = CURRENT_TIMESTAMP
+  WHERE id = NEW.id;
+END;
+
+CREATE INDEX IF NOT EXISTS idx_users_username ON users(username);
+CREATE INDEX IF NOT EXISTS idx_users_is_active ON users(is_active);
+
 CREATE INDEX IF NOT EXISTS idx_reports_dates ON reports(start_date, end_date);
 CREATE INDEX IF NOT EXISTS idx_reports_type ON reports(report_type);
 CREATE INDEX IF NOT EXISTS idx_memberships_member_id ON memberships(member_id);
@@ -119,5 +144,27 @@ INSERT OR IGNORE INTO settings (
   1,
   'daily',
   CURRENT_TIMESTAMP
+);
+
+-- Insert default admin user (password: admin123)
+-- Password hash is SHA256 hash of 'admin123'
+INSERT OR IGNORE INTO users (
+  id,
+  username,
+  password_hash,
+  full_name,
+  email,
+  is_admin,
+  is_active,
+  permissions
+) VALUES (
+  'admin_default',
+  'admin',
+  '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9',
+  'System Administrator',
+  NULL,
+  1,
+  1,
+  '{}'
 );
 
