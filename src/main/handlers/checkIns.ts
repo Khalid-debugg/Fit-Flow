@@ -125,7 +125,71 @@ export function registerCheckInHandlers() {
     const db = getDatabase()
     const id = generateEncryptedId()
     const checkInTime = new Date().toISOString()
+    const today = new Date().toISOString().split('T')[0]
 
+    // Get member's active membership info including payment status and check-in limits
+    const membership = db
+      .prepare(
+        `
+      SELECT
+        ms.id,
+        ms.remaining_balance,
+        ms.payment_status,
+        ms.remaining_check_ins,
+        ms.end_date,
+        mp.plan_type,
+        mp.check_in_limit
+      FROM memberships ms
+      INNER JOIN membership_plans mp ON ms.plan_id = mp.id
+      WHERE ms.member_id = ? AND ms.end_date >= ?
+      ORDER BY ms.end_date DESC
+      LIMIT 1
+    `
+      )
+      .get(memberId, today) as
+      | {
+          id: string
+          remaining_balance: number
+          payment_status: string
+          remaining_check_ins: number | null
+          end_date: string
+          plan_type: string
+          check_in_limit: number | null
+        }
+      | undefined
+
+    const warnings: string[] = []
+
+    // Check for payment warnings
+    if (membership) {
+      if (membership.payment_status === 'partial') {
+        warnings.push(`PAYMENT_PARTIAL:${membership.remaining_balance}`)
+      } else if (membership.payment_status === 'unpaid') {
+        warnings.push('PAYMENT_UNPAID')
+      }
+
+      // Check for check-in based membership limits
+      if (membership.plan_type === 'checkin' && membership.remaining_check_ins !== null) {
+        if (membership.remaining_check_ins <= 0) {
+          throw new Error('NO_CHECK_INS_REMAINING')
+        }
+
+        if (membership.remaining_check_ins <= 2) {
+          warnings.push(`LOW_CHECK_INS:${membership.remaining_check_ins}`)
+        }
+
+        // Decrement remaining check-ins for check-in based plans
+        db.prepare(
+          `
+          UPDATE memberships
+          SET remaining_check_ins = remaining_check_ins - 1
+          WHERE id = ?
+        `
+        ).run(membership.id)
+      }
+    }
+
+    // Create the check-in
     const stmt = db.prepare(`
       INSERT INTO check_ins (id, member_id, check_in_time)
       VALUES (?, ?, ?)
@@ -133,7 +197,12 @@ export function registerCheckInHandlers() {
 
     stmt.run(id, memberId, checkInTime)
 
-    return { id, memberId, checkInTime }
+    return {
+      id,
+      memberId,
+      checkInTime,
+      warnings: warnings.length > 0 ? warnings : undefined
+    }
   })
 
   ipcMain.handle('checkIns:checkToday', async (_event, memberId: string) => {

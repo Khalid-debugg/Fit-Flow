@@ -8,7 +8,8 @@ import {
 } from '@renderer/components/ui/dialog'
 import { Button } from '@renderer/components/ui/button'
 import { Member } from '@renderer/models/member'
-import { User, Phone, Calendar, AlertCircle, CheckCircle } from 'lucide-react'
+import { User, Phone, Calendar, AlertCircle, CheckCircle, DollarSign } from 'lucide-react'
+import { useSettings } from '@renderer/hooks/useSettings'
 
 interface MemberCheckInCardProps {
   member: Member
@@ -25,7 +26,20 @@ export default function MemberCheckInCard({
   onCancel,
   loading
 }: MemberCheckInCardProps) {
-  const { t } = useTranslation('checkIns')
+  const { t, i18n } = useTranslation('checkIns')
+  const { settings } = useSettings()
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat(settings?.language, {
+      style: 'currency',
+      currency: settings?.currency,
+      minimumFractionDigits: 0
+    }).format(amount)
+  }
+
+  const formatDate = (date: string) => {
+    return new Date(date).toLocaleDateString(i18n.language === 'ar' ? 'ar-EG' : 'en-US')
+  }
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -65,6 +79,36 @@ export default function MemberCheckInCard({
     return null
   }
 
+  const getPaymentTheme = (paymentDate?: string) => {
+    if (!paymentDate) {
+      return {
+        bg: 'bg-yellow-500/10',
+        border: 'border-yellow-500/30',
+        icon: 'text-yellow-400',
+        text: 'text-yellow-200'
+      }
+    }
+
+    const today = new Date().toISOString().split('T')[0]
+    const isPastDue = paymentDate < today
+
+    if (isPastDue) {
+      return {
+        bg: 'bg-red-500/10',
+        border: 'border-red-500/30',
+        icon: 'text-red-400',
+        text: 'text-red-200'
+      }
+    }
+
+    return {
+      bg: 'bg-yellow-500/10',
+      border: 'border-yellow-500/30',
+      icon: 'text-yellow-400',
+      text: 'text-yellow-200'
+    }
+  }
+
   return (
     <Dialog open={open} onOpenChange={onCancel}>
       <DialogContent className="bg-gray-900 border-gray-700 text-white max-w-md">
@@ -90,9 +134,8 @@ export default function MemberCheckInCard({
               </div>
               <div>
                 <p className="text-sm text-gray-400">{t('phone')}</p>
-                <p className="text-lg font-medium text-white">
-                  {member.countryCode}
-                  {member.phone}
+                <p className="text-lg font-medium text-white" dir="ltr">
+                  {`${member.countryCode}${member.phone}`}
                 </p>
               </div>
             </div>
@@ -123,6 +166,21 @@ export default function MemberCheckInCard({
                     {new Date(member.currentMembership.endDate).toLocaleDateString()}
                   </span>
                 </div>
+                {member.currentMembership.remainingCheckIns !== null &&
+                  member.currentMembership.remainingCheckIns !== undefined && (
+                    <div className="flex items-center justify-between text-gray-400">
+                      <span>{t('remainingCheckIns')}:</span>
+                      <span
+                        className={`font-medium ${
+                          member.currentMembership.remainingCheckIns <= 3
+                            ? 'text-red-400'
+                            : 'text-white'
+                        }`}
+                      >
+                        {member.currentMembership.remainingCheckIns}
+                      </span>
+                    </div>
+                  )}
                 {getDaysInfo() && (
                   <div className="flex items-center gap-2 pt-2">
                     <Calendar className="w-4 h-4 text-gray-400" />
@@ -137,6 +195,22 @@ export default function MemberCheckInCard({
             )}
           </div>
 
+          {member.currentMembership &&
+            member.currentMembership.remainingCheckIns !== null &&
+            member.currentMembership.remainingCheckIns !== undefined &&
+            member.currentMembership.remainingCheckIns <= 3 && (
+              <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3 flex items-start gap-3">
+                <AlertCircle className="w-5 h-5 text-yellow-400 mt-0.5 shrink-0" />
+                <p className="text-sm text-yellow-200">
+                  {member.currentMembership.remainingCheckIns === 0
+                    ? t('messages.noCheckInsRemaining')
+                    : t('messages.lowCheckInsWarning', {
+                        count: member.currentMembership.remainingCheckIns
+                      })}
+                </p>
+              </div>
+            )}
+
           {(member.status === 'expired' ||
             member.status === 'inactive' ||
             member.alreadyCheckedIn) && (
@@ -149,6 +223,32 @@ export default function MemberCheckInCard({
                     ? t('messages.expiredWarning')
                     : t('messages.noMembershipWarning')}
               </p>
+            </div>
+          )}
+
+          {member.pendingPayments && member.pendingPayments.length > 0 && (
+            <div className="space-y-2">
+              {member.pendingPayments.map((payment, index) => {
+                const theme = getPaymentTheme(payment.paymentDate)
+                return (
+                  <div
+                    key={index}
+                    className={`${theme.bg} border ${theme.border} rounded-lg p-3 flex items-start gap-3`}
+                  >
+                    <DollarSign className={`w-5 h-5 ${theme.icon} mt-0.5 shrink-0`} />
+                    <p className={`text-sm ${theme.text}`}>
+                      {payment.paymentDate
+                        ? t('messages.pendingPaymentScheduledWarning', {
+                            amount: formatCurrency(payment.amount),
+                            date: formatDate(payment.paymentDate)
+                          })
+                        : t('messages.pendingPaymentWarning', {
+                            amount: formatCurrency(payment.amount)
+                          })}
+                    </p>
+                  </div>
+                )
+              })}
             </div>
           )}
         </div>
