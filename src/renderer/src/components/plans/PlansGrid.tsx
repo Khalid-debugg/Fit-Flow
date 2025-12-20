@@ -14,6 +14,7 @@ import {
   AlertDialogTrigger
 } from '../ui/alert-dialog'
 import { useSettings } from '@renderer/hooks/useSettings'
+import { PERMISSIONS } from '@renderer/models/account'
 
 interface PlansGridProps {
   plans: Plan[]
@@ -22,6 +23,7 @@ interface PlansGridProps {
   onEdit: (plan: Plan) => void
   onDelete: (id: number) => void
   onPageChange: (page: number) => void
+  hasPermission: (permission: string) => boolean
 }
 
 export default function PlansGrid({
@@ -30,7 +32,8 @@ export default function PlansGrid({
   totalPages,
   onEdit,
   onDelete,
-  onPageChange
+  onPageChange,
+  hasPermission
 }: PlansGridProps) {
   const { t, i18n } = useTranslation('plans')
   const { settings } = useSettings()
@@ -97,7 +100,7 @@ export default function PlansGrid({
                     </h3>
                     <div className="flex items-center gap-2 text-sm text-gray-400">
                       <Clock className="w-4 h-4" />
-                      <span>{getDurationText(plan.durationDays)}</span>
+                      <span>{plan.durationDays ? getDurationText(plan.durationDays) : t('planTypes.derived')}</span>
                     </div>
                   </div>
                 </div>
@@ -124,34 +127,38 @@ export default function PlansGrid({
                   </div>
 
                   <div className="flex justify-end gap-2">
-                    <Button variant={'ghost'} size="sm" onClick={() => onEdit(plan)}>
-                      <Pencil className="h-4 w-4" />
-                    </Button>
+                    {hasPermission(PERMISSIONS.plans.edit) && (
+                      <Button variant={'ghost'} size="sm" onClick={() => onEdit(plan)}>
+                        <Pencil className="h-4 w-4" />
+                      </Button>
+                    )}
 
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button variant="ghost" size="icon">
-                          <Trash2 className="h-4 w-4 text-red-400 hover:text-red-300" />
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent className="bg-gray-900 border-gray-700">
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>{t('alert.deletePlan')}</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            {t('alert.deletePlanMessage')}
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>{t('form.cancel')}</AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={() => onDelete(plan.id!)}
-                            className="bg-red-600 hover:bg-red-700 text-white"
-                          >
-                            {t('form.confirm')}
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+                    {hasPermission(PERMISSIONS.plans.delete) && (
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="ghost" size="icon">
+                            <Trash2 className="h-4 w-4 text-red-400 hover:text-red-300" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent className="bg-gray-900 border-gray-700">
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>{t('alert.deletePlan')}</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              {t('alert.deletePlanMessage')}
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>{t('form.cancel')}</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => onDelete(plan.id!)}
+                              className="bg-red-600 hover:bg-red-700 text-white"
+                            >
+                              {t('form.confirm')}
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    )}
                   </div>
                 </div>
               </div>

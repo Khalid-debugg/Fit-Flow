@@ -14,16 +14,27 @@ import { Plan } from '@renderer/models/plan'
 import PlanForm from './PlanForm'
 import { useSearchParams } from 'react-router-dom'
 
-export default function CreatePlan({ onSuccess }: { onSuccess: () => void }) {
+interface CreatePlanProps {
+  onSuccess: () => void
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+}
+
+export default function CreatePlan({ onSuccess, open, onOpenChange }: CreatePlanProps) {
   const { t } = useTranslation('plans')
   const [searchParams] = useSearchParams()
-  const [dialogOpen, setDialogOpen] = useState(searchParams.get('action') === 'create')
+  const [internalOpen, setInternalOpen] = useState(searchParams.get('action') === 'create')
+
+  // Use external control if provided, otherwise use internal state
+  const dialogOpen = open !== undefined ? open : internalOpen
+  const setDialogOpen = onOpenChange || setInternalOpen
   const [formData, setFormData] = useState<Plan>({
     name: '',
     description: '',
     price: 0,
     durationDays: 30,
-    isOffer: false
+    isOffer: false,
+    planType: 'duration'
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -38,7 +49,8 @@ export default function CreatePlan({ onSuccess }: { onSuccess: () => void }) {
         description: '',
         price: 0,
         durationDays: 30,
-        isOffer: false
+        isOffer: false,
+        planType: 'duration'
       })
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
@@ -48,11 +60,13 @@ export default function CreatePlan({ onSuccess }: { onSuccess: () => void }) {
 
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-      <DialogTrigger asChild>
-        <Button className="gap-2" variant="secondary">
-          <Plus className="h-4 w-4" /> {t('addNew')}
-        </Button>
-      </DialogTrigger>
+      {open === undefined && (
+        <DialogTrigger asChild>
+          <Button className="gap-2" variant="secondary">
+            <Plus className="h-4 w-4" /> {t('addNew')}
+          </Button>
+        </DialogTrigger>
+      )}
       <DialogContent className="bg-gray-900 border-gray-700 text-white max-w-md">
         <DialogHeader>
           <DialogTitle>{t('addNew')}</DialogTitle>

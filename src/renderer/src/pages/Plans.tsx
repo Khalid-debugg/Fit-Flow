@@ -4,15 +4,30 @@ import { Plan, PlanFilter } from '@renderer/models/plan'
 import { EditPlan, PlansFilter, PlansGrid, CreatePlan } from '@renderer/components/plans'
 import { toast } from 'sonner'
 import { LoaderCircle } from 'lucide-react'
+import { useAuth } from '@renderer/hooks/useAuth'
+import { PERMISSIONS } from '@renderer/models/account'
 
 export default function Plans() {
   const { t } = useTranslation('plans')
+  const { hasPermission } = useAuth()
   const [plans, setPlans] = useState<Plan[]>([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState<PlanFilter>('all')
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [editPlan, setEditPlan] = useState<Plan | null>(null)
+
+  // Check if user has permission to view plans
+  if (!hasPermission(PERMISSIONS.plans.view)) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-300 mb-2">{t('errors.noPermission')}</h2>
+          <p className="text-gray-400">{t('errors.noPermissionMessage')}</p>
+        </div>
+      </div>
+    )
+  }
 
   const loadPlans = useCallback(async () => {
     setLoading(true)
@@ -66,7 +81,7 @@ export default function Plans() {
 
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">{t('title')}</h1>
-        <CreatePlan onSuccess={loadPlans} />
+        {hasPermission(PERMISSIONS.plans.create) && <CreatePlan onSuccess={loadPlans} />}
       </div>
 
       <PlansFilter filter={filter} onChange={handleFilterChange} />
@@ -86,6 +101,7 @@ export default function Plans() {
             onEdit={setEditPlan}
             onDelete={handleDelete}
             onPageChange={handlePageChange}
+            hasPermission={hasPermission}
           />
         </div>
       )}
