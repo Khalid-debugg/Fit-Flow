@@ -62,7 +62,24 @@ export default function EditMember({ member, open, onClose, onSuccess }: EditMem
     if (!member?.id) return
 
     try {
-      await window.electron.ipcRenderer.invoke('members:update', member.id, formData)
+      // Check if ID has changed and update if necessary
+      if (formData.id && formData.id !== member.id) {
+        try {
+          await window.electron.ipcRenderer.invoke('members:updateId', member.id, formData.id)
+        } catch (idError) {
+          if ((idError as Error).message.includes('ID_ALREADY_EXISTS')) {
+            toast.error(t('errors.idExists'))
+          } else {
+            toast.error(t('errors.updateFailed'))
+          }
+          return
+        }
+      }
+
+      // Use the new ID if it was changed, otherwise use the original ID
+      const currentId = formData.id || member.id
+
+      await window.electron.ipcRenderer.invoke('members:update', currentId, formData)
 
       if (addSubscription && subscriptionData.planId) {
         if (
@@ -77,7 +94,7 @@ export default function EditMember({ member, open, onClose, onSuccess }: EditMem
         }
 
         const membershipPayload = {
-          memberId: member.id.toString(),
+          memberId: currentId.toString(),
           planId: subscriptionData.planId,
           startDate: subscriptionData.startDate,
           endDate: subscriptionData.endDate,
@@ -121,9 +138,10 @@ export default function EditMember({ member, open, onClose, onSuccess }: EditMem
           submitLabel={t('form.update')}
           showSubscription={true}
           subscriptionData={subscriptionData}
-          onSubscriptionChange={setSubscriptionData}
+          onSubscriptionChange={(data) => setSubscriptionData({ ...subscriptionData, ...data })}
           addSubscription={addSubscription}
           onAddSubscriptionChange={setAddSubscription}
+          isCreateMode={false}
         />
       </DialogContent>
     </Dialog>

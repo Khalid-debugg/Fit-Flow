@@ -28,7 +28,7 @@ export default function MembersFilter({ filters, onChange, onReset }: MembersFil
   return (
     <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
       <div className="flex flex-wrap items-end gap-4">
-        <div className="flex-1 space-y-2">
+        <div className="flex-1 min-w-[200px] space-y-2">
           <Label htmlFor="search" className="text-gray-200 text-sm">
             {t('filters.search')}
           </Label>

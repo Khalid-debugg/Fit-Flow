@@ -26,9 +26,9 @@ interface MembersTableProps {
   members: Member[]
   page: number
   totalPages: number
-  onRowClick: (member: Member) => void
-  onEdit: (member: Member) => void
-  onDelete: (id: number) => void
+  onRowClick?: (member: Member) => void
+  onEdit?: (member: Member) => void
+  onDelete?: (id: string) => void
   onPageChange: (page: number) => void
 }
 
@@ -60,6 +60,7 @@ export default function MembersTable({
             <TableRow>
               <TableHead className="text-start">#</TableHead>
               <TableHead className="text-start">{t('name')}</TableHead>
+              <TableHead className="text-start">{t('id')}</TableHead>
               <TableHead className="text-start">{t('phone')}</TableHead>
               <TableHead className="text-start">{t('email')}</TableHead>
               <TableHead className="text-start">{t('gender')}</TableHead>
@@ -72,16 +73,16 @@ export default function MembersTable({
             {members.map((member, idx) => (
               <TableRow
                 key={member.id}
-                className="cursor-pointer hover:bg-gray-700/50"
-                onClick={() => onRowClick(member)}
+                className={onRowClick ? 'cursor-pointer hover:bg-gray-700/50' : ''}
+                onClick={() => onRowClick?.(member)}
               >
                 <TableCell className="font-medium">
                   {members.length === 1 ? '-' : idx + 1 + (page - 1) * 10}
                 </TableCell>
                 <TableCell className="font-medium">{member.name}</TableCell>
+                <TableCell className="font-medium">{member.id}</TableCell>
                 <TableCell className="text-gray-400">
-                  {member.countryCode}
-                  {member.phone}
+                  <span dir="ltr">{`${member.countryCode}${member.phone}`}</span>
                 </TableCell>
                 <TableCell className="text-gray-400">{member.email || 'N/A'}</TableCell>
                 <TableCell className="text-gray-400">{t(`${member.gender}`)}</TableCell>
@@ -93,42 +94,46 @@ export default function MembersTable({
                     {t(`${member.status}`)}
                   </span>
                 </TableCell>
-                <TableCell className="text-end" onClick={(e) => e.stopPropagation()}>
-                  <div className="flex justify-end gap-2">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        onEdit(member)
-                      }}
-                    >
-                      <Pencil className="h-4 w-4" />
-                    </Button>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button variant="ghost" size="icon">
-                          <Trash2 className="h-4 w-4 text-red-400" />
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>{t('alert.deleteMember')}</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            {t('alert.deleteMemberMessage')}
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>{t('form.cancel')}</AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={() => onDelete(member.id!)}
-                            className="bg-red-600 hover:bg-red-700 text-white"
-                          >
-                            {t('form.confirm')}
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+                <TableCell className="text-end min-h-[40px] h-[40px]" onClick={(e) => e.stopPropagation()}>
+                  <div className="flex justify-end gap-2 min-h-[40px] items-center">
+                    {onEdit && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          onEdit(member)
+                        }}
+                      >
+                        <Pencil className="h-4 w-4" />
+                      </Button>
+                    )}
+                    {onDelete && (
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="ghost" size="icon">
+                            <Trash2 className="h-4 w-4 text-red-400" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>{t('alert.deleteMember')}</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              {t('alert.deleteMemberMessage')}
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>{t('form.cancel')}</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => onDelete(member.id!)}
+                              className="bg-red-600 hover:bg-red-700 text-white"
+                            >
+                              {t('form.confirm')}
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    )}
                   </div>
                 </TableCell>
               </TableRow>

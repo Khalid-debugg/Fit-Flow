@@ -11,9 +11,12 @@ import {
 import { toast } from 'sonner'
 import { useDebounce } from '@renderer/hooks/useDebounce'
 import { LoaderCircle } from 'lucide-react'
+import { useAuth } from '@renderer/hooks/useAuth'
+import { PERMISSIONS } from '@renderer/models/account'
 
 export default function Members() {
   const { t } = useTranslation('members')
+  const { hasPermission } = useAuth()
   const [members, setMembers] = useState<Member[]>([])
   const [loading, setLoading] = useState(true)
   const [filters, setFilters] = useState<MemberFilters>(DEFAULT_FILTERS)
@@ -23,6 +26,18 @@ export default function Members() {
   const [editMember, setEditMember] = useState<Member | null>(null)
 
   const debouncedFilters = useDebounce(filters, 500)
+
+  // Check if user has permission to view members
+  if (!hasPermission(PERMISSIONS.members.view)) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-300 mb-2">{t('errors.noPermission')}</h2>
+          <p className="text-gray-400">{t('errors.noPermissionMessage')}</p>
+        </div>
+      </div>
+    )
+  }
 
   const loadMembers = useCallback(async () => {
     setLoading(true)
@@ -53,7 +68,7 @@ export default function Members() {
   }, [])
 
   const handleDelete = useCallback(
-    async (id: number) => {
+    async (id: string) => {
       try {
         await window.electron.ipcRenderer.invoke('members:delete', id)
         toast.success(t('success.deleteSuccess'))
@@ -72,17 +87,21 @@ export default function Members() {
 
   return (
     <div className="space-y-6">
-      <ViewMember member={viewMember} open={!!viewMember} onClose={() => setViewMember(null)} />
-      <EditMember
-        member={editMember}
-        open={!!editMember}
-        onClose={() => setEditMember(null)}
-        onSuccess={loadMembers}
-      />
+      {hasPermission(PERMISSIONS.members.view_details) && (
+        <ViewMember member={viewMember} open={!!viewMember} onClose={() => setViewMember(null)} />
+      )}
+      {hasPermission(PERMISSIONS.members.edit) && (
+        <EditMember
+          member={editMember}
+          open={!!editMember}
+          onClose={() => setEditMember(null)}
+          onSuccess={loadMembers}
+        />
+      )}
 
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">{t('title')}</h1>
-        <CreateMember onSuccess={loadMembers} />
+        {hasPermission(PERMISSIONS.members.create) && <CreateMember onSuccess={loadMembers} />}
       </div>
 
       <MembersFilter filters={filters} onChange={handleFilterChange} onReset={handleResetFilters} />
@@ -99,9 +118,9 @@ export default function Members() {
             members={members}
             page={page}
             totalPages={totalPages}
-            onRowClick={setViewMember}
-            onEdit={setEditMember}
-            onDelete={handleDelete}
+            onRowClick={hasPermission(PERMISSIONS.members.view_details) ? setViewMember : undefined}
+            onEdit={hasPermission(PERMISSIONS.members.edit) ? setEditMember : undefined}
+            onDelete={hasPermission(PERMISSIONS.members.delete) ? handleDelete : undefined}
             onPageChange={handlePageChange}
           />
         </div>

@@ -14,19 +14,35 @@ import { Textarea } from '@renderer/components/ui/textarea'
 import { PhoneInput } from '@renderer/components/ui/phone-input'
 import { Combobox, type ComboboxOption } from '@renderer/components/ui/combobox'
 import { GENDER, Member } from '@renderer/models/member'
-import { PAYMENT_METHODS } from '@renderer/models/membership'
+import {
+  PAYMENT_METHODS,
+  type ScheduledPayment,
+  type PriceModifierType
+} from '@renderer/models/membership'
 import { Separator } from '@renderer/components/ui/separator'
 import { useSettings } from '@renderer/hooks/useSettings'
 import { cn } from '@renderer/lib/utils'
+import DatePickerField from '@renderer/components/memberships/DatePickerField'
+import PaymentMethodSelector from '@renderer/components/memberships/PaymentMethodSelector'
+import PaymentTypeSelector from '@renderer/components/memberships/PaymentTypeSelector'
+import PriceAdjustmentSection from '@renderer/components/memberships/PriceAdjustmentSection'
+import PaymentSummarySection from '@renderer/components/memberships/PaymentSummarySection'
 
-interface SubscriptionData {
+export interface SubscriptionData {
   planId: string
   startDate: string
   endDate: string
+  totalPrice?: number
   amountPaid: number
+  remainingBalance?: number
+  paymentStatus?: 'unpaid' | 'partial' | 'paid'
   paymentMethod: (typeof PAYMENT_METHODS)[number]
   paymentDate: string
   notes: string
+  priceModifierType?: PriceModifierType | null
+  priceModifierValue?: number | null
+  customPriceName?: string | null
+  scheduledPayments?: ScheduledPayment[]
 }
 
 interface MemberFormProps {
@@ -37,12 +53,20 @@ interface MemberFormProps {
   submitLabel: string
   showSubscription?: boolean
   subscriptionData?: SubscriptionData
-  onSubscriptionChange?: (data: SubscriptionData) => void
+  onSubscriptionChange?: (data: Partial<SubscriptionData>) => void
   addSubscription?: boolean
   onAddSubscriptionChange?: (value: boolean) => void
+  isCreateMode?: boolean
 }
 
-type PlanOption = { id: string; name: string; price: number; durationDays: number }
+type PlanOption = {
+  id: string
+  name: string
+  price: number
+  durationDays: number | null
+  planType: string
+  checkInLimit: number | null
+}
 
 export default function MemberForm({
   formData,
@@ -54,7 +78,8 @@ export default function MemberForm({
   subscriptionData,
   onSubscriptionChange,
   addSubscription = false,
-  onAddSubscriptionChange
+  onAddSubscriptionChange,
+  isCreateMode = false
 }: MemberFormProps) {
   const { t, i18n } = useTranslation('members')
   const { t: tMemberships } = useTranslation('memberships')
@@ -62,6 +87,10 @@ export default function MemberForm({
   const [plans, setPlans] = useState<PlanOption[]>([])
   const [loadingPlans, setLoadingPlans] = useState(false)
   const dateLocale = i18n.language === 'ar' ? ar : enUS
+  const [paymentType, setPaymentType] = useState<'full' | 'partial'>('full')
+  const [selectedPlan, setSelectedPlan] = useState<PlanOption | null>(null)
+  const [usePlanPrice, setUsePlanPrice] = useState(true)
+  const [scheduledPayments, setScheduledPayments] = useState<ScheduledPayment[]>([])
 
   useEffect(() => {
     if (showSubscription && addSubscription) {
@@ -85,13 +114,33 @@ export default function MemberForm({
     const plan = plans.find((p) => p.id === planId)
     if (!plan || !onSubscriptionChange || !subscriptionData) return
 
+    setSelectedPlan(plan)
+
     const startDate = subscriptionData.startDate || new Date().toISOString().split('T')[0]
-    const endDate = calculateEndDate(startDate, plan.durationDays)
+    let endDate = startDate
+
+    // Calculate end date for duration-based plans
+    if (plan.planType === 'duration' && plan.durationDays) {
+      endDate = calculateEndDate(startDate, plan.durationDays)
+    } else if (plan.planType === 'checkin' && plan.durationDays) {
+      endDate = calculateEndDate(startDate, plan.durationDays)
+    }
+
+    const finalPrice = usePlanPrice
+      ? plan.price
+      : calculatePrice(
+          plan.price,
+          subscriptionData.priceModifierType,
+          subscriptionData.priceModifierValue
+        )
 
     onSubscriptionChange({
       ...subscriptionData,
       planId,
-      amountPaid: plan.price,
+      totalPrice: finalPrice,
+      amountPaid: paymentType === 'full' ? finalPrice : 0,
+      remainingBalance: paymentType === 'full' ? 0 : finalPrice,
+      paymentStatus: paymentType === 'full' ? 'paid' : 'unpaid',
       startDate,
       endDate,
       paymentDate: subscriptionData.paymentDate || startDate
@@ -104,6 +153,33 @@ export default function MemberForm({
     return date.toISOString().split('T')[0]
   }
 
+  const calculatePrice = (
+    basePrice: number,
+    modifierType?: PriceModifierType | null,
+    modifierValue?: number | null
+  ) => {
+    if (!modifierType || !modifierValue) return basePrice
+
+    if (modifierType === 'multiplier') {
+      return basePrice * modifierValue
+    } else if (modifierType === 'discount') {
+      return basePrice - (basePrice * modifierValue) / 100
+    } else if (modifierType === 'custom') {
+      return modifierValue
+    }
+    return basePrice
+  }
+
+  const getFinalPrice = () => {
+    if (!selectedPlan) return 0
+    if (usePlanPrice) return selectedPlan.price
+    return calculatePrice(
+      selectedPlan.price,
+      subscriptionData?.priceModifierType,
+      subscriptionData?.priceModifierValue
+    )
+  }
+
   const handleStartDateChange = (startDate: string) => {
     if (!onSubscriptionChange || !subscriptionData) return
 
@@ -113,8 +189,121 @@ export default function MemberForm({
       return
     }
 
-    const endDate = calculateEndDate(startDate, plan.durationDays)
+    let endDate = startDate
+    if (plan.durationDays) {
+      endDate = calculateEndDate(startDate, plan.durationDays)
+    }
     onSubscriptionChange({ ...subscriptionData, startDate, endDate })
+  }
+
+  const handlePaymentTypeChange = (type: 'full' | 'partial') => {
+    if (!onSubscriptionChange || !subscriptionData || !selectedPlan) return
+
+    setPaymentType(type)
+
+    const finalPrice = getFinalPrice()
+
+    if (type === 'full') {
+      onSubscriptionChange({
+        ...subscriptionData,
+        amountPaid: finalPrice,
+        remainingBalance: 0,
+        paymentStatus: 'paid'
+      })
+    } else {
+      onSubscriptionChange({
+        ...subscriptionData,
+        amountPaid: 0,
+        remainingBalance: finalPrice,
+        paymentStatus: 'unpaid'
+      })
+    }
+  }
+
+  const handleAmountPaidChange = (amount: number) => {
+    if (!onSubscriptionChange || !subscriptionData || !selectedPlan) return
+
+    const finalPrice = getFinalPrice()
+    const remainingBalance = finalPrice - amount
+    let paymentStatus: 'unpaid' | 'partial' | 'paid' = 'unpaid'
+
+    if (amount >= finalPrice) {
+      paymentStatus = 'paid'
+    } else if (amount > 0) {
+      paymentStatus = 'partial'
+    }
+
+    onSubscriptionChange({
+      ...subscriptionData,
+      amountPaid: amount,
+      remainingBalance,
+      paymentStatus
+    })
+  }
+
+  const handlePriceAdjustmentChange = (usePlan: boolean) => {
+    if (!onSubscriptionChange || !subscriptionData || !selectedPlan) return
+
+    setUsePlanPrice(usePlan)
+
+    if (usePlan) {
+      // Reset price modifiers
+      onSubscriptionChange({
+        ...subscriptionData,
+        priceModifierType: null,
+        priceModifierValue: null,
+        customPriceName: null,
+        totalPrice: selectedPlan.price,
+        amountPaid: paymentType === 'full' ? selectedPlan.price : subscriptionData.amountPaid,
+        remainingBalance:
+          paymentType === 'full' ? 0 : selectedPlan.price - (subscriptionData.amountPaid || 0)
+      })
+    }
+  }
+
+  const handlePriceModifierChange = (type: PriceModifierType, value?: number) => {
+    if (!onSubscriptionChange || !subscriptionData || !selectedPlan) return
+
+    const finalPrice = calculatePrice(
+      selectedPlan.price,
+      type,
+      value || subscriptionData.priceModifierValue
+    )
+
+    const updates: Partial<SubscriptionData> = {
+      ...subscriptionData,
+      priceModifierType: type,
+      priceModifierValue: value || subscriptionData.priceModifierValue,
+      totalPrice: finalPrice,
+      remainingBalance: finalPrice - (subscriptionData.amountPaid || 0)
+    }
+
+    if (paymentType === 'full') {
+      updates.amountPaid = finalPrice
+      updates.remainingBalance = 0
+      updates.paymentStatus = 'paid'
+    } else {
+      const amountPaid = subscriptionData.amountPaid || 0
+      if (amountPaid >= finalPrice) {
+        updates.paymentStatus = 'paid'
+        updates.remainingBalance = 0
+      } else if (amountPaid > 0) {
+        updates.paymentStatus = 'partial'
+      } else {
+        updates.paymentStatus = 'unpaid'
+      }
+    }
+
+    onSubscriptionChange(updates as SubscriptionData)
+  }
+
+  const handleScheduledPaymentsChange = (payments: ScheduledPayment[]) => {
+    if (!onSubscriptionChange || !subscriptionData) return
+    setScheduledPayments(payments)
+    onSubscriptionChange({
+      ...subscriptionData,
+      scheduledPayments: payments.length > 0 ? payments : undefined
+    })
   }
 
   const getSubscriptionLabel = () => {
@@ -133,6 +322,41 @@ export default function MemberForm({
       <div>
         <h3 className="text-lg font-semibold mb-4 text-gray-200">{t('basicInfo')}</h3>
         <div className="flex flex-col gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="id" className="text-gray-200">
+              {t('form.id')} *
+            </Label>
+            <div className="flex gap-2">
+              <Input
+                id="id"
+                type="number"
+                min="1"
+                required
+                className="bg-gray-800 border-gray-700 text-white flex-1"
+                value={formData.id ?? ''}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    id: e.target.value ? Number(e.target.value) : undefined
+                  })
+                }
+                placeholder={isCreateMode ? t('form.id') : ''}
+              />
+              {isCreateMode && (
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={async () => {
+                    const nextId = await window.electron.ipcRenderer.invoke('members:getNextId')
+                    setFormData({ ...formData, id: nextId })
+                  }}
+                  className="whitespace-nowrap"
+                >
+                  {t('form.autoGenerate')}
+                </Button>
+              )}
+            </div>
+          </div>
           <div className="space-y-2">
             <Label htmlFor="name" className="text-gray-200">
               {t('form.name')} *
@@ -293,7 +517,13 @@ export default function MemberForm({
                             style: 'currency',
                             currency: settings?.currency,
                             minimumFractionDigits: 0
-                          }).format(plan.price)} (${plan.durationDays} ${tMemberships('days')})`,
+                          }).format(plan.price)} ${
+                            plan.planType === 'checkin'
+                              ? `(${plan.checkInLimit} ${tMemberships('checkIns')})`
+                              : plan.durationDays
+                                ? `(${plan.durationDays} ${tMemberships('days')})`
+                                : ''
+                          }`,
                           searchText: plan.name
                         })
                       )}
@@ -305,160 +535,79 @@ export default function MemberForm({
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="startDate" className="text-gray-200">
-                      {tMemberships('form.startDate')} *
-                    </Label>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="primary"
-                          className={cn(
-                            'w-full justify-start text-left font-normal bg-gray-800 border-gray-700 text-white hover:bg-gray-700',
-                            !subscriptionData.startDate && 'text-gray-400'
-                          )}
-                        >
-                          <CalendarIcon className="ltr:mr-2 rtl:ml-2 h-4 w-4" />
-                          {subscriptionData.startDate
-                            ? format(new Date(subscriptionData.startDate), 'MM/dd/yyyy', {
-                                locale: dateLocale
-                              })
-                            : tMemberships('form.pickDate')}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent
-                        className="w-auto p-0 bg-gray-900 border-gray-700"
-                        align="start"
-                      >
-                        <Calendar
-                          mode="single"
-                          selected={
-                            subscriptionData.startDate
-                              ? new Date(subscriptionData.startDate)
-                              : undefined
-                          }
-                          onSelect={(date) => {
-                            if (date) {
-                              handleStartDateChange(format(date, 'yyyy-MM-dd'))
-                            }
-                          }}
-                          disabled={(date) => date > new Date()}
-                          locale={dateLocale}
-                        />
-                      </PopoverContent>
-                    </Popover>
-                  </div>
-
-                  {/* End Date */}
-                  <div className="space-y-2">
-                    <Label htmlFor="endDate" className="text-gray-200">
-                      {tMemberships('form.endDate')} *
-                    </Label>
-                    <div
-                      className={cn(
-                        'flex h-10 w-full items-center rounded-lg border border-gray-700 bg-gray-700 px-3 py-2 text-sm text-gray-400 cursor-not-allowed'
-                      )}
-                    >
-                      <CalendarIcon className="ltr:mr-2 rtl:ml-2 h-4 w-4" />
-                      {subscriptionData.endDate
-                        ? format(new Date(subscriptionData.endDate), 'MM/dd/yyyy', {
-                            locale: dateLocale
-                          })
-                        : tMemberships('form.pickDate')}
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="amountPaid" className="text-gray-200">
-                      {tMemberships('form.amountPaid')} *
-                    </Label>
-                    <Input
-                      id="amountPaid"
-                      type="number"
-                      step="0.01"
-                      min="0"
-                      className="bg-gray-800 border-gray-700 text-white"
-                      value={subscriptionData.amountPaid}
-                      onChange={(e) =>
-                        onSubscriptionChange?.({
-                          ...subscriptionData,
-                          amountPaid: parseFloat(e.target.value)
-                        })
+                  {/* Price Adjustment Section */}
+                  {selectedPlan && (
+                    <PriceAdjustmentSection
+                      usePlanPrice={usePlanPrice}
+                      onUsePlanPriceChange={handlePriceAdjustmentChange}
+                      priceModifierType={subscriptionData.priceModifierType}
+                      priceModifierValue={subscriptionData.priceModifierValue}
+                      customPriceName={subscriptionData.customPriceName}
+                      onPriceModifierChange={handlePriceModifierChange}
+                      onCustomPriceNameChange={(name) =>
+                        onSubscriptionChange?.({ ...subscriptionData, customPriceName: name })
                       }
+                      basePrice={selectedPlan.price}
+                      finalPrice={getFinalPrice()}
                     />
-                  </div>
+                  )}
 
-                  <div className="space-y-2">
-                    <Label htmlFor="paymentDate" className="text-gray-200">
-                      {tMemberships('form.paymentDate')} *
-                    </Label>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="primary"
-                          className={cn(
-                            'w-full justify-start text-left font-normal bg-gray-800 border-gray-700 text-white hover:bg-gray-700',
-                            !subscriptionData.paymentDate && 'text-gray-400'
-                          )}
-                        >
-                          <CalendarIcon className="ltr:mr-2 rtl:ml-2 h-4 w-4" />
-                          {subscriptionData.paymentDate
-                            ? format(new Date(subscriptionData.paymentDate), 'MM/dd/yyyy', {
-                                locale: dateLocale
-                              })
-                            : tMemberships('form.pickDate')}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent
-                        className="w-auto p-0 bg-gray-900 border-gray-700"
-                        align="start"
-                      >
-                        <Calendar
-                          mode="single"
-                          selected={
-                            subscriptionData.paymentDate
-                              ? new Date(subscriptionData.paymentDate)
-                              : undefined
-                          }
-                          onSelect={(date) => {
-                            if (date) {
-                              onSubscriptionChange?.({
-                                ...subscriptionData,
-                                paymentDate: format(date, 'yyyy-MM-dd')
-                              })
-                            }
-                          }}
-                          locale={dateLocale}
-                        />
-                      </PopoverContent>
-                    </Popover>
-                  </div>
+                  <DatePickerField
+                    label={tMemberships('form.startDate')}
+                    value={subscriptionData.startDate}
+                    onChange={handleStartDateChange}
+                    disableFuture={true}
+                    required
+                  />
 
-                  <div className="space-y-2 col-span-2">
-                    <Label className="text-gray-200">{tMemberships('form.paymentMethod')} *</Label>
-                    <RadioGroup
-                      value={subscriptionData.paymentMethod}
-                      onValueChange={(value) =>
-                        onSubscriptionChange?.({
-                          ...subscriptionData,
-                          paymentMethod: value as (typeof PAYMENT_METHODS)[number]
-                        })
-                      }
-                      className="flex gap-4 rtl:flex-row-reverse"
-                    >
-                      {PAYMENT_METHODS.map((method) => (
-                        <div key={method} className="flex items-center space-x-2">
-                          <RadioGroupItem value={method} id={`sub-method-${method}`} />
-                          <Label
-                            htmlFor={`sub-method-${method}`}
-                            className="text-gray-300 cursor-pointer"
-                          >
-                            {tMemberships(`paymentMethods.${method}`)}
-                          </Label>
-                        </div>
-                      ))}
-                    </RadioGroup>
-                  </div>
+                  <DatePickerField
+                    label={tMemberships('form.endDate')}
+                    value={subscriptionData.endDate}
+                    disabled
+                    required
+                  />
+
+                  <PaymentTypeSelector
+                    value={paymentType}
+                    onChange={handlePaymentTypeChange}
+                    disabled={!subscriptionData.planId}
+                    className="col-span-2"
+                    required
+                  />
+
+                  {selectedPlan && (
+                    <PaymentSummarySection
+                      paymentType={paymentType}
+                      totalPrice={getFinalPrice()}
+                      amountPaid={subscriptionData.amountPaid || 0}
+                      remainingBalance={subscriptionData.remainingBalance || 0}
+                      onAmountPaidChange={handleAmountPaidChange}
+                      scheduledPayments={scheduledPayments}
+                      onScheduledPaymentsChange={handleScheduledPaymentsChange}
+                      defaultPaymentMethod={subscriptionData.paymentMethod || 'cash'}
+                    />
+                  )}
+
+                  <DatePickerField
+                    label={tMemberships('form.paymentDate')}
+                    value={subscriptionData.paymentDate}
+                    onChange={(date) =>
+                      onSubscriptionChange?.({ ...subscriptionData, paymentDate: date })
+                    }
+                    required
+                  />
+
+                  <PaymentMethodSelector
+                    value={subscriptionData.paymentMethod}
+                    onChange={(value) =>
+                      onSubscriptionChange?.({
+                        ...subscriptionData,
+                        paymentMethod: value as (typeof PAYMENT_METHODS)[number]
+                      })
+                    }
+                    className="col-span-2"
+                    required
+                  />
 
                   <div className="space-y-2 col-span-2">
                     <Label htmlFor="subscription-notes" className="text-gray-200">
