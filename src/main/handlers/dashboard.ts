@@ -93,6 +93,7 @@ export function registerDashboardHandlers() {
       ci.check_in_time,
       m.name AS member_name,
       m.phone AS member_phone,
+      m.country_code AS member_country_code,
       ms.end_date AS membership_end_date
     FROM check_ins ci
     INNER JOIN members m ON ci.member_id = m.id
@@ -123,6 +124,7 @@ export function registerDashboardHandlers() {
         checkInTime: row.check_in_time,
         memberName: row.member_name,
         memberPhone: row.member_phone,
+        memberCountryCode: row.member_country_code,
         membershipStatus: status
       }
     })
@@ -191,9 +193,14 @@ export function registerDashboardHandlers() {
       planId: row.plan_id,
       startDate: row.start_date,
       endDate: row.end_date,
+      totalPrice: row.total_price,
       amountPaid: row.amount_paid,
+      remainingBalance: row.remaining_balance,
+      paymentStatus: row.payment_status,
       paymentMethod: row.payment_method,
       paymentDate: row.payment_date,
+      remainingCheckIns: row.remaining_check_ins,
+      isCustom: Boolean(row.is_custom),
       notes: row.notes,
       createdAt: row.created_at,
 

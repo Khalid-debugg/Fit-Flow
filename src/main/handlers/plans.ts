@@ -46,7 +46,9 @@ export function registerPlanHandlers() {
       plans: rows.map((r) => {
         const plan = toCamel(r)
         plan.isOffer = Boolean(r.is_offer)
-        plan.durationDays = Number(r.duration_days)
+        plan.durationDays = r.duration_days ? Number(r.duration_days) : null
+        plan.planType = r.plan_type
+        plan.checkInLimit = r.check_in_limit
         return plan
       }),
       total,
@@ -69,16 +71,21 @@ export function registerPlanHandlers() {
     const snake = toSnake(plan)
 
     const stmt = db.prepare(`
-      INSERT INTO membership_plans (id, name, description, price, duration_days, is_offer)
-      VALUES (?, ?, ?, ?, ?, ?)
+      INSERT INTO membership_plans (
+        id, name, description, price, duration_days, is_offer,
+        plan_type, check_in_limit
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `)
     stmt.run(
       id,
       snake.name,
       snake.description || null,
       snake.price,
-      snake.duration_days,
-      snake.is_offer ? 1 : 0
+      snake.duration_days || null,
+      snake.is_offer ? 1 : 0,
+      snake.plan_type || 'duration',
+      snake.check_in_limit || null
     )
 
     return { id, ...plan }
@@ -90,15 +97,18 @@ export function registerPlanHandlers() {
 
     const stmt = db.prepare(`
       UPDATE membership_plans
-      SET name = ?, description = ?, price = ?, duration_days = ?, is_offer = ?
+      SET name = ?, description = ?, price = ?, duration_days = ?, is_offer = ?,
+          plan_type = ?, check_in_limit = ?
       WHERE id = ?
     `)
     stmt.run(
       snake.name,
       snake.description || null,
       snake.price,
-      snake.duration_days,
+      snake.duration_days || null,
       snake.is_offer ? 1 : 0,
+      snake.plan_type || 'duration',
+      snake.check_in_limit || null,
       id
     )
     return { id, ...plan }

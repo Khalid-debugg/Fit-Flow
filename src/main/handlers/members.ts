@@ -2,11 +2,6 @@ import { ipcMain } from 'electron'
 import { getDatabase } from '../database'
 import type { MemberDbRow, MemberFilters } from '../../renderer/src/models/member'
 import { toSnake } from './utils'
-import crypto from 'crypto'
-
-function generateEncryptedId() {
-  return crypto.randomBytes(8).toString('hex')
-}
 
 export function registerMemberHandlers() {
   ipcMain.handle('members:get', async (_event, page: number = 1, filters: MemberFilters) => {
@@ -62,6 +57,7 @@ export function registerMemberHandlers() {
         mp.price AS plan_price,
         ms.start_date,
         ms.end_date,
+        ms.remaining_check_ins,
         (
           SELECT COUNT(*) FROM memberships WHERE member_id = m.id
         ) AS membership_count
@@ -105,7 +101,8 @@ export function registerMemberHandlers() {
               planName: row.plan_name!,
               planPrice: row.plan_price!,
               startDate: row.start_date!,
-              endDate: row.end_date!
+              endDate: row.end_date!,
+              remainingCheckIns: row.remaining_check_ins
             }
           : undefined
       }
@@ -142,6 +139,7 @@ export function registerMemberHandlers() {
           mp.price AS plan_price,
           ms.start_date,
           ms.end_date,
+          ms.remaining_check_ins,
           (
             SELECT COUNT(*) FROM memberships WHERE member_id = m.id
           ) AS membership_count
@@ -182,7 +180,8 @@ export function registerMemberHandlers() {
             planName: row.plan_name!,
             planPrice: row.plan_price!,
             startDate: row.start_date!,
-            endDate: row.end_date!
+            endDate: row.end_date!,
+            remainingCheckIns: row.remaining_check_ins
           }
         : undefined
     }
@@ -196,7 +195,6 @@ export function registerMemberHandlers() {
 
   ipcMain.handle('members:create', async (_event, member) => {
     const db = getDatabase()
-    const id = generateEncryptedId()
     const snake = toSnake(member)
 
     // If a custom ID is provided, use it; otherwise, let SQLite auto-increment
@@ -207,12 +205,12 @@ export function registerMemberHandlers() {
         throw new Error('ID_ALREADY_EXISTS')
       }
 
-    const stmt = db.prepare(`
-      INSERT INTO members (id, name, email, country_code, phone, gender, address, join_date, notes)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `)
+      const stmt = db.prepare(`
+        INSERT INTO members (id, name, email, country_code, phone, gender, address, join_date, notes)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `)
 
-    stmt.run(
+      stmt.run(
         member.id,
         snake.name,
         snake.email || null,
@@ -232,15 +230,15 @@ export function registerMemberHandlers() {
       `)
 
       const result = stmt.run(
-      snake.name,
-      snake.email || null,
-      snake.country_code || '+20',
-      snake.phone,
-      snake.gender,
-      snake.address || null,
-      snake.join_date,
-      snake.notes || null
-    )
+        snake.name,
+        snake.email || null,
+        snake.country_code || '+20',
+        snake.phone,
+        snake.gender,
+        snake.address || null,
+        snake.join_date,
+        snake.notes || null
+      )
 
       return { id: String(result.lastInsertRowid), ...member }
     }
@@ -295,18 +293,19 @@ export function registerMemberHandlers() {
     const row = db
       .prepare(
         `
-      SELECT 
+      SELECT
         m.*,
         ms.id AS membership_id,
         mp.name AS plan_name,
         mp.price AS plan_price,
         ms.start_date,
         ms.end_date,
+        ms.remaining_check_ins,
         (
           SELECT COUNT(*) FROM memberships WHERE member_id = m.id
         ) AS membership_count
       FROM members m
-      LEFT JOIN memberships ms ON m.id = ms.member_id 
+      LEFT JOIN memberships ms ON m.id = ms.member_id
         AND ms.end_date >= date('now')
       LEFT JOIN membership_plans mp ON ms.plan_id = mp.id
       WHERE m.phone = ?
@@ -342,7 +341,8 @@ export function registerMemberHandlers() {
             planName: row.plan_name!,
             planPrice: row.plan_price!,
             startDate: row.start_date!,
-            endDate: row.end_date!
+            endDate: row.end_date!,
+            remainingCheckIns: row.remaining_check_ins
           }
         : undefined
     }
