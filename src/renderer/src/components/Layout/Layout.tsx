@@ -1,22 +1,43 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useState } from 'react'
-import { ChevronLeft, ChevronRight, Dumbbell, Languages, ShieldUser } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Dumbbell, Languages, ShieldUser, LogOut } from 'lucide-react'
 import { Button } from '../ui/button'
 import { useSettings } from '@renderer/hooks/useSettings'
+import { useAuth } from '@renderer/hooks/useAuth'
 import { menuItems } from './constants'
+import { toast } from 'sonner'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation()
   const { settings, updateSettings } = useSettings()
+  const { user, logout, hasPermission } = useAuth()
   const { t, i18n } = useTranslation()
   const [collapsed, setCollapsed] = useState(false)
+
+  // Filter menu items based on user permissions
+  const visibleMenuItems = menuItems.filter((item) => {
+    // Dashboard is always visible
+    if (!item.permission) return true
+    // Check if user has permission for this menu item
+    return hasPermission(item.permission)
+  })
 
   const toggleLanguage = () => {
     const newLang = i18n.language === 'en' ? 'ar' : 'en'
     i18n.changeLanguage(newLang)
     document.documentElement.dir = newLang === 'ar' ? 'rtl' : 'ltr'
     updateSettings({ ...settings!, language: newLang })
+  }
+
+  const handleLogout = async () => {
+    try {
+      await logout()
+      toast.success(t('user.logoutSuccess'))
+    } catch (error) {
+      console.error('Logout failed:', error)
+      toast.error(t('user.logoutFailed'))
+    }
   }
 
   const isRTL = i18n.language === 'ar'
@@ -57,7 +78,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
         <div
           className={`border-b border-gray-700/50 flex items-center relative overflow-hidden group transition-all duration-300 ${
-            collapsed ? 'pt-20 pb-4 px-3 justify-center' : 'p-6 gap-3'
+            collapsed ? 'pt-20 pb-8 px-3 justify-center' : 'py-8 px-6 gap-3'
           }`}
         >
           <div className="absolute inset-0 bg-gradient-to-br from-yellow-600/5 via-orange-600/5 to-red-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -93,8 +114,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           )}
         </div>
 
-        <nav className={`flex-1 space-y-2 ${collapsed ? 'px-2 py-4' : 'p-4'}`}>
-          {menuItems.map((item) => {
+        <nav className={`flex-1 space-y-1.5 ${collapsed ? 'px-2 py-4' : 'p-4'}`}>
+          {visibleMenuItems.map((item) => {
             const isActive = location?.pathname === item.path
             return (
               <Link
@@ -104,7 +125,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   flex items-center rounded-lg
                   transition-all duration-300 ease-in-out
                   group relative overflow-hidden
-                  ${collapsed ? 'justify-center p-3' : 'gap-3 px-4 py-3'}
+                  ${collapsed ? 'justify-center p-2.5' : 'gap-2.5 px-3 py-2'}
                   ${
                     isActive
                       ? 'bg-gradient-to-r from-yellow-600 to-orange-600 text-white shadow-lg shadow-yellow-500/20'
@@ -114,7 +135,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               >
                 <div
                   className={`
-                  relative flex items-center justify-center w-9 h-9 rounded-lg
+                  relative flex items-center justify-center w-8 h-8 rounded-lg
                   transition-all duration-300 ease-in-out
                   ${
                     isActive
@@ -125,7 +146,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 >
                   <span
                     className={`
-                    text-xl transition-all duration-300 ease-in-out
+                    text-lg transition-all duration-300 ease-in-out
                     ${
                       isActive
                         ? 'scale-110 drop-shadow-[0_0_8px_rgba(255,255,255,0.6)] animate-pulse'
@@ -149,7 +170,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </div>
 
                 {!collapsed && (
-                  <span className="font-medium transition-all duration-300">{t(item.label)}</span>
+                  <span className="font-medium text-sm transition-all duration-300">
+                    {t(item.label)}
+                  </span>
                 )}
                 {isActive && (
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
@@ -186,53 +209,74 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
           </Button>
 
-          <div
-            className={`
-              group flex items-center ${collapsed ? 'justify-center' : 'gap-3 px-3'} py-3
-              rounded-lg cursor-pointer
-              transition-all duration-300 ease-in-out
-              hover:bg-gray-700/50
-              relative overflow-hidden
-            `}
-          >
-            <div className="relative">
-              <div
-                className="
-                w-11 h-11 rounded-full
-                bg-linear-to-r from-yellow-500 to-orange-500
-                flex items-center justify-center
-                shadow-lg shadow-yellow-500/20
-                ring-2 ring-gray-700
-                group-hover:ring-yellow-400/30
-                group-hover:shadow-yellow-500/30
-                group-hover:scale-110
+          <div className="space-y-2">
+            <div
+              className={`
+                group flex items-center ${collapsed ? 'justify-center' : 'gap-3 px-3'} py-3
+                rounded-lg cursor-pointer
                 transition-all duration-300 ease-in-out
-              "
-              >
-                <span className="text-lg text-white transition-transform duration-300 group-hover:scale-110">
-                  <ShieldUser className="w-5 h-5" />
-                </span>
+                hover:bg-gray-700/50
+                relative overflow-hidden
+              `}
+            >
+              <div className="relative">
+                <div
+                  className="
+                  w-11 h-11 rounded-full
+                  bg-linear-to-r from-yellow-500 to-orange-500
+                  flex items-center justify-center
+                  shadow-lg shadow-yellow-500/20
+                  ring-2 ring-gray-700
+                  group-hover:ring-yellow-400/30
+                  group-hover:shadow-yellow-500/30
+                  group-hover:scale-110
+                  transition-all duration-300 ease-in-out
+                "
+                >
+                  <span className="text-lg text-white transition-transform duration-300 group-hover:scale-110">
+                    <ShieldUser className="w-5 h-5" />
+                  </span>
+                </div>
+                <div
+                  className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-gray-800
+                  group-hover:scale-110 transition-transform duration-300
+                  shadow-lg shadow-green-500/50
+                "
+                />
               </div>
-              <div
-                className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-gray-800
-                group-hover:scale-110 transition-transform duration-300
-                shadow-lg shadow-green-500/50
-              "
-              />
+
+              {!collapsed && (
+                <div className="transition-all duration-300 flex-1">
+                  <p className="font-semibold text-white group-hover:text-yellow-400 transition-colors duration-300">
+                    {user?.fullName || t('user.admin')}
+                  </p>
+                  <p className="text-xs text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
+                    {user?.isAdmin ? t('user.administrator') : t('user.user')}
+                  </p>
+                </div>
+              )}
+
+              <div className="absolute inset-0 bg-gradient-to-r from-yellow-600/0 via-orange-600/5 to-yellow-600/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
             </div>
 
-            {!collapsed && (
-              <div className="transition-all duration-300 flex-1">
-                <p className="font-semibold text-white group-hover:text-yellow-400 transition-colors duration-300">
-                  {t('user.admin')}
-                </p>
-                <p className="text-xs text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
-                  {t('user.gymOwner')}
-                </p>
+            <Button
+              onClick={handleLogout}
+              variant="ghost"
+              className="w-full group relative overflow-hidden
+                text-gray-400 hover:text-red-400 hover:bg-red-500/10
+                border border-transparent hover:border-red-500/30
+                rounded-lg px-4 py-2.5
+                transition-all duration-300 ease-in-out
+                hover:scale-105 active:scale-95
+              "
+            >
+              <div className="flex items-center justify-center gap-2 relative z-10">
+                <span className="text-lg transition-transform duration-300 group-hover:-translate-x-1">
+                  <LogOut className="w-4 h-4" />
+                </span>
+                {!collapsed && <span className="font-medium text-sm">{t('user.logout')}</span>}
               </div>
-            )}
-
-            <div className="absolute inset-0 bg-gradient-to-r from-yellow-600/0 via-orange-600/5 to-yellow-600/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+            </Button>
           </div>
         </div>
       </aside>

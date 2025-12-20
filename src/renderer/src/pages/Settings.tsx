@@ -7,6 +7,8 @@ import {
   BackupInfo,
   BackupFile
 } from '@renderer/models/settings'
+import { PERMISSIONS } from '@renderer/models/account'
+import { useAuth } from '@renderer/hooks/useAuth'
 import { Button } from '@renderer/components/ui/button'
 import { Input } from '@renderer/components/ui/input'
 import { Checkbox } from '@renderer/components/ui/checkbox'
@@ -32,7 +34,8 @@ import {
   Trash2,
   Building2,
   Upload,
-  Image as ImageIcon
+  Image as ImageIcon,
+  ShieldAlert
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { format } from 'date-fns'
@@ -42,6 +45,7 @@ import DeveloperTools from '@renderer/components/settings/DeveloperTools'
 export default function Settings() {
   const { t, i18n } = useTranslation('settings')
   const { settings: contextSettings, updateSettings, loading: contextLoading } = useSettings()
+  const { hasPermission } = useAuth()
   const [formData, setFormData] = useState<SettingsType | null>(null)
   const [saving, setSaving] = useState(false)
   const [backupInfo, setBackupInfo] = useState<BackupInfo | null>(null)
@@ -49,6 +53,11 @@ export default function Settings() {
   const [restoringBackup, setRestoringBackup] = useState(false)
   const [logoPreview, setLogoPreview] = useState<string | null>(null)
   const dateLocale = i18n.language === 'ar' ? ar : enUS
+
+  // Check permissions
+  const canView = hasPermission(PERMISSIONS.settings.view)
+  const canEdit = hasPermission(PERMISSIONS.settings.edit)
+  const canManageBackups = hasPermission(PERMISSIONS.settings.manage_backups)
 
   useEffect(() => {
     if (contextSettings) {
@@ -222,26 +231,44 @@ export default function Settings() {
     )
   }
 
+  // Check if user has permission to view settings
+  if (!canView) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <ShieldAlert className="w-20 h-20 text-red-400 mb-4" />
+        <h2 className="text-2xl font-bold text-white mb-2">Access Denied</h2>
+        <p className="text-gray-400">You don't have permission to view settings.</p>
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-white mb-2">{t('title')}</h1>
-          <p className="text-gray-400">{t('subtitle')}</p>
+          <p className="text-gray-400">
+            {t('subtitle')}
+            {!canEdit && (
+              <span className="text-yellow-400 ml-2">(Read-only - No edit permission)</span>
+            )}
+          </p>
         </div>
-        <Button variant="primary" onClick={handleSave} disabled={saving} className="gap-2">
-          {saving ? (
-            <>
-              <Loader2 className="w-4 h-4 animate-spin" />
-              {t('saving')}
-            </>
-          ) : (
-            <>
-              <Save className="w-4 h-4" />
-              {t('save')}
-            </>
-          )}
-        </Button>
+        {canEdit && (
+          <Button variant="primary" onClick={handleSave} disabled={saving} className="gap-2">
+            {saving ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                {t('saving')}
+              </>
+            ) : (
+              <>
+                <Save className="w-4 h-4" />
+                {t('save')}
+              </>
+            )}
+          </Button>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -263,6 +290,7 @@ export default function Settings() {
                 onChange={(e) => setFormData({ ...formData, gymName: e.target.value })}
                 placeholder={t('gym.namePlaceholder')}
                 className="bg-gray-900 border-gray-700 text-white"
+                disabled={!canEdit}
               />
             </div>
 
@@ -276,6 +304,7 @@ export default function Settings() {
                 onChange={(e) => setFormData({ ...formData, gymAddress: e.target.value })}
                 placeholder={t('gym.addressPlaceholder')}
                 className="bg-gray-900 border-gray-700 text-white"
+                disabled={!canEdit}
               />
             </div>
 
@@ -287,6 +316,7 @@ export default function Settings() {
                 onPhoneNumberChange={(number) => setFormData({ ...formData, gymPhone: number })}
                 label={t('gym.phone')}
                 required={false}
+                disabled={!canEdit}
               />
             </div>
 
@@ -315,6 +345,7 @@ export default function Settings() {
                   variant="primary"
                   onClick={handleSelectLogo}
                   className="gap-2"
+                  disabled={!canEdit}
                 >
                   <Upload className="w-4 h-4" />
                   {logoPreview ? t('gym.changeLogo') : t('gym.selectLogo')}
@@ -350,6 +381,7 @@ export default function Settings() {
                 onValueChange={(value) =>
                   setFormData({ ...formData, language: value as 'ar' | 'en' })
                 }
+                disabled={!canEdit}
               >
                 <SelectTrigger className="w-full">
                   <SelectValue />
@@ -379,6 +411,7 @@ export default function Settings() {
                 placeholder={t('regional.currency')}
                 searchPlaceholder={t('regional.searchCurrency')}
                 emptyText={t('regional.noCurrencyFound')}
+                disabled={!canEdit}
               />
             </div>
 
@@ -394,6 +427,7 @@ export default function Settings() {
                     allowedGenders: value as SettingsType['allowedGenders']
                   })
                 }
+                disabled={!canEdit}
               >
                 <SelectTrigger className="w-full">
                   <SelectValue />
@@ -418,6 +452,7 @@ export default function Settings() {
                     defaultPaymentMethod: value as SettingsType['defaultPaymentMethod']
                   })
                 }
+                disabled={!canEdit}
               >
                 <SelectTrigger className="w-full">
                   <SelectValue />
@@ -443,6 +478,7 @@ export default function Settings() {
                     barcodeSize: value as 'keychain' | 'card'
                   })
                 }
+                disabled={!canEdit}
               >
                 <SelectTrigger className="w-full">
                   <SelectValue />
@@ -459,7 +495,12 @@ export default function Settings() {
         <div className="lg:col-span-2 bg-gray-800 p-6 rounded-lg border border-gray-700">
           <div className="flex items-center gap-3 mb-6">
             <Shield className="w-6 h-6 text-red-400" />
-            <h2 className="text-xl font-semibold text-white">{t('backup.title')}</h2>
+            <h2 className="text-xl font-semibold text-white">
+              {t('backup.title')}
+              {!canManageBackups && (
+                <span className="text-xs text-yellow-400 ml-2">(View-only)</span>
+              )}
+            </h2>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -472,6 +513,7 @@ export default function Settings() {
                     setFormData({ ...formData, autoBackup: checked as boolean })
                   }
                   className="w-5 h-5"
+                  disabled={!canManageBackups}
                 />
               </div>
 
@@ -488,6 +530,7 @@ export default function Settings() {
                         backupFrequency: value as SettingsType['backupFrequency']
                       })
                     }
+                    disabled={!canManageBackups}
                   >
                     <SelectTrigger className="w-full">
                       <SelectValue />
@@ -513,7 +556,12 @@ export default function Settings() {
                     placeholder={t('backup.noFolderSelected')}
                     className="flex-1 bg-gray-900 border-gray-700 text-white"
                   />
-                  <Button variant="primary" onClick={handleSelectBackupFolder} className="gap-2">
+                  <Button
+                    variant="primary"
+                    onClick={handleSelectBackupFolder}
+                    className="gap-2"
+                    disabled={!canManageBackups}
+                  >
                     <FolderOpen className="w-4 h-4" />
                     {t('backup.selectFolder')}
                   </Button>
@@ -523,7 +571,7 @@ export default function Settings() {
               <Button
                 variant="primary"
                 onClick={handleCreateBackup}
-                disabled={creatingBackup}
+                disabled={creatingBackup || !canManageBackups}
                 className="w-full gap-2"
               >
                 {creatingBackup ? (
@@ -623,7 +671,7 @@ export default function Settings() {
                       <Button
                         variant="primary"
                         onClick={() => handleRestoreBackup(backup)}
-                        disabled={restoringBackup}
+                        disabled={restoringBackup || !canManageBackups}
                         className="gap-2"
                       >
                         {restoringBackup ? (
@@ -642,6 +690,7 @@ export default function Settings() {
                         variant="primary"
                         onClick={() => handleDeleteBackup(backup)}
                         className="gap-2 bg-red-600 hover:bg-red-700"
+                        disabled={!canManageBackups}
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>

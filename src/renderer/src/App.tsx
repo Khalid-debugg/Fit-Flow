@@ -5,16 +5,106 @@ import { Toaster } from 'sonner'
 import { lazy, Suspense } from 'react'
 import { LoaderCircle } from 'lucide-react'
 import { SettingsProvider } from './contexts/SettingsContext'
+import { AuthProvider } from './contexts/AuthContext'
 import { LicenseActivation } from './components/license/LicenseActivation'
 import { useLicense } from './hooks/useLicense'
+import { useAuth } from './hooks/useAuth'
+import Login from './pages/Login'
 const Dashboard = lazy(() => import('./pages/Dashboard'))
 const Members = lazy(() => import('./pages/Members'))
 const Memberships = lazy(() => import('./pages/Memberships'))
 const Plans = lazy(() => import('./pages/Plans'))
-const CheckIn = lazy(() => import('./pages/CheckIn'))
+const CheckIn = lazy(() => import('./pages/Checkin'))
 const Reports = lazy(() => import('./pages/Reports'))
 const Settings = lazy(() => import('./pages/Settings'))
 const Accounts = lazy(() => import('./pages/Accounts'))
+function AppContent() {
+  const { user, loading } = useAuth()
+
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-gray-900">
+        <LoaderCircle className="h-20 w-20 animate-spin text-yellow-500" />
+      </div>
+    )
+  }
+
+  if (!user) {
+    return <Login />
+  }
+
+  return (
+    <Layout>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Suspense fallback={<LoaderCircle className="mx-auto h-20 w-20 animate-spin" />}>
+              <Dashboard />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/members"
+          element={
+            <Suspense fallback={<LoaderCircle className="mx-auto h-20 w-20 animate-spin" />}>
+              <Members />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/plans"
+          element={
+            <Suspense fallback={<LoaderCircle className="mx-auto h-20 w-20 animate-spin" />}>
+              <Plans />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/memberships"
+          element={
+            <Suspense fallback={<LoaderCircle className="mx-auto h-20 w-20 animate-spin" />}>
+              <Memberships />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/checkin"
+          element={
+            <Suspense fallback={<LoaderCircle className="mx-auto h-20 w-20 animate-spin" />}>
+              <CheckIn />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/reports"
+          element={
+            <Suspense fallback={<LoaderCircle className="mx-auto h-20 w-20 animate-spin" />}>
+              <Reports />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/accounts"
+          element={
+            <Suspense fallback={<LoaderCircle className="mx-auto h-20 w-20 animate-spin" />}>
+              <Accounts />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <Suspense fallback={<LoaderCircle className="mx-auto h-20 w-20 animate-spin" />}>
+              <Settings />
+            </Suspense>
+          }
+        />
+      </Routes>
+    </Layout>
+  )
+}
+
 function App() {
   const { i18n } = useTranslation()
   const { isLicensed, isCheckingLicense, setIsLicensed } = useLicense()
@@ -44,8 +134,8 @@ function App() {
 
   return (
     <HashRouter>
-      <SettingsProvider>
-        <Layout>
+      <AuthProvider>
+        <SettingsProvider>
           <Toaster
             toastOptions={{
               classNames: {
@@ -57,74 +147,9 @@ function App() {
               }
             }}
           />
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <Suspense fallback={<LoaderCircle className="mx-auto h-20 w-20 animate-spin" />}>
-                  <Dashboard />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/members"
-              element={
-                <Suspense fallback={<LoaderCircle className="mx-auto h-20 w-20 animate-spin" />}>
-                  <Members />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/plans"
-              element={
-                <Suspense fallback={<LoaderCircle className="mx-auto h-20 w-20 animate-spin" />}>
-                  <Plans />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/memberships"
-              element={
-                <Suspense fallback={<LoaderCircle className="mx-auto h-20 w-20 animate-spin" />}>
-                  <Memberships />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/checkin"
-              element={
-                <Suspense fallback={<LoaderCircle className="mx-auto h-20 w-20 animate-spin" />}>
-                  <CheckIn />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/reports"
-              element={
-                <Suspense fallback={<LoaderCircle className="mx-auto h-20 w-20 animate-spin" />}>
-                  <Reports />
-                </Suspense>
-              }
-            />
-<Route
-          path="/accounts"
-          element={
-            <Suspense fallback={<LoaderCircle className="mx-auto h-20 w-20 animate-spin" />}>
-              <Accounts />
-            </Suspense>
-          }
-        />
-            <Route
-              path="/settings"
-              element={
-                <Suspense fallback={<LoaderCircle className="mx-auto h-20 w-20 animate-spin" />}>
-                  <Settings />
-                </Suspense>
-              }
-            />
-          </Routes>
-        </Layout>
-      </SettingsProvider>
+          <AppContent />
+        </SettingsProvider>
+      </AuthProvider>
     </HashRouter>
   )
 }
