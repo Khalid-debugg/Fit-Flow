@@ -24,6 +24,7 @@ interface ExpiringMembershipsProps {
   page: number
   totalPages: number
   onPageChange: (page: number) => void
+  canRenew?: boolean
 }
 
 export default function ExpiringMemberships({
@@ -31,7 +32,8 @@ export default function ExpiringMemberships({
   onRenew,
   page,
   totalPages,
-  onPageChange
+  onPageChange,
+  canRenew = true
 }: ExpiringMembershipsProps) {
   const { t, i18n } = useTranslation('dashboard')
   const dateLocale = i18n.language === 'ar' ? ar : enUS
@@ -71,7 +73,7 @@ export default function ExpiringMemberships({
   }
 
   return (
-    <div className="flex flex-col bg-gray-800 p-6 rounded-lg border border-gray-700">
+    <div className="flex flex-col bg-gray-800 p-6 min-h-140 rounded-lg border border-gray-700">
       <div className="flex justify-between items-center gap-2 mb-4">
         <div className="flex gap-2 items-center">
           <AlertCircle className="w-5 h-5 text-yellow-400" />
@@ -112,37 +114,39 @@ export default function ExpiringMemberships({
                             days: membership.daysRemaining
                           })}
                   </p>
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button size="sm" variant="secondary" className="gap-2 shrink-0">
-                        <RefreshCw className="w-3 h-3" />
-                        {t('expiringMemberships.renew')}
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>{t('alert.renewMembership')}</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          {t('alert.renewMembershipMessage', {
-                            memberName: membership.memberName,
-                            newEndDate: calculateNewEndDate(membership)
-                          })}
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={() => {
-                            onRenew(membership.id!)
-                            onPageChange(1)
-                          }}
-                          className="bg-red-600 hover:bg-red-700 text-white"
-                        >
-                          {t('confirm')}
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                  {canRenew && (
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button size="sm" variant="secondary" className="gap-2 shrink-0">
+                          <RefreshCw className="w-3 h-3" />
+                          {t('expiringMemberships.renew')}
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>{t('alert.renewMembership')}</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            {t('alert.renewMembershipMessage', {
+                              memberName: membership.memberName,
+                              newEndDate: calculateNewEndDate(membership)
+                            })}
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => {
+                              onRenew(membership.id!)
+                              onPageChange(1)
+                            }}
+                            className="bg-red-600 hover:bg-red-700 text-white"
+                          >
+                            {t('confirm')}
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  )}
                 </div>
               </div>
             ))}

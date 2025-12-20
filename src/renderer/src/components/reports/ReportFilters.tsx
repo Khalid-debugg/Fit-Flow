@@ -16,6 +16,8 @@ import {
 import { ar, enUS } from 'date-fns/locale'
 import { ReportType, ReportFilters as IReportFilters } from '@renderer/models/report'
 import { cn } from '@renderer/lib/utils'
+import { useAuth } from '@renderer/hooks/useAuth'
+import { PERMISSIONS } from '@renderer/models/account'
 
 interface ReportFiltersProps {
   onGenerate: (filters: IReportFilters) => void
@@ -24,10 +26,14 @@ interface ReportFiltersProps {
 
 export default function ReportFilters({ onGenerate, loading }: ReportFiltersProps) {
   const { t, i18n } = useTranslation('reports')
+  const { hasPermission } = useAuth()
   const [reportType, setReportType] = useState<ReportType>('month')
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const dateLocale = i18n.language === 'ar' ? ar : enUS
+
+  // Check if user has permission to generate reports
+  const canGenerate = hasPermission(PERMISSIONS.reports.generate)
 
   const handleQuickSelect = (type: ReportType) => {
     setReportType(type)
@@ -178,8 +184,9 @@ export default function ReportFilters({ onGenerate, loading }: ReportFiltersProp
         <Button
           variant="primary"
           onClick={handleGenerate}
-          disabled={loading || !startDate || !endDate}
+          disabled={loading || !startDate || !endDate || !canGenerate}
           className="w-full gap-2"
+          title={!canGenerate ? 'You do not have permission to generate reports' : ''}
         >
           <FileText className="w-4 h-4" />
           {loading ? t('filters.generating') : t('filters.generate')}

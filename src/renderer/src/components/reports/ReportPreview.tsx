@@ -16,6 +16,8 @@ import {
 import { ReportData } from '@renderer/models/report'
 import { format } from 'date-fns'
 import { ar, enUS } from 'date-fns/locale'
+import { useAuth } from '@renderer/hooks/useAuth'
+import { PERMISSIONS } from '@renderer/models/account'
 
 interface ReportPreviewProps {
   data: ReportData
@@ -33,7 +35,11 @@ export default function ReportPreview({
   onDownload
 }: ReportPreviewProps) {
   const { t, i18n } = useTranslation('reports')
+  const { hasPermission } = useAuth()
   const dateLocale = i18n.language === 'ar' ? ar : enUS
+
+  // Check if user has permission to save/download reports
+  const canSave = hasPermission(PERMISSIONS.reports.save)
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('ar-EG', {
@@ -83,7 +89,9 @@ export default function ReportPreview({
               variant="secondary"
               size="sm"
               onClick={onPrint}
+              disabled={!canSave}
               className="gap-2 bg-white hover:bg-gray-100 text-blue-700"
+              title={!canSave ? 'You do not have permission to print reports' : ''}
             >
               <Printer className="w-4 h-4" />
               {t('preview.print')}
@@ -92,7 +100,9 @@ export default function ReportPreview({
               variant="primary"
               size="sm"
               onClick={onDownload}
+              disabled={!canSave}
               className="gap-2 bg-blue-800 hover:bg-blue-900"
+              title={!canSave ? 'You do not have permission to download reports' : ''}
             >
               <Download className="w-4 h-4" />
               {t('preview.download')}

@@ -12,8 +12,13 @@ import { Member } from '@renderer/models/member'
 import { QuickCheckInWidget } from '@renderer/components/checkIns'
 import { Membership } from '@renderer/models/membership'
 import EditMembership from '@renderer/components/memberships/EditMembership'
+import CreateMember from '@renderer/components/members/CreateMember'
+import CreateMembership from '@renderer/components/memberships/CreateMembership'
+import CreatePlan from '@renderer/components/plans/CreatePlan'
 import { toast } from 'sonner'
 import { useTranslation } from 'react-i18next'
+import { useAuth } from '@renderer/hooks/useAuth'
+import { PERMISSIONS } from '@renderer/models/account'
 
 interface RevenueData {
   dailyRevenue: { date: string; revenue: number }[]
@@ -39,6 +44,7 @@ export type ExpiringMembership = Membership & { daysRemaining: number }
 
 export default function Dashboard() {
   const { t } = useTranslation('dashboard')
+  const { hasPermission } = useAuth()
   const [loading, setLoading] = useState(true)
   const [revenueData, setRevenueData] = useState<RevenueData>({
     dailyRevenue: [],
@@ -63,6 +69,11 @@ export default function Dashboard() {
   const [viewMember, setViewMember] = useState<Member | null>(null)
   const [editMembershipId, setEditMembershipId] = useState<string | null>(null)
   const [editMembership, setEditMembership] = useState<Membership | null>(null)
+
+  // Create dialog states
+  const [showCreateMember, setShowCreateMember] = useState(false)
+  const [showCreateMembership, setShowCreateMembership] = useState(false)
+  const [showCreatePlan, setShowCreatePlan] = useState(false)
 
   const loadCheckIns = useCallback(async (page: number) => {
     try {
@@ -120,6 +131,11 @@ export default function Dashboard() {
   }
 
   const handleRenewMembership = async (membershipId: string) => {
+    if (!hasPermission(PERMISSIONS.memberships.extend)) {
+      toast.error(t('error.noPermission'))
+      return
+    }
+
     try {
       await window.electron.ipcRenderer.invoke('memberships:extend', membershipId)
       toast.success(t('success.extendSuccess'))
@@ -150,12 +166,46 @@ export default function Dashboard() {
         onSuccess={loadDashboardData}
       />
 
+      {/* Create dialogs controlled by Dashboard state */}
+      <CreateMember
+        open={showCreateMember}
+        onOpenChange={setShowCreateMember}
+        onSuccess={loadDashboardData}
+      />
+      <CreateMembership
+        open={showCreateMembership}
+        onOpenChange={setShowCreateMembership}
+        onSuccess={loadDashboardData}
+      />
+      <CreatePlan
+        open={showCreatePlan}
+        onOpenChange={setShowCreatePlan}
+        onSuccess={loadDashboardData}
+      />
+
       <WelcomeHeader />
 
-      <QuickCheckInWidget onCheckInSuccess={loadDashboardData} />
+      {hasPermission(PERMISSIONS.checkins.create) && (
+        <QuickCheckInWidget onCheckInSuccess={loadDashboardData} />
+      )}
 
-      <QuickActions />
-      <RevenueChart data={revenueData} />
+      <QuickActions
+        onCreateMember={
+          hasPermission(PERMISSIONS.members.create)
+            ? () => setShowCreateMember(true)
+            : undefined
+        }
+        onCreateMembership={
+          hasPermission(PERMISSIONS.memberships.create)
+            ? () => setShowCreateMembership(true)
+            : undefined
+        }
+        onCreatePlan={
+          hasPermission(PERMISSIONS.plans.create) ? () => setShowCreatePlan(true) : undefined
+        }
+      />
+
+      {hasPermission(PERMISSIONS.dashboard.view_financial) && <RevenueChart data={revenueData} />}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <RecentCheckIns
@@ -172,6 +222,7 @@ export default function Dashboard() {
           page={expiringPage}
           totalPages={expiringTotalPages}
           onPageChange={loadExpiringMemberships}
+          canRenew={hasPermission(PERMISSIONS.memberships.extend)}
         />
       </div>
     </div>

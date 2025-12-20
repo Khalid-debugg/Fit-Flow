@@ -5,14 +5,27 @@ import { useTranslation } from 'react-i18next'
 import { ReportFilters, ReportPreview } from '@renderer/components/reports'
 import { ReportData, ReportFilters as IReportFilters } from '@renderer/models/report'
 import { toast } from 'sonner'
+import { useAuth } from '@renderer/hooks/useAuth'
+import { PERMISSIONS } from '@renderer/models/account'
+import { ShieldOff } from 'lucide-react'
 
 export default function Reports() {
   const { t } = useTranslation('reports')
+  const { hasPermission } = useAuth()
   const [loading, setLoading] = useState(false)
   const [reportData, setReportData] = useState<ReportData | null>(null)
   const [currentFilters, setCurrentFilters] = useState<IReportFilters | null>(null)
 
+  // Check if user has permission to view reports
+  const canView = hasPermission(PERMISSIONS.reports.view)
+
   const handleGenerate = async (filters: IReportFilters) => {
+    // Check permission before generating
+    if (!hasPermission(PERMISSIONS.reports.generate)) {
+      toast.error(t('messages.noPermission') || 'You do not have permission to generate reports')
+      return
+    }
+
     setLoading(true)
     try {
       const data = await window.electron.ipcRenderer.invoke(
@@ -38,6 +51,12 @@ export default function Reports() {
   const handleDownload = async () => {
     if (!reportData || !currentFilters) return
 
+    // Check permission before saving/downloading
+    if (!hasPermission(PERMISSIONS.reports.save)) {
+      toast.error(t('messages.noPermission') || 'You do not have permission to save reports')
+      return
+    }
+
     try {
       // Save report to database first
       await window.electron.ipcRenderer.invoke('reports:save', {
@@ -61,6 +80,29 @@ export default function Reports() {
       console.error('Failed to save report:', error)
       toast.error(t('messages.downloadError'))
     }
+  }
+
+  // Show access denied if user doesn't have permission to view reports
+  if (!canView) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-3xl font-bold text-white mb-2">{t('title')}</h1>
+          <p className="text-gray-400">{t('subtitle')}</p>
+        </div>
+        <div className="bg-gray-800 rounded-lg border border-gray-700 p-12 text-center">
+          <div className="max-w-md mx-auto">
+            <div className="w-16 h-16 bg-red-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <ShieldOff className="w-8 h-8 text-red-400" />
+            </div>
+            <h3 className="text-xl font-semibold text-white mb-2">Access Denied</h3>
+            <p className="text-gray-400">
+              You do not have permission to view reports. Please contact your administrator.
+            </p>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
