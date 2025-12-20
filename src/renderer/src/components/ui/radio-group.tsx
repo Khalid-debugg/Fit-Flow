@@ -8,8 +8,15 @@ function RadioGroup({
   className,
   ...props
 }: React.ComponentProps<typeof RadioGroupPrimitive.Root>) {
+  const refCallback = React.useCallback((node: HTMLDivElement | null) => {
+    if (node) {
+      node.removeAttribute('dir')
+    }
+  }, [])
+
   return (
     <RadioGroupPrimitive.Root
+      ref={refCallback}
       data-slot="radio-group"
       className={cn('grid gap-3', className)}
       {...props}

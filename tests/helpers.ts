@@ -155,7 +155,7 @@ export function clearTestData(): void {
       allowed_genders = 'both',
       default_payment_method = 'cash',
       auto_backup = 1,
-      backup_frequency = 'weekly',
+      backup_frequency = 'daily',
       backup_folder_path = NULL,
       last_backup_date = NULL;
   `)
@@ -197,7 +197,16 @@ export function createTestMember(
   db.prepare(
     `INSERT INTO members (id, name, email, phone, gender, address, notes, join_date)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
-  ).run(id, member.name, member.email, member.phone, member.gender, member.address, member.notes, member.joinDate)
+  ).run(
+    id,
+    member.name,
+    member.email,
+    member.phone,
+    member.gender,
+    member.address,
+    member.notes,
+    member.joinDate
+  )
 
   return {
     id,
@@ -241,18 +250,16 @@ export function createTestPlan(
 /**
  * Helper to insert a test membership
  */
-export function createTestMembership(
-  data: {
-    memberId: string
-    planId: string
-    startDate?: string
-    endDate?: string
-    amountPaid?: number
-    paymentDate?: string
-    paymentMethod?: string
-    notes?: string
-  }
-) {
+export function createTestMembership(data: {
+  memberId: string
+  planId: string
+  startDate?: string
+  endDate?: string
+  amountPaid?: number
+  paymentDate?: string
+  paymentMethod?: string
+  notes?: string
+}) {
   const db = getTestDatabase()
   const id = generateTestId()
   const membership = {
@@ -291,10 +298,7 @@ export function createTestMembership(
 /**
  * Helper to insert a test check-in
  */
-export function createTestCheckIn(data: {
-  memberId: string
-  checkInTime?: string
-}) {
+export function createTestCheckIn(data: { memberId: string; checkInTime?: string }) {
   const db = getTestDatabase()
   const id = generateTestId()
   const checkIn = {

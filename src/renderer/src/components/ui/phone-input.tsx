@@ -69,7 +69,7 @@ export function PhoneInput({
           {label} {required && <span className="text-red-400">*</span>}
         </Label>
       )}
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-3 gap-2" dir="ltr">
         <div className="col-span-1">
           <Combobox
             options={countryOptions}
@@ -95,17 +95,20 @@ export function PhoneInput({
                 // Remove the '+' from country code to get the prefix
                 const countryPrefix = countryCode.replace('+', '')
 
-                // If value exceeds max length, check if excess digits match country code suffix
+                // If value exceeds max length, check if the leading excess digits
+                // match the trailing digits of the country code
                 if (value.length > country.maxLength) {
                   const excessDigits = value.length - country.maxLength
-                  const prefix = value.slice(0, excessDigits)
-                  const countryCodeSuffix = countryPrefix.slice(-excessDigits)
+                  const leadingDigits = value.slice(0, excessDigits)
+                  const trailingCountryDigits = countryPrefix.slice(-excessDigits)
 
-                  // Only trim if the excess prefix matches the corresponding suffix from country code (from right)
-                  if (prefix === countryCodeSuffix) {
+                  // Only trim if they match
+                  // Example: +20 with "01155366432" → "0" matches last digit of "20" → trim
+                  // Example: +20 with "201155366432" → "20" matches "20" → trim
+                  // Example: +22 with "01155366432" → "0" doesn't match "2" → don't trim
+                  if (leadingDigits === trailingCountryDigits) {
                     value = value.slice(excessDigits)
                   }
-                  // Otherwise, don't modify (validation will show error)
                 }
               }
 
