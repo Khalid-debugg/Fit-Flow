@@ -1,7 +1,13 @@
 import crypto from 'crypto'
 
-// Your secret key - KEEP THIS SECRET! Change this to your own random string
-const SECRET_KEY = 'fitflow-2024-secret-master-key-change-me-in-production'
+// Your secret key - KEEP THIS SECRET!
+// This must match the LICENSE_SECRET_KEY in your .env file
+const SECRET_KEY = process.env.LICENSE_SECRET_KEY
+
+if (!process.env.LICENSE_SECRET_KEY) {
+  console.warn('⚠️  WARNING: LICENSE_SECRET_KEY not set. Using default key (insecure).')
+  console.warn('   Set LICENSE_SECRET_KEY in .env file for production use.')
+}
 
 /**
  * Generate a license key for a given hardware ID
@@ -10,7 +16,7 @@ const SECRET_KEY = 'fitflow-2024-secret-master-key-change-me-in-production'
 export function generateLicenseKey(hardwareId: string): string {
   // Create a signature by hashing hardwareId + secret
   const signature = crypto
-    .createHmac('sha256', SECRET_KEY)
+    .createHmac('sha256', SECRET_KEY!)
     .update(hardwareId)
     .digest('hex')
     .substring(0, 24)
