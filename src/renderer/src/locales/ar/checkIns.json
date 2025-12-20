@@ -18,6 +18,7 @@
   "membershipStatus": "حالة الاشتراك",
   "plan": "الباقة",
   "endDate": "تاريخ الانتهاء",
+  "remainingCheckIns": "الحضور المتبقي",
 
   "stats": {
     "today": "اليوم",
@@ -42,6 +43,10 @@
     "expiredWarning": "اشتراك هذا العضو منتهي. يرجى تمديد قبل تسجيل الحضور.",
     "noMembershipWarning": "هذا العضو ليس لديه اشتراك نشط. يرجى الاشتراك قبل تسجيل الحضور.",
     "alreadyCheckedInWarning": "هذا العضو سجل حضوره اليوم في الساعة {{time}}. هل تريد تسجيل الحضور مرة أخرى؟",
+    "pendingPaymentWarning": "دفعة معلقة: {{amount}}",
+    "pendingPaymentScheduledWarning": "دفعة معلقة: {{amount}} (الاستحقاق: {{date}})",
+    "noCheckInsRemaining": "لا يوجد حضور متبقي. يرجى تجديد أو ترقية الاشتراك.",
+    "lowCheckInsWarning": "{{count}} حضور متبقي فقط. يُفضل التجديد قريباً.",
     "checkInSuccess": "تم تسجيل الحضور بنجاح!",
     "memberNotFound": "العضو غير موجود بهذا رقم الهاتف",
     "alreadyCheckedIn": "تم تسجيل الحضور اليوم بالفعل"

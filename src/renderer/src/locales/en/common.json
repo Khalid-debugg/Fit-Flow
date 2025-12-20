@@ -10,11 +10,32 @@
     "checkin": "Check-in",
     "memberships": "Memberships",
     "reports": "Reports",
+    "accounts": "Accounts",
     "settings": "Settings"
   },
   "user": {
     "admin": "Admin",
-    "gymOwner": "Gym Owner"
+    "gymOwner": "Gym Owner",
+    "administrator": "Administrator",
+    "user": "User",
+    "logout": "Logout",
+    "logoutSuccess": "Logged out successfully",
+    "logoutFailed": "Failed to logout"
+  },
+  "login": {
+    "welcomeBack": "Sign in to your account",
+    "username": "Username",
+    "usernamePlaceholder": "Enter your username",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "login": "Sign In",
+    "loggingIn": "Signing in...",
+    "success": "Welcome back!",
+    "failed": "Login failed. Please try again.",
+    "invalidCredentials": "Invalid username or password",
+    "accountInactive": "Your account is inactive. Please contact the administrator.",
+    "fillFields": "Please fill in all fields",
+    "defaultCredentials": "Default credentials:"
   },
   "dashboard": {
     "welcome": "Welcome Back!",

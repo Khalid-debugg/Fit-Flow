@@ -4,6 +4,7 @@
   "basicInfo": "Basic Information",
   "editMember": "Edit Member",
   "name": "Name",
+  "id": "Card number",
   "email": "Email",
   "phone": "Phone",
   "gender": "Gender",
@@ -52,6 +53,7 @@
     "ok": "OK",
     "phoneExists": "This phone number already exists",
     "emailExists": "This email already exists",
+    "idExists": "This ID is already in use by another member",
     "createFailed": "Failed to create member",
     "updateFailed": "Failed to update member",
     "deleteFailed": "Failed to delete member",
@@ -61,9 +63,11 @@
   "success": {
     "createSuccess": "Member created successfully",
     "updateSuccess": "Member updated successfully",
+    "updateSuccessWithSubscription": "Member and subscription updated successfully",
     "deleteSuccess": "Member deleted successfully"
   },
   "form": {
+    "id": "ID",
     "name": "Name",
     "email": "Email",
     "phone": "Phone",
@@ -76,7 +80,8 @@
     "update": "Update Member",
     "extendMembership": "Extend Membership",
     "renewMembership": "Renew Membership",
-    "pickDate": "Pick a date"
+    "pickDate": "Pick a date",
+    "autoGenerate": "Auto Generate"
   },
   "alert": {
     "deleteMember": "Delete Member",

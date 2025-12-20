@@ -4,6 +4,7 @@
   "basicInfo": "المعلومات الأساسية",
   "editMember": "تعديل العضو",
   "name": "الاسم",
+  "id": "رقم الكارت",
   "email": "البريد الإلكتروني",
   "phone": "الهاتف",
   "gender": "الجنس",
@@ -57,6 +58,7 @@
     "ok": "حسناً",
     "phoneExists": "رقم الهاتف مستخدم بالفعل",
     "emailExists": "البريد الإلكتروني مستخدم بالفعل",
+    "idExists": "هذا الرقم مستخدم بالفعل من قبل عضو آخر",
     "createFailed": "فشل في إضافة العضو",
     "updateFailed": "فشل في تحديث العضو",
     "deleteFailed": "فشل في حذف العضو",
@@ -66,9 +68,11 @@
   "success": {
     "createSuccess": "تم إضافة العضو بنجاح",
     "updateSuccess": "تم تحديث العضو بنجاح",
+    "updateSuccessWithSubscription": "تم تحديث العضو والاشتراك بنجاح",
     "deleteSuccess": "تم حذف العضو بنجاح"
   },
   "form": {
+    "id": "الرقم",
     "name": "الاسم",
     "email": "البريد الإلكتروني",
     "phone": "الهاتف",
@@ -79,7 +83,8 @@
     "confirm": "تأكيد",
     "submit": "إضافة عضو",
     "update": "تحديث العضو",
-    "pickDate": "اختر تاريخ"
+    "pickDate": "اختر تاريخ",
+    "autoGenerate": "توليد تلقائي"
   },
   "alert": {
     "deleteMember": "حذف العضو",

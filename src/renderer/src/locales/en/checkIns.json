@@ -17,6 +17,7 @@
   "membershipStatus": "Membership Status",
   "plan": "Plan",
   "endDate": "End Date",
+  "remainingCheckIns": "Remaining Check-ins",
 
   "stats": {
     "today": "Today",
@@ -41,6 +42,10 @@
     "expiredWarning": "This member's membership has expired. Please renew before check-in.",
     "noMembershipWarning": "This member has no active membership. Please subscribe before check-in.",
     "alreadyCheckedInWarning": "This member already checked in today at {{time}}. Do you want to check in again?",
+    "pendingPaymentWarning": "Pending payment: {{amount}}",
+    "pendingPaymentScheduledWarning": "Pending payment: {{amount}} (Due: {{date}})",
+    "noCheckInsRemaining": "No check-ins remaining. Please renew or upgrade your membership.",
+    "lowCheckInsWarning": "Only {{count}} check-ins remaining. Consider renewing soon.",
     "checkInSuccess": "Check-in successful!",
     "memberNotFound": "Member not found with this phone number",
     "alreadyCheckedIn": "Already checked in today"

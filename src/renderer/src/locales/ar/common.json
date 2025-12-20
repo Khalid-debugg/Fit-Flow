@@ -10,11 +10,32 @@
     "memberships": "الإشتراكات",
     "checkin": "تسجيل الحضور",
     "reports": "التقارير",
+    "accounts": "الحسابات",
     "settings": "الإعدادات"
   },
   "user": {
     "admin": "المدير",
-    "gymOwner": "مالك الصالة"
+    "gymOwner": "مالك الصالة",
+    "administrator": "مدير النظام",
+    "user": "مستخدم",
+    "logout": "تسجيل الخروج",
+    "logoutSuccess": "تم تسجيل الخروج بنجاح",
+    "logoutFailed": "فشل تسجيل الخروج"
+  },
+  "login": {
+    "welcomeBack": "تسجيل الدخول إلى حسابك",
+    "username": "اسم المستخدم",
+    "usernamePlaceholder": "أدخل اسم المستخدم",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "أدخل كلمة المرور",
+    "login": "تسجيل الدخول",
+    "loggingIn": "جاري تسجيل الدخول...",
+    "success": "مرحباً بعودتك!",
+    "failed": "فشل تسجيل الدخول. يرجى المحاولة مرة أخرى.",
+    "invalidCredentials": "اسم المستخدم أو كلمة المرور غير صحيحة",
+    "accountInactive": "حسابك غير نشط. يرجى الاتصال بالمسؤول.",
+    "fillFields": "يرجى ملء جميع الحقول",
+    "defaultCredentials": "بيانات الدخول الافتراضية:"
   },
   "dashboard": {
     "welcome": "مرحباً بعودتك!",

@@ -13,6 +13,7 @@
     "plan": "الباقة",
     "startDate": "تاريخ البداية",
     "endDate": "تاريخ الانتهاء",
+    "remaining": "المتبقي",
     "amountPaid": "المبلغ المدفوع",
     "paymentMethod": "طريقة الدفع",
     "status": "الحالة",
@@ -22,7 +23,10 @@
   "filter": {
     "search": "بحث",
     "searchPlaceholder": "ابحث باسم العضو أو رقم الهاتف...",
-    "paymentMethod": "طريقة الدفع",
+    "plan": "الباقة",
+    "selectPlan": "اختر باقة",
+    "searchPlan": "ابحث عن الباقات...",
+    "noPlansFound": "لم يتم العثور على باقات",
     "status": "الحالة",
     "startDateFrom": "تاريخ البداية من",
     "startDateTo": "تاريخ البداية إلى",
@@ -38,6 +42,17 @@
     "e-wallet": "محفطة إلكترونية"
   },
 
+  "paymentStatus": {
+    "paid": "مدفوع",
+    "partial": "مدفوع جزئياً",
+    "unpaid": "غير مدفوع"
+  },
+
+  "priceModifierTypes": {
+    "multiplier": "مضاعف",
+    "discount": "خصم",
+    "custom": "سعر مخصص"
+  },
   "form": {
     "member": "العضو",
     "selectMember": "اختر عضو",
@@ -46,14 +61,43 @@
     "plan": "الباقة",
     "selectPlan": "اختر باقة",
     "searchPlan": "ابحث باسم الباقة...",
-    "noPlansFound": "لم يتم العثور على خطط",
+    "noPlansFound": "لم يتم العثور على باقات",
     "startDate": "تاريخ البداية",
     "endDate": "تاريخ الانتهاء",
+    "totalPrice": "السعر الإجمالي",
     "amountPaid": "المبلغ المدفوع",
+    "initialPayment": "الدفعة الأولى",
+    "remainingBalance": "المبلغ المتبقي",
+    "paymentType": "نوع الدفع",
+    "fullPayment": "دفع كامل",
+    "partialPayment": "دفع جزئي",
+    "paymentScheduleSuggestions": "مبالغ دفع سريعة",
+    "partialPaymentNote": "يمكنك إضافة مدفوعات لاحقاً من تفاصيل الاشتراك",
+    "schedulePayments": "جدولة الدفعات المستقبلية",
+    "schedulePaymentDates": "جدولة تواريخ الدفع؟",
+    "schedulePaymentDatesHint": "حدد هذا لتعيين تواريخ محددة للدفعات المستقبلية",
+    "addScheduledPayment": "إضافة دفعة مجدولة",
+    "removeScheduledPayment": "إزالة",
+    "scheduledPaymentAmount": "المبلغ",
+    "scheduledPaymentDate": "تاريخ الدفع",
+    "scheduledPaymentMethod": "طريقة الدفع",
+    "scheduledPaymentNotes": "ملاحظات (اختياري)",
+    "totalScheduled": "إجمالي المبالغ المجدولة",
     "paymentDate": "تاريخ الدفع",
     "paymentMethod": "طريقة الدفع",
     "price": "سعر الباقة",
     "phone": "الهاتف",
+    "priceModifierType": "تعديل السعر",
+    "multiplierValue": "قيمة المضاعف",
+    "discountPercentage": "نسبة الخصم",
+    "customPrice": "سعر مخصص",
+    "customPriceName": "اسم السعر المخصص (اختياري)",
+    "multiplierHint": "مثال: 1.5 = زيادة 50%، 0.8 = تخفيض 20%",
+    "discountHint": "أدخل النسبة المئوية: 20 لخصم 20%",
+    "basePrice": "السعر الأساسي",
+    "calculatedPrice": "السعر المحسوب",
+    "usePlanPrice": "استخدام سعر الباقة",
+    "adjustPrice": "تعديل السعر",
     "notes": "ملاحظات",
     "notesPlaceholder": "أضف أي ملاحظات إضافية...",
     "cancel": "إلغاء",
@@ -62,6 +106,39 @@
     "confirm": "تأكيد",
     "pickDate": "اختر تاريخ"
   },
+
+  "payment": {
+    "addPayment": "إضافة دفعة",
+    "payment": "دفعة",
+    "amount": "مبلغ الدفع",
+    "date": "تاريخ الدفع",
+    "method": "طريقة الدفع",
+    "notes": "ملاحظات",
+    "notesPlaceholder": "أضف ملاحظات الدفع...",
+    "payFull": "دفع كامل",
+    "newBalance": "الرصيد الجديد",
+    "processing": "جاري المعالجة...",
+    "status": "حالة الدفع",
+    "member": "العضو",
+    "remainingBalance": "المبلغ المتبقي",
+    "balance": "الرصيد المستحق",
+    "totalPrice": "السعر الإجمالي",
+    "noPayments": "لا يوجد سجل مدفوعات",
+    "adding": "جاري الإضافة...",
+    "noPendingPayments": "لا توجد مدفوعات معلقة",
+    "pendingPayments": "مدفوعات معلقة",
+    "pendingPayment": "دفعة معلقة",
+    "noScheduledDate": "لا يوجد تاريخ محدد",
+    "payNow": "ادفع الآن",
+    "scheduledPayments": "مدفوعات مجدولة",
+    "scheduledPayment": "دفعة مجدولة",
+    "dueDate": "تاريخ الاستحقاق",
+    "markAsPaid": "تحديد كمدفوع",
+    "confirmPayment": "تأكيد الدفع",
+    "confirmPaymentDescription": "هل أنت متأكد من تحديد هذه الدفعة المجدولة كمدفوعة؟ لا يمكن التراجع عن هذا الإجراء."
+  },
+
+  "checkIns": "مرة حضور",
 
   "create": {
     "title": "إضافة اشتراك جديد"
@@ -76,7 +153,11 @@
     "memberInfo": "معلومات العضو",
     "planInfo": "معلومات الباقة",
     "dates": "فترة الاشتراك",
-    "paymentInfo": "معلومات الدفع"
+    "paymentInfo": "معلومات الدفع",
+    "details": "التفاصيل",
+    "payments": "سجل المدفوعات",
+    "completedPayments": "المدفوعات المكتملة",
+    "pendingPayments": "المدفوعات المعلقة"
   },
 
   "delete": {
@@ -99,14 +180,18 @@
     "deleteFailed": "فشل حذف الاشتراك",
     "requiredFields": "يرجى ملء جميع الحقول المطلوبة",
     "membershipOverlap": "يتداخل هذا الاشتراك مع اشتراك موجود لهذا العضو. يرجى اختيار تواريخ مختلفة.",
-    "extendFail": "فشل فى تمديد الإشتراك"
+    "extendFail": "فشل فى تمديد الإشتراك",
+    "invalidAmount": "يرجى إدخال مبلغ دفع صحيح",
+    "amountExceedsBalance": "مبلغ الدفع يتجاوز الرصيد المتبقي",
+    "paymentFailed": "فشل إضافة الدفعة"
   },
 
   "success": {
     "createSuccess": "تم إنشاء الاشتراك بنجاح",
     "updateSuccess": "تم تحديث الاشتراك بنجاح",
     "deleteSuccess": "تم حذف الاشتراك بنجاح",
-    "extendSuccess": "تم تمديد الإشتراك بنجاح"
+    "extendSuccess": "تم تمديد الإشتراك بنجاح",
+    "paymentAdded": "تمت إضافة الدفعة بنجاح"
   },
   "alert": {
     "renewMembership": "تمديد الإشتراك",

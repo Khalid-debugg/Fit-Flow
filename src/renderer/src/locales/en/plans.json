@@ -57,12 +57,18 @@
     "updateSuccess": "Plan updated successfully",
     "deleteSuccess": "Plan deleted successfully"
   },
+  "planTypes": {
+    "duration": "Duration-based",
+    "checkin": "Check-in based"
+  },
   "form": {
     "name": "Name",
     "price": "Price",
     "duration": "Duration (in days)",
     "description": "Description",
     "status": "Status",
+    "planType": "Plan Type",
+    "checkInLimit": "Check-in Limit",
     "cancel": "Cancel",
     "confirm": "Confirm",
     "submit": "Add Plan",

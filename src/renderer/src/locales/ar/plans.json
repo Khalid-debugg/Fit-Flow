@@ -73,12 +73,18 @@
     "updateSuccess": "تم تحديث الباقة بنجاح",
     "deleteSuccess": "تم حذف الباقة بنجاح"
   },
+  "planTypes": {
+    "duration": "باقة بالمدة",
+    "checkin": "باقة بعدد الحضور"
+  },
   "form": {
     "name": "الاسم",
     "price": "السعر",
     "duration": "المدة (بالأيام)",
     "description": "الوصف",
     "status": "الحالة",
+    "planType": "نوع الباقة",
+    "checkInLimit": "عدد مرات الحضور",
     "cancel": "إلغاء",
     "confirm": "تأكيد",
     "submit": "إضافة باقة",
