@@ -1,4 +1,6 @@
 import { useTranslation } from 'react-i18next'
+import { useAuth } from '@renderer/hooks/useAuth'
+import { PERMISSIONS } from '@renderer/models/account'
 import { Button } from '@renderer/components/ui/button'
 import {
   Table,
@@ -29,7 +31,10 @@ export default function CheckInsTable({
   onViewHistory
 }: CheckInsTableProps) {
   const { t, i18n } = useTranslation('checkIns')
+  const { hasPermission } = useAuth()
   const dateLocale = i18n.language === 'ar' ? ar : enUS
+
+  const canViewCheckIns = hasPermission(PERMISSIONS.checkins.view)
 
   const getStatusBadge = (status: string) => {
     const colors = {
@@ -78,8 +83,7 @@ export default function CheckInsTable({
                   </TableCell>
                   <TableCell className="font-medium">{checkIn.memberName}</TableCell>
                   <TableCell className="text-gray-400">
-                    {checkIn.memberCountryCode}
-                    {checkIn.memberPhone}
+                    <span dir="ltr">{`${checkIn.memberCountryCode}${checkIn.memberPhone}`}</span>
                   </TableCell>
                   <TableCell className="text-gray-400">{formatDate(checkIn.checkInTime)}</TableCell>
                   <TableCell className="text-gray-400">{formatTime(checkIn.checkInTime)}</TableCell>
@@ -90,15 +94,17 @@ export default function CheckInsTable({
                       {t(`status.${checkIn.membershipStatus}`)}
                     </span>
                   </TableCell>
-                  <TableCell className="text-end">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => onViewHistory(checkIn.memberId)}
-                      title={t('viewHistory')}
-                    >
-                      <History className="h-4 w-4" />
-                    </Button>
+                  <TableCell className="text-end min-h-[40px] h-[40px]">
+                    {canViewCheckIns && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => onViewHistory(checkIn.memberId)}
+                        title={t('viewHistory')}
+                      >
+                        <History className="h-4 w-4" />
+                      </Button>
+                    )}
                   </TableCell>
                 </TableRow>
               ))

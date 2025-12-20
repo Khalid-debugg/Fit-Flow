@@ -4,27 +4,23 @@ import { Input } from '@renderer/components/ui/input'
 import { Label } from '@renderer/components/ui/label'
 import { ScanBarcode, Search, Loader2 } from 'lucide-react'
 import { useCheckIn } from '@renderer/hooks/useCheckIn'
+import { useAuth } from '@renderer/hooks/useAuth'
+import { PERMISSIONS } from '@renderer/models/account'
 import { toast } from 'sonner'
 import MemberCheckInCard from '@renderer/components/checkIns/MemberCheckInCard'
 import { useDebounce } from '@renderer/hooks/useDebounce'
+import { Member } from '@renderer/models/member'
 
 interface QuickCheckInWidgetProps {
   onCheckInSuccess: () => void
 }
 
-interface MemberSearchResult {
-  id: string
-  name: string
-  phone: string
-  email: string
-  membershipStatus: 'active' | 'inactive'
-}
-
 export default function QuickCheckInWidget({ onCheckInSuccess }: QuickCheckInWidgetProps) {
   const { t } = useTranslation('checkIns')
   const { t: tDashboard } = useTranslation('dashboard')
+  const { hasPermission } = useAuth()
   const [searchQuery, setSearchQuery] = useState('')
-  const [searchResults, setSearchResults] = useState<MemberSearchResult[]>([])
+  const [searchResults, setSearchResults] = useState<Member[]>([])
   const [showResults, setShowResults] = useState(false)
   const [searchLoading, setSearchLoading] = useState(false)
   const [searchPage, setSearchPage] = useState(1)
@@ -32,6 +28,14 @@ export default function QuickCheckInWidget({ onCheckInSuccess }: QuickCheckInWid
   const inputRef = useRef<HTMLInputElement>(null)
   const resultsRef = useRef<HTMLDivElement>(null)
   const { lookupMember, confirmCheckIn, cancelCheckIn, memberCard, loading } = useCheckIn()
+
+  const canCreateCheckIn = hasPermission(PERMISSIONS.checkins.create)
+
+  // Barcode scanner detection
+  const barcodeBufferRef = useRef<string>('')
+  const barcodeTimerRef = useRef<NodeJS.Timeout | null>(null)
+  const isScanning = useRef<boolean>(false)
+  const lastKeypressTime = useRef<number>(0)
 
   const debouncedQuery = useDebounce(searchQuery, 300)
 
@@ -46,6 +50,105 @@ export default function QuickCheckInWidget({ onCheckInSuccess }: QuickCheckInWid
       }, 100)
     }
   }, [memberCard, loading])
+
+  // Handle barcode scanner input - exact member ID lookup
+  const handleBarcodeScanned = async (code: string) => {
+    console.log('Barcode scanned:', code)
+
+    // Basic validation - at least 1 character (numeric for now, can be updated later)
+    if (!code || code.length === 0) {
+      console.log('Empty barcode')
+      return
+    }
+
+    // Close search results if open
+    setShowResults(false)
+
+    // Lookup member by exact ID
+    const result = await lookupMember(code)
+
+    if (!result.success) {
+      toast.error(t('messages.memberNotFound') || 'Member not found')
+    }
+    // On success, memberCard will be set and MemberCheckInCard will open automatically
+  }
+
+  // Global barcode scanner listener
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if modal is open (memberCard is showing)
+      if (memberCard) {
+        return
+      }
+
+      // Handle Enter key - process barcode
+      if (e.key === 'Enter') {
+        if (barcodeBufferRef.current.trim()) {
+          console.log('Enter pressed, buffer:', barcodeBufferRef.current)
+          e.preventDefault()
+          if (document.activeElement === inputRef.current) {
+            inputRef.current?.blur()
+            // Clear the search input if barcode was typed there
+            setSearchQuery('')
+          }
+          handleBarcodeScanned(barcodeBufferRef.current.trim())
+          barcodeBufferRef.current = ''
+          isScanning.current = false
+          lastKeypressTime.current = 0
+        }
+        return
+      }
+
+      // Collect alphanumeric characters for barcode
+      if (/^[a-zA-Z0-9]$/.test(e.key)) {
+        const now = Date.now()
+        const timeSinceLastKey = now - lastKeypressTime.current
+
+        // Detect rapid input (scanner) - keys pressed within 100ms of each other
+        // Increased from 50ms to be more lenient
+        if (timeSinceLastKey < 100 && timeSinceLastKey > 0) {
+          isScanning.current = true
+          console.log('Scanner detected! Time between keys:', timeSinceLastKey)
+        }
+
+        // If we've identified this as scanning, prevent input to search bar
+        if (isScanning.current) {
+          e.preventDefault()
+          barcodeBufferRef.current += e.key
+        } else if (barcodeBufferRef.current.length > 0) {
+          // Continue buffering if we already started
+          barcodeBufferRef.current += e.key
+        } else {
+          // First character - start buffering but don't prevent (might be normal typing)
+          barcodeBufferRef.current = e.key
+        }
+
+        lastKeypressTime.current = now
+
+        // Clear buffer after 150ms of inactivity
+        if (barcodeTimerRef.current) {
+          clearTimeout(barcodeTimerRef.current)
+        }
+        barcodeTimerRef.current = setTimeout(() => {
+          if (barcodeBufferRef.current) {
+            console.log('Buffer cleared due to timeout:', barcodeBufferRef.current)
+          }
+          barcodeBufferRef.current = ''
+          isScanning.current = false
+          lastKeypressTime.current = 0
+        }, 150)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown, true)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown, true)
+      if (barcodeTimerRef.current) {
+        clearTimeout(barcodeTimerRef.current)
+      }
+    }
+  }, [memberCard, lookupMember, t])
 
   // Search members
   useEffect(() => {
@@ -93,28 +196,15 @@ export default function QuickCheckInWidget({ onCheckInSuccess }: QuickCheckInWid
     }
   }
 
-  // Handle barcode scan (Enter key)
+  // Handle Enter key in search input - select from results
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && searchQuery.trim()) {
       e.preventDefault()
 
-      // Check if it's a member ID (barcode scan - 16 hex chars)
-      if (/^[0-9a-f]{16}$/i.test(searchQuery.trim())) {
-        await handleBarcodeCheckIn(searchQuery.trim())
-      } else if (searchResults.length === 1) {
-        // If only one result, select it
-        await handleMemberSelect(searchResults[0].id)
+      // If only one search result, select it
+      if (searchResults.length === 1) {
+        await handleMemberSelect(searchResults[0].id!)
       }
-    }
-  }
-
-  const handleBarcodeCheckIn = async (memberId: string) => {
-    setShowResults(false)
-    const result = await lookupMember(memberId)
-
-    if (!result.success) {
-      toast.error(result.error)
-      setSearchQuery('')
     }
   }
 
@@ -129,10 +219,17 @@ export default function QuickCheckInWidget({ onCheckInSuccess }: QuickCheckInWid
   }
 
   const handleConfirm = async () => {
+    if (!canCreateCheckIn) {
+      toast.error('You do not have permission to perform check-ins')
+      return
+    }
+
     const result = await confirmCheckIn()
 
     if (result.success) {
+      // Show success message
       toast.success(t('messages.checkInSuccess'))
+
       setSearchQuery('')
       setSearchResults([])
       onCheckInSuccess()
@@ -145,10 +242,6 @@ export default function QuickCheckInWidget({ onCheckInSuccess }: QuickCheckInWid
     cancelCheckIn()
     setSearchQuery('')
     setSearchResults([])
-  }
-
-  const getStatusBadge = (status: string) => {
-    return status === 'active' ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'
   }
 
   return (
@@ -178,7 +271,7 @@ export default function QuickCheckInWidget({ onCheckInSuccess }: QuickCheckInWid
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={handleKeyDown}
-              disabled={loading}
+              disabled={loading || !canCreateCheckIn}
               className="bg-gray-900 border-gray-700 text-white text-lg h-12 ps-10"
               autoComplete="off"
             />
@@ -201,19 +294,16 @@ export default function QuickCheckInWidget({ onCheckInSuccess }: QuickCheckInWid
               {searchResults.map((member) => (
                 <div
                   key={member.id}
-                  onClick={() => handleMemberSelect(member.id)}
+                  onClick={() => handleMemberSelect(member.id!)}
                   className="p-3 hover:bg-gray-800 cursor-pointer border-b border-gray-800 last:border-b-0"
                 >
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="font-medium text-white">{member.name}</p>
-                      <p className="text-sm text-gray-400">{member.phone}</p>
+                      <p className="text-lg font-medium text-white" dir="ltr">
+                        {`${member.countryCode}${member.phone}`}
+                      </p>
                     </div>
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusBadge(member.membershipStatus)}`}
-                    >
-                      {t(`status.${member.membershipStatus}`)}
-                    </span>
                   </div>
                 </div>
               ))}

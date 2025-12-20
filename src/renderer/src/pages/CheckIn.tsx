@@ -9,7 +9,9 @@ import {
 
 import { toast } from 'sonner'
 import { useDebounce } from '@renderer/hooks/useDebounce'
-import { LoaderCircle } from 'lucide-react'
+import { useAuth } from '@renderer/hooks/useAuth'
+import { PERMISSIONS } from '@renderer/models/account'
+import { LoaderCircle, Lock } from 'lucide-react'
 import {
   CheckInHistory,
   CheckInsFilter,
@@ -20,6 +22,7 @@ import {
 
 export default function CheckIns() {
   const { t } = useTranslation('checkIns')
+  const { hasPermission } = useAuth()
   const [checkIns, setCheckIns] = useState<CheckIn[]>([])
   const [loading, setLoading] = useState(true)
   const [filters, setFilters] = useState<CheckInFilters>(DEFAULT_FILTERS)
@@ -36,7 +39,12 @@ export default function CheckIns() {
 
   const debouncedFilters = useDebounce(filters, 500)
 
+  const canViewCheckIns = hasPermission(PERMISSIONS.checkins.view)
+  const canCreateCheckIn = hasPermission(PERMISSIONS.checkins.create)
+
   const loadCheckIns = useCallback(async () => {
+    if (!canViewCheckIns) return
+
     setLoading(true)
     try {
       const data = await window.electron.ipcRenderer.invoke('checkIns:get', page, debouncedFilters)
@@ -48,7 +56,7 @@ export default function CheckIns() {
     } finally {
       setLoading(false)
     }
-  }, [page, debouncedFilters, t])
+  }, [page, debouncedFilters, t, canViewCheckIns])
 
   const loadStats = useCallback(async () => {
     try {
@@ -97,6 +105,17 @@ export default function CheckIns() {
     [checkIns]
   )
 
+  // Show permission denied if user cannot view check-ins
+  if (!canViewCheckIns) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
+        <Lock className="w-16 h-16 text-gray-600" />
+        <h2 className="text-2xl font-semibold text-gray-400">Access Denied</h2>
+        <p className="text-gray-500">You don't have permission to view check-ins</p>
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-6">
       <CheckInHistory
@@ -112,7 +131,7 @@ export default function CheckIns() {
 
       <CheckInStats stats={stats} />
 
-      <QuickCheckInWidget onCheckInSuccess={handleCheckInSuccess} />
+      {canCreateCheckIn && <QuickCheckInWidget onCheckInSuccess={handleCheckInSuccess} />}
 
       <CheckInsFilter
         filters={filters}
