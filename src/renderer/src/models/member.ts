@@ -1,7 +1,7 @@
 export const GENDER = ['male', 'female'] as const
 export const STATUS = ['active', 'inactive', 'expired'] as const
 export type Member = {
-  id?: number
+  id?: string
   name: string
   email: string | null
   countryCode: string
@@ -19,12 +19,17 @@ export type Member = {
     startDate: string
     endDate: string
     status: string
+    remainingCheckIns?: number | null
   }
   alreadyCheckedIn?: boolean
   checkInTime?: string
+  pendingPayments?: Array<{
+    amount: number
+    paymentDate?: string
+  }>
 }
 export type MemberDbRow = {
-  id: number
+  id: string
   name: string
   email: string | null
   country_code: string
@@ -39,6 +44,7 @@ export type MemberDbRow = {
   plan_price: number | null
   start_date: string | null
   end_date: string | null
+  remaining_check_ins: number | null
   membership_count: number
 }
 export interface MemberFilters {

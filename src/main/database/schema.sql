@@ -33,7 +33,7 @@ BEGIN
 END;
 
 CREATE TABLE IF NOT EXISTS members (
-  id TEXT PRIMARY KEY,
+  id TEXT PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
   email TEXT,
   country_code TEXT DEFAULT '+20',
@@ -51,7 +51,9 @@ CREATE TABLE IF NOT EXISTS membership_plans (
   description TEXT,
   price REAL NOT NULL,
   is_offer INTEGER NOT NULL CHECK (is_offer IN (0, 1)),
-  duration_days INTEGER NOT NULL,
+  duration_days INTEGER,
+  plan_type TEXT DEFAULT 'duration' CHECK (plan_type IN ('duration', 'checkin')),
+  check_in_limit INTEGER,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -61,9 +63,17 @@ CREATE TABLE IF NOT EXISTS memberships (
   plan_id TEXT NOT NULL,
   start_date DATE NOT NULL,
   end_date DATE NOT NULL,
+  total_price REAL NOT NULL,
   amount_paid REAL NOT NULL,
+  remaining_balance REAL NOT NULL DEFAULT 0,
+  payment_status TEXT DEFAULT 'unpaid' CHECK (payment_status IN ('unpaid', 'partial', 'paid')),
   payment_method TEXT NOT NULL,
   payment_date DATE NOT NULL,
+  remaining_check_ins INTEGER,
+  is_custom INTEGER DEFAULT 0 CHECK (is_custom IN (0, 1)),
+  price_modifier_type TEXT CHECK (price_modifier_type IN ('multiplier', 'discount', 'custom', NULL)),
+  price_modifier_value REAL,
+  custom_price_name TEXT,
   notes TEXT,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE,
@@ -77,6 +87,19 @@ CREATE TABLE IF NOT EXISTS check_ins (
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS membership_payments (
+  id TEXT PRIMARY KEY,
+  membership_id TEXT NOT NULL,
+  amount REAL NOT NULL,
+  payment_method TEXT NOT NULL CHECK (payment_method IN ('cash', 'card', 'transfer', 'e-wallet')),
+  payment_date DATE NOT NULL,
+  payment_status TEXT DEFAULT 'completed' CHECK (payment_status IN ('completed', 'scheduled', 'pending')),
+  notes TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (membership_id) REFERENCES memberships(id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS reports (
   id TEXT PRIMARY KEY,
   report_type TEXT NOT NULL CHECK (report_type IN ('week', 'month', 'year', 'custom')),
@@ -120,9 +143,11 @@ CREATE INDEX IF NOT EXISTS idx_users_is_active ON users(is_active);
 CREATE INDEX IF NOT EXISTS idx_reports_dates ON reports(start_date, end_date);
 CREATE INDEX IF NOT EXISTS idx_reports_type ON reports(report_type);
 CREATE INDEX IF NOT EXISTS idx_memberships_member_id ON memberships(member_id);
+CREATE INDEX IF NOT EXISTS idx_memberships_payment_status ON memberships(payment_status);
 CREATE INDEX IF NOT EXISTS idx_check_ins_member_id ON check_ins(member_id);
 CREATE INDEX IF NOT EXISTS idx_members_phone ON members(phone);
 CREATE INDEX IF NOT EXISTS idx_check_ins_member_date ON check_ins(member_id, DATE(check_in_time));
+CREATE INDEX IF NOT EXISTS idx_membership_payments_membership_id ON membership_payments(membership_id);
 
 INSERT OR IGNORE INTO settings (
   id,

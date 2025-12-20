@@ -188,10 +188,24 @@ export function registerMemberHandlers() {
     }
   })
 
+  ipcMain.handle('members:getNextId', async () => {
+    const db = getDatabase()
+    const result = db.prepare('SELECT MAX(id) as maxId FROM members').get() as { maxId: number | null }
+    return (result.maxId || 0) + 1
+  })
+
   ipcMain.handle('members:create', async (_event, member) => {
     const db = getDatabase()
     const id = generateEncryptedId()
     const snake = toSnake(member)
+
+    // If a custom ID is provided, use it; otherwise, let SQLite auto-increment
+    if (member.id) {
+      // Check if ID already exists
+      const existing = db.prepare('SELECT id FROM members WHERE id = ?').get(member.id)
+      if (existing) {
+        throw new Error('ID_ALREADY_EXISTS')
+      }
 
     const stmt = db.prepare(`
       INSERT INTO members (id, name, email, country_code, phone, gender, address, join_date, notes)
@@ -199,7 +213,25 @@ export function registerMemberHandlers() {
     `)
 
     stmt.run(
-      id,
+        member.id,
+        snake.name,
+        snake.email || null,
+        snake.country_code || '+20',
+        snake.phone,
+        snake.gender,
+        snake.address || null,
+        snake.join_date,
+        snake.notes || null
+      )
+
+      return { id: String(member.id), ...member }
+    } else {
+      const stmt = db.prepare(`
+        INSERT INTO members (name, email, country_code, phone, gender, address, join_date, notes)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      `)
+
+      const result = stmt.run(
       snake.name,
       snake.email || null,
       snake.country_code || '+20',
@@ -210,7 +242,8 @@ export function registerMemberHandlers() {
       snake.notes || null
     )
 
-    return { id, ...member }
+      return { id: String(result.lastInsertRowid), ...member }
+    }
   })
 
   ipcMain.handle('members:update', async (_event, id: string, member) => {
@@ -233,6 +266,23 @@ export function registerMemberHandlers() {
     )
 
     return { id, ...member }
+  })
+
+  ipcMain.handle('members:updateId', async (_event, currentId: number, newId: number) => {
+    const db = getDatabase()
+
+    // Check if the new ID already exists (excluding current member)
+    const existing = db.prepare('SELECT id FROM members WHERE id = ? AND id != ?').get(newId, currentId)
+
+    if (existing) {
+      throw new Error('ID_ALREADY_EXISTS')
+    }
+
+    // Update the member's ID
+    const stmt = db.prepare('UPDATE members SET id = ? WHERE id = ?')
+    stmt.run(newId, currentId)
+
+    return { success: true, newId }
   })
 
   ipcMain.handle('members:delete', async (_event, id: string) => {
