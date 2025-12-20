@@ -1,20 +1,19 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { format } from 'date-fns'
-import { ar, enUS } from 'date-fns/locale'
-import { CalendarIcon } from 'lucide-react'
 import { Label } from '@renderer/components/ui/label'
-import { Input } from '@renderer/components/ui/input'
 import { Button } from '@renderer/components/ui/button'
-import { RadioGroup, RadioGroupItem } from '@renderer/components/ui/radio-group'
-import { Calendar } from '@renderer/components/ui/calendar'
-import { Popover, PopoverContent, PopoverTrigger } from '@renderer/components/ui/popover'
 import { Textarea } from '@renderer/components/ui/textarea'
 import { Combobox, type ComboboxOption } from '@renderer/components/ui/combobox'
-import type { Membership } from '@renderer/models/membership'
-import { PAYMENT_METHODS } from '@renderer/models/membership'
+import type { Membership, ScheduledPayment, PAYMENT_METHODS } from '@renderer/models/membership'
+import { type PriceModifierType } from '@renderer/models/membership'
+import { PERMISSIONS } from '@renderer/models/account'
 import { useSettings } from '@renderer/hooks/useSettings'
-import { cn } from '@renderer/lib/utils'
+import { useAuth } from '@renderer/hooks/useAuth'
+import DatePickerField from './DatePickerField'
+import PaymentMethodSelector from './PaymentMethodSelector'
+import PaymentTypeSelector from './PaymentTypeSelector'
+import PriceAdjustmentSection from './PriceAdjustmentSection'
+import PaymentSummarySection from './PaymentSummarySection'
 
 interface MembershipFormProps {
   formData: Partial<Membership>
@@ -25,8 +24,15 @@ interface MembershipFormProps {
   preSelectedMemberId?: string
 }
 
-type MemberOption = { id: string; name: string; phone: string }
-type PlanOption = { id: string; name: string; price: number; durationDays: number }
+type MemberOption = { id: string; name: string; phone: string; countryCode: string }
+type PlanOption = {
+  id: string
+  name: string
+  price: number
+  durationDays: number | null
+  planType: string
+  checkInLimit: number | null
+}
 
 export default function MembershipForm({
   formData,
@@ -36,12 +42,16 @@ export default function MembershipForm({
   submitLabel,
   preSelectedMemberId
 }: MembershipFormProps) {
-  const { t, i18n } = useTranslation('memberships')
+  const { t } = useTranslation('memberships')
+  const { hasPermission } = useAuth()
   const { settings } = useSettings()
   const [members, setMembers] = useState<MemberOption[]>([])
   const [plans, setPlans] = useState<PlanOption[]>([])
   const [loading, setLoading] = useState(true)
-  const dateLocale = i18n.language === 'ar' ? ar : enUS
+  const [paymentType, setPaymentType] = useState<'full' | 'partial'>('full')
+  const [selectedPlan, setSelectedPlan] = useState<PlanOption | null>(null)
+  const [usePlanPrice, setUsePlanPrice] = useState(true)
+  const [scheduledPayments, setScheduledPayments] = useState<ScheduledPayment[]>([])
 
   useEffect(() => {
     loadData()
@@ -53,11 +63,25 @@ export default function MembershipForm({
         window.electron.ipcRenderer.invoke('memberships:getMembers'),
         window.electron.ipcRenderer.invoke('memberships:getPlans')
       ])
-      setMembers(membersData)
+
+      // Filter out members with null/undefined IDs
+      const validMembers = membersData.filter((member: MemberOption) => {
+        if (!member.id) {
+          console.error('WARNING: Member with null ID found:', member.name, member)
+          return false
+        }
+        return true
+      })
+
+      if (validMembers.length < membersData.length) {
+        console.warn(`Filtered out ${membersData.length - validMembers.length} member(s) with invalid IDs`)
+      }
+
+      setMembers(validMembers)
       setPlans(plansData)
 
       if (preSelectedMemberId && !formData.memberId) {
-        setFormData({ ...formData, memberId: preSelectedMemberId })
+        setFormData({ memberId: preSelectedMemberId })
       }
     } catch (error) {
       console.error('Failed to load members/plans:', error)
@@ -70,17 +94,42 @@ export default function MembershipForm({
     const plan = plans.find((p) => p.id === planId)
     if (!plan) return
 
-    const startDate = formData.startDate || new Date().toISOString().split('T')[0]
-    const endDate = calculateEndDate(startDate, plan.durationDays)
+    setSelectedPlan(plan)
 
-    setFormData({
+    const startDate = formData.startDate || new Date().toISOString().split('T')[0]
+    let endDate = startDate
+
+    // Calculate end date for duration-based plans
+    if (plan.planType === 'duration' && plan.durationDays) {
+      endDate = calculateEndDate(startDate, plan.durationDays)
+    } else if (plan.planType === 'checkin' && plan.durationDays) {
+      endDate = calculateEndDate(startDate, plan.durationDays)
+    }
+
+    const finalPrice = usePlanPrice
+      ? plan.price
+      : calculatePrice(plan.price, formData.priceModifierType, formData.priceModifierValue)
+
+    const updates: Partial<Membership> = {
       ...formData,
       planId,
-      amountPaid: plan.price,
+      totalPrice: finalPrice,
+      amountPaid: paymentType === 'full' ? finalPrice : 0,
+      remainingBalance: paymentType === 'full' ? 0 : finalPrice,
+      paymentStatus: paymentType === 'full' ? 'paid' : 'unpaid',
+      isCustom: false,
       startDate,
       endDate,
-      paymentDate: formData.paymentDate || startDate
-    })
+      paymentDate: formData.paymentDate || startDate,
+      paymentMethod: formData.paymentMethod || 'cash'
+    }
+
+    // Add check-in limit for check-in based plans
+    if (plan.planType === 'checkin' && plan.checkInLimit) {
+      updates.remainingCheckIns = plan.checkInLimit
+    }
+
+    setFormData(updates)
   }
 
   const calculateEndDate = (startDate: string, durationDays: number) => {
@@ -89,15 +138,156 @@ export default function MembershipForm({
     return date.toISOString().split('T')[0]
   }
 
+  const calculatePrice = (
+    basePrice: number,
+    modifierType?: PriceModifierType | null,
+    modifierValue?: number | null
+  ) => {
+    if (!modifierType || !modifierValue) return basePrice
+
+    if (modifierType === 'multiplier') {
+      return basePrice * modifierValue
+    } else if (modifierType === 'discount') {
+      return basePrice - (basePrice * modifierValue) / 100
+    } else if (modifierType === 'custom') {
+      return modifierValue
+    }
+    return basePrice
+  }
+
+  const getFinalPrice = () => {
+    if (!selectedPlan) return 0
+    if (usePlanPrice) return selectedPlan.price
+    return calculatePrice(
+      selectedPlan.price,
+      formData.priceModifierType,
+      formData.priceModifierValue
+    )
+  }
+
   const handleStartDateChange = (startDate: string) => {
     const plan = plans.find((p) => p.id === formData.planId)
     if (!plan) {
-      setFormData({ ...formData, startDate })
+      setFormData({ startDate })
       return
     }
 
-    const endDate = calculateEndDate(startDate, plan.durationDays)
-    setFormData({ ...formData, startDate, endDate })
+    let endDate = startDate
+    if (plan.durationDays) {
+      endDate = calculateEndDate(startDate, plan.durationDays)
+    }
+    setFormData({ startDate, endDate })
+  }
+
+  const handlePaymentTypeChange = (type: 'full' | 'partial') => {
+    setPaymentType(type)
+
+    if (!selectedPlan) return
+
+    const finalPrice = getFinalPrice()
+    const updates: Partial<Membership> = { ...formData }
+
+    if (type === 'full') {
+      updates.amountPaid = finalPrice
+      updates.remainingBalance = 0
+      updates.paymentStatus = 'paid'
+    } else {
+      updates.amountPaid = 0
+      updates.remainingBalance = finalPrice
+      updates.paymentStatus = 'unpaid'
+    }
+
+    setFormData(updates)
+  }
+
+  const handleAmountPaidChange = (amount: number) => {
+    if (!selectedPlan) return
+
+    const finalPrice = getFinalPrice()
+    const remainingBalance = finalPrice - amount
+    let paymentStatus: 'unpaid' | 'partial' | 'paid' = 'unpaid'
+
+    if (amount >= finalPrice) {
+      paymentStatus = 'paid'
+    } else if (amount > 0) {
+      paymentStatus = 'partial'
+    }
+
+    setFormData({
+      ...formData,
+      amountPaid: amount,
+      remainingBalance,
+      paymentStatus
+    })
+  }
+
+  const handlePriceAdjustmentChange = (usePlan: boolean) => {
+    setUsePlanPrice(usePlan)
+
+    if (usePlan) {
+      // Reset price modifiers
+      setFormData({
+        ...formData,
+        priceModifierType: null,
+        priceModifierValue: null,
+        customPriceName: null,
+        totalPrice: selectedPlan?.price || 0,
+        amountPaid: paymentType === 'full' ? selectedPlan?.price || 0 : formData.amountPaid,
+        remainingBalance:
+          paymentType === 'full' ? 0 : (selectedPlan?.price || 0) - (formData.amountPaid || 0)
+      })
+    }
+  }
+
+  const handlePriceModifierChange = (type: PriceModifierType, value?: number) => {
+    if (!selectedPlan) return
+
+    const updates: Partial<Membership> = {
+      ...formData,
+      priceModifierType: type,
+      priceModifierValue: value || formData.priceModifierValue
+    }
+
+    const finalPrice = calculatePrice(
+      selectedPlan.price,
+      type,
+      value || formData.priceModifierValue
+    )
+    updates.totalPrice = finalPrice
+    updates.remainingBalance = finalPrice - (formData.amountPaid || 0)
+
+    if (paymentType === 'full') {
+      updates.amountPaid = finalPrice
+      updates.remainingBalance = 0
+      updates.paymentStatus = 'paid'
+    } else {
+      const amountPaid = formData.amountPaid || 0
+      if (amountPaid >= finalPrice) {
+        updates.paymentStatus = 'paid'
+        updates.remainingBalance = 0
+      } else if (amountPaid > 0) {
+        updates.paymentStatus = 'partial'
+      } else {
+        updates.paymentStatus = 'unpaid'
+      }
+    }
+
+    setFormData(updates)
+  }
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    // Build the final form data with scheduled payments
+    const finalFormData = {
+      ...formData,
+      scheduledPayments: scheduledPayments.length > 0 ? scheduledPayments : undefined,
+      hasScheduledPayments: scheduledPayments.length > 0
+    }
+    // Update parent state
+    setFormData(finalFormData)
+    // Pass the final data directly to onSubmit to avoid state timing issues
+    // @ts-ignore - onSubmit can accept finalData as second parameter
+    onSubmit(e, finalFormData)
   }
 
   if (loading) {
@@ -105,7 +295,7 @@ export default function MembershipForm({
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-6">
+    <form onSubmit={handleFormSubmit} className="space-y-6">
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2 col-span-2">
           <Label htmlFor="memberId" className="text-gray-200">
@@ -115,12 +305,17 @@ export default function MembershipForm({
             options={members.map(
               (member): ComboboxOption => ({
                 value: member.id,
-                label: `${member.name} - ${member.phone}`,
-                searchText: `${member.name} ${member.phone}`
+                label: `${member.name} (\u2066${member.countryCode}${member.phone}\u2069)`,
+                searchText: `${member.name} \u2066${member.countryCode}${member.phone}\u2069`
               })
             )}
             value={formData.memberId}
-            onValueChange={(value) => setFormData({ ...formData, memberId: value })}
+            onValueChange={(value) => {
+              if (value === null || value === undefined || value === '') {
+                return
+              }
+              setFormData({ memberId: value })
+            }}
             placeholder={t('form.selectMember')}
             searchPlaceholder={t('form.searchMember')}
             emptyText={t('form.noMembersFound')}
@@ -140,7 +335,13 @@ export default function MembershipForm({
                   style: 'currency',
                   currency: settings?.currency,
                   minimumFractionDigits: 0
-                }).format(plan.price)} (${plan.durationDays} ${t('days')})`,
+                }).format(plan.price)} ${
+                  plan.planType === 'checkin'
+                    ? `(${plan.checkInLimit} ${t('checkIns')})`
+                    : plan.durationDays
+                      ? `(${plan.durationDays} ${t('days')})`
+                      : ''
+                }`,
                 searchText: plan.name
               })
             )}
@@ -152,128 +353,67 @@ export default function MembershipForm({
           />
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="startDate" className="text-gray-200">
-            {t('form.startDate')} *
-          </Label>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant="primary"
-                className={cn(
-                  'w-full justify-start text-left font-normal bg-gray-800 border-gray-700 text-white hover:bg-gray-700',
-                  !formData.startDate && 'text-gray-400'
-                )}
-              >
-                <CalendarIcon className="ltr:mr-2 rtl:ml-2 h-4 w-4" />
-                {formData.startDate
-                  ? format(new Date(formData.startDate), 'MM/dd/yyyy', { locale: dateLocale })
-                  : t('form.pickDate')}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0 bg-gray-900 border-gray-700" align="start">
-              <Calendar
-                mode="single"
-                selected={formData.startDate ? new Date(formData.startDate) : undefined}
-                onSelect={(date) => {
-                  if (date) {
-                    handleStartDateChange(format(date, 'yyyy-MM-dd'))
-                  }
-                }}
-                disabled={(date) => date > new Date()}
-                locale={dateLocale}
-              />
-            </PopoverContent>
-          </Popover>
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="endDate" className="text-gray-200">
-            {t('form.endDate')} *
-          </Label>
-          <div
-            className={cn(
-              'flex h-10 w-full items-center rounded-lg border border-gray-700 bg-gray-700 px-3 py-2 text-sm text-gray-400 cursor-not-allowed'
-            )}
-          >
-            <CalendarIcon className="ltr:mr-2 rtl:ml-2 h-4 w-4" />
-            {formData.endDate
-              ? format(new Date(formData.endDate), 'MM/dd/yyyy', { locale: dateLocale })
-              : t('form.pickDate')}
-          </div>
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="amountPaid" className="text-gray-200">
-            {t('form.amountPaid')} ({settings?.currency}) *
-          </Label>
-          <Input
-            id="amountPaid"
-            type="number"
-            step="0.01"
-            min="0"
-            required
-            disabled
-            readOnly
-            className="bg-gray-800 border-gray-700 text-white"
-            value={formData.amountPaid || ''}
-            onChange={(e) => setFormData({ ...formData, amountPaid: parseFloat(e.target.value) })}
+        {/* Price Adjustment Section */}
+        {selectedPlan && hasPermission(PERMISSIONS.memberships.modify_price) && (
+          <PriceAdjustmentSection
+            usePlanPrice={usePlanPrice}
+            onUsePlanPriceChange={handlePriceAdjustmentChange}
+            priceModifierType={formData.priceModifierType}
+            priceModifierValue={formData.priceModifierValue}
+            customPriceName={formData.customPriceName}
+            onPriceModifierChange={handlePriceModifierChange}
+            onCustomPriceNameChange={(name) => setFormData({ customPriceName: name })}
+            basePrice={selectedPlan.price}
+            finalPrice={getFinalPrice()}
           />
-        </div>
+        )}
 
-        <div className="space-y-2">
-          <Label htmlFor="paymentDate" className="text-gray-200">
-            {t('form.paymentDate')} *
-          </Label>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant="primary"
-                className={cn(
-                  'w-full justify-start text-left font-normal bg-gray-800 border-gray-700 text-white hover:bg-gray-700',
-                  !formData.paymentDate && 'text-gray-400'
-                )}
-              >
-                <CalendarIcon className="ltr:mr-2 rtl:ml-2 h-4 w-4" />
-                {formData.paymentDate
-                  ? format(new Date(formData.paymentDate), 'MM/dd/yyyy', { locale: dateLocale })
-                  : t('form.pickDate')}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0 bg-gray-900 border-gray-700" align="start">
-              <Calendar
-                mode="single"
-                selected={formData.paymentDate ? new Date(formData.paymentDate) : undefined}
-                onSelect={(date) => {
-                  if (date) {
-                    setFormData({ ...formData, paymentDate: format(date, 'yyyy-MM-dd') })
-                  }
-                }}
-                locale={dateLocale}
-              />
-            </PopoverContent>
-          </Popover>
-        </div>
+        <DatePickerField
+          label={t('form.startDate')}
+          value={formData.startDate}
+          onChange={handleStartDateChange}
+          disableFuture={true}
+          required
+        />
 
-        <div className="space-y-2 col-span-2">
-          <Label className="text-gray-200">{t('form.paymentMethod')} *</Label>
-          <RadioGroup
-            value={formData.paymentMethod}
-            onValueChange={(value) =>
-              setFormData({ ...formData, paymentMethod: value as (typeof PAYMENT_METHODS)[number] })
-            }
-            className="flex gap-4 rtl:flex-row-reverse"
-          >
-            {PAYMENT_METHODS.map((method) => (
-              <div key={method} className="flex items-center space-x-2">
-                <RadioGroupItem value={method} id={`method-${method}`} />
-                <Label htmlFor={`method-${method}`} className="text-gray-300 cursor-pointer">
-                  {t(`paymentMethods.${method}`)}
-                </Label>
-              </div>
-            ))}
-          </RadioGroup>
-        </div>
+        <DatePickerField label={t('form.endDate')} value={formData.endDate} disabled required />
+
+        <PaymentTypeSelector
+          value={paymentType}
+          onChange={handlePaymentTypeChange}
+          disabled={!formData.planId}
+          className="col-span-2"
+          required
+        />
+
+        {selectedPlan && (
+          <PaymentSummarySection
+            paymentType={paymentType}
+            totalPrice={getFinalPrice()}
+            amountPaid={formData.amountPaid || 0}
+            remainingBalance={formData.remainingBalance || 0}
+            onAmountPaidChange={handleAmountPaidChange}
+            scheduledPayments={scheduledPayments}
+            onScheduledPaymentsChange={setScheduledPayments}
+            defaultPaymentMethod={formData.paymentMethod || 'cash'}
+          />
+        )}
+
+        <DatePickerField
+          label={t('form.paymentDate')}
+          value={formData.paymentDate}
+          onChange={(date) => setFormData({ paymentDate: date })}
+          required
+        />
+
+        <PaymentMethodSelector
+          value={formData.paymentMethod}
+          onChange={(value) =>
+            setFormData({ paymentMethod: value as (typeof PAYMENT_METHODS)[number] })
+          }
+          className="col-span-2"
+          required
+        />
 
         <div className="space-y-2 col-span-2">
           <Label htmlFor="notes" className="text-gray-200">
@@ -282,7 +422,7 @@ export default function MembershipForm({
           <Textarea
             id="notes"
             value={formData.notes || ''}
-            onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+            onChange={(e) => setFormData({ notes: e.target.value })}
             className="bg-gray-800 border-gray-700 text-white min-h-20"
             placeholder={t('form.notesPlaceholder')}
           />

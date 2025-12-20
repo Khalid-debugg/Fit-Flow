@@ -11,6 +11,7 @@ import {
 
 import { Pencil, Trash2, ChevronLeft, ChevronRight, RefreshCcw } from 'lucide-react'
 import { Membership } from '@renderer/models/membership'
+import { PERMISSIONS } from '@renderer/models/account'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,6 +25,7 @@ import {
 } from '@renderer/components/ui/alert-dialog'
 import { toast } from 'sonner'
 import { useSettings } from '@renderer/hooks/useSettings'
+import { useAuth } from '@renderer/hooks/useAuth'
 import { format } from 'date-fns'
 import { ar, enUS } from 'date-fns/locale'
 interface MembershipsTableProps {
@@ -46,6 +48,7 @@ export default function MembershipsTable({
   onPageChange
 }: MembershipsTableProps) {
   const { t, i18n } = useTranslation('memberships')
+  const { hasPermission } = useAuth()
   const { settings } = useSettings()
   const today = new Date().toISOString().split('T')[0]
   const dateLocale = i18n.language === 'ar' ? ar : enUS
@@ -79,6 +82,11 @@ export default function MembershipsTable({
   }
 
   const handleRenewMembership = async (membershipId: string) => {
+    if (!hasPermission(PERMISSIONS.memberships.extend)) {
+      toast.error(t('errors.noPermission'))
+      return
+    }
+
     try {
       await window.electron.ipcRenderer.invoke('memberships:extend', membershipId)
       toast.success(t('success.extendSuccess'))
@@ -90,6 +98,32 @@ export default function MembershipsTable({
   const getStatusBadge = (endDate: string) => {
     const isActive = endDate >= today
     return isActive ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
+  }
+
+  const getPaymentStatusBadge = (status: string) => {
+    switch (status) {
+      case 'paid':
+        return 'bg-green-500/20 text-green-400'
+      case 'partial':
+        return 'bg-yellow-500/20 text-yellow-400'
+      case 'unpaid':
+        return 'bg-red-500/20 text-red-400'
+      default:
+        return 'bg-gray-500/20 text-gray-400'
+    }
+  }
+
+  const getPlanTypeBadge = (planType?: string) => {
+    switch (planType) {
+      case 'duration':
+        return '⏱️'
+      case 'checkin':
+        return '✓'
+      case 'derived':
+        return '🎯'
+      default:
+        return ''
+    }
   }
 
   const formatCurrency = (amount: number) => {
@@ -112,7 +146,6 @@ export default function MembershipsTable({
               <TableHead className="text-start">{t('table.startDate')}</TableHead>
               <TableHead className="text-start">{t('table.endDate')}</TableHead>
               <TableHead className="text-start">{t('table.amountPaid')}</TableHead>
-              <TableHead className="text-start">{t('table.paymentMethod')}</TableHead>
               <TableHead className="text-start">{t('table.status')}</TableHead>
               <TableHead className="text-end">{t('table.actions')}</TableHead>
             </TableRow>
@@ -132,17 +165,43 @@ export default function MembershipsTable({
                   <TableCell>
                     <div>
                       <div className="font-medium">{membership.memberName}</div>
-                      <div className="text-sm text-gray-400">{membership.memberPhone}</div>
+                      <span dir="ltr">{`${membership.memberCountryCode}${membership.memberPhone}`}</span>
                     </div>
                   </TableCell>
-                  <TableCell className="text-gray-400">{membership.planName}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-1">
+                      <span className="text-gray-400">{membership.planName}</span>
+                      <span>{getPlanTypeBadge(membership.planType)}</span>
+                      {membership.planType === 'checkin' &&
+                        membership.remainingCheckIns !== undefined && (
+                          <span className="text-xs text-gray-500">
+                            ({membership.remainingCheckIns} left)
+                          </span>
+                        )}
+                    </div>
+                  </TableCell>
                   <TableCell className="text-gray-400">{membership.startDate}</TableCell>
                   <TableCell className="text-gray-400">{membership.endDate}</TableCell>
-                  <TableCell className="text-gray-400">
-                    {formatCurrency(membership.amountPaid)}
-                  </TableCell>
-                  <TableCell className="text-gray-400">
-                    {t(`paymentMethods.${membership.paymentMethod}`)}
+                  <TableCell>
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-gray-400">
+                          {formatCurrency(membership.amountPaid)}
+                        </span>
+                        {membership.paymentStatus !== 'paid' && (
+                          <span
+                            className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getPaymentStatusBadge(membership.paymentStatus)}`}
+                          >
+                            {t(`paymentStatus.${membership.paymentStatus}`)}
+                          </span>
+                        )}
+                      </div>
+                      {membership.remainingBalance > 0 && (
+                        <div className="text-xs text-yellow-500">
+                          {t('table.remaining')}: {formatCurrency(membership.remainingBalance)}
+                        </div>
+                      )}
+                    </div>
                   </TableCell>
                   <TableCell>
                     <span
@@ -151,73 +210,79 @@ export default function MembershipsTable({
                       {isActive ? t('active') : t('expired')}
                     </span>
                   </TableCell>
-                  <TableCell className="text-end" onClick={(e) => e.stopPropagation()}>
-                    <div className="flex justify-end gap-2">
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button size="sm" variant="ghost" className="gap-2 shrink-0">
-                            <RefreshCcw className="w-3 h-3" />
-                            {t('renew')}
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>{t('alert.renewMembership')}</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              {t('alert.renewMembershipMessage', {
-                                memberName: membership.memberName,
-                                newEndDate: calculateNewEndDate(membership)
-                              })}
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>{t('form.cancel')}</AlertDialogCancel>
-                            <AlertDialogAction
-                              onClick={() => {
-                                handleRenewMembership(membership.id!)
-                                onPageChange(1)
-                              }}
-                              className="bg-red-600 hover:bg-red-700 text-white"
-                            >
-                              {t('form.confirm')}
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          onEdit(membership)
-                        }}
-                      >
-                        <Pencil className="h-4 w-4" />
-                      </Button>
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <Trash2 className="h-4 w-4 text-red-400" />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>{t('delete.title')}</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              {t('delete.description')}
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>{t('form.cancel')}</AlertDialogCancel>
-                            <AlertDialogAction
-                              onClick={() => onDelete(membership.id!)}
-                              className="bg-red-600 hover:bg-red-700 text-white"
-                            >
-                              {t('form.confirm')}
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+                  <TableCell className="text-end min-h-[40px] h-[40px]" onClick={(e) => e.stopPropagation()}>
+                    <div className="flex justify-end gap-2 min-h-[40px] items-center">
+                      {hasPermission(PERMISSIONS.memberships.extend) && (
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button size="sm" variant="ghost" className="gap-2 shrink-0">
+                              <RefreshCcw className="w-3 h-3" />
+                              {t('renew')}
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>{t('alert.renewMembership')}</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                {t('alert.renewMembershipMessage', {
+                                  memberName: membership.memberName,
+                                  newEndDate: calculateNewEndDate(membership)
+                                })}
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>{t('form.cancel')}</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => {
+                                  handleRenewMembership(membership.id!)
+                                  onPageChange(1)
+                                }}
+                                className="bg-red-600 hover:bg-red-700 text-white"
+                              >
+                                {t('form.confirm')}
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      )}
+                      {hasPermission(PERMISSIONS.memberships.edit) && (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            onEdit(membership)
+                          }}
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                      )}
+                      {hasPermission(PERMISSIONS.memberships.delete) && (
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                              <Trash2 className="h-4 w-4 text-red-400" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>{t('delete.title')}</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                {t('delete.description')}
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>{t('form.cancel')}</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => onDelete(membership.id!)}
+                                className="bg-red-600 hover:bg-red-700 text-white"
+                              >
+                                {t('form.confirm')}
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      )}
                     </div>
                   </TableCell>
                 </TableRow>

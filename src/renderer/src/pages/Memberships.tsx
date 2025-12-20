@@ -2,9 +2,10 @@ import { useEffect, useState, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import { DEFAULT_FILTERS, Membership, MembershipFilters } from '@renderer/models/membership'
-
+import { PERMISSIONS } from '@renderer/models/account'
 import { toast } from 'sonner'
 import { useDebounce } from '@renderer/hooks/useDebounce'
+import { useAuth } from '@renderer/hooks/useAuth'
 import { LoaderCircle } from 'lucide-react'
 import ViewMembership from '@renderer/components/memberships/ViewMembership'
 import EditMembership from '@renderer/components/memberships/EditMembership'
@@ -14,6 +15,7 @@ import MembershipsTable from '@renderer/components/memberships/MembershipsTable'
 
 export default function Memberships() {
   const { t } = useTranslation('memberships')
+  const { hasPermission } = useAuth()
   const [searchParams] = useSearchParams()
   const preSelectedMemberId = searchParams.get('memberId')
 
@@ -31,6 +33,11 @@ export default function Memberships() {
   const debouncedFilters = useDebounce(filters, 500)
 
   const loadMemberships = useCallback(async () => {
+    if (!hasPermission(PERMISSIONS.memberships.view)) {
+      toast.error(t('errors.noPermission'))
+      return
+    }
+
     setLoading(true)
     try {
       const data = await window.electron.ipcRenderer.invoke(
@@ -46,7 +53,7 @@ export default function Memberships() {
     } finally {
       setLoading(false)
     }
-  }, [page, debouncedFilters, t])
+  }, [page, debouncedFilters, t, hasPermission])
 
   useEffect(() => {
     loadMemberships()
@@ -80,12 +87,24 @@ export default function Memberships() {
     setPage(newPage)
   }, [])
 
+  const handleViewMembership = useCallback(
+    (membership: Membership) => {
+      if (!hasPermission(PERMISSIONS.memberships.view_details)) {
+        toast.error(t('errors.noPermission'))
+        return
+      }
+      setViewMembership(membership)
+    },
+    [hasPermission, t]
+  )
+
   return (
     <div className="space-y-6">
       <ViewMembership
         membership={viewMembership}
         open={!!viewMembership}
         onClose={() => setViewMembership(null)}
+        onSuccess={loadMemberships}
       />
       <EditMembership
         membership={editMembership}
@@ -96,10 +115,12 @@ export default function Memberships() {
 
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">{t('title')}</h1>
-        <CreateMembership
-          onSuccess={loadMemberships}
-          preSelectedMemberId={preSelectedMemberId || undefined}
-        />
+        {hasPermission(PERMISSIONS.memberships.create) && (
+          <CreateMembership
+            onSuccess={loadMemberships}
+            preSelectedMemberId={preSelectedMemberId || undefined}
+          />
+        )}
       </div>
 
       <MembershipsFilter
@@ -120,7 +141,7 @@ export default function Memberships() {
             memberships={memberships}
             page={page}
             totalPages={totalPages}
-            onRowClick={setViewMembership}
+            onRowClick={handleViewMembership}
             onEdit={setEditMembership}
             onDelete={handleDelete}
             onPageChange={handlePageChange}

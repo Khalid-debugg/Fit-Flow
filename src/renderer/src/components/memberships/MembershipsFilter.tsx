@@ -1,14 +1,17 @@
+import { useEffect, useState } from 'react'
 import { Input } from '@renderer/components/ui/input'
 import { Label } from '@renderer/components/ui/label'
 import { Button } from '@renderer/components/ui/button'
 import { RadioGroup, RadioGroupItem } from '@renderer/components/ui/radio-group'
 import { Calendar } from '@renderer/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@renderer/components/ui/popover'
+import { Combobox, ComboboxOption } from '@renderer/components/ui/combobox'
 import { Search, X, CalendarIcon } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { format } from 'date-fns'
 import { ar, enUS } from 'date-fns/locale'
-import { MembershipFilters, PAYMENT_METHODS } from '@renderer/models/membership'
+import { MembershipFilters } from '@renderer/models/membership'
+import { Plan } from '@renderer/models/plan'
 import { cn } from '@renderer/lib/utils'
 
 interface MembershipsFilterProps {
@@ -20,6 +23,28 @@ interface MembershipsFilterProps {
 export default function MembershipsFilter({ filters, onChange, onReset }: MembershipsFilterProps) {
   const { t, i18n } = useTranslation('memberships')
   const dateLocale = i18n.language === 'ar' ? ar : enUS
+  const [plans, setPlans] = useState<Plan[]>([])
+
+  useEffect(() => {
+    const loadPlans = async () => {
+      try {
+        const data = await window.electron.ipcRenderer.invoke('plans:get', 1, 'all')
+        setPlans(data.plans || [])
+      } catch (error) {
+        console.error('Failed to load plans:', error)
+      }
+    }
+    loadPlans()
+  }, [])
+
+  const planOptions: ComboboxOption[] = [
+    { value: '', label: t('filter.all') },
+    ...plans.map((plan) => ({
+      value: String(plan.id),
+      label: plan.name,
+      searchText: plan.name
+    }))
+  ]
 
   const handleFilterChange = (key: keyof MembershipFilters, value: string) => {
     onChange({ ...filters, [key]: value })
@@ -28,7 +53,7 @@ export default function MembershipsFilter({ filters, onChange, onReset }: Member
   return (
     <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
       <div className="flex flex-wrap items-end gap-4">
-        <div className="flex-1 space-y-2">
+        <div className="flex-1 min-w-[200px] space-y-2">
           <Label htmlFor="search" className="text-gray-200 text-sm">
             {t('filter.search')}
           </Label>
@@ -44,31 +69,17 @@ export default function MembershipsFilter({ filters, onChange, onReset }: Member
           </div>
         </div>
 
-        <div className="space-y-2 border-2 border-gray-700 ps-4 pe-6 py-2 rounded-lg">
-          <Label className="text-gray-200 text-sm">{t('filter.paymentMethod')}</Label>
-          <RadioGroup
-            value={filters.paymentMethod}
-            onValueChange={(value) => handleFilterChange('paymentMethod', value)}
-            className="flex gap-3"
-          >
-            <div className="flex items-center space-x-1.5">
-              <RadioGroupItem value="all" id="payment-all" />
-              <Label htmlFor="payment-all" className="text-gray-300 cursor-pointer text-sm">
-                {t('filter.all')}
-              </Label>
-            </div>
-            {PAYMENT_METHODS.map((method) => (
-              <div key={method} className="flex items-center space-x-1.5">
-                <RadioGroupItem value={method} id={`payment-${method}`} />
-                <Label
-                  htmlFor={`payment-${method}`}
-                  className="text-gray-300 cursor-pointer text-sm"
-                >
-                  {t(`paymentMethods.${method}`)}
-                </Label>
-              </div>
-            ))}
-          </RadioGroup>
+        <div className="space-y-2 min-w-[200px]">
+          <Label className="text-gray-200 text-sm">{t('filter.plan')}</Label>
+          <Combobox
+            options={planOptions}
+            value={filters.planId}
+            onValueChange={(value) => handleFilterChange('planId', value)}
+            placeholder={t('filter.selectPlan')}
+            searchPlaceholder={t('filter.searchPlan')}
+            emptyText={t('filter.noPlansFound')}
+            className="w-full"
+          />
         </div>
 
         <div className="space-y-2 border-2 border-gray-700 ps-4 pe-6 py-2 rounded-lg">
