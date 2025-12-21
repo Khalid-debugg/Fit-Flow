@@ -36,6 +36,7 @@ interface CheckIn {
   memberId: string
   checkInTime: string
   memberName: string
+  memberCountryCode: string
   memberPhone: string
   membershipStatus: 'active' | 'expired' | 'none'
 }
@@ -191,9 +192,7 @@ export default function Dashboard() {
 
       <QuickActions
         onCreateMember={
-          hasPermission(PERMISSIONS.members.create)
-            ? () => setShowCreateMember(true)
-            : undefined
+          hasPermission(PERMISSIONS.members.create) ? () => setShowCreateMember(true) : undefined
         }
         onCreateMembership={
           hasPermission(PERMISSIONS.memberships.create)

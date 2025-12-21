@@ -4,7 +4,7 @@ import { Label } from '@renderer/components/ui/label'
 import { Input } from '@renderer/components/ui/input'
 import { Button } from '@renderer/components/ui/button'
 import { Checkbox } from '@renderer/components/ui/checkbox'
-import type { ScheduledPayment } from '@renderer/models/membership'
+import { PAYMENT_METHODS, type ScheduledPayment } from '@renderer/models/membership'
 import { PERMISSIONS } from '@renderer/models/account'
 import { useSettings } from '@renderer/hooks/useSettings'
 import { useAuth } from '@renderer/hooks/useAuth'
@@ -40,7 +40,7 @@ export default function PaymentSummarySection({
   const addScheduledPayment = () => {
     const newPayment: ScheduledPayment = {
       amount: 0,
-      payment_method: defaultPaymentMethod || 'cash',
+      payment_method: (defaultPaymentMethod as (typeof PAYMENT_METHODS)[number]) || 'cash',
       payment_date: new Date().toISOString().split('T')[0],
       notes: null
     }
@@ -51,7 +51,7 @@ export default function PaymentSummarySection({
     onScheduledPaymentsChange(scheduledPayments.filter((_, i) => i !== index))
   }
 
-  const updateScheduledPayment = (index: number, field: keyof ScheduledPayment, value: any) => {
+  const updateScheduledPayment = (index: number, field: keyof ScheduledPayment, value) => {
     const updated = [...scheduledPayments]
     updated[index] = { ...updated[index], [field]: value }
     onScheduledPaymentsChange(updated)
@@ -198,66 +198,68 @@ export default function PaymentSummarySection({
             hasScheduledPayments &&
             remainingBalance &&
             remainingBalance > 0 && (
-            <div className="mt-4 pt-4 border-t border-gray-700">
-              <div className="flex justify-between items-center mb-3">
-                <Label className="text-gray-200">{t('form.schedulePayments')}</Label>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={addScheduledPayment}
-                  disabled={getRemainingAfterScheduled() <= 0}
-                >
-                  + {t('form.addScheduledPayment')}
-                </Button>
-              </div>
+              <div className="mt-4 pt-4 border-t border-gray-700">
+                <div className="flex justify-between items-center mb-3">
+                  <Label className="text-gray-200">{t('form.schedulePayments')}</Label>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={addScheduledPayment}
+                    disabled={getRemainingAfterScheduled() <= 0}
+                  >
+                    + {t('form.addScheduledPayment')}
+                  </Button>
+                </div>
 
-              {scheduledPayments.length > 0 && (
-                <div className="space-y-3">
-                  {scheduledPayments.map((payment, index) => (
-                    <ScheduledPaymentItem
-                      key={index}
-                      payment={payment}
-                      index={index}
-                      maxAmount={getRemainingAfterScheduled() + (payment.amount || 0)}
-                      onUpdate={(field, value) => updateScheduledPayment(index, field, value)}
-                      onRemove={() => removeScheduledPayment(index)}
-                    />
-                  ))}
+                {scheduledPayments.length > 0 && (
+                  <div className="space-y-3">
+                    {scheduledPayments.map((payment, index) => (
+                      <ScheduledPaymentItem
+                        key={index}
+                        payment={payment}
+                        index={index}
+                        maxAmount={getRemainingAfterScheduled() + (payment.amount || 0)}
+                        onUpdate={(field, value) => updateScheduledPayment(index, field, value)}
+                        onRemove={() => removeScheduledPayment(index)}
+                      />
+                    ))}
 
-                  <div className="p-3 bg-gray-900 rounded border border-gray-600">
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="text-sm text-gray-400">{t('form.totalScheduled')}:</span>
-                      <span className="text-white font-medium">
-                        {Intl.NumberFormat(settings?.language, {
-                          style: 'currency',
-                          currency: settings?.currency,
-                          minimumFractionDigits: 0
-                        }).format(getTotalScheduled())}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center pt-2 border-t border-gray-700">
-                      <span className="text-sm font-semibold text-gray-300">
-                        {t('form.remainingBalance')}:
-                      </span>
-                      <span
-                        className={cn(
-                          'text-lg font-bold',
-                          getRemainingAfterScheduled() === 0 ? 'text-green-500' : 'text-yellow-500'
-                        )}
-                      >
-                        {Intl.NumberFormat(settings?.language, {
-                          style: 'currency',
-                          currency: settings?.currency,
-                          minimumFractionDigits: 0
-                        }).format(getRemainingAfterScheduled())}
-                      </span>
+                    <div className="p-3 bg-gray-900 rounded border border-gray-600">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-sm text-gray-400">{t('form.totalScheduled')}:</span>
+                        <span className="text-white font-medium">
+                          {Intl.NumberFormat(settings?.language, {
+                            style: 'currency',
+                            currency: settings?.currency,
+                            minimumFractionDigits: 0
+                          }).format(getTotalScheduled())}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center pt-2 border-t border-gray-700">
+                        <span className="text-sm font-semibold text-gray-300">
+                          {t('form.remainingBalance')}:
+                        </span>
+                        <span
+                          className={cn(
+                            'text-lg font-bold',
+                            getRemainingAfterScheduled() === 0
+                              ? 'text-green-500'
+                              : 'text-yellow-500'
+                          )}
+                        >
+                          {Intl.NumberFormat(settings?.language, {
+                            style: 'currency',
+                            currency: settings?.currency,
+                            minimumFractionDigits: 0
+                          }).format(getRemainingAfterScheduled())}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
-            </div>
-          )}
+                )}
+              </div>
+            )}
         </div>
       )}
 

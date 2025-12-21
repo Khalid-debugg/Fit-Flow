@@ -32,10 +32,10 @@ export default function Login() {
     try {
       await login(username, password)
       toast.success(t('login.success'))
-    } catch (error: any) {
-      if (error.message === 'INVALID_CREDENTIALS') {
+    } catch (error) {
+      if ((error as Error).message === 'INVALID_CREDENTIALS') {
         toast.error(t('login.invalidCredentials'))
-      } else if (error.message === 'ACCOUNT_INACTIVE') {
+      } else if ((error as Error).message === 'ACCOUNT_INACTIVE') {
         toast.error(t('login.accountInactive'))
       } else {
         toast.error(t('login.failed'))

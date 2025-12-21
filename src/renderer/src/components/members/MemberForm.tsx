@@ -337,7 +337,7 @@ export default function MemberForm({
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    id: e.target.value ? Number(e.target.value) : undefined
+                    id: e.target.value
                   })
                 }
                 placeholder={isCreateMode ? t('form.id') : ''}
