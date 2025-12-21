@@ -114,7 +114,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           )}
         </div>
 
-        <nav className={`flex-1 space-y-1.5 ${collapsed ? 'px-2 py-4' : 'p-4'}`}>
+        <nav
+          className={`flex-1 space-y-[0.5vh] overflow-y-auto ${collapsed ? 'px-2 py-4' : 'p-4'}`}
+        >
           {visibleMenuItems.map((item) => {
             const isActive = location?.pathname === item.path
             return (
@@ -125,7 +127,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   flex items-center rounded-lg
                   transition-all duration-300 ease-in-out
                   group relative overflow-hidden
-                  ${collapsed ? 'justify-center p-2.5' : 'gap-2.5 px-3 py-2'}
+                  min-h-[2.5rem] h-[5vh] max-h-[3.5rem]
+                  ${collapsed ? 'justify-center p-2.5' : 'gap-2.5 px-3 py-[1vh]'}
                   ${
                     isActive
                       ? 'bg-gradient-to-r from-yellow-600 to-orange-600 text-white shadow-lg shadow-yellow-500/20'
@@ -182,7 +185,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           })}
         </nav>
 
-        <div className="p-4 border-t border-gray-700 space-y-4">
+        <div className="p-4 border-t border-gray-700 space-y-[1vh]">
           <Button
             onClick={toggleLanguage}
             variant="default"
@@ -192,7 +195,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               border border-gray-600/50
               hover:border-yellow-500/50
               shadow-md hover:shadow-lg hover:shadow-yellow-500/10
-              rounded-lg px-4 py-2.5
+              rounded-lg px-4
+              min-h-[2.5rem] h-[4.5vh] max-h-[3rem]
               transition-all duration-300 ease-in-out
               hover:scale-105 active:scale-95
             "
@@ -209,20 +213,21 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
           </Button>
 
-          <div className="space-y-2">
+          <div className="space-y-[0.5vh]">
             <div
               className={`
-                group flex items-center ${collapsed ? 'justify-center' : 'gap-3 px-3'} py-3
+                group flex items-center ${collapsed ? 'justify-center' : 'gap-3 px-3'}
                 rounded-lg cursor-pointer
                 transition-all duration-300 ease-in-out
                 hover:bg-gray-700/50
                 relative overflow-hidden
+                min-h-[3rem] h-[5vh] max-h-[4rem]
               `}
             >
               <div className="relative">
                 <div
                   className="
-                  w-11 h-11 rounded-full
+                  min-w-[2.5rem] min-h-[2.5rem] w-[4vh] h-[4vh] max-w-[3rem] max-h-[3rem] rounded-full
                   bg-linear-to-r from-yellow-500 to-orange-500
                   flex items-center justify-center
                   shadow-lg shadow-yellow-500/20
@@ -265,7 +270,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               className="w-full group relative overflow-hidden
                 text-gray-400 hover:text-red-400 hover:bg-red-500/10
                 border border-transparent hover:border-red-500/30
-                rounded-lg px-4 py-2.5
+                rounded-lg px-4
+                min-h-[2.5rem] h-[4.5vh] max-h-[3rem]
                 transition-all duration-300 ease-in-out
                 hover:scale-105 active:scale-95
               "
