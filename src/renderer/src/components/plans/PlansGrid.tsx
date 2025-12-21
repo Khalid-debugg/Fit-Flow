@@ -100,7 +100,23 @@ export default function PlansGrid({
                     </h3>
                     <div className="flex items-center gap-2 text-sm text-gray-400">
                       <Clock className="w-4 h-4" />
-                      <span>{plan.durationDays ? getDurationText(plan.durationDays) : t('planTypes.derived')}</span>
+                      <span>
+                        {plan.planType === 'checkin' && plan.checkInLimit ? (
+                          <>
+                            {t('checkInLimitDisplay', { count: plan.checkInLimit })}
+                            {plan.durationDays && (
+                              <>
+                                {' '}
+                                {t('within')} {getDurationText(plan.durationDays)}
+                              </>
+                            )}
+                          </>
+                        ) : plan.durationDays ? (
+                          getDurationText(plan.durationDays)
+                        ) : (
+                          t('planTypes.derived')
+                        )}
+                      </span>
                     </div>
                   </div>
                 </div>

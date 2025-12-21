@@ -38,6 +38,13 @@
   "years_few": "{{count}} سنوات",
   "years_many": "{{count}} سنةً",
   "years_other": "{{count}} سنة",
+  "checkInLimitDisplay_zero": "حضور",
+  "checkInLimitDisplay_one": "حضور واحد",
+  "checkInLimitDisplay_two": "حضوران",
+  "checkInLimitDisplay_few": "{{count}} حضورات",
+  "checkInLimitDisplay_many": "{{count}} حضوراً",
+  "checkInLimitDisplay_other": "{{count}} حضور",
+  "within": "خلال",
   "specialOffer": "عرض خاص",
   "filters": {
     "title": "الفلاتر",

@@ -22,6 +22,9 @@
   "months_other": "{{count}} Months",
   "years_one": "{{count}} Year",
   "years_other": "{{count}} Years",
+  "checkInLimitDisplay_one": "{{count}} Check-in",
+  "checkInLimitDisplay_other": "{{count}} Check-ins",
+  "within": "within",
   "specialOffer": "Special Offer",
   "filters": {
     "title": "Filters",
