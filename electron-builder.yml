@@ -13,6 +13,7 @@ asarUnpack:
   - resources/**
 win:
   executableName: fitflow
+  icon: build/icon.ico
   signingHashAlgorithms:
     - sha256
   sign: null
