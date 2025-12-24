@@ -94,7 +94,10 @@ export default function MembersTable({
                     {t(`${member.status}`)}
                   </span>
                 </TableCell>
-                <TableCell className="text-end min-h-[40px] h-[40px]" onClick={(e) => e.stopPropagation()}>
+                <TableCell
+                  className="text-end min-h-[40px] h-[40px]"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <div className="flex justify-end gap-2 min-h-[40px] items-center">
                     {onEdit && (
                       <Button

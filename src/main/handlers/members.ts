@@ -35,19 +35,22 @@ export function registerMemberHandlers() {
       params.push(filters.dateTo)
     }
 
-    const whereClause = whereConditions.length ? `WHERE ${whereConditions.join(' AND ')}` : ''
-
     // Build status filter condition for SQL
-    let statusCondition = ''
     if (filters.status !== 'all') {
       if (filters.status === 'active') {
-        statusCondition = 'AND ms.end_date >= date(\'now\')'
+        whereConditions.push("ms.end_date >= date('now')")
       } else if (filters.status === 'inactive') {
-        statusCondition = `AND ms.id IS NULL AND (SELECT COUNT(*) FROM memberships WHERE member_id = m.id) = 0`
+        whereConditions.push(
+          `ms.id IS NULL AND (SELECT COUNT(*) FROM memberships WHERE member_id = m.id) = 0`
+        )
       } else if (filters.status === 'expired') {
-        statusCondition = `AND (ms.id IS NULL OR ms.end_date < date('now')) AND (SELECT COUNT(*) FROM memberships WHERE member_id = m.id) > 0`
+        whereConditions.push(
+          `(ms.id IS NULL OR ms.end_date < date('now')) AND (SELECT COUNT(*) FROM memberships WHERE member_id = m.id) > 0`
+        )
       }
     }
+
+    const whereClause = whereConditions.length ? `WHERE ${whereConditions.join(' AND ')}` : ''
 
     const query = `
       SELECT
@@ -63,10 +66,14 @@ export function registerMemberHandlers() {
         ) AS membership_count
       FROM members m
       LEFT JOIN memberships ms ON m.id = ms.member_id
-        AND ms.end_date >= date('now')
+        AND ms.id = (
+          SELECT id FROM memberships
+          WHERE member_id = m.id
+          ORDER BY end_date DESC
+          LIMIT 1
+        )
       LEFT JOIN membership_plans mp ON ms.plan_id = mp.id
       ${whereClause}
-      ${statusCondition}
       ORDER BY m.created_at DESC
       LIMIT ? OFFSET ?
     `
@@ -113,9 +120,13 @@ export function registerMemberHandlers() {
       SELECT COUNT(*) as total
       FROM members m
       LEFT JOIN memberships ms ON m.id = ms.member_id
-        AND ms.end_date >= date('now')
+        AND ms.id = (
+          SELECT id FROM memberships
+          WHERE member_id = m.id
+          ORDER BY end_date DESC
+          LIMIT 1
+        )
       ${whereClause}
-      ${statusCondition}
     `
     const totalResult = db.prepare(countQuery).get(...params) as { total: number }
 
@@ -189,7 +200,9 @@ export function registerMemberHandlers() {
 
   ipcMain.handle('members:getNextId', async () => {
     const db = getDatabase()
-    const result = db.prepare('SELECT MAX(id) as maxId FROM members').get() as { maxId: number | null }
+    const result = db.prepare('SELECT MAX(id) as maxId FROM members').get() as {
+      maxId: number | null
+    }
     return (result.maxId || 0) + 1
   })
 
@@ -270,7 +283,9 @@ export function registerMemberHandlers() {
     const db = getDatabase()
 
     // Check if the new ID already exists (excluding current member)
-    const existing = db.prepare('SELECT id FROM members WHERE id = ? AND id != ?').get(newId, currentId)
+    const existing = db
+      .prepare('SELECT id FROM members WHERE id = ? AND id != ?')
+      .get(newId, currentId)
 
     if (existing) {
       throw new Error('ID_ALREADY_EXISTS')
