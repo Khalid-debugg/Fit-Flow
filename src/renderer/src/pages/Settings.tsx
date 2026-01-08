@@ -489,6 +489,25 @@ export default function Settings() {
                 </SelectContent>
               </Select>
             </div>
+
+            <div className="flex items-center justify-between p-4 bg-gray-900 rounded-lg">
+              <div className="flex-1">
+                <span className="text-sm font-medium text-gray-300 block">
+                  {t('checkIns.allowInstantCheckIn')}
+                </span>
+                <span className="text-xs text-gray-400 mt-1 block">
+                  {t('checkIns.allowInstantCheckInDesc')}
+                </span>
+              </div>
+              <Checkbox
+                checked={formData.allowInstantCheckIn}
+                onCheckedChange={(checked) =>
+                  setFormData({ ...formData, allowInstantCheckIn: checked as boolean })
+                }
+                className="w-5 h-5"
+                disabled={!canEdit}
+              />
+            </div>
           </div>
         </div>
 
