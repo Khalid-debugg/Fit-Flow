@@ -19,6 +19,8 @@ import {
   CheckInStats,
   QuickCheckInWidget
 } from '@renderer/components/checkIns'
+import MemberCheckInCard from '@renderer/components/checkIns/MemberCheckInCard'
+import { Member } from '@renderer/models/member'
 
 export default function CheckIns() {
   const { t } = useTranslation('checkIns')
@@ -36,6 +38,7 @@ export default function CheckIns() {
   })
   const [historyMemberId, setHistoryMemberId] = useState<string | null>(null)
   const [historyMemberName, setHistoryMemberName] = useState('')
+  const [viewMemberCard, setViewMemberCard] = useState<Member | null>(null)
 
   const debouncedFilters = useDebounce(filters, 500)
 
@@ -105,6 +108,21 @@ export default function CheckIns() {
     [checkIns]
   )
 
+  const handleRowClick = useCallback(
+    async (memberId: string) => {
+      try {
+        const member = await window.electron.ipcRenderer.invoke('members:getById', memberId)
+        if (member) {
+          setViewMemberCard(member)
+        }
+      } catch (error) {
+        console.error('Failed to load member:', error)
+        toast.error(t('errors.loadFailed'))
+      }
+    },
+    [t]
+  )
+
   // Show permission denied if user cannot view check-ins
   if (!canViewCheckIns) {
     return (
@@ -124,6 +142,15 @@ export default function CheckIns() {
         open={!!historyMemberId}
         onClose={() => setHistoryMemberId(null)}
       />
+
+      {viewMemberCard && (
+        <MemberCheckInCard
+          member={viewMemberCard}
+          open={!!viewMemberCard}
+          onCancel={() => setViewMemberCard(null)}
+          viewOnly={true}
+        />
+      )}
 
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">{t('title')}</h1>
@@ -154,6 +181,7 @@ export default function CheckIns() {
             totalPages={totalPages}
             onPageChange={handlePageChange}
             onViewHistory={handleViewHistory}
+            onRowClick={handleRowClick}
           />
         </div>
       )}

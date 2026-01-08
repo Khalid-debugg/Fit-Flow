@@ -17,6 +17,7 @@ interface CheckIn {
 interface RecentCheckInsProps {
   data: CheckIn[]
   onViewMember: (memberId: string) => void
+  onRowClick?: (memberId: string) => void
   page: number
   totalPages: number
   onPageChange: (page: number) => void
@@ -25,6 +26,7 @@ interface RecentCheckInsProps {
 export default function RecentCheckIns({
   data,
   onViewMember,
+  onRowClick,
   page,
   totalPages,
   onPageChange
@@ -75,7 +77,7 @@ export default function RecentCheckIns({
             {data.map((checkIn) => (
               <div
                 key={checkIn.id}
-                onClick={() => onViewMember(checkIn.memberId)}
+                onClick={() => (onRowClick || onViewMember)(checkIn.memberId)}
                 className="bg-gray-900/50 p-3 rounded-lg border border-gray-700 hover:border-gray-600 transition-colors cursor-pointer"
               >
                 <div className="flex items-center justify-between">

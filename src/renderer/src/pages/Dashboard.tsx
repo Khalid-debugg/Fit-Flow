@@ -10,6 +10,7 @@ import {
 import { ViewMember } from '@renderer/components/members'
 import { Member } from '@renderer/models/member'
 import { QuickCheckInWidget } from '@renderer/components/checkIns'
+import MemberCheckInCard from '@renderer/components/checkIns/MemberCheckInCard'
 import { Membership } from '@renderer/models/membership'
 import EditMembership from '@renderer/components/memberships/EditMembership'
 import CreateMember from '@renderer/components/members/CreateMember'
@@ -68,6 +69,7 @@ export default function Dashboard() {
 
   // Dialog states
   const [viewMember, setViewMember] = useState<Member | null>(null)
+  const [viewMemberCard, setViewMemberCard] = useState<Member | null>(null)
   const [editMembershipId, setEditMembershipId] = useState<string | null>(null)
   const [editMembership, setEditMembership] = useState<Membership | null>(null)
 
@@ -131,6 +133,16 @@ export default function Dashboard() {
     }
   }
 
+  const handleViewMemberCard = async (memberId: string) => {
+    try {
+      const member = await window.electron.ipcRenderer.invoke('members:getById', memberId)
+      setViewMemberCard(member)
+    } catch (error) {
+      console.error('Failed to load member:', error)
+      toast.error(t('error.loadFailed'))
+    }
+  }
+
   const handleRenewMembership = async (membershipId: string) => {
     if (!hasPermission(PERMISSIONS.memberships.extend)) {
       toast.error(t('error.noPermission'))
@@ -157,6 +169,14 @@ export default function Dashboard() {
   return (
     <div className="space-y-6">
       <ViewMember member={viewMember} open={!!viewMember} onClose={() => setViewMember(null)} />
+      {viewMemberCard && (
+        <MemberCheckInCard
+          member={viewMemberCard}
+          open={!!viewMemberCard}
+          onCancel={() => setViewMemberCard(null)}
+          viewOnly={true}
+        />
+      )}
       <EditMembership
         membership={editMembership}
         open={!!editMembershipId}
@@ -210,6 +230,7 @@ export default function Dashboard() {
         <RecentCheckIns
           data={recentCheckIns}
           onViewMember={handleViewMember}
+          onRowClick={handleViewMemberCard}
           page={checkInsPage}
           totalPages={checkInsTotalPages}
           onPageChange={loadCheckIns}

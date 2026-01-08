@@ -21,6 +21,7 @@ interface CheckInsTableProps {
   totalPages: number
   onPageChange: (page: number) => void
   onViewHistory: (memberId: string) => void
+  onRowClick?: (memberId: string) => void
 }
 
 export default function CheckInsTable({
@@ -28,7 +29,8 @@ export default function CheckInsTable({
   page,
   totalPages,
   onPageChange,
-  onViewHistory
+  onViewHistory,
+  onRowClick
 }: CheckInsTableProps) {
   const { t, i18n } = useTranslation('checkIns')
   const { hasPermission } = useAuth()
@@ -77,7 +79,11 @@ export default function CheckInsTable({
               </TableRow>
             ) : (
               checkIns.map((checkIn, idx) => (
-                <TableRow key={checkIn.id} className="hover:bg-gray-700/50">
+                <TableRow
+                  key={checkIn.id}
+                  className={`hover:bg-gray-700/50 ${onRowClick ? 'cursor-pointer' : ''}`}
+                  onClick={() => onRowClick?.(checkIn.memberId)}
+                >
                   <TableCell className="font-medium">
                     {checkIns.length === 1 ? '-' : idx + 1 + (page - 1) * 10}
                   </TableCell>
@@ -99,7 +105,10 @@ export default function CheckInsTable({
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => onViewHistory(checkIn.memberId)}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          onViewHistory(checkIn.memberId)
+                        }}
                         title={t('viewHistory')}
                       >
                         <History className="h-4 w-4" />
