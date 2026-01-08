@@ -5,6 +5,7 @@ import { Label } from '@renderer/components/ui/label'
 import { ScanBarcode, Search, Loader2 } from 'lucide-react'
 import { useCheckIn } from '@renderer/hooks/useCheckIn'
 import { useAuth } from '@renderer/hooks/useAuth'
+import { useSettings } from '@renderer/hooks/useSettings'
 import { PERMISSIONS } from '@renderer/models/account'
 import { toast } from 'sonner'
 import MemberCheckInCard from '@renderer/components/checkIns/MemberCheckInCard'
@@ -19,6 +20,7 @@ export default function QuickCheckInWidget({ onCheckInSuccess }: QuickCheckInWid
   const { t } = useTranslation('checkIns')
   const { t: tDashboard } = useTranslation('dashboard')
   const { hasPermission } = useAuth()
+  const { settings } = useSettings()
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<Member[]>([])
   const [showResults, setShowResults] = useState(false)
@@ -27,7 +29,9 @@ export default function QuickCheckInWidget({ onCheckInSuccess }: QuickCheckInWid
   const [hasMore, setHasMore] = useState(true)
   const inputRef = useRef<HTMLInputElement>(null)
   const resultsRef = useRef<HTMLDivElement>(null)
-  const { lookupMember, confirmCheckIn, cancelCheckIn, memberCard, loading } = useCheckIn()
+  const { lookupMember, confirmCheckIn, cancelCheckIn, memberCard, loading } = useCheckIn(
+    settings?.allowInstantCheckIn || false
+  )
 
   const canCreateCheckIn = hasPermission(PERMISSIONS.checkins.create)
 
@@ -69,8 +73,14 @@ export default function QuickCheckInWidget({ onCheckInSuccess }: QuickCheckInWid
 
     if (!result.success) {
       toast.error(t('messages.memberNotFound') || 'Member not found')
+      return
     }
-    // On success, memberCard will be set and MemberCheckInCard will open automatically
+
+    // If instant check-in is enabled, check in immediately
+    if (settings?.allowInstantCheckIn && result.success && result.member) {
+      await handleInstantCheckIn(result.member.id!)
+    }
+    // Otherwise, memberCard will be set and MemberCheckInCard will open automatically
   }
 
   // Global barcode scanner listener
@@ -220,8 +230,33 @@ export default function QuickCheckInWidget({ onCheckInSuccess }: QuickCheckInWid
 
     if (!result.success) {
       toast.error(result.error)
+      setSearchQuery('')
+      return
+    }
+
+    // If instant check-in is enabled, check in immediately
+    if (settings?.allowInstantCheckIn && result.success && result.member) {
+      await handleInstantCheckIn(result.member.id!)
     }
     setSearchQuery('')
+  }
+
+  const handleInstantCheckIn = async (memberId: string) => {
+    if (!canCreateCheckIn) {
+      toast.error('You do not have permission to perform check-ins')
+      return
+    }
+
+    const result = await confirmCheckIn(memberId)
+
+    if (result.success) {
+      toast.success(t('messages.checkInSuccess'))
+      setSearchQuery('')
+      setSearchResults([])
+      onCheckInSuccess()
+    } else {
+      toast.error(result.error)
+    }
   }
 
   const handleConfirm = async () => {

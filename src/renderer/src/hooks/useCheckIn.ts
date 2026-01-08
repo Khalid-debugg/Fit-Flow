@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Member } from '@renderer/models/member'
 import { playSuccess, playWarning, playError } from '@renderer/utils/audioFeedback'
 
-export function useCheckIn() {
+export function useCheckIn(skipDialog: boolean = false) {
   const [loading, setLoading] = useState(false)
   const [memberCard, setMemberCard] = useState<Member | null>(null)
 
@@ -68,16 +68,24 @@ export function useCheckIn() {
           checkInTime: time,
           pendingPayments
         }
-        setMemberCard(memberWithCheckIn)
+
+        if (!skipDialog) {
+          setMemberCard(memberWithCheckIn)
+        }
+
         return { success: true, member: memberWithCheckIn }
       }
 
-      // Show member card for confirmation
+      // Show member card for confirmation (unless skipDialog is true)
       const memberWithPaymentInfo = {
         ...member,
         pendingPayments
       }
-      setMemberCard(memberWithPaymentInfo)
+
+      if (!skipDialog) {
+        setMemberCard(memberWithPaymentInfo)
+      }
+
       return { success: true, member: memberWithPaymentInfo }
     } catch (error) {
       console.error('Lookup failed:', error)
@@ -151,16 +159,24 @@ export function useCheckIn() {
           checkInTime: time,
           pendingPayments
         }
-        setMemberCard(memberWithCheckIn)
+
+        if (!skipDialog) {
+          setMemberCard(memberWithCheckIn)
+        }
+
         return { success: true, member: memberWithCheckIn }
       }
 
-      // Show member card for confirmation
+      // Show member card for confirmation (unless skipDialog is true)
       const memberWithPaymentInfo = {
         ...member,
         pendingPayments
       }
-      setMemberCard(memberWithPaymentInfo)
+
+      if (!skipDialog) {
+        setMemberCard(memberWithPaymentInfo)
+      }
+
       return { success: true, member: memberWithPaymentInfo }
     } catch (error) {
       console.error('Lookup failed:', error)
@@ -171,13 +187,14 @@ export function useCheckIn() {
     }
   }
 
-  const confirmCheckIn = async () => {
-    if (!memberCard) return { success: false, error: 'No member selected' }
+  const confirmCheckIn = async (memberId?: string) => {
+    const targetMemberId = memberId || memberCard?.id
+    if (!targetMemberId) return { success: false, error: 'No member selected' }
 
     setLoading(true)
     try {
       // Create check-in and get warnings
-      const result = await window.electron.ipcRenderer.invoke('checkIns:create', memberCard.id)
+      const result = await window.electron.ipcRenderer.invoke('checkIns:create', targetMemberId)
 
       let hasWarnings = false
       const warnings: string[] = []
@@ -199,9 +216,14 @@ export function useCheckIn() {
       }
 
       // Play sound based on membership status or duplicate check-in
-      if (memberCard.alreadyCheckedIn || hasWarnings) {
+      if (memberId) {
+        // If memberId is provided (instant check-in), just play success
+        playSuccess()
+      } else if (hasWarnings) {
         playWarning()
-      } else if (memberCard.status === 'active') {
+      } else if (memberCard?.alreadyCheckedIn) {
+        playWarning()
+      } else if (memberCard?.status === 'active') {
         playSuccess()
       } else {
         playWarning()
