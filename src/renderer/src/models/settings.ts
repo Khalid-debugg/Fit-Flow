@@ -17,6 +17,8 @@ export interface Settings {
 
   defaultPaymentMethod: (typeof PAYMENT_METHODS)[number]
 
+  allowInstantCheckIn: boolean
+
   autoBackup: boolean
   backupFrequency: 'daily' | 'weekly' | 'monthly'
   backupFolderPath?: string
@@ -42,6 +44,8 @@ export interface SettingsDbRow {
   allowed_genders: 'male' | 'female' | 'both'
 
   default_payment_method: (typeof PAYMENT_METHODS)[number]
+
+  allow_instant_checkin: 0 | 1
 
   auto_backup: 0 | 1
   backup_frequency: 'daily' | 'weekly' | 'monthly'
