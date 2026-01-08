@@ -46,6 +46,11 @@
     "transfer": "Bank Transfer",
     "e-wallet": "E-wallet"
   },
+  "checkIns": {
+    "title": "Check-In Settings",
+    "allowInstantCheckIn": "Allow Instant Check-In",
+    "allowInstantCheckInDesc": "Check in members immediately without confirmation dialog"
+  },
   "backup": {
     "title": "Backup & Data Management",
     "autoBackup": "Automatic Backup",
