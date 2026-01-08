@@ -81,6 +81,12 @@ export default function QuickCheckInWidget({ onCheckInSuccess }: QuickCheckInWid
         return
       }
 
+      // Ignore if any dialog/modal is open (check for Radix UI dialog state)
+      const dialogOpen = document.querySelector('[data-state="open"][role="dialog"]')
+      if (dialogOpen) {
+        return
+      }
+
       // Handle Enter key - process barcode
       if (e.key === 'Enter') {
         if (barcodeBufferRef.current.trim()) {
