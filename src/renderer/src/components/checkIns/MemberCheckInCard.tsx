@@ -14,9 +14,10 @@ import { useSettings } from '@renderer/hooks/useSettings'
 interface MemberCheckInCardProps {
   member: Member
   open: boolean
-  onConfirm: () => void
+  onConfirm?: () => void
   onCancel: () => void
-  loading: boolean
+  loading?: boolean
+  viewOnly?: boolean
 }
 
 export default function MemberCheckInCard({
@@ -24,7 +25,8 @@ export default function MemberCheckInCard({
   open,
   onConfirm,
   onCancel,
-  loading
+  loading = false,
+  viewOnly = false
 }: MemberCheckInCardProps) {
   const { t, i18n } = useTranslation('checkIns')
   const { settings } = useSettings()
@@ -253,14 +255,23 @@ export default function MemberCheckInCard({
           )}
         </div>
 
-        <DialogFooter>
-          <Button variant="primary" onClick={onCancel} disabled={loading}>
-            {t('cancel')}
-          </Button>
-          <Button variant="secondary" onClick={onConfirm} disabled={loading}>
-            {loading ? t('processing') : t('confirmCheckIn')}
-          </Button>
-        </DialogFooter>
+        {!viewOnly && (
+          <DialogFooter>
+            <Button variant="primary" onClick={onCancel} disabled={loading}>
+              {t('cancel')}
+            </Button>
+            <Button variant="secondary" onClick={onConfirm} disabled={loading}>
+              {loading ? t('processing') : t('confirmCheckIn')}
+            </Button>
+          </DialogFooter>
+        )}
+        {viewOnly && (
+          <DialogFooter>
+            <Button variant="primary" onClick={onCancel}>
+              {t('close')}
+            </Button>
+          </DialogFooter>
+        )}
       </DialogContent>
     </Dialog>
   )
