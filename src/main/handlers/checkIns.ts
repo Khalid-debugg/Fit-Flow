@@ -301,7 +301,7 @@ export function registerCheckInHandlers() {
     const rows = db
       .prepare(
         `
-      SELECT 
+      SELECT
         id,
         member_id,
         check_in_time,
@@ -320,5 +320,67 @@ export function registerCheckInHandlers() {
       checkInTime: row.check_in_time,
       createdAt: row.created_at
     }))
+  })
+
+  ipcMain.handle('checkIns:delete', async (_event, id: string) => {
+    const db = getDatabase()
+
+    // Get the check-in details to restore remaining_check_ins if needed
+    const checkIn = db
+      .prepare(
+        `
+      SELECT member_id, check_in_time
+      FROM check_ins
+      WHERE id = ?
+    `
+      )
+      .get(id) as { member_id: string; check_in_time: string } | undefined
+
+    if (!checkIn) {
+      throw new Error('CHECK_IN_NOT_FOUND')
+    }
+
+    const checkInDate = checkIn.check_in_time.split('T')[0]
+
+    // Find the membership that was active at the time of check-in
+    const membership = db
+      .prepare(
+        `
+      SELECT
+        ms.id,
+        ms.remaining_check_ins,
+        mp.plan_type
+      FROM memberships ms
+      INNER JOIN membership_plans mp ON ms.plan_id = mp.id
+      WHERE ms.member_id = ?
+        AND ms.start_date <= ?
+        AND ms.end_date >= ?
+      ORDER BY ms.end_date DESC
+      LIMIT 1
+    `
+      )
+      .get(checkIn.member_id, checkInDate, checkInDate) as
+      | {
+          id: string
+          remaining_check_ins: number | null
+          plan_type: string
+        }
+      | undefined
+
+    // Restore check-in count if it was a check-in based membership
+    if (membership && membership.plan_type === 'checkin' && membership.remaining_check_ins !== null) {
+      db.prepare(
+        `
+        UPDATE memberships
+        SET remaining_check_ins = remaining_check_ins + 1
+        WHERE id = ?
+      `
+      ).run(membership.id)
+    }
+
+    // Delete the check-in
+    db.prepare('DELETE FROM check_ins WHERE id = ?').run(id)
+
+    return { success: true }
   })
 }
