@@ -91,6 +91,20 @@
 
   "viewHistory": "عرض السجل",
 
+  "alert": {
+    "deleteCheckIn": "حذف سجل الحضور",
+    "deleteCheckInMessage": "هل أنت متأكد من حذف سجل الحضور هذا؟ لا يمكن التراجع عن هذا الإجراء."
+  },
+
+  "form": {
+    "cancel": "إلغاء",
+    "confirm": "تأكيد"
+  },
+
+  "success": {
+    "deleteSuccess": "تم حذف سجل الحضور بنجاح"
+  },
+
   "barcode": {
     "title": "بطاقة العضوية",
     "gymCard": "بطاقة عضوية الصالة الرياضية",
@@ -104,6 +118,7 @@
 
   "errors": {
     "loadFailed": "فشل تحميل سجلات الحضور",
-    "createFailed": "فشل تسجيل الحضور"
+    "createFailed": "فشل تسجيل الحضور",
+    "deleteFailed": "فشل حذف سجل الحضور"
   }
 }
