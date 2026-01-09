@@ -44,6 +44,7 @@ export default function CheckIns() {
 
   const canViewCheckIns = hasPermission(PERMISSIONS.checkins.view)
   const canCreateCheckIn = hasPermission(PERMISSIONS.checkins.create)
+  const canDeleteCheckIn = hasPermission(PERMISSIONS.checkins.delete)
 
   const loadCheckIns = useCallback(async () => {
     if (!canViewCheckIns) return
@@ -123,6 +124,21 @@ export default function CheckIns() {
     [t]
   )
 
+  const handleDelete = useCallback(
+    async (id: string) => {
+      try {
+        await window.electron.ipcRenderer.invoke('checkIns:delete', id)
+        toast.success(t('success.deleteSuccess'))
+        loadCheckIns()
+        loadStats()
+      } catch (error) {
+        console.error('Failed to delete check-in:', error)
+        toast.error(t('errors.deleteFailed'))
+      }
+    },
+    [loadCheckIns, loadStats, t]
+  )
+
   // Show permission denied if user cannot view check-ins
   if (!canViewCheckIns) {
     return (
@@ -182,6 +198,7 @@ export default function CheckIns() {
             onPageChange={handlePageChange}
             onViewHistory={handleViewHistory}
             onRowClick={handleRowClick}
+            onDelete={canDeleteCheckIn ? handleDelete : undefined}
           />
         </div>
       )}

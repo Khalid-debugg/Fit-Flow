@@ -10,10 +10,21 @@ import {
   TableHeader,
   TableRow
 } from '@renderer/components/ui/table'
-import { History, ChevronLeft, ChevronRight } from 'lucide-react'
+import { History, Trash2, ChevronLeft, ChevronRight } from 'lucide-react'
 import { CheckIn } from '@renderer/models/checkIn'
 import { format } from 'date-fns'
 import { ar, enUS } from 'date-fns/locale'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger
+} from '../ui/alert-dialog'
 
 interface CheckInsTableProps {
   checkIns: CheckIn[]
@@ -22,6 +33,7 @@ interface CheckInsTableProps {
   onPageChange: (page: number) => void
   onViewHistory: (memberId: string) => void
   onRowClick?: (memberId: string) => void
+  onDelete?: (id: string) => void
 }
 
 export default function CheckInsTable({
@@ -30,7 +42,8 @@ export default function CheckInsTable({
   totalPages,
   onPageChange,
   onViewHistory,
-  onRowClick
+  onRowClick,
+  onDelete
 }: CheckInsTableProps) {
   const { t, i18n } = useTranslation('checkIns')
   const { hasPermission } = useAuth()
@@ -100,20 +113,51 @@ export default function CheckInsTable({
                       {t(`status.${checkIn.membershipStatus}`)}
                     </span>
                   </TableCell>
-                  <TableCell className="text-end min-h-[40px] h-[40px]">
-                    {canViewCheckIns && (
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          onViewHistory(checkIn.memberId)
-                        }}
-                        title={t('viewHistory')}
-                      >
-                        <History className="h-4 w-4" />
-                      </Button>
-                    )}
+                  <TableCell
+                    className="text-end min-h-[40px] h-[40px]"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div className="flex justify-end gap-2 min-h-[40px] items-center">
+                      {canViewCheckIns && (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            onViewHistory(checkIn.memberId)
+                          }}
+                          title={t('viewHistory')}
+                        >
+                          <History className="h-4 w-4" />
+                        </Button>
+                      )}
+                      {onDelete && (
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                              <Trash2 className="h-4 w-4 text-red-400" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>{t('alert.deleteCheckIn')}</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                {t('alert.deleteCheckInMessage')}
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>{t('form.cancel')}</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => onDelete(checkIn.id!)}
+                                className="bg-red-600 hover:bg-red-700 text-white"
+                              >
+                                {t('form.confirm')}
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      )}
+                    </div>
                   </TableCell>
                 </TableRow>
               ))
