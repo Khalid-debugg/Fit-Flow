@@ -141,6 +141,7 @@
     "plans.delete": "Can delete plans",
     "checkins.view": "Can view check-ins list",
     "checkins.create": "Can perform check-ins",
+    "checkins.delete": "Can delete check-ins",
     "reports.generate": "Can generate reports",
     "reports.view": "Can view reports",
     "reports.save": "Can save/download reports",

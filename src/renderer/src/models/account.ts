@@ -30,7 +30,8 @@ export const PERMISSIONS = {
   },
   checkins: {
     view: 'checkins.view',
-    create: 'checkins.create'
+    create: 'checkins.create',
+    delete: 'checkins.delete'
   },
   reports: {
     generate: 'reports.generate',
@@ -90,6 +91,7 @@ export const PERMISSION_LABELS: Record<string, string> = {
   // Check-ins
   'checkins.view': 'Can view check-ins list',
   'checkins.create': 'Can perform check-ins',
+  'checkins.delete': 'Can delete check-ins',
 
   // Reports
   'reports.generate': 'Can generate reports',
@@ -142,6 +144,10 @@ export const PERMISSION_DEPENDENCIES: Record<string, string[]> = {
   'plans.create': ['plans.view'],
   'plans.edit': ['plans.view'],
   'plans.delete': ['plans.view'],
+
+  // Check-ins
+  'checkins.create': ['checkins.view'],
+  'checkins.delete': ['checkins.view'],
 
   // Reports
   'reports.save': ['reports.view'],

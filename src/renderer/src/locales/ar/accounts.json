@@ -141,6 +141,7 @@
     "plans.delete": "يمكنه حذف الباقات",
     "checkins.view": "يمكنه عرض قائمة الحضور",
     "checkins.create": "يمكنه تسجيل الحضور",
+    "checkins.delete": "يمكنه حذف سجلات الحضور",
     "reports.generate": "يمكنه إنشاء تقارير",
     "reports.view": "يمكنه عرض التقارير",
     "reports.save": "يمكنه حفظ/تنزيل التقارير",
