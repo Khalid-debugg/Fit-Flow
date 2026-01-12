@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Input } from '@renderer/components/ui/input'
 import { Label } from '@renderer/components/ui/label'
@@ -56,32 +56,41 @@ export default function QuickCheckInWidget({ onCheckInSuccess }: QuickCheckInWid
   }, [memberCard, loading])
 
   // Handle barcode scanner input - exact member ID lookup
-  const handleBarcodeScanned = async (code: string) => {
-    console.log('Barcode scanned:', code)
+  const handleBarcodeScanned = useCallback(
+    async (code: string) => {
+      console.log('Barcode scanned:', code)
 
-    // Basic validation - at least 1 character (numeric for now, can be updated later)
-    if (!code || code.length === 0) {
-      console.log('Empty barcode')
-      return
-    }
+      // Basic validation - at least 1 character (numeric for now, can be updated later)
+      if (!code || code.length === 0) {
+        console.log('Empty barcode')
+        return
+      }
 
-    // Close search results if open
-    setShowResults(false)
+      // Close search results if open
+      setShowResults(false)
 
-    // Lookup member by exact ID
-    const result = await lookupMember(code)
+      // Lookup member by exact ID
+      const result = await lookupMember(code)
 
-    if (!result.success) {
-      toast.error(t('messages.memberNotFound') || 'Member not found')
-      return
-    }
+      if (!result.success) {
+        toast.error(t('messages.memberNotFound') || 'Member not found')
+        return
+      }
 
-    // If instant check-in is enabled, check in immediately
-    if (settings?.allowInstantCheckIn && result.success && result.member) {
-      await handleInstantCheckIn(result.member.id!)
-    }
-    // Otherwise, memberCard will be set and MemberCheckInCard will open automatically
-  }
+      // If instant check-in is enabled, check in immediately
+      if (settings?.allowInstantCheckIn && result.success && result.member) {
+        const instantResult = await confirmCheckIn(result.member.id!)
+        if (instantResult.success) {
+          toast.success(t('messages.checkInSuccess'))
+          onCheckInSuccess()
+        } else {
+          toast.error(instantResult.error)
+        }
+      }
+      // Otherwise, memberCard will be set and MemberCheckInCard will open automatically
+    },
+    [lookupMember, settings?.allowInstantCheckIn, t, confirmCheckIn, onCheckInSuccess]
+  )
 
   // Global barcode scanner listener
   useEffect(() => {
@@ -97,16 +106,16 @@ export default function QuickCheckInWidget({ onCheckInSuccess }: QuickCheckInWid
         return
       }
 
+      // CRITICAL: Ignore if the search input is focused - let normal typing work
+      if (document.activeElement === inputRef.current) {
+        return
+      }
+
       // Handle Enter key - process barcode
       if (e.key === 'Enter') {
         if (barcodeBufferRef.current.trim()) {
           console.log('Enter pressed, buffer:', barcodeBufferRef.current)
           e.preventDefault()
-          if (document.activeElement === inputRef.current) {
-            inputRef.current?.blur()
-            // Clear the search input if barcode was typed there
-            setSearchQuery('')
-          }
           handleBarcodeScanned(barcodeBufferRef.current.trim())
           barcodeBufferRef.current = ''
           isScanning.current = false
@@ -115,19 +124,18 @@ export default function QuickCheckInWidget({ onCheckInSuccess }: QuickCheckInWid
         return
       }
 
-      // Collect alphanumeric characters for barcode
+      // Collect alphanumeric characters for barcode (only when input is NOT focused)
       if (/^[a-zA-Z0-9]$/.test(e.key)) {
         const now = Date.now()
         const timeSinceLastKey = now - lastKeypressTime.current
 
-        // Detect rapid input (scanner) - keys pressed within 100ms of each other
-        // Increased from 50ms to be more lenient
-        if (timeSinceLastKey < 100 && timeSinceLastKey > 0) {
+        // Detect rapid input (scanner) - keys pressed within 50ms of each other
+        if (timeSinceLastKey < 50 && timeSinceLastKey > 0) {
           isScanning.current = true
           console.log('Scanner detected! Time between keys:', timeSinceLastKey)
         }
 
-        // If we've identified this as scanning, prevent input to search bar
+        // If we've identified this as scanning, prevent default and buffer
         if (isScanning.current) {
           e.preventDefault()
           barcodeBufferRef.current += e.key
@@ -135,13 +143,13 @@ export default function QuickCheckInWidget({ onCheckInSuccess }: QuickCheckInWid
           // Continue buffering if we already started
           barcodeBufferRef.current += e.key
         } else {
-          // First character - start buffering but don't prevent (might be normal typing)
+          // First character - start buffering but don't prevent
           barcodeBufferRef.current = e.key
         }
 
         lastKeypressTime.current = now
 
-        // Clear buffer after 150ms of inactivity
+        // Clear buffer after 200ms of inactivity
         if (barcodeTimerRef.current) {
           clearTimeout(barcodeTimerRef.current)
         }
@@ -152,7 +160,7 @@ export default function QuickCheckInWidget({ onCheckInSuccess }: QuickCheckInWid
           barcodeBufferRef.current = ''
           isScanning.current = false
           lastKeypressTime.current = 0
-        }, 150)
+        }, 200)
       }
     }
 
@@ -164,7 +172,35 @@ export default function QuickCheckInWidget({ onCheckInSuccess }: QuickCheckInWid
         clearTimeout(barcodeTimerRef.current)
       }
     }
-  }, [memberCard, lookupMember, t])
+  }, [memberCard, handleBarcodeScanned])
+
+  const searchMembers = useCallback(
+    async (page: number, reset: boolean = false) => {
+      setSearchLoading(true)
+      try {
+        const results = await window.electron.ipcRenderer.invoke(
+          'members:search',
+          debouncedQuery,
+          page
+        )
+
+        if (reset) {
+          setSearchResults(results)
+        } else {
+          setSearchResults((prev) => [...prev, ...results])
+        }
+
+        setHasMore(results.length === 10)
+        setSearchPage(page)
+        setShowResults(true)
+      } catch (error) {
+        console.error('Search failed:', error)
+      } finally {
+        setSearchLoading(false)
+      }
+    },
+    [debouncedQuery]
+  )
 
   // Search members
   useEffect(() => {
@@ -175,32 +211,7 @@ export default function QuickCheckInWidget({ onCheckInSuccess }: QuickCheckInWid
       setShowResults(false)
       setSearchPage(1)
     }
-  }, [debouncedQuery])
-
-  const searchMembers = async (page: number, reset: boolean = false) => {
-    setSearchLoading(true)
-    try {
-      const results = await window.electron.ipcRenderer.invoke(
-        'members:search',
-        debouncedQuery,
-        page
-      )
-
-      if (reset) {
-        setSearchResults(results)
-      } else {
-        setSearchResults((prev) => [...prev, ...results])
-      }
-
-      setHasMore(results.length === 10)
-      setSearchPage(page)
-      setShowResults(true)
-    } catch (error) {
-      console.error('Search failed:', error)
-    } finally {
-      setSearchLoading(false)
-    }
-  }
+  }, [debouncedQuery, searchMembers])
 
   // Infinite scroll
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
@@ -224,40 +235,46 @@ export default function QuickCheckInWidget({ onCheckInSuccess }: QuickCheckInWid
     }
   }
 
-  const handleMemberSelect = async (memberId: string) => {
-    setShowResults(false)
-    const result = await lookupMember(memberId)
+  const handleInstantCheckIn = useCallback(
+    async (memberId: string) => {
+      if (!canCreateCheckIn) {
+        toast.error('You do not have permission to perform check-ins')
+        return
+      }
 
-    if (!result.success) {
-      toast.error(result.error)
+      const result = await confirmCheckIn(memberId)
+
+      if (result.success) {
+        toast.success(t('messages.checkInSuccess'))
+        setSearchQuery('')
+        setSearchResults([])
+        onCheckInSuccess()
+      } else {
+        toast.error(result.error)
+      }
+    },
+    [canCreateCheckIn, confirmCheckIn, t, onCheckInSuccess]
+  )
+
+  const handleMemberSelect = useCallback(
+    async (memberId: string) => {
+      setShowResults(false)
+      const result = await lookupMember(memberId)
+
+      if (!result.success) {
+        toast.error(result.error)
+        setSearchQuery('')
+        return
+      }
+
+      // If instant check-in is enabled, check in immediately
+      if (settings?.allowInstantCheckIn && result.success && result.member) {
+        await handleInstantCheckIn(result.member.id!)
+      }
       setSearchQuery('')
-      return
-    }
-
-    // If instant check-in is enabled, check in immediately
-    if (settings?.allowInstantCheckIn && result.success && result.member) {
-      await handleInstantCheckIn(result.member.id!)
-    }
-    setSearchQuery('')
-  }
-
-  const handleInstantCheckIn = async (memberId: string) => {
-    if (!canCreateCheckIn) {
-      toast.error('You do not have permission to perform check-ins')
-      return
-    }
-
-    const result = await confirmCheckIn(memberId)
-
-    if (result.success) {
-      toast.success(t('messages.checkInSuccess'))
-      setSearchQuery('')
-      setSearchResults([])
-      onCheckInSuccess()
-    } else {
-      toast.error(result.error)
-    }
-  }
+    },
+    [lookupMember, settings?.allowInstantCheckIn, handleInstantCheckIn]
+  )
 
   const handleConfirm = async () => {
     if (!canCreateCheckIn) {
