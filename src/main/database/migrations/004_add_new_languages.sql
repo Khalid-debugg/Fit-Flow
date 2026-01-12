@@ -32,7 +32,46 @@ CREATE TABLE IF NOT EXISTS settings_new (
 );
 
 -- Step 2: Copy all data from old table to new table
-INSERT INTO settings_new SELECT * FROM settings;
+INSERT INTO settings_new (
+  id,
+  language,
+  currency,
+  gym_name,
+  gym_address,
+  gym_country_code,
+  gym_phone,
+  gym_logo_path,
+  barcode_size,
+  allowed_genders,
+  default_payment_method,
+  allow_instant_checkin,
+  auto_backup,
+  backup_frequency,
+  backup_folder_path,
+  last_backup_date,
+  created_at,
+  updated_at
+)
+SELECT
+  id,
+  language,
+  currency,
+  gym_name,
+  gym_address,
+  gym_country_code,
+  gym_phone,
+  gym_logo_path,
+  barcode_size,
+  allowed_genders,
+  default_payment_method,
+  allow_instant_checkin,
+  auto_backup,
+  backup_frequency,
+  backup_folder_path,
+  last_backup_date,
+  created_at,
+  updated_at
+FROM settings;
 
 -- Step 3: Drop the old table
 DROP TABLE settings;
@@ -79,7 +118,46 @@ CREATE TABLE IF NOT EXISTS settings_old (
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO settings_old SELECT * FROM settings;
+INSERT INTO settings_old (
+  id,
+  language,
+  currency,
+  gym_name,
+  gym_address,
+  gym_country_code,
+  gym_phone,
+  gym_logo_path,
+  barcode_size,
+  allowed_genders,
+  default_payment_method,
+  allow_instant_checkin,
+  auto_backup,
+  backup_frequency,
+  backup_folder_path,
+  last_backup_date,
+  created_at,
+  updated_at
+)
+SELECT
+  id,
+  language,
+  currency,
+  gym_name,
+  gym_address,
+  gym_country_code,
+  gym_phone,
+  gym_logo_path,
+  barcode_size,
+  allowed_genders,
+  default_payment_method,
+  allow_instant_checkin,
+  auto_backup,
+  backup_frequency,
+  backup_folder_path,
+  last_backup_date,
+  created_at,
+  updated_at
+FROM settings;
 DROP TABLE settings;
 ALTER TABLE settings_old RENAME TO settings;
 
