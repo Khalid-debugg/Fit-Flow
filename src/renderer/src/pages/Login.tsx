@@ -1,11 +1,18 @@
 import { useState, FormEvent } from 'react'
 import { useAuth } from '@renderer/hooks/useAuth'
 import { Button } from '@renderer/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from '@renderer/components/ui/dropdown-menu'
 import { Input } from '@renderer/components/ui/input'
 import { Label } from '@renderer/components/ui/label'
 import { Loader2, Dumbbell, LogIn, Languages } from 'lucide-react'
 import { toast } from 'sonner'
 import { useTranslation } from 'react-i18next'
+import type { SupportedLanguage } from '@renderer/locales/i18n'
 
 export default function Login() {
   const { login } = useAuth()
@@ -14,10 +21,18 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const toggleLanguage = () => {
-    const newLang = i18n.language === 'en' ? 'ar' : 'en'
-    i18n.changeLanguage(newLang)
-    document.documentElement.dir = newLang === 'ar' ? 'rtl' : 'ltr'
+  const languages: { code: SupportedLanguage; label: string }[] = [
+    { code: 'ar', label: 'العربية' },
+    { code: 'en', label: 'English' },
+    { code: 'es', label: 'Español' },
+    { code: 'pt', label: 'Português' },
+    { code: 'fr', label: 'Français' },
+    { code: 'de', label: 'Deutsch' }
+  ]
+
+  const changeLanguage = (langCode: SupportedLanguage) => {
+    i18n.changeLanguage(langCode)
+    document.documentElement.dir = langCode === 'ar' ? 'rtl' : 'ltr'
   }
 
   const handleSubmit = async (e: FormEvent) => {
@@ -50,31 +65,50 @@ export default function Login() {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-40" />
 
-      {/* Language Toggle Button - Top Right */}
+      {/* Language Selector - Top Right */}
       <div className="absolute top-6 right-6 z-10">
-        <Button
-          onClick={toggleLanguage}
-          variant="default"
-          className="group relative overflow-hidden
-            bg-gradient-to-br from-gray-700 to-gray-800
-            hover:from-yellow-600 hover:to-orange-600
-            border border-gray-600/50
-            hover:border-yellow-500/50
-            shadow-md hover:shadow-lg hover:shadow-yellow-500/10
-            rounded-lg px-4 py-2.5
-            transition-all duration-300 ease-in-out
-            hover:scale-105 active:scale-95
-          "
-        >
-          <div className="flex items-center justify-center gap-2 relative z-10">
-            <span className="text-lg transition-transform duration-300 group-hover:rotate-12">
-              <Languages />
-            </span>
-            <span className="font-medium text-sm text-white">
-              {i18n.language === 'en' ? 'العربية' : 'English'}
-            </span>
-          </div>
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="default"
+              className="group relative overflow-hidden
+                bg-gradient-to-br from-gray-700 to-gray-800
+                hover:from-yellow-600 hover:to-orange-600
+                border border-gray-600/50
+                hover:border-yellow-500/50
+                shadow-md hover:shadow-lg hover:shadow-yellow-500/10
+                rounded-lg px-4 py-2.5
+                transition-all duration-300 ease-in-out
+                hover:scale-105 active:scale-95
+              "
+            >
+              <div className="flex items-center justify-center gap-2 relative z-10">
+                <span className="text-lg transition-transform duration-300 group-hover:rotate-12">
+                  <Languages />
+                </span>
+                <span className="font-medium text-sm text-white">
+                  {languages.find((l) => l.code === i18n.language)?.label || 'English'}
+                </span>
+              </div>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="end"
+            className="bg-gray-800 border-gray-700 text-white min-w-[160px]"
+          >
+            {languages.map((lang) => (
+              <DropdownMenuItem
+                key={lang.code}
+                onClick={() => changeLanguage(lang.code)}
+                className={`cursor-pointer hover:bg-gray-700 focus:bg-gray-700 ${
+                  i18n.language === lang.code ? 'bg-yellow-600/20 text-yellow-400' : ''
+                }`}
+              >
+                {lang.label}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       <div className="relative w-full max-w-md">
