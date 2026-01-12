@@ -10,3 +10,6 @@ CLAUDE.md
 
 generate-license.js
 .env*
+
+# Temporary Vite config files
+*.vite.config.*.mjs
