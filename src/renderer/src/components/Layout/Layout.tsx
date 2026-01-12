@@ -142,8 +142,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   flex items-center rounded-lg
                   transition-all duration-300 ease-in-out
                   group relative overflow-hidden
-                  min-h-[2.5rem] h-[5vh] max-h-[3.5rem]
-                  ${collapsed ? 'justify-center p-2.5' : 'gap-2.5 px-3 py-[1vh]'}
+                  min-h-[2.5rem]  p-3
+                  ${collapsed ? 'justify-center' : 'gap-2.5 px-3 py-[1vh]'}
                   ${
                     isActive
                       ? 'bg-gradient-to-r from-yellow-600 to-orange-600 text-white shadow-lg shadow-yellow-500/20'
@@ -255,7 +255,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 transition-all duration-300 ease-in-out
                 hover:bg-gray-700/50
                 relative overflow-hidden
-                min-h-[3rem] h-[5vh] max-h-[4rem]
+                min-h-[3rem] 
               `}
             >
               <div className="relative">
