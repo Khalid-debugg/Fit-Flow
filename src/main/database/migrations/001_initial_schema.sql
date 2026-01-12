@@ -3,7 +3,7 @@
 CREATE TABLE IF NOT EXISTS settings (
   id TEXT PRIMARY KEY CHECK (id = '1'),
 
-  language TEXT DEFAULT 'ar' CHECK (language IN ('ar', 'en')),
+  language TEXT DEFAULT 'ar' CHECK (language IN ('ar', 'en', 'es', 'pt', 'fr', 'de')),
   currency TEXT DEFAULT 'EGP',
 
   gym_name TEXT DEFAULT 'FitFlow Gym',

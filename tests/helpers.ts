@@ -26,7 +26,7 @@ export function createTestDatabase(): Database.Database {
   testDb.exec(`
     CREATE TABLE IF NOT EXISTS settings (
       id TEXT PRIMARY KEY CHECK (id = '1'),
-      language TEXT DEFAULT 'ar' CHECK (language IN ('ar', 'en')),
+      language TEXT DEFAULT 'ar' CHECK (language IN ('ar', 'en', 'es', 'pt', 'fr', 'de')),
       currency TEXT DEFAULT 'EGP',
       allowed_genders TEXT DEFAULT 'both' CHECK (allowed_genders IN ('male', 'female', 'both')),
       default_payment_method TEXT DEFAULT 'cash' CHECK (default_payment_method IN ('cash', 'card', 'transfer', 'e-wallet')),
