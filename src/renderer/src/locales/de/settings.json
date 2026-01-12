@@ -1,0 +1,93 @@
+{
+  "title": "Einstellungen",
+  "subtitle": "Konfigurieren Sie Ihr Fitnessstudio-Verwaltungssystem",
+  "save": "Änderungen speichern",
+  "saving": "Wird gespeichert...",
+  "gymSettings": "Fitnessstudio-Einstellungen",
+  "regional": {
+    "title": "Regionale Einstellungen",
+    "language": "Sprache",
+    "arabic": "العربية (Arabisch)",
+    "english": "English (Englisch)",
+    "spanish": "Español (Spanisch)",
+    "portuguese": "Português (Portugiesisch)",
+    "french": "Français (Französisch)",
+    "german": "Deutsch",
+    "currency": "Währung",
+    "dateFormat": "Datumsformat",
+    "searchCurrency": "Nach Währungscode oder Name suchen...",
+    "noCurrencyFound": "Keine Währung gefunden"
+  },
+  "gym": {
+    "title": "Fitnessstudio-Informationen",
+    "name": "Fitnessstudio-Name",
+    "namePlaceholder": "Fitnessstudio-Name eingeben",
+    "address": "Adresse (Optional)",
+    "addressPlaceholder": "Fitnessstudio-Adresse eingeben",
+    "phone": "Telefonnummer (Optional)",
+    "phonePlaceholder": "Telefonnummer eingeben",
+    "logo": "Fitnessstudio-Logo",
+    "selectLogo": "Logo auswählen",
+    "changeLogo": "Logo ändern",
+    "defaultLogo": "Verwendet das Standard-FitFlow-Logo",
+    "logoTip": "Dieses Logo wird auf Mitgliedsbarcodes und Quittungen angezeigt",
+    "barcodeSize": "Barcode-Kartengröße",
+    "keychainSize": "Schlüsselanhänger (54x32mm)",
+    "cardSize": "ID-Karte (85,6x54mm)"
+  },
+  "members": {
+    "title": "Mitglieder-Einstellungen",
+    "allowedGenders": "Zulässige Geschlechter",
+    "both": "Beide (Männlich & Weiblich)",
+    "maleOnly": "Nur Männlich",
+    "femaleOnly": "Nur Weiblich"
+  },
+  "payment": {
+    "title": "Zahlungseinstellungen",
+    "defaultMethod": "Standard-Zahlungsmethode",
+    "cash": "Bargeld",
+    "card": "Karte",
+    "transfer": "Banküberweisung",
+    "e-wallet": "E-Wallet"
+  },
+  "checkIns": {
+    "title": "Check-in-Einstellungen",
+    "allowInstantCheckIn": "Sofort-Check-in erlauben",
+    "allowInstantCheckInDesc": "Mitglieder sofort einchecken ohne Bestätigungsdialog"
+  },
+  "backup": {
+    "title": "Backup & Datenverwaltung",
+    "autoBackup": "Automatisches Backup",
+    "frequency": "Backup-Häufigkeit",
+    "daily": "Täglich",
+    "weekly": "Wöchentlich",
+    "monthly": "Monatlich",
+    "createNow": "Jetzt Backup erstellen",
+    "creating": "Backup wird erstellt...",
+    "info": "Backup-Informationen",
+    "lastBackup": "Letztes Backup",
+    "never": "Nie",
+    "totalBackups": "Gesamte Backups",
+    "totalSize": "Gesamtgröße",
+    "tip": "Backups werden automatisch für die letzten 10 Versionen aufbewahrt. Ältere Backups werden automatisch gelöscht.",
+    "success": "Backup erfolgreich erstellt",
+    "failed": "Backup-Erstellung fehlgeschlagen",
+    "size": "Größe",
+    "loading": "Backup-Informationen werden geladen...",
+    "selectFolder": "Backup-Ordner auswählen",
+    "backupFolder": "Backup-Ordner",
+    "noFolderSelected": "Kein Ordner ausgewählt",
+    "availableBackups": "Verfügbare Backups",
+    "noBackups": "Keine Backups verfügbar",
+    "restore": "Wiederherstellen",
+    "restoring": "Wird wiederhergestellt...",
+    "restoreSuccess": "Datenbank erfolgreich wiederhergestellt",
+    "restoreFailed": "Wiederherstellung des Backups fehlgeschlagen",
+    "restoreWarning": "Dies ersetzt Ihre aktuelle Datenbank. Sind Sie sicher?",
+    "openFolder": "Ordner öffnen"
+  },
+  "messages": {
+    "saved": "Einstellungen erfolgreich gespeichert",
+    "error": "Einstellungen konnten nicht gespeichert werden"
+  }
+}

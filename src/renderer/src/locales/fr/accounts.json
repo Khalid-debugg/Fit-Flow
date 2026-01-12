@@ -1,0 +1,160 @@
+{
+  "title": "Comptes",
+  "descripton": "Gérer les comptes utilisateurs et les permissions",
+  "addNew": "Créer un Compte",
+  "basicInfo": "Informations de Base",
+  "editAccount": "Modifier le Compte",
+  "viewAccount": "Détails du Compte",
+  "username": "Nom d'utilisateur",
+  "fullName": "Nom Complet",
+  "email": "Email",
+  "role": "Rôle",
+  "status": "Statut",
+  "actions": "Actions",
+  "edit": "Modifier",
+  "delete": "Supprimer",
+  "admin": "Admin",
+  "administrator": "Administrateur",
+  "user": "Utilisateur",
+  "active": "Actif",
+  "inactive": "Inactif",
+  "createdAt": "Créé le",
+  "lastLogin": "Dernière Connexion",
+  "never": "Jamais",
+  "noAccounts": "Aucun compte trouvé",
+  "loading": "Chargement...",
+  "permissionsCount": "permissions",
+  "requiredByOtherPermissions": "Requis par d'autres permissions activées",
+  "filters": {
+    "search": "Rechercher",
+    "searchPlaceholder": "Nom d'utilisateur, nom ou email",
+    "role": "Rôle",
+    "status": "Statut",
+    "all": "Tous",
+    "reset": "Réinitialiser"
+  },
+  "pagination": {
+    "page": "Page",
+    "of": "de",
+    "previous": "Précédent",
+    "next": "Suivant"
+  },
+  "errors": {
+    "usernameExists": "Le nom d'utilisateur existe déjà",
+    "usernameInvalidCharacters": "Le nom d'utilisateur contient des caractères invalides",
+    "createFailed": "Échec de la création du compte",
+    "updateFailed": "Échec de la modification du compte",
+    "deleteFailed": "Échec de la suppression du compte",
+    "requiredFields": "Veuillez remplir tous les champs obligatoires",
+    "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
+    "passwordTooShort": "Le mot de passe doit contenir au moins 6 caractères"
+  },
+  "success": {
+    "createSuccess": "Compte créé avec succès",
+    "updateSuccess": "Compte modifié avec succès",
+    "deleteSuccess": "Compte supprimé avec succès"
+  },
+  "form": {
+    "username": "Nom d'utilisateur",
+    "fullName": "Nom Complet",
+    "email": "Email (Optionnel)",
+    "password": "Mot de passe",
+    "newPassword": "Nouveau Mot de passe",
+    "changePassword": "Changer le Mot de passe",
+    "confirmPassword": "Confirmer le Mot de passe",
+    "isAdmin": "Administrateur (Accès Complet)",
+    "isActive": "Actif",
+    "role": "Rôle",
+    "selectRole": "Sélectionner un rôle",
+    "roleAndPermissions": "Rôle et Permissions",
+    "permissions": "Permissions",
+    "permissionsDescription": "Sélectionnez les permissions pour ce compte. Toutes les permissions sont activées par défaut.",
+    "customPermissionsDescription": "Configurer les permissions personnalisées pour ce compte",
+    "rolePermissionsReadOnly": "Ces permissions sont définies en fonction du rôle sélectionné. Sélectionnez le rôle 'Personnalisé' pour modifier les permissions.",
+    "roleCustomHint": "Configurer les permissions manuellement ci-dessous",
+    "roleAutoHint": "Les permissions seront automatiquement définies en fonction du rôle sélectionné",
+    "cancel": "Annuler",
+    "submit": "Créer le Compte",
+    "update": "Modifier le Compte",
+    "confirm": "Confirmer"
+  },
+  "alert": {
+    "deleteAccount": "Supprimer le Compte",
+    "deleteAccountMessage": "Êtes-vous sûr de vouloir supprimer le compte \"{{username}}\" ? Cette action ne peut pas être annulée."
+  },
+  "permissions": {
+    "title": "Permissions",
+    "adminFullAccess": "Compte Administrateur - Accès Complet à Toutes les Fonctionnalités"
+  },
+  "roles": {
+    "admin": {
+      "label": "Administrateur",
+      "description": "Accès complet à toutes les fonctionnalités et paramètres"
+    },
+    "manager": {
+      "label": "Gestionnaire",
+      "description": "Accès aux opérations et rapports, paramètres système limités"
+    },
+    "coach": {
+      "label": "Coach",
+      "description": "Accès aux membres, adhésions, plans et pointages"
+    },
+    "receptionist": {
+      "label": "Réceptionniste",
+      "description": "Accès aux pointages et informations de base des membres"
+    },
+    "custom": {
+      "label": "Personnalisé",
+      "description": "Permissions personnalisées configurées manuellement"
+    }
+  },
+  "pages": {
+    "dashboard": "Tableau de Bord",
+    "members": "Membres",
+    "memberships": "Adhésions",
+    "plans": "Abonnements",
+    "checkins": "Pointages",
+    "reports": "Rapports",
+    "settings": "Paramètres",
+    "accounts": "Comptes"
+  },
+  "permissionLabels": {
+    "dashboard.view_financial": "Peut voir les données financières",
+    "members.view": "Peut voir la liste des membres",
+    "members.create": "Peut créer des membres",
+    "members.edit": "Peut modifier les membres",
+    "members.delete": "Peut supprimer les membres",
+    "members.view_details": "Peut voir les détails des membres",
+    "memberships.view": "Peut voir la liste des adhésions",
+    "memberships.create": "Peut créer des adhésions",
+    "memberships.edit": "Peut modifier les adhésions",
+    "memberships.delete": "Peut supprimer les adhésions",
+    "memberships.view_details": "Peut voir les détails des adhésions",
+    "memberships.extend": "Peut prolonger les adhésions",
+    "memberships.view_payments": "Peut voir l'historique des paiements",
+    "memberships.add_payment": "Peut ajouter des paiements",
+    "memberships.complete_payment": "Peut compléter les paiements programmés",
+    "memberships.modify_price": "Peut modifier les prix des adhésions",
+    "plans.view": "Peut voir la liste des abonnements",
+    "plans.create": "Peut créer des abonnements",
+    "plans.edit": "Peut modifier les abonnements",
+    "plans.delete": "Peut supprimer les abonnements",
+    "checkins.view": "Peut voir la liste des pointages",
+    "checkins.create": "Peut effectuer des pointages",
+    "checkins.delete": "Peut supprimer des pointages",
+    "reports.generate": "Peut générer des rapports",
+    "reports.view": "Peut voir les rapports",
+    "reports.save": "Peut sauvegarder/télécharger les rapports",
+    "reports.delete": "Peut supprimer les rapports",
+    "settings.view": "Peut voir les paramètres",
+    "settings.edit": "Peut modifier les paramètres",
+    "settings.manage_backups": "Peut gérer les sauvegardes",
+    "accounts.view": "Peut voir les comptes utilisateurs",
+    "accounts.create": "Peut créer des comptes utilisateurs",
+    "accounts.edit": "Peut modifier les comptes utilisateurs",
+    "accounts.delete": "Peut supprimer les comptes utilisateurs",
+    "accounts.manage_permissions": "Peut gérer les permissions",
+    "accounts.change_password": "Peut changer les mots de passe",
+    "accounts.manage_admin": "Peut gérer le statut d'administrateur"
+  }
+}

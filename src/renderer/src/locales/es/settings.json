@@ -1,0 +1,93 @@
+{
+  "title": "Configuración",
+  "subtitle": "Configurar tu sistema de gestión de gimnasio",
+  "save": "Guardar Cambios",
+  "saving": "Guardando...",
+  "gymSettings": "Configuración del Gimnasio",
+  "regional": {
+    "title": "Configuración Regional",
+    "language": "Idioma",
+    "arabic": "العربية (Árabe)",
+    "english": "English (Inglés)",
+    "spanish": "Español",
+    "portuguese": "Português (Portugués)",
+    "french": "Français (Francés)",
+    "german": "Deutsch (Alemán)",
+    "currency": "Moneda",
+    "dateFormat": "Formato de Fecha",
+    "searchCurrency": "Buscar por código o nombre de moneda...",
+    "noCurrencyFound": "No se encontró moneda"
+  },
+  "gym": {
+    "title": "Información del Gimnasio",
+    "name": "Nombre del Gimnasio",
+    "namePlaceholder": "Ingresar nombre del gimnasio",
+    "address": "Dirección (Opcional)",
+    "addressPlaceholder": "Ingresar dirección del gimnasio",
+    "phone": "Número de Teléfono (Opcional)",
+    "phonePlaceholder": "Ingresar número de teléfono",
+    "logo": "Logo del Gimnasio",
+    "selectLogo": "Seleccionar Logo",
+    "changeLogo": "Cambiar Logo",
+    "defaultLogo": "Usando logo predeterminado de FitFlow",
+    "logoTip": "Este logo aparecerá en los códigos de barras de miembros y recibos",
+    "barcodeSize": "Tamaño de Tarjeta de Código de Barras",
+    "keychainSize": "Llavero (54x32mm)",
+    "cardSize": "Tarjeta de ID (85.6x54mm)"
+  },
+  "members": {
+    "title": "Configuración de Miembros",
+    "allowedGenders": "Géneros Permitidos",
+    "both": "Ambos (Masculino y Femenino)",
+    "maleOnly": "Solo Masculino",
+    "femaleOnly": "Solo Femenino"
+  },
+  "payment": {
+    "title": "Configuración de Pagos",
+    "defaultMethod": "Método de Pago Predeterminado",
+    "cash": "Efectivo",
+    "card": "Tarjeta",
+    "transfer": "Transferencia Bancaria",
+    "e-wallet": "Billetera Electrónica"
+  },
+  "checkIns": {
+    "title": "Configuración de Registros",
+    "allowInstantCheckIn": "Permitir Registro Instantáneo",
+    "allowInstantCheckInDesc": "Registrar miembros inmediatamente sin diálogo de confirmación"
+  },
+  "backup": {
+    "title": "Copia de Seguridad y Gestión de Datos",
+    "autoBackup": "Copia de Seguridad Automática",
+    "frequency": "Frecuencia de Copia de Seguridad",
+    "daily": "Diaria",
+    "weekly": "Semanal",
+    "monthly": "Mensual",
+    "createNow": "Crear Copia de Seguridad Ahora",
+    "creating": "Creando Copia de Seguridad...",
+    "info": "Información de Copia de Seguridad",
+    "lastBackup": "Última Copia de Seguridad",
+    "never": "Nunca",
+    "totalBackups": "Total de Copias de Seguridad",
+    "totalSize": "Tamaño Total",
+    "tip": "Las copias de seguridad se mantienen automáticamente para las últimas 10 versiones. Las copias de seguridad más antiguas se eliminan automáticamente.",
+    "success": "Copia de seguridad creada exitosamente",
+    "failed": "Error al crear copia de seguridad",
+    "size": "Tamaño",
+    "loading": "Cargando información de copia de seguridad...",
+    "selectFolder": "Seleccionar Carpeta de Copia de Seguridad",
+    "backupFolder": "Carpeta de Copia de Seguridad",
+    "noFolderSelected": "No se seleccionó carpeta",
+    "availableBackups": "Copias de Seguridad Disponibles",
+    "noBackups": "No hay copias de seguridad disponibles",
+    "restore": "Restaurar",
+    "restoring": "Restaurando...",
+    "restoreSuccess": "Base de datos restaurada exitosamente",
+    "restoreFailed": "Error al restaurar copia de seguridad",
+    "restoreWarning": "Esto reemplazará tu base de datos actual. ¿Estás seguro?",
+    "openFolder": "Abrir Carpeta"
+  },
+  "messages": {
+    "saved": "Configuración guardada exitosamente",
+    "error": "Error al guardar configuración"
+  }
+}

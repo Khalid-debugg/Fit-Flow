@@ -1,0 +1,160 @@
+{
+  "title": "Konten",
+  "descripton": "Benutzerkonten und Berechtigungen verwalten",
+  "addNew": "Konto erstellen",
+  "basicInfo": "Grundinformationen",
+  "editAccount": "Konto bearbeiten",
+  "viewAccount": "Kontodetails",
+  "username": "Benutzername",
+  "fullName": "Vollständiger Name",
+  "email": "E-Mail",
+  "role": "Rolle",
+  "status": "Status",
+  "actions": "Aktionen",
+  "edit": "Bearbeiten",
+  "delete": "Löschen",
+  "admin": "Admin",
+  "administrator": "Administrator",
+  "user": "Benutzer",
+  "active": "Aktiv",
+  "inactive": "Inaktiv",
+  "createdAt": "Erstellt am",
+  "lastLogin": "Letzte Anmeldung",
+  "never": "Nie",
+  "noAccounts": "Keine Konten gefunden",
+  "loading": "Lädt...",
+  "permissionsCount": "Berechtigungen",
+  "requiredByOtherPermissions": "Erforderlich durch andere aktivierte Berechtigungen",
+  "filters": {
+    "search": "Suchen",
+    "searchPlaceholder": "Benutzername, Name oder E-Mail",
+    "role": "Rolle",
+    "status": "Status",
+    "all": "Alle",
+    "reset": "Zurücksetzen"
+  },
+  "pagination": {
+    "page": "Seite",
+    "of": "von",
+    "previous": "Zurück",
+    "next": "Weiter"
+  },
+  "errors": {
+    "usernameExists": "Benutzername existiert bereits",
+    "usernameInvalidCharacters": "Benutzername enthält ungültige Zeichen",
+    "createFailed": "Konto konnte nicht erstellt werden",
+    "updateFailed": "Konto konnte nicht aktualisiert werden",
+    "deleteFailed": "Konto konnte nicht gelöscht werden",
+    "requiredFields": "Bitte füllen Sie alle Pflichtfelder aus",
+    "passwordsDoNotMatch": "Passwörter stimmen nicht überein",
+    "passwordTooShort": "Passwort muss mindestens 6 Zeichen lang sein"
+  },
+  "success": {
+    "createSuccess": "Konto erfolgreich erstellt",
+    "updateSuccess": "Konto erfolgreich aktualisiert",
+    "deleteSuccess": "Konto erfolgreich gelöscht"
+  },
+  "form": {
+    "username": "Benutzername",
+    "fullName": "Vollständiger Name",
+    "email": "E-Mail (Optional)",
+    "password": "Passwort",
+    "newPassword": "Neues Passwort",
+    "changePassword": "Passwort ändern",
+    "confirmPassword": "Passwort bestätigen",
+    "isAdmin": "Administrator (Voller Zugriff)",
+    "isActive": "Aktiv",
+    "role": "Rolle",
+    "selectRole": "Rolle auswählen",
+    "roleAndPermissions": "Rolle & Berechtigungen",
+    "permissions": "Berechtigungen",
+    "permissionsDescription": "Wählen Sie die Berechtigungen für dieses Konto. Alle Berechtigungen sind standardmäßig aktiviert.",
+    "customPermissionsDescription": "Benutzerdefinierte Berechtigungen für dieses Konto konfigurieren",
+    "rolePermissionsReadOnly": "Diese Berechtigungen werden basierend auf der ausgewählten Rolle festgelegt. Wählen Sie 'Benutzerdefiniert', um Berechtigungen zu ändern.",
+    "roleCustomHint": "Berechtigungen unten manuell konfigurieren",
+    "roleAutoHint": "Berechtigungen werden automatisch basierend auf der ausgewählten Rolle festgelegt",
+    "cancel": "Abbrechen",
+    "submit": "Konto erstellen",
+    "update": "Konto aktualisieren",
+    "confirm": "Bestätigen"
+  },
+  "alert": {
+    "deleteAccount": "Konto löschen",
+    "deleteAccountMessage": "Möchten Sie das Konto \"{{username}}\" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+  },
+  "permissions": {
+    "title": "Berechtigungen",
+    "adminFullAccess": "Administrator-Konto - Vollzugriff auf alle Funktionen"
+  },
+  "roles": {
+    "admin": {
+      "label": "Administrator",
+      "description": "Vollzugriff auf alle Funktionen und Einstellungen"
+    },
+    "manager": {
+      "label": "Manager",
+      "description": "Zugriff auf Betrieb und Berichte, eingeschränkte Systemeinstellungen"
+    },
+    "coach": {
+      "label": "Trainer",
+      "description": "Zugriff auf Mitglieder, Mitgliedschaften, Tarife und Check-ins"
+    },
+    "receptionist": {
+      "label": "Rezeptionist",
+      "description": "Zugriff auf Check-ins und grundlegende Mitgliederinformationen"
+    },
+    "custom": {
+      "label": "Benutzerdefiniert",
+      "description": "Manuell konfigurierte benutzerdefinierte Berechtigungen"
+    }
+  },
+  "pages": {
+    "dashboard": "Dashboard",
+    "members": "Mitglieder",
+    "memberships": "Mitgliedschaften",
+    "plans": "Tarife",
+    "checkins": "Check-ins",
+    "reports": "Berichte",
+    "settings": "Einstellungen",
+    "accounts": "Konten"
+  },
+  "permissionLabels": {
+    "dashboard.view_financial": "Kann Finanzdaten einsehen",
+    "members.view": "Kann Mitgliederliste einsehen",
+    "members.create": "Kann Mitglieder erstellen",
+    "members.edit": "Kann Mitglieder bearbeiten",
+    "members.delete": "Kann Mitglieder löschen",
+    "members.view_details": "Kann Mitgliederdetails einsehen",
+    "memberships.view": "Kann Mitgliedschaftsliste einsehen",
+    "memberships.create": "Kann Mitgliedschaften erstellen",
+    "memberships.edit": "Kann Mitgliedschaften bearbeiten",
+    "memberships.delete": "Kann Mitgliedschaften löschen",
+    "memberships.view_details": "Kann Mitgliedschaftsdetails einsehen",
+    "memberships.extend": "Kann Mitgliedschaften verlängern",
+    "memberships.view_payments": "Kann Zahlungshistorie einsehen",
+    "memberships.add_payment": "Kann Zahlungen hinzufügen",
+    "memberships.complete_payment": "Kann geplante Zahlungen abschließen",
+    "memberships.modify_price": "Kann Mitgliedschaftspreise ändern",
+    "plans.view": "Kann Tarifliste einsehen",
+    "plans.create": "Kann Tarife erstellen",
+    "plans.edit": "Kann Tarife bearbeiten",
+    "plans.delete": "Kann Tarife löschen",
+    "checkins.view": "Kann Check-in-Liste einsehen",
+    "checkins.create": "Kann Check-ins durchführen",
+    "checkins.delete": "Kann Check-ins löschen",
+    "reports.generate": "Kann Berichte generieren",
+    "reports.view": "Kann Berichte einsehen",
+    "reports.save": "Kann Berichte speichern/herunterladen",
+    "reports.delete": "Kann Berichte löschen",
+    "settings.view": "Kann Einstellungen einsehen",
+    "settings.edit": "Kann Einstellungen bearbeiten",
+    "settings.manage_backups": "Kann Backups verwalten",
+    "accounts.view": "Kann Benutzerkonten einsehen",
+    "accounts.create": "Kann Benutzerkonten erstellen",
+    "accounts.edit": "Kann Benutzerkonten bearbeiten",
+    "accounts.delete": "Kann Benutzerkonten löschen",
+    "accounts.manage_permissions": "Kann Berechtigungen verwalten",
+    "accounts.change_password": "Kann Passwörter ändern",
+    "accounts.manage_admin": "Kann Admin-Status verwalten"
+  }
+}

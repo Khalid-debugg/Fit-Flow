@@ -1,0 +1,51 @@
+{
+  "title": "Berichte",
+  "subtitle": "Detaillierte Berichte generieren und herunterladen",
+  "filters": {
+    "title": "Berichtsfilter",
+    "quickSelect": "Schnellauswahl",
+    "thisWeek": "Diese Woche",
+    "thisMonth": "Dieser Monat",
+    "thisYear": "Dieses Jahr",
+    "customRange": "Benutzerdefinierter Zeitraum",
+    "startDate": "Startdatum",
+    "endDate": "Enddatum",
+    "generate": "Bericht generieren",
+    "generating": "Wird generiert...",
+    "selectDate": "Datum auswählen"
+  },
+  "preview": {
+    "title": "Bericht",
+    "print": "Drucken",
+    "download": "Als PDF speichern",
+    "summary": "Zusammenfassung"
+  },
+  "pdf": {
+    "title": "Geschäftsleistungsbericht",
+    "generatedOn": "Erstellt am",
+    "keyMetrics": "Wichtige Leistungsindikatoren",
+    "additionalMetrics": "Zusätzliche Kennzahlen",
+    "totalRevenue": "Gesamtumsatz",
+    "newMembers": "Neue Mitglieder",
+    "newMemberships": "Neue Mitgliedschaften",
+    "totalCheckIns": "Gesamte Check-ins",
+    "totalMembers": "Gesamte Mitglieder",
+    "activeMembers": "Aktive Mitglieder",
+    "avgDailyRevenue": "Durchschn. tägl. Umsatz",
+    "avgDailyCheckIns": "Durchschn. tägl. Check-ins",
+    "previous": "Vorheriger Zeitraum",
+    "difference": "Differenz",
+    "footer": "© 2025 Fitnessstudio-Verwaltungssystem. Alle Rechte vorbehalten."
+  },
+  "empty": {
+    "title": "Kein Bericht generiert",
+    "description": "Wählen Sie einen Zeitraum aus und klicken Sie auf 'Bericht generieren', um Analysen anzuzeigen"
+  },
+  "messages": {
+    "generated": "Bericht erfolgreich generiert",
+    "downloaded": "Bericht erfolgreich gespeichert",
+    "printDialog": "Druckdialog wird geöffnet... Wählen Sie 'Als PDF speichern' als Ziel",
+    "error": "Bericht konnte nicht generiert werden",
+    "downloadError": "Bericht konnte nicht gespeichert werden"
+  }
+}

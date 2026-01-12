@@ -1,0 +1,51 @@
+{
+  "title": "Rapports",
+  "subtitle": "Générer et télécharger des rapports détaillés",
+  "filters": {
+    "title": "Filtres de Rapport",
+    "quickSelect": "Sélection Rapide",
+    "thisWeek": "Cette Semaine",
+    "thisMonth": "Ce Mois",
+    "thisYear": "Cette Année",
+    "customRange": "Plage de Dates Personnalisée",
+    "startDate": "Date de Début",
+    "endDate": "Date de Fin",
+    "generate": "Générer le Rapport",
+    "generating": "Génération...",
+    "selectDate": "Sélectionner une date"
+  },
+  "preview": {
+    "title": "Rapport",
+    "print": "Imprimer",
+    "download": "Enregistrer en PDF",
+    "summary": "Résumé"
+  },
+  "pdf": {
+    "title": "Rapport de Performance Commerciale",
+    "generatedOn": "Généré le",
+    "keyMetrics": "Indicateurs Clés de Performance",
+    "additionalMetrics": "Métriques Supplémentaires",
+    "totalRevenue": "Revenu Total",
+    "newMembers": "Nouveaux Membres",
+    "newMemberships": "Nouvelles Adhésions",
+    "totalCheckIns": "Total des Pointages",
+    "totalMembers": "Total des Membres",
+    "activeMembers": "Membres Actifs",
+    "avgDailyRevenue": "Revenu Quotidien Moyen",
+    "avgDailyCheckIns": "Pointages Quotidiens Moyens",
+    "previous": "Période Précédente",
+    "difference": "Différence",
+    "footer": "© 2025 Système de Gestion de Salle de Sport. Tous droits réservés."
+  },
+  "empty": {
+    "title": "Aucun Rapport Généré",
+    "description": "Sélectionnez une plage de dates et cliquez sur 'Générer le Rapport' pour voir les analyses"
+  },
+  "messages": {
+    "generated": "Rapport généré avec succès",
+    "downloaded": "Rapport enregistré avec succès",
+    "printDialog": "Ouverture de la boîte de dialogue d'impression... Sélectionnez 'Enregistrer en PDF' comme destination",
+    "error": "Échec de la génération du rapport",
+    "downloadError": "Échec de l'enregistrement du rapport"
+  }
+}

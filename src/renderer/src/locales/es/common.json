@@ -1,0 +1,55 @@
+{
+  "app": {
+    "name": "FitFlow",
+    "tagline": "Gestión de Gimnasio"
+  },
+  "nav": {
+    "dashboard": "Panel Principal",
+    "members": "Miembros",
+    "plans": "Planes",
+    "checkin": "Registro",
+    "memberships": "Membresías",
+    "reports": "Informes",
+    "accounts": "Cuentas",
+    "settings": "Configuración"
+  },
+  "user": {
+    "admin": "Administrador",
+    "gymOwner": "Dueño del Gimnasio",
+    "administrator": "Administrador",
+    "user": "Usuario",
+    "logout": "Cerrar Sesión",
+    "logoutSuccess": "Sesión cerrada exitosamente",
+    "logoutFailed": "Error al cerrar sesión"
+  },
+  "login": {
+    "welcomeBack": "Inicia sesión en tu cuenta",
+    "username": "Usuario",
+    "usernamePlaceholder": "Ingresa tu usuario",
+    "password": "Contraseña",
+    "passwordPlaceholder": "Ingresa tu contraseña",
+    "login": "Iniciar Sesión",
+    "loggingIn": "Iniciando sesión...",
+    "success": "¡Bienvenido de nuevo!",
+    "failed": "Error al iniciar sesión. Por favor, intenta de nuevo.",
+    "invalidCredentials": "Usuario o contraseña incorrectos",
+    "accountInactive": "Tu cuenta está inactiva. Por favor, contacta al administrador.",
+    "fillFields": "Por favor, completa todos los campos",
+    "defaultCredentials": "Credenciales predeterminadas:"
+  },
+  "dashboard": {
+    "welcome": "¡Bienvenido de Nuevo!",
+    "overview": "Resumen",
+    "totalMembers": "Total de Miembros",
+    "activeMembers": "Miembros Activos",
+    "todayCheckins": "Registros de Hoy",
+    "monthlyRevenue": "Ingresos Mensuales",
+    "recentActivity": "Actividad Reciente",
+    "expiringMemberships": "Vencen Pronto",
+    "quickActions": "Acciones Rápidas",
+    "checkInMember": "Registrar Miembro",
+    "addMember": "Agregar Miembro",
+    "recordPayment": "Registrar Pago",
+    "viewReports": "Ver Informes"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "app": {
+    "name": "FitFlow",
+    "tagline": "Gestion de Salle de Sport"
+  },
+  "nav": {
+    "dashboard": "Tableau de Bord",
+    "members": "Membres",
+    "plans": "Abonnements",
+    "checkin": "Pointage",
+    "memberships": "Adhésions",
+    "reports": "Rapports",
+    "accounts": "Comptes",
+    "settings": "Paramètres"
+  },
+  "user": {
+    "admin": "Admin",
+    "gymOwner": "Propriétaire de Salle",
+    "administrator": "Administrateur",
+    "user": "Utilisateur",
+    "logout": "Déconnexion",
+    "logoutSuccess": "Déconnexion réussie",
+    "logoutFailed": "Échec de la déconnexion"
+  },
+  "login": {
+    "welcomeBack": "Connectez-vous à votre compte",
+    "username": "Nom d'utilisateur",
+    "usernamePlaceholder": "Entrez votre nom d'utilisateur",
+    "password": "Mot de passe",
+    "passwordPlaceholder": "Entrez votre mot de passe",
+    "login": "Se Connecter",
+    "loggingIn": "Connexion en cours...",
+    "success": "Bon retour !",
+    "failed": "Échec de la connexion. Veuillez réessayer.",
+    "invalidCredentials": "Nom d'utilisateur ou mot de passe invalide",
+    "accountInactive": "Votre compte est inactif. Veuillez contacter l'administrateur.",
+    "fillFields": "Veuillez remplir tous les champs",
+    "defaultCredentials": "Identifiants par défaut :"
+  },
+  "dashboard": {
+    "welcome": "Bon Retour !",
+    "overview": "Vue d'ensemble",
+    "totalMembers": "Total des Membres",
+    "activeMembers": "Membres Actifs",
+    "todayCheckins": "Pointages du Jour",
+    "monthlyRevenue": "Revenu Mensuel",
+    "recentActivity": "Activité Récente",
+    "expiringMemberships": "Expire Bientôt",
+    "quickActions": "Actions Rapides",
+    "checkInMember": "Pointer un Membre",
+    "addMember": "Ajouter un Membre",
+    "recordPayment": "Enregistrer un Paiement",
+    "viewReports": "Voir les Rapports"
+  }
+}

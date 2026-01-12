@@ -1,0 +1,67 @@
+{
+  "welcome": "Willkommen zurück, Admin!",
+  "subtitle": "Hier ist, was heute in Ihrem Fitnessstudio passiert",
+  "refresh": "Aktualisieren",
+  "searchOrScan": "Mitglied suchen oder Barcode scannen",
+  "searchMember": "Mitglied suchen",
+  "searchPlaceholder": "Nach Name oder Telefon suchen...",
+  "barcodeReady": "Bereit für Barcode-Scan oder manuelle Suche",
+  "noMembersFound": "Keine Mitglieder gefunden",
+  "cancel": "Abbrechen",
+  "confirm": "Bestätigen",
+  "revenueChart": {
+    "title": "Umsatzübersicht",
+    "subtitle": "Umsatzanalyse der letzten 30 Tage",
+    "dailyRevenue": "Täglicher Umsatz",
+    "movingAverage": "7-Tage-Durchschnitt",
+    "thisMonth": "Dieser Monat",
+    "lastMonth": "Letzter Monat",
+    "avgDaily": "Durchschn./Tag",
+    "highestDay": "Höchster Tag"
+  },
+
+  "recentCheckIns": {
+    "title": "Letzte Check-ins",
+    "noData": "Heute noch keine Check-ins"
+  },
+
+  "expiringMemberships": {
+    "title": "Bald ablaufende Mitgliedschaften",
+    "noData": "Keine Mitgliedschaften laufen in den nächsten 7 Tagen ab",
+    "expiringToday": "Läuft heute ab",
+    "expiringTomorrow": "Läuft morgen ab",
+    "expiringInDays": "Läuft in {{days}} Tagen ab",
+    "renew": "Erneuern"
+  },
+
+  "quickActions": {
+    "title": "Schnellaktionen",
+    "addMember": "Mitglied hinzufügen",
+    "addMembership": "Mitgliedschaft hinzufügen",
+    "createPlan": "Tarif erstellen",
+    "viewMembers": "Mitglieder anzeigen",
+    "viewMemberships": "Mitgliedschaften anzeigen",
+    "viewPlans": "Tarife anzeigen"
+  },
+
+  "status": {
+    "active": "Aktiv",
+    "expired": "Abgelaufen",
+    "none": "Keine Mitgliedschaft"
+  },
+  "errors": { "extendFail": "Verlängerung der Mitgliedschaft fehlgeschlagen" },
+
+  "success": {
+    "extendSuccess": "Die Mitgliedschaft wurde erfolgreich verlängert"
+  },
+  "pagination": {
+    "page": "Seite",
+    "of": "von",
+    "previous": "Zurück",
+    "next": "Weiter"
+  },
+  "alert": {
+    "renewMembership": "Mitgliedschaft erneuern",
+    "renewMembershipMessage": "Möchten Sie die Mitgliedschaft von {{memberName}} wirklich erneuern? Das neue Enddatum wird {{newEndDate}} sein. Diese Aktion kann nicht rückgängig gemacht werden."
+  }
+}

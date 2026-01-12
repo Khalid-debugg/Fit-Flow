@@ -1,0 +1,123 @@
+{
+  "title": "Pointages",
+  "quickCheckIn": "Pointage Rapide",
+  "scanPrompt": "Scanner le code-barres ou entrer l'identifiant du membre",
+  "barcodeReady": "Scanner de code-barres prêt",
+  "phoneNumber": "Numéro de Téléphone",
+  "enterPhoneNumber": "Entrer le numéro de téléphone...",
+  "pressEnter": "Appuyez sur Entrée pour pointer",
+  "confirm": "Confirmer le Pointage",
+  "confirmCheckIn": "Confirmer le Pointage",
+  "cancel": "Annuler",
+  "close": "Fermer",
+  "processing": "Traitement...",
+  "loading": "Chargement...",
+  "noCheckIns": "Aucun pointage trouvé",
+  "memberName": "Nom du Membre",
+  "phone": "Téléphone",
+  "membershipStatus": "Statut de l'Adhésion",
+  "plan": "Plan",
+  "endDate": "Date de Fin",
+  "remainingCheckIns": "Pointages Restants",
+
+  "stats": {
+    "today": "Aujourd'hui",
+    "week": "Cette Semaine",
+    "month": "Ce Mois",
+    "active": "Membres Actifs"
+  },
+
+  "status": {
+    "active": "Actif",
+    "inactive": "Inactif",
+    "expired": "Expiré",
+    "none": "Aucune Adhésion"
+  },
+
+  "messages": {
+    "welcome": "Bon retour !",
+    "daysRemaining": "jours restants",
+    "expired": "Expiré",
+    "daysAgo": "il y a",
+    "noMembership": "Aucune adhésion active",
+    "expiredWarning": "L'adhésion de ce membre a expiré. Veuillez renouveler avant de pointer.",
+    "noMembershipWarning": "Ce membre n'a aucune adhésion active. Veuillez souscrire avant de pointer.",
+    "alreadyCheckedInWarning": "Ce membre a déjà pointé aujourd'hui à {{time}}. Voulez-vous pointer à nouveau ?",
+    "pendingPaymentWarning": "Paiement en attente : {{amount}}",
+    "pendingPaymentScheduledWarning": "Paiement en attente : {{amount}} (Échéance : {{date}})",
+    "noCheckInsRemaining": "Aucun pointage restant. Veuillez renouveler ou mettre à niveau votre adhésion.",
+    "lowCheckInsWarning": "Seulement {{count}} pointages restants. Pensez à renouveler bientôt.",
+    "checkInSuccess": "Pointage réussi !",
+    "memberNotFound": "Membre introuvable avec ce numéro de téléphone",
+    "alreadyCheckedIn": "Déjà pointé aujourd'hui"
+  },
+
+  "table": {
+    "index": "#",
+    "member": "Membre",
+    "phone": "Téléphone",
+    "date": "Date",
+    "time": "Heure",
+    "status": "Statut",
+    "actions": "Actions"
+  },
+
+  "filter": {
+    "search": "Rechercher",
+    "searchPlaceholder": "Rechercher par nom ou téléphone du membre...",
+    "dateFrom": "Date Depuis",
+    "dateTo": "Date Jusqu'à",
+    "status": "Statut",
+    "all": "Tous",
+    "reset": "Réinitialiser",
+    "pickDate": "Choisir une date"
+  },
+
+  "pagination": {
+    "page": "Page",
+    "of": "de",
+    "previous": "Précédent",
+    "next": "Suivant"
+  },
+
+  "history": {
+    "title": "Historique des Pointages",
+    "subtitle": "Les 30 derniers pointages",
+    "noHistory": "Aucun historique de pointage trouvé",
+    "showing": "Affichage de",
+    "records": "enregistrements"
+  },
+
+  "viewHistory": "Voir l'Historique",
+
+  "alert": {
+    "deleteCheckIn": "Supprimer le Pointage",
+    "deleteCheckInMessage": "Êtes-vous sûr de vouloir supprimer ce pointage ? Cette action ne peut pas être annulée."
+  },
+
+  "form": {
+    "cancel": "Annuler",
+    "confirm": "Confirmer"
+  },
+
+  "success": {
+    "deleteSuccess": "Pointage supprimé avec succès"
+  },
+
+  "barcode": {
+    "title": "Carte de Membre",
+    "gymCard": "CARTE DE MEMBRE DE SALLE DE SPORT",
+    "joined": "Inscrit",
+    "download": "Télécharger PDF",
+    "print": "Imprimer la Carte",
+    "downloadSuccess": "PDF téléchargé avec succès",
+    "downloadError": "Échec du téléchargement du PDF",
+    "printError": "Échec de l'impression de la carte"
+  },
+
+  "errors": {
+    "loadFailed": "Échec du chargement des pointages",
+    "createFailed": "Échec de la création du pointage",
+    "deleteFailed": "Échec de la suppression du pointage"
+  }
+}

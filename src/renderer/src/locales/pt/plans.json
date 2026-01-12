@@ -1,0 +1,84 @@
+{
+  "title": "Planos",
+  "addNew": "Adicionar Novo Plano",
+  "editPlan": "Editar Plano",
+  "name": "Nome",
+  "price": "Preço",
+  "duration": "Duração",
+  "description": "Descrição",
+  "status": "Status",
+  "active": "Ativo",
+  "inactive": "Inativo",
+  "actions": "Ações",
+  "edit": "Editar",
+  "delete": "Excluir",
+  "noPlans": "Nenhum plano encontrado",
+  "loading": "Carregando...",
+  "days_one": "{{count}} Dia",
+  "days_other": "{{count}} Dias",
+  "weeks_one": "{{count}} Semana",
+  "weeks_other": "{{count}} Semanas",
+  "months_one": "{{count}} Mês",
+  "months_other": "{{count}} Meses",
+  "years_one": "{{count}} Ano",
+  "years_other": "{{count}} Anos",
+  "checkInLimitDisplay_one": "{{count}} Check-in",
+  "checkInLimitDisplay_other": "{{count}} Check-ins",
+  "within": "em",
+  "specialOffer": "Oferta Especial",
+  "filters": {
+    "title": "Filtros",
+    "search": "Buscar",
+    "searchPlaceholder": "Buscar por nome ou descrição",
+    "status": "Status",
+    "all": "Todos",
+    "reset": "Redefinir",
+    "daily": "Diário",
+    "weekly": "Semanal",
+    "monthly": "Mensal",
+    "annually": "Anual",
+    "custom": "Personalizado",
+    "offer": "Oferta"
+  },
+  "pagination": {
+    "page": "Página",
+    "of": "de",
+    "previous": "Anterior",
+    "next": "Próxima"
+  },
+  "errors": {
+    "errorTitle": "Erro",
+    "ok": "OK",
+    "nameExists": "Este nome de plano já existe",
+    "createFailed": "Falha ao criar plano",
+    "updateFailed": "Falha ao atualizar plano",
+    "deleteFailed": "Falha ao excluir plano",
+    "deleteConfirm": "Tem certeza que deseja excluir este plano?"
+  },
+  "success": {
+    "createSuccess": "Plano criado com sucesso",
+    "updateSuccess": "Plano atualizado com sucesso",
+    "deleteSuccess": "Plano excluído com sucesso"
+  },
+  "planTypes": {
+    "duration": "Baseado em duração",
+    "checkin": "Baseado em check-ins"
+  },
+  "form": {
+    "name": "Nome",
+    "price": "Preço",
+    "duration": "Duração (em dias)",
+    "description": "Descrição",
+    "status": "Status",
+    "planType": "Tipo de Plano",
+    "checkInLimit": "Limite de Check-ins",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "submit": "Adicionar Plano",
+    "update": "Atualizar Plano"
+  },
+  "alert": {
+    "deletePlan": "Excluir Plano",
+    "deletePlanMessage": "Tem certeza que deseja excluir este plano? Esta ação não pode ser desfeita."
+  }
+}

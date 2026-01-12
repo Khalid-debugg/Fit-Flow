@@ -1,0 +1,55 @@
+{
+  "app": {
+    "name": "FitFlow",
+    "tagline": "Fitnessstudio-Verwaltung"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "members": "Mitglieder",
+    "plans": "Tarife",
+    "checkin": "Check-in",
+    "memberships": "Mitgliedschaften",
+    "reports": "Berichte",
+    "accounts": "Konten",
+    "settings": "Einstellungen"
+  },
+  "user": {
+    "admin": "Admin",
+    "gymOwner": "Studiobetreiber",
+    "administrator": "Administrator",
+    "user": "Benutzer",
+    "logout": "Abmelden",
+    "logoutSuccess": "Erfolgreich abgemeldet",
+    "logoutFailed": "Abmeldung fehlgeschlagen"
+  },
+  "login": {
+    "welcomeBack": "Bei Ihrem Konto anmelden",
+    "username": "Benutzername",
+    "usernamePlaceholder": "Benutzernamen eingeben",
+    "password": "Passwort",
+    "passwordPlaceholder": "Passwort eingeben",
+    "login": "Anmelden",
+    "loggingIn": "Anmeldung läuft...",
+    "success": "Willkommen zurück!",
+    "failed": "Anmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.",
+    "invalidCredentials": "Ungültiger Benutzername oder Passwort",
+    "accountInactive": "Ihr Konto ist inaktiv. Bitte kontaktieren Sie den Administrator.",
+    "fillFields": "Bitte füllen Sie alle Felder aus",
+    "defaultCredentials": "Standard-Anmeldedaten:"
+  },
+  "dashboard": {
+    "welcome": "Willkommen zurück!",
+    "overview": "Übersicht",
+    "totalMembers": "Gesamte Mitglieder",
+    "activeMembers": "Aktive Mitglieder",
+    "todayCheckins": "Heutige Check-ins",
+    "monthlyRevenue": "Monatlicher Umsatz",
+    "recentActivity": "Letzte Aktivitäten",
+    "expiringMemberships": "Läuft bald ab",
+    "quickActions": "Schnellaktionen",
+    "checkInMember": "Mitglied einchecken",
+    "addMember": "Mitglied hinzufügen",
+    "recordPayment": "Zahlung erfassen",
+    "viewReports": "Berichte ansehen"
+  }
+}

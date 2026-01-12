@@ -1,0 +1,93 @@
+{
+  "title": "Paramètres",
+  "subtitle": "Configurer votre système de gestion de salle de sport",
+  "save": "Enregistrer les Modifications",
+  "saving": "Enregistrement...",
+  "gymSettings": "Paramètres de la Salle",
+  "regional": {
+    "title": "Paramètres Régionaux",
+    "language": "Langue",
+    "arabic": "العربية (Arabe)",
+    "english": "English (Anglais)",
+    "spanish": "Español (Espagnol)",
+    "portuguese": "Português (Portugais)",
+    "french": "Français",
+    "german": "Deutsch (Allemand)",
+    "currency": "Devise",
+    "dateFormat": "Format de Date",
+    "searchCurrency": "Rechercher par code ou nom de devise...",
+    "noCurrencyFound": "Aucune devise trouvée"
+  },
+  "gym": {
+    "title": "Informations de la Salle",
+    "name": "Nom de la Salle",
+    "namePlaceholder": "Entrer le nom de la salle",
+    "address": "Adresse (Optionnel)",
+    "addressPlaceholder": "Entrer l'adresse de la salle",
+    "phone": "Numéro de Téléphone (Optionnel)",
+    "phonePlaceholder": "Entrer le numéro de téléphone",
+    "logo": "Logo de la Salle",
+    "selectLogo": "Sélectionner le Logo",
+    "changeLogo": "Changer le Logo",
+    "defaultLogo": "Utilisation du logo FitFlow par défaut",
+    "logoTip": "Ce logo apparaîtra sur les codes-barres des membres et les reçus",
+    "barcodeSize": "Taille de la Carte Code-Barres",
+    "keychainSize": "Porte-clés (54x32mm)",
+    "cardSize": "Carte d'Identité (85,6x54mm)"
+  },
+  "members": {
+    "title": "Paramètres des Membres",
+    "allowedGenders": "Sexes Autorisés",
+    "both": "Les Deux (Homme et Femme)",
+    "maleOnly": "Hommes Uniquement",
+    "femaleOnly": "Femmes Uniquement"
+  },
+  "payment": {
+    "title": "Paramètres de Paiement",
+    "defaultMethod": "Mode de Paiement par Défaut",
+    "cash": "Espèces",
+    "card": "Carte",
+    "transfer": "Virement Bancaire",
+    "e-wallet": "Portefeuille Électronique"
+  },
+  "checkIns": {
+    "title": "Paramètres de Pointage",
+    "allowInstantCheckIn": "Autoriser le Pointage Instantané",
+    "allowInstantCheckInDesc": "Pointer les membres immédiatement sans boîte de dialogue de confirmation"
+  },
+  "backup": {
+    "title": "Sauvegarde et Gestion des Données",
+    "autoBackup": "Sauvegarde Automatique",
+    "frequency": "Fréquence de Sauvegarde",
+    "daily": "Quotidienne",
+    "weekly": "Hebdomadaire",
+    "monthly": "Mensuelle",
+    "createNow": "Créer une Sauvegarde Maintenant",
+    "creating": "Création de la Sauvegarde...",
+    "info": "Informations de Sauvegarde",
+    "lastBackup": "Dernière Sauvegarde",
+    "never": "Jamais",
+    "totalBackups": "Total des Sauvegardes",
+    "totalSize": "Taille Totale",
+    "tip": "Les sauvegardes sont automatiquement conservées pour les 10 dernières versions. Les anciennes sauvegardes sont supprimées automatiquement.",
+    "success": "Sauvegarde créée avec succès",
+    "failed": "Échec de la création de la sauvegarde",
+    "size": "Taille",
+    "loading": "Chargement des informations de sauvegarde...",
+    "selectFolder": "Sélectionner le Dossier de Sauvegarde",
+    "backupFolder": "Dossier de Sauvegarde",
+    "noFolderSelected": "Aucun dossier sélectionné",
+    "availableBackups": "Sauvegardes Disponibles",
+    "noBackups": "Aucune sauvegarde disponible",
+    "restore": "Restaurer",
+    "restoring": "Restauration...",
+    "restoreSuccess": "Base de données restaurée avec succès",
+    "restoreFailed": "Échec de la restauration de la sauvegarde",
+    "restoreWarning": "Cela remplacera votre base de données actuelle. Êtes-vous sûr ?",
+    "openFolder": "Ouvrir le Dossier"
+  },
+  "messages": {
+    "saved": "Paramètres enregistrés avec succès",
+    "error": "Échec de l'enregistrement des paramètres"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "welcome": "Bem-vindo de volta, Admin!",
+  "subtitle": "Veja o que está acontecendo com sua academia hoje",
+  "refresh": "Atualizar",
+  "searchOrScan": "Buscar membro ou escanear código de barras",
+  "searchMember": "Buscar Membro",
+  "searchPlaceholder": "Buscar por nome ou telefone...",
+  "barcodeReady": "Pronto para escanear código de barras ou busca manual",
+  "noMembersFound": "Nenhum membro encontrado",
+  "cancel": "Cancelar",
+  "confirm": "Confirmar",
+  "revenueChart": {
+    "title": "Visão Geral da Receita",
+    "subtitle": "Análise de receita dos últimos 30 dias",
+    "dailyRevenue": "Receita Diária",
+    "movingAverage": "Média de 7 Dias",
+    "thisMonth": "Este Mês",
+    "lastMonth": "Mês Passado",
+    "avgDaily": "Média/Dia",
+    "highestDay": "Dia Mais Alto"
+  },
+
+  "recentCheckIns": {
+    "title": "Check-ins Recentes",
+    "noData": "Nenhum check-in ainda hoje"
+  },
+
+  "expiringMemberships": {
+    "title": "Matrículas Vencendo em Breve",
+    "noData": "Nenhuma matrícula vencendo nos próximos 7 dias",
+    "expiringToday": "Vence hoje",
+    "expiringTomorrow": "Vence amanhã",
+    "expiringInDays": "Vence em {{days}} dias",
+    "renew": "Renovar"
+  },
+
+  "quickActions": {
+    "title": "Ações Rápidas",
+    "addMember": "Adicionar Membro",
+    "addMembership": "Adicionar Matrícula",
+    "createPlan": "Criar Plano",
+    "viewMembers": "Ver Membros",
+    "viewMemberships": "Ver Matrículas",
+    "viewPlans": "Ver Planos"
+  },
+
+  "status": {
+    "active": "Ativo",
+    "expired": "Expirado",
+    "none": "Sem Matrícula"
+  },
+  "errors": { "extendFail": "Falha na extensão da matrícula" },
+
+  "success": {
+    "extendSuccess": "A matrícula foi estendida com sucesso"
+  },
+  "pagination": {
+    "page": "Página",
+    "of": "de",
+    "previous": "Anterior",
+    "next": "Próxima"
+  },
+  "alert": {
+    "renewMembership": "Renovar Matrícula",
+    "renewMembershipMessage": "Tem certeza que deseja renovar a matrícula de {{memberName}}? A nova data de término será {{newEndDate}}. Esta ação não pode ser desfeita."
+  }
+}

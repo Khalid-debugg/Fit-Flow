@@ -1,0 +1,67 @@
+{
+  "welcome": "Bon retour, Admin !",
+  "subtitle": "Voici ce qui se passe dans votre salle aujourd'hui",
+  "refresh": "Actualiser",
+  "searchOrScan": "Rechercher un membre ou scanner le code-barres",
+  "searchMember": "Rechercher un Membre",
+  "searchPlaceholder": "Rechercher par nom ou téléphone...",
+  "barcodeReady": "Prêt pour le scan de code-barres ou la recherche manuelle",
+  "noMembersFound": "Aucun membre trouvé",
+  "cancel": "Annuler",
+  "confirm": "Confirmer",
+  "revenueChart": {
+    "title": "Aperçu des Revenus",
+    "subtitle": "Analyse des revenus des 30 derniers jours",
+    "dailyRevenue": "Revenu Quotidien",
+    "movingAverage": "Moyenne sur 7 Jours",
+    "thisMonth": "Ce Mois-ci",
+    "lastMonth": "Mois Dernier",
+    "avgDaily": "Moy/Jour",
+    "highestDay": "Jour le Plus Élevé"
+  },
+
+  "recentCheckIns": {
+    "title": "Pointages Récents",
+    "noData": "Aucun pointage aujourd'hui"
+  },
+
+  "expiringMemberships": {
+    "title": "Adhésions Expirant Bientôt",
+    "noData": "Aucune adhésion expirant dans les 7 prochains jours",
+    "expiringToday": "Expire aujourd'hui",
+    "expiringTomorrow": "Expire demain",
+    "expiringInDays": "Expire dans {{days}} jours",
+    "renew": "Renouveler"
+  },
+
+  "quickActions": {
+    "title": "Actions Rapides",
+    "addMember": "Ajouter un Membre",
+    "addMembership": "Ajouter une Adhésion",
+    "createPlan": "Créer un Plan",
+    "viewMembers": "Voir les Membres",
+    "viewMemberships": "Voir les Adhésions",
+    "viewPlans": "Voir les Plans"
+  },
+
+  "status": {
+    "active": "Actif",
+    "expired": "Expiré",
+    "none": "Aucune Adhésion"
+  },
+  "errors": { "extendFail": "Échec de la prolongation de l'adhésion" },
+
+  "success": {
+    "extendSuccess": "L'adhésion a été prolongée avec succès"
+  },
+  "pagination": {
+    "page": "Page",
+    "of": "de",
+    "previous": "Précédent",
+    "next": "Suivant"
+  },
+  "alert": {
+    "renewMembership": "Renouveler l'Adhésion",
+    "renewMembershipMessage": "Êtes-vous sûr de vouloir renouveler l'adhésion de {{memberName}} ? La nouvelle date de fin sera {{newEndDate}}. Cette action ne peut pas être annulée."
+  }
+}

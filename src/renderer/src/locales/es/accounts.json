@@ -1,0 +1,160 @@
+{
+  "title": "Cuentas",
+  "descripton": "Gestionar cuentas de usuario y permisos",
+  "addNew": "Crear Cuenta",
+  "basicInfo": "Información Básica",
+  "editAccount": "Editar Cuenta",
+  "viewAccount": "Detalles de Cuenta",
+  "username": "Usuario",
+  "fullName": "Nombre Completo",
+  "email": "Correo Electrónico",
+  "role": "Rol",
+  "status": "Estado",
+  "actions": "Acciones",
+  "edit": "Editar",
+  "delete": "Eliminar",
+  "admin": "Administrador",
+  "administrator": "Administrador",
+  "user": "Usuario",
+  "active": "Activo",
+  "inactive": "Inactivo",
+  "createdAt": "Creado el",
+  "lastLogin": "Último Acceso",
+  "never": "Nunca",
+  "noAccounts": "No se encontraron cuentas",
+  "loading": "Cargando...",
+  "permissionsCount": "permisos",
+  "requiredByOtherPermissions": "Requerido por otros permisos habilitados",
+  "filters": {
+    "search": "Buscar",
+    "searchPlaceholder": "Usuario, nombre o correo",
+    "role": "Rol",
+    "status": "Estado",
+    "all": "Todos",
+    "reset": "Restablecer"
+  },
+  "pagination": {
+    "page": "Página",
+    "of": "de",
+    "previous": "Anterior",
+    "next": "Siguiente"
+  },
+  "errors": {
+    "usernameExists": "El nombre de usuario ya existe",
+    "usernameInvalidCharacters": "El nombre de usuario contiene caracteres inválidos",
+    "createFailed": "Error al crear cuenta",
+    "updateFailed": "Error al actualizar cuenta",
+    "deleteFailed": "Error al eliminar cuenta",
+    "requiredFields": "Por favor, completa todos los campos requeridos",
+    "passwordsDoNotMatch": "Las contraseñas no coinciden",
+    "passwordTooShort": "La contraseña debe tener al menos 6 caracteres"
+  },
+  "success": {
+    "createSuccess": "Cuenta creada exitosamente",
+    "updateSuccess": "Cuenta actualizada exitosamente",
+    "deleteSuccess": "Cuenta eliminada exitosamente"
+  },
+  "form": {
+    "username": "Usuario",
+    "fullName": "Nombre Completo",
+    "email": "Correo Electrónico (Opcional)",
+    "password": "Contraseña",
+    "newPassword": "Nueva Contraseña",
+    "changePassword": "Cambiar Contraseña",
+    "confirmPassword": "Confirmar Contraseña",
+    "isAdmin": "Administrador (Acceso Completo)",
+    "isActive": "Activo",
+    "role": "Rol",
+    "selectRole": "Seleccionar un rol",
+    "roleAndPermissions": "Rol y Permisos",
+    "permissions": "Permisos",
+    "permissionsDescription": "Selecciona los permisos para esta cuenta. Todos los permisos están habilitados por defecto.",
+    "customPermissionsDescription": "Configurar permisos personalizados para esta cuenta",
+    "rolePermissionsReadOnly": "Estos permisos se establecen según el rol seleccionado. Selecciona el rol 'Personalizado' para modificar permisos.",
+    "roleCustomHint": "Configurar permisos manualmente a continuación",
+    "roleAutoHint": "Los permisos se establecerán automáticamente según el rol seleccionado",
+    "cancel": "Cancelar",
+    "submit": "Crear Cuenta",
+    "update": "Actualizar Cuenta",
+    "confirm": "Confirmar"
+  },
+  "alert": {
+    "deleteAccount": "Eliminar Cuenta",
+    "deleteAccountMessage": "¿Estás seguro de que deseas eliminar la cuenta \"{{username}}\"? Esta acción no se puede deshacer."
+  },
+  "permissions": {
+    "title": "Permisos",
+    "adminFullAccess": "Cuenta de Administrador - Acceso Completo a Todas las Funciones"
+  },
+  "roles": {
+    "admin": {
+      "label": "Administrador",
+      "description": "Acceso completo a todas las funciones y configuraciones"
+    },
+    "manager": {
+      "label": "Gerente",
+      "description": "Acceso a operaciones e informes, configuraciones limitadas del sistema"
+    },
+    "coach": {
+      "label": "Entrenador",
+      "description": "Acceso a miembros, membresías, planes y registros"
+    },
+    "receptionist": {
+      "label": "Recepcionista",
+      "description": "Acceso a registros e información básica de miembros"
+    },
+    "custom": {
+      "label": "Personalizado",
+      "description": "Permisos personalizados configurados manualmente"
+    }
+  },
+  "pages": {
+    "dashboard": "Panel Principal",
+    "members": "Miembros",
+    "memberships": "Membresías",
+    "plans": "Planes",
+    "checkins": "Registros",
+    "reports": "Informes",
+    "settings": "Configuración",
+    "accounts": "Cuentas"
+  },
+  "permissionLabels": {
+    "dashboard.view_financial": "Puede ver datos financieros",
+    "members.view": "Puede ver lista de miembros",
+    "members.create": "Puede crear miembros",
+    "members.edit": "Puede editar miembros",
+    "members.delete": "Puede eliminar miembros",
+    "members.view_details": "Puede ver detalles de miembros",
+    "memberships.view": "Puede ver lista de membresías",
+    "memberships.create": "Puede crear membresías",
+    "memberships.edit": "Puede editar membresías",
+    "memberships.delete": "Puede eliminar membresías",
+    "memberships.view_details": "Puede ver detalles de membresías",
+    "memberships.extend": "Puede extender membresías",
+    "memberships.view_payments": "Puede ver historial de pagos",
+    "memberships.add_payment": "Puede agregar pagos",
+    "memberships.complete_payment": "Puede completar pagos programados",
+    "memberships.modify_price": "Puede modificar precios de membresías",
+    "plans.view": "Puede ver lista de planes",
+    "plans.create": "Puede crear planes",
+    "plans.edit": "Puede editar planes",
+    "plans.delete": "Puede eliminar planes",
+    "checkins.view": "Puede ver lista de registros",
+    "checkins.create": "Puede realizar registros",
+    "checkins.delete": "Puede eliminar registros",
+    "reports.generate": "Puede generar informes",
+    "reports.view": "Puede ver informes",
+    "reports.save": "Puede guardar/descargar informes",
+    "reports.delete": "Puede eliminar informes",
+    "settings.view": "Puede ver configuración",
+    "settings.edit": "Puede editar configuración",
+    "settings.manage_backups": "Puede gestionar copias de seguridad",
+    "accounts.view": "Puede ver cuentas de usuario",
+    "accounts.create": "Puede crear cuentas de usuario",
+    "accounts.edit": "Puede editar cuentas de usuario",
+    "accounts.delete": "Puede eliminar cuentas de usuario",
+    "accounts.manage_permissions": "Puede gestionar permisos",
+    "accounts.change_password": "Puede cambiar contraseñas",
+    "accounts.manage_admin": "Puede gestionar estado de administrador"
+  }
+}

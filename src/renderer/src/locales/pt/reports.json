@@ -1,0 +1,51 @@
+{
+  "title": "Relatórios",
+  "subtitle": "Gerar e baixar relatórios detalhados",
+  "filters": {
+    "title": "Filtros de Relatório",
+    "quickSelect": "Seleção Rápida",
+    "thisWeek": "Esta Semana",
+    "thisMonth": "Este Mês",
+    "thisYear": "Este Ano",
+    "customRange": "Período Personalizado",
+    "startDate": "Data de Início",
+    "endDate": "Data de Término",
+    "generate": "Gerar Relatório",
+    "generating": "Gerando...",
+    "selectDate": "Selecionar data"
+  },
+  "preview": {
+    "title": "Relatório",
+    "print": "Imprimir",
+    "download": "Salvar como PDF",
+    "summary": "Resumo"
+  },
+  "pdf": {
+    "title": "Relatório de Desempenho do Negócio",
+    "generatedOn": "Gerado em",
+    "keyMetrics": "Indicadores Chave de Desempenho",
+    "additionalMetrics": "Métricas Adicionais",
+    "totalRevenue": "Receita Total",
+    "newMembers": "Novos Membros",
+    "newMemberships": "Novas Matrículas",
+    "totalCheckIns": "Total de Check-Ins",
+    "totalMembers": "Total de Membros",
+    "activeMembers": "Membros Ativos",
+    "avgDailyRevenue": "Receita Média Diária",
+    "avgDailyCheckIns": "Check-Ins Médios Diários",
+    "previous": "Período Anterior",
+    "difference": "Diferença",
+    "footer": "© 2025 Sistema de Gestão de Academia. Todos os direitos reservados."
+  },
+  "empty": {
+    "title": "Nenhum Relatório Gerado",
+    "description": "Selecione um período e clique em 'Gerar Relatório' para visualizar análises"
+  },
+  "messages": {
+    "generated": "Relatório gerado com sucesso",
+    "downloaded": "Relatório salvo com sucesso",
+    "printDialog": "Abrindo diálogo de impressão... Selecione 'Salvar como PDF' como destino",
+    "error": "Falha ao gerar relatório",
+    "downloadError": "Falha ao salvar relatório"
+  }
+}

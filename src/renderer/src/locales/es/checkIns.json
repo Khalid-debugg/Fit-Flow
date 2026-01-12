@@ -1,0 +1,123 @@
+{
+  "title": "Registros",
+  "quickCheckIn": "Registro Rápido",
+  "scanPrompt": "Escanear código de barras o ingresar ID de miembro",
+  "barcodeReady": "Escáner de código de barras listo",
+  "phoneNumber": "Número de Teléfono",
+  "enterPhoneNumber": "Ingresar número de teléfono...",
+  "pressEnter": "Presiona Enter para registrar",
+  "confirm": "Confirmar Registro",
+  "confirmCheckIn": "Confirmar Registro",
+  "cancel": "Cancelar",
+  "close": "Cerrar",
+  "processing": "Procesando...",
+  "loading": "Cargando...",
+  "noCheckIns": "No se encontraron registros",
+  "memberName": "Nombre del Miembro",
+  "phone": "Teléfono",
+  "membershipStatus": "Estado de Membresía",
+  "plan": "Plan",
+  "endDate": "Fecha de Finalización",
+  "remainingCheckIns": "Registros Restantes",
+
+  "stats": {
+    "today": "Hoy",
+    "week": "Esta Semana",
+    "month": "Este Mes",
+    "active": "Miembros Activos"
+  },
+
+  "status": {
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "expired": "Vencido",
+    "none": "Sin Membresía"
+  },
+
+  "messages": {
+    "welcome": "¡Bienvenido de nuevo!",
+    "daysRemaining": "días restantes",
+    "expired": "Vencido",
+    "daysAgo": "días atrás",
+    "noMembership": "Sin membresía activa",
+    "expiredWarning": "La membresía de este miembro ha vencido. Por favor, renueva antes de registrar.",
+    "noMembershipWarning": "Este miembro no tiene membresía activa. Por favor, suscribe antes de registrar.",
+    "alreadyCheckedInWarning": "Este miembro ya se registró hoy a las {{time}}. ¿Deseas registrar de nuevo?",
+    "pendingPaymentWarning": "Pago pendiente: {{amount}}",
+    "pendingPaymentScheduledWarning": "Pago pendiente: {{amount}} (Vence: {{date}})",
+    "noCheckInsRemaining": "No quedan registros. Por favor, renueva o mejora tu membresía.",
+    "lowCheckInsWarning": "Solo quedan {{count}} registros. Considera renovar pronto.",
+    "checkInSuccess": "¡Registro exitoso!",
+    "memberNotFound": "No se encontró miembro con este número de teléfono",
+    "alreadyCheckedIn": "Ya registrado hoy"
+  },
+
+  "table": {
+    "index": "#",
+    "member": "Miembro",
+    "phone": "Teléfono",
+    "date": "Fecha",
+    "time": "Hora",
+    "status": "Estado",
+    "actions": "Acciones"
+  },
+
+  "filter": {
+    "search": "Buscar",
+    "searchPlaceholder": "Buscar por nombre o teléfono del miembro...",
+    "dateFrom": "Fecha Desde",
+    "dateTo": "Fecha Hasta",
+    "status": "Estado",
+    "all": "Todos",
+    "reset": "Restablecer",
+    "pickDate": "Seleccionar fecha"
+  },
+
+  "pagination": {
+    "page": "Página",
+    "of": "de",
+    "previous": "Anterior",
+    "next": "Siguiente"
+  },
+
+  "history": {
+    "title": "Historial de Registros",
+    "subtitle": "Últimos 30 registros",
+    "noHistory": "No se encontró historial de registros",
+    "showing": "Mostrando",
+    "records": "registros"
+  },
+
+  "viewHistory": "Ver Historial",
+
+  "alert": {
+    "deleteCheckIn": "Eliminar Registro",
+    "deleteCheckInMessage": "¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer."
+  },
+
+  "form": {
+    "cancel": "Cancelar",
+    "confirm": "Confirmar"
+  },
+
+  "success": {
+    "deleteSuccess": "Registro eliminado exitosamente"
+  },
+
+  "barcode": {
+    "title": "Tarjeta de Membresía",
+    "gymCard": "TARJETA DE MEMBRESÍA DEL GIMNASIO",
+    "joined": "Inscrito",
+    "download": "Descargar PDF",
+    "print": "Imprimir Tarjeta",
+    "downloadSuccess": "PDF descargado exitosamente",
+    "downloadError": "Error al descargar PDF",
+    "printError": "Error al imprimir tarjeta"
+  },
+
+  "errors": {
+    "loadFailed": "Error al cargar registros",
+    "createFailed": "Error al crear registro",
+    "deleteFailed": "Error al eliminar registro"
+  }
+}

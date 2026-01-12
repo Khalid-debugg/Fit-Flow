@@ -1,0 +1,123 @@
+{
+  "title": "Check-ins",
+  "quickCheckIn": "Schnell-Check-in",
+  "scanPrompt": "Barcode scannen oder Mitglieds-ID eingeben",
+  "barcodeReady": "Barcode-Scanner bereit",
+  "phoneNumber": "Telefonnummer",
+  "enterPhoneNumber": "Telefonnummer eingeben...",
+  "pressEnter": "Drücken Sie Enter zum Einchecken",
+  "confirm": "Check-in bestätigen",
+  "confirmCheckIn": "Check-in bestätigen",
+  "cancel": "Abbrechen",
+  "close": "Schließen",
+  "processing": "Verarbeitung...",
+  "loading": "Lädt...",
+  "noCheckIns": "Keine Check-ins gefunden",
+  "memberName": "Mitgliedsname",
+  "phone": "Telefon",
+  "membershipStatus": "Mitgliedschaftsstatus",
+  "plan": "Tarif",
+  "endDate": "Enddatum",
+  "remainingCheckIns": "Verbleibende Check-ins",
+
+  "stats": {
+    "today": "Heute",
+    "week": "Diese Woche",
+    "month": "Dieser Monat",
+    "active": "Aktive Mitglieder"
+  },
+
+  "status": {
+    "active": "Aktiv",
+    "inactive": "Inaktiv",
+    "expired": "Abgelaufen",
+    "none": "Keine Mitgliedschaft"
+  },
+
+  "messages": {
+    "welcome": "Willkommen zurück!",
+    "daysRemaining": "Tage verbleibend",
+    "expired": "Abgelaufen",
+    "daysAgo": "Tage her",
+    "noMembership": "Keine aktive Mitgliedschaft",
+    "expiredWarning": "Die Mitgliedschaft dieses Mitglieds ist abgelaufen. Bitte erneuern Sie vor dem Check-in.",
+    "noMembershipWarning": "Dieses Mitglied hat keine aktive Mitgliedschaft. Bitte vor dem Check-in abonnieren.",
+    "alreadyCheckedInWarning": "Dieses Mitglied hat sich heute bereits um {{time}} eingecheckt. Möchten Sie erneut einchecken?",
+    "pendingPaymentWarning": "Ausstehende Zahlung: {{amount}}",
+    "pendingPaymentScheduledWarning": "Ausstehende Zahlung: {{amount}} (Fällig: {{date}})",
+    "noCheckInsRemaining": "Keine Check-ins mehr verfügbar. Bitte erneuern oder upgraden Sie Ihre Mitgliedschaft.",
+    "lowCheckInsWarning": "Nur noch {{count}} Check-ins verfügbar. Erwägen Sie bald eine Erneuerung.",
+    "checkInSuccess": "Check-in erfolgreich!",
+    "memberNotFound": "Mitglied mit dieser Telefonnummer nicht gefunden",
+    "alreadyCheckedIn": "Heute bereits eingecheckt"
+  },
+
+  "table": {
+    "index": "#",
+    "member": "Mitglied",
+    "phone": "Telefon",
+    "date": "Datum",
+    "time": "Uhrzeit",
+    "status": "Status",
+    "actions": "Aktionen"
+  },
+
+  "filter": {
+    "search": "Suchen",
+    "searchPlaceholder": "Nach Mitgliedsname oder Telefon suchen...",
+    "dateFrom": "Datum von",
+    "dateTo": "Datum bis",
+    "status": "Status",
+    "all": "Alle",
+    "reset": "Zurücksetzen",
+    "pickDate": "Datum auswählen"
+  },
+
+  "pagination": {
+    "page": "Seite",
+    "of": "von",
+    "previous": "Zurück",
+    "next": "Weiter"
+  },
+
+  "history": {
+    "title": "Check-in Verlauf",
+    "subtitle": "Letzte 30 Check-ins",
+    "noHistory": "Kein Check-in Verlauf gefunden",
+    "showing": "Zeige",
+    "records": "Einträge"
+  },
+
+  "viewHistory": "Verlauf anzeigen",
+
+  "alert": {
+    "deleteCheckIn": "Check-in löschen",
+    "deleteCheckInMessage": "Möchten Sie diesen Check-in wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+  },
+
+  "form": {
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen"
+  },
+
+  "success": {
+    "deleteSuccess": "Check-in erfolgreich gelöscht"
+  },
+
+  "barcode": {
+    "title": "Mitgliedskarte",
+    "gymCard": "FITNESSSTUDIO-MITGLIEDSKARTE",
+    "joined": "Beigetreten",
+    "download": "PDF herunterladen",
+    "print": "Karte drucken",
+    "downloadSuccess": "PDF erfolgreich heruntergeladen",
+    "downloadError": "PDF-Download fehlgeschlagen",
+    "printError": "Kartendruck fehlgeschlagen"
+  },
+
+  "errors": {
+    "loadFailed": "Check-ins konnten nicht geladen werden",
+    "createFailed": "Check-in konnte nicht erstellt werden",
+    "deleteFailed": "Check-in konnte nicht gelöscht werden"
+  }
+}

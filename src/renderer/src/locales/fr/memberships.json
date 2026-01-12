@@ -1,0 +1,201 @@
+{
+  "title": "Adhésions",
+  "addNew": "Ajouter une Adhésion",
+  "noMemberships": "Aucune adhésion trouvée",
+  "loading": "Chargement...",
+  "active": "Actif",
+  "expired": "Expiré",
+  "days": "jours",
+  "renew": "Renouveler",
+
+  "table": {
+    "index": "#",
+    "member": "Membre",
+    "plan": "Plan",
+    "startDate": "Date de Début",
+    "endDate": "Date de Fin",
+    "amountPaid": "Montant Payé",
+    "remaining": "Restant",
+    "paymentMethod": "Mode de Paiement",
+    "status": "Statut",
+    "actions": "Actions"
+  },
+
+  "filter": {
+    "search": "Rechercher",
+    "searchPlaceholder": "Rechercher par nom ou téléphone du membre...",
+    "plan": "Plan",
+    "selectPlan": "Sélectionner un plan",
+    "searchPlan": "Rechercher des plans...",
+    "noPlansFound": "Aucun plan trouvé",
+    "status": "Statut",
+    "startDateFrom": "Date de Début Depuis",
+    "startDateTo": "Date de Début Jusqu'à",
+    "all": "Tous",
+    "reset": "Réinitialiser",
+    "pickDate": "Choisir une date"
+  },
+
+  "paymentMethods": {
+    "cash": "Espèces",
+    "card": "Carte",
+    "transfer": "Virement",
+    "e-wallet": "Portefeuille Électronique"
+  },
+
+  "paymentStatus": {
+    "paid": "Payé",
+    "partial": "Partiellement Payé",
+    "unpaid": "Non Payé"
+  },
+
+  "priceModifierTypes": {
+    "multiplier": "Multiplicateur",
+    "discount": "Réduction",
+    "custom": "Prix Personnalisé"
+  },
+  "form": {
+    "member": "Membre",
+    "selectMember": "Sélectionner un membre",
+    "searchMember": "Rechercher par nom ou téléphone...",
+    "noMembersFound": "Aucun membre trouvé",
+    "plan": "Plan",
+    "selectPlan": "Sélectionner un plan",
+    "searchPlan": "Rechercher par nom de plan...",
+    "noPlansFound": "Aucun plan trouvé",
+    "startDate": "Date de Début",
+    "endDate": "Date de Fin",
+    "totalPrice": "Prix Total",
+    "amountPaid": "Montant Payé",
+    "initialPayment": "Paiement Initial",
+    "remainingBalance": "Solde Restant",
+    "paymentType": "Type de Paiement",
+    "fullPayment": "Paiement Complet",
+    "partialPayment": "Paiement Partiel",
+    "paymentScheduleSuggestions": "Montants de paiement rapides",
+    "partialPaymentNote": "Vous pouvez ajouter d'autres paiements ultérieurement depuis les détails de l'adhésion",
+    "schedulePayments": "Programmer les Paiements Futurs",
+    "schedulePaymentDates": "Programmer les dates de paiement ?",
+    "schedulePaymentDatesHint": "Cochez cette case pour définir des dates spécifiques pour les paiements futurs",
+    "addScheduledPayment": "Ajouter un Paiement Programmé",
+    "removeScheduledPayment": "Supprimer",
+    "scheduledPaymentAmount": "Montant",
+    "scheduledPaymentDate": "Date de Paiement",
+    "scheduledPaymentMethod": "Mode de Paiement",
+    "scheduledPaymentNotes": "Notes (Optionnel)",
+    "totalScheduled": "Total Programmé",
+    "paymentDate": "Date de Paiement",
+    "paymentMethod": "Mode de Paiement",
+    "price": "Prix du Plan",
+    "phone": "Téléphone",
+    "priceModifierType": "Ajustement de Prix",
+    "multiplierValue": "Valeur du Multiplicateur",
+    "discountPercentage": "Pourcentage de Réduction",
+    "customPrice": "Prix Personnalisé",
+    "customPriceName": "Nom du Prix Personnalisé (Optionnel)",
+    "multiplierHint": "ex : 1,5 = 50% d'augmentation, 0,8 = 20% de diminution",
+    "discountHint": "Entrez le pourcentage : 20 pour 20% de réduction",
+    "basePrice": "Prix de Base",
+    "calculatedPrice": "Prix Calculé",
+    "usePlanPrice": "Utiliser le Prix du Plan",
+    "adjustPrice": "Ajuster le Prix",
+    "notes": "Notes",
+    "notesPlaceholder": "Ajouter des notes supplémentaires...",
+    "cancel": "Annuler",
+    "submit": "Enregistrer",
+    "update": "Modifier",
+    "confirm": "Confirmer",
+    "pickDate": "Choisir une date"
+  },
+
+  "payment": {
+    "addPayment": "Ajouter un Paiement",
+    "payment": "Paiement",
+    "amount": "Montant du Paiement",
+    "date": "Date de Paiement",
+    "method": "Mode de Paiement",
+    "notes": "Notes",
+    "notesPlaceholder": "Ajouter des notes sur le paiement...",
+    "payFull": "Payer le Tout",
+    "newBalance": "Nouveau Solde",
+    "processing": "Traitement...",
+    "status": "Statut du Paiement",
+    "member": "Membre",
+    "remainingBalance": "Solde Restant",
+    "balance": "Solde en Attente",
+    "totalPrice": "Prix Total",
+    "noPayments": "Aucun historique de paiement",
+    "adding": "Ajout en cours...",
+    "noPendingPayments": "Aucun paiement en attente",
+    "pendingPayments": "Paiements en Attente",
+    "pendingPayment": "Paiement en Attente",
+    "noScheduledDate": "Aucune date programmée",
+    "payNow": "Payer Maintenant",
+    "scheduledPayments": "Paiements Programmés",
+    "scheduledPayment": "Paiement Programmé",
+    "dueDate": "Date d'Échéance",
+    "markAsPaid": "Marquer comme Payé",
+    "confirmPayment": "Confirmer le Paiement",
+    "confirmPaymentDescription": "Êtes-vous sûr de vouloir marquer ce paiement programmé comme payé ? Cette action ne peut pas être annulée."
+  },
+
+  "checkIns": "pointages",
+
+  "create": {
+    "title": "Ajouter une Nouvelle Adhésion"
+  },
+
+  "edit": {
+    "title": "Modifier l'Adhésion"
+  },
+
+  "view": {
+    "title": "Détails de l'Adhésion",
+    "memberInfo": "Informations du Membre",
+    "planInfo": "Informations du Plan",
+    "dates": "Période d'Adhésion",
+    "paymentInfo": "Informations de Paiement",
+    "details": "Détails",
+    "payments": "Historique des Paiements",
+    "completedPayments": "Paiements Complétés",
+    "pendingPayments": "Paiements en Attente"
+  },
+
+  "delete": {
+    "title": "Supprimer l'Adhésion",
+    "description": "Êtes-vous sûr de vouloir supprimer cette adhésion ? Cette action ne peut pas être annulée."
+  },
+
+  "pagination": {
+    "page": "Page",
+    "of": "de",
+    "previous": "Précédent",
+    "next": "Suivant"
+  },
+
+  "errors": {
+    "loadFailed": "Échec du chargement des adhésions",
+    "fetchFailed": "Échec de la récupération des détails de l'adhésion",
+    "createFailed": "Échec de la création de l'adhésion",
+    "updateFailed": "Échec de la modification de l'adhésion",
+    "deleteFailed": "Échec de la suppression de l'adhésion",
+    "requiredFields": "Veuillez remplir tous les champs obligatoires",
+    "membershipOverlap": "Cette adhésion chevauche une adhésion existante pour ce membre. Veuillez choisir des dates différentes.",
+    "extendFail": "Échec de la prolongation de l'adhésion",
+    "invalidAmount": "Veuillez entrer un montant de paiement valide",
+    "amountExceedsBalance": "Le montant du paiement dépasse le solde restant",
+    "paymentFailed": "Échec de l'ajout du paiement"
+  },
+
+  "success": {
+    "createSuccess": "Adhésion créée avec succès",
+    "updateSuccess": "Adhésion modifiée avec succès",
+    "deleteSuccess": "Adhésion supprimée avec succès",
+    "extendSuccess": "L'adhésion a été prolongée avec succès",
+    "paymentAdded": "Paiement ajouté avec succès"
+  },
+  "alert": {
+    "renewMembership": "Renouveler l'Adhésion",
+    "renewMembershipMessage": "Êtes-vous sûr de vouloir renouveler l'adhésion de {{memberName}} ? La nouvelle date de fin sera {{newEndDate}}. Cette action ne peut pas être annulée."
+  }
+}

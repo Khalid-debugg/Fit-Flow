@@ -1,0 +1,201 @@
+{
+  "title": "Membresías",
+  "addNew": "Agregar Membresía",
+  "noMemberships": "No se encontraron membresías",
+  "loading": "Cargando...",
+  "active": "Activo",
+  "expired": "Vencido",
+  "days": "días",
+  "renew": "Renovar",
+
+  "table": {
+    "index": "#",
+    "member": "Miembro",
+    "plan": "Plan",
+    "startDate": "Fecha de Inicio",
+    "endDate": "Fecha de Finalización",
+    "amountPaid": "Monto Pagado",
+    "remaining": "Restante",
+    "paymentMethod": "Método de Pago",
+    "status": "Estado",
+    "actions": "Acciones"
+  },
+
+  "filter": {
+    "search": "Buscar",
+    "searchPlaceholder": "Buscar por nombre o teléfono del miembro...",
+    "plan": "Plan",
+    "selectPlan": "Seleccionar un plan",
+    "searchPlan": "Buscar planes...",
+    "noPlansFound": "No se encontraron planes",
+    "status": "Estado",
+    "startDateFrom": "Fecha de Inicio Desde",
+    "startDateTo": "Fecha de Inicio Hasta",
+    "all": "Todos",
+    "reset": "Restablecer",
+    "pickDate": "Seleccionar fecha"
+  },
+
+  "paymentMethods": {
+    "cash": "Efectivo",
+    "card": "Tarjeta",
+    "transfer": "Transferencia",
+    "e-wallet": "Billetera Electrónica"
+  },
+
+  "paymentStatus": {
+    "paid": "Pagado",
+    "partial": "Parcialmente Pagado",
+    "unpaid": "Sin Pagar"
+  },
+
+  "priceModifierTypes": {
+    "multiplier": "Multiplicador",
+    "discount": "Descuento",
+    "custom": "Precio Personalizado"
+  },
+  "form": {
+    "member": "Miembro",
+    "selectMember": "Seleccionar un miembro",
+    "searchMember": "Buscar por nombre o teléfono...",
+    "noMembersFound": "No se encontraron miembros",
+    "plan": "Plan",
+    "selectPlan": "Seleccionar un plan",
+    "searchPlan": "Buscar por nombre de plan...",
+    "noPlansFound": "No se encontraron planes",
+    "startDate": "Fecha de Inicio",
+    "endDate": "Fecha de Finalización",
+    "totalPrice": "Precio Total",
+    "amountPaid": "Monto Pagado",
+    "initialPayment": "Pago Inicial",
+    "remainingBalance": "Saldo Restante",
+    "paymentType": "Tipo de Pago",
+    "fullPayment": "Pago Completo",
+    "partialPayment": "Pago Parcial",
+    "paymentScheduleSuggestions": "Montos de pago rápidos",
+    "partialPaymentNote": "Puedes agregar más pagos más tarde desde los detalles de membresía",
+    "schedulePayments": "Programar Pagos Futuros",
+    "schedulePaymentDates": "¿Programar fechas de pago?",
+    "schedulePaymentDatesHint": "Marca esto para establecer fechas específicas para pagos futuros",
+    "addScheduledPayment": "Agregar Programación de Pago",
+    "removeScheduledPayment": "Eliminar",
+    "scheduledPaymentAmount": "Monto",
+    "scheduledPaymentDate": "Fecha de Pago",
+    "scheduledPaymentMethod": "Método de Pago",
+    "scheduledPaymentNotes": "Notas (Opcional)",
+    "totalScheduled": "Total Programado",
+    "paymentDate": "Fecha de Pago",
+    "paymentMethod": "Método de Pago",
+    "price": "Precio del Plan",
+    "phone": "Teléfono",
+    "priceModifierType": "Ajuste de Precio",
+    "multiplierValue": "Valor del Multiplicador",
+    "discountPercentage": "Porcentaje de Descuento",
+    "customPrice": "Precio Personalizado",
+    "customPriceName": "Nombre de Precio Personalizado (Opcional)",
+    "multiplierHint": "ej., 1.5 = 50% aumento, 0.8 = 20% disminución",
+    "discountHint": "Ingresa porcentaje: 20 para 20% de descuento",
+    "basePrice": "Precio Base",
+    "calculatedPrice": "Precio Calculado",
+    "usePlanPrice": "Usar Precio del Plan",
+    "adjustPrice": "Ajustar Precio",
+    "notes": "Notas",
+    "notesPlaceholder": "Agregar notas adicionales...",
+    "cancel": "Cancelar",
+    "submit": "Guardar",
+    "update": "Actualizar",
+    "confirm": "Confirmar",
+    "pickDate": "Seleccionar fecha"
+  },
+
+  "payment": {
+    "addPayment": "Agregar Pago",
+    "payment": "Pago",
+    "amount": "Monto del Pago",
+    "date": "Fecha de Pago",
+    "method": "Método de Pago",
+    "notes": "Notas",
+    "notesPlaceholder": "Agregar notas de pago...",
+    "payFull": "Pagar Completo",
+    "newBalance": "Nuevo Saldo",
+    "processing": "Procesando...",
+    "status": "Estado del Pago",
+    "member": "Miembro",
+    "remainingBalance": "Saldo Restante",
+    "balance": "Saldo Pendiente",
+    "totalPrice": "Precio Total",
+    "noPayments": "Sin historial de pagos",
+    "adding": "Agregando...",
+    "noPendingPayments": "Sin pagos pendientes",
+    "pendingPayments": "Pagos Pendientes",
+    "pendingPayment": "Pago Pendiente",
+    "noScheduledDate": "Sin fecha programada",
+    "payNow": "Pagar Ahora",
+    "scheduledPayments": "Pagos Programados",
+    "scheduledPayment": "Pago Programado",
+    "dueDate": "Fecha de Vencimiento",
+    "markAsPaid": "Marcar como Pagado",
+    "confirmPayment": "Confirmar Pago",
+    "confirmPaymentDescription": "¿Estás seguro de que deseas marcar este pago programado como pagado? Esta acción no se puede deshacer."
+  },
+
+  "checkIns": "registros",
+
+  "create": {
+    "title": "Agregar Nueva Membresía"
+  },
+
+  "edit": {
+    "title": "Editar Membresía"
+  },
+
+  "view": {
+    "title": "Detalles de Membresía",
+    "memberInfo": "Información del Miembro",
+    "planInfo": "Información del Plan",
+    "dates": "Período de Membresía",
+    "paymentInfo": "Información de Pago",
+    "details": "Detalles",
+    "payments": "Historial de Pagos",
+    "completedPayments": "Pagos Completados",
+    "pendingPayments": "Pagos Pendientes"
+  },
+
+  "delete": {
+    "title": "Eliminar Membresía",
+    "description": "¿Estás seguro de que deseas eliminar esta membresía? Esta acción no se puede deshacer."
+  },
+
+  "pagination": {
+    "page": "Página",
+    "of": "de",
+    "previous": "Anterior",
+    "next": "Siguiente"
+  },
+
+  "errors": {
+    "loadFailed": "Error al cargar membresías",
+    "fetchFailed": "Error al obtener detalles de membresía",
+    "createFailed": "Error al crear membresía",
+    "updateFailed": "Error al actualizar membresía",
+    "deleteFailed": "Error al eliminar membresía",
+    "requiredFields": "Por favor, completa todos los campos requeridos",
+    "membershipOverlap": "Esta membresía se superpone con una membresía existente para este miembro. Por favor, elige diferentes fechas.",
+    "extendFail": "Error al extender membresía",
+    "invalidAmount": "Por favor, ingresa un monto de pago válido",
+    "amountExceedsBalance": "El monto del pago excede el saldo restante",
+    "paymentFailed": "Error al agregar pago"
+  },
+
+  "success": {
+    "createSuccess": "Membresía creada exitosamente",
+    "updateSuccess": "Membresía actualizada exitosamente",
+    "deleteSuccess": "Membresía eliminada exitosamente",
+    "extendSuccess": "La membresía se ha extendido exitosamente",
+    "paymentAdded": "Pago agregado exitosamente"
+  },
+  "alert": {
+    "renewMembership": "Renovar Membresía",
+    "renewMembershipMessage": "¿Estás seguro de que deseas renovar la membresía de {{memberName}}? La nueva fecha de finalización será {{newEndDate}}. Esta acción no se puede deshacer."
+  }
+}

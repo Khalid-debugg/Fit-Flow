@@ -1,0 +1,201 @@
+{
+  "title": "Matrículas",
+  "addNew": "Adicionar Matrícula",
+  "noMemberships": "Nenhuma matrícula encontrada",
+  "loading": "Carregando...",
+  "active": "Ativo",
+  "expired": "Expirado",
+  "days": "dias",
+  "renew": "Renovar",
+
+  "table": {
+    "index": "#",
+    "member": "Membro",
+    "plan": "Plano",
+    "startDate": "Data de Início",
+    "endDate": "Data de Término",
+    "amountPaid": "Valor Pago",
+    "remaining": "Restante",
+    "paymentMethod": "Método de Pagamento",
+    "status": "Status",
+    "actions": "Ações"
+  },
+
+  "filter": {
+    "search": "Buscar",
+    "searchPlaceholder": "Buscar por nome ou telefone do membro...",
+    "plan": "Plano",
+    "selectPlan": "Selecione um plano",
+    "searchPlan": "Buscar planos...",
+    "noPlansFound": "Nenhum plano encontrado",
+    "status": "Status",
+    "startDateFrom": "Data de Início De",
+    "startDateTo": "Data de Início Até",
+    "all": "Todos",
+    "reset": "Redefinir",
+    "pickDate": "Selecione uma data"
+  },
+
+  "paymentMethods": {
+    "cash": "Dinheiro",
+    "card": "Cartão",
+    "transfer": "Transferência",
+    "e-wallet": "Carteira Digital"
+  },
+
+  "paymentStatus": {
+    "paid": "Pago",
+    "partial": "Parcialmente Pago",
+    "unpaid": "Não Pago"
+  },
+
+  "priceModifierTypes": {
+    "multiplier": "Multiplicador",
+    "discount": "Desconto",
+    "custom": "Preço Personalizado"
+  },
+  "form": {
+    "member": "Membro",
+    "selectMember": "Selecione um membro",
+    "searchMember": "Buscar por nome ou telefone...",
+    "noMembersFound": "Nenhum membro encontrado",
+    "plan": "Plano",
+    "selectPlan": "Selecione um plano",
+    "searchPlan": "Buscar por nome do plano...",
+    "noPlansFound": "Nenhum plano encontrado",
+    "startDate": "Data de Início",
+    "endDate": "Data de Término",
+    "totalPrice": "Preço Total",
+    "amountPaid": "Valor Pago",
+    "initialPayment": "Pagamento Inicial",
+    "remainingBalance": "Saldo Restante",
+    "paymentType": "Tipo de Pagamento",
+    "fullPayment": "Pagamento Integral",
+    "partialPayment": "Pagamento Parcial",
+    "paymentScheduleSuggestions": "Valores de pagamento rápidos",
+    "partialPaymentNote": "Você pode adicionar mais pagamentos depois nos detalhes da matrícula",
+    "schedulePayments": "Agendar Pagamentos Futuros",
+    "schedulePaymentDates": "Agendar datas de pagamento?",
+    "schedulePaymentDatesHint": "Marque isso para definir datas específicas para pagamentos futuros",
+    "addScheduledPayment": "Adicionar Agendamento de Pagamento",
+    "removeScheduledPayment": "Remover",
+    "scheduledPaymentAmount": "Valor",
+    "scheduledPaymentDate": "Data de Pagamento",
+    "scheduledPaymentMethod": "Método de Pagamento",
+    "scheduledPaymentNotes": "Observações (Opcional)",
+    "totalScheduled": "Total Agendado",
+    "paymentDate": "Data de Pagamento",
+    "paymentMethod": "Método de Pagamento",
+    "price": "Preço do Plano",
+    "phone": "Telefone",
+    "priceModifierType": "Ajuste de Preço",
+    "multiplierValue": "Valor do Multiplicador",
+    "discountPercentage": "Porcentagem de Desconto",
+    "customPrice": "Preço Personalizado",
+    "customPriceName": "Nome do Preço Personalizado (Opcional)",
+    "multiplierHint": "ex: 1.5 = aumento de 50%, 0.8 = redução de 20%",
+    "discountHint": "Digite a porcentagem: 20 para 20% de desconto",
+    "basePrice": "Preço Base",
+    "calculatedPrice": "Preço Calculado",
+    "usePlanPrice": "Usar Preço do Plano",
+    "adjustPrice": "Ajustar Preço",
+    "notes": "Observações",
+    "notesPlaceholder": "Adicione observações adicionais...",
+    "cancel": "Cancelar",
+    "submit": "Salvar",
+    "update": "Atualizar",
+    "confirm": "Confirmar",
+    "pickDate": "Selecione uma data"
+  },
+
+  "payment": {
+    "addPayment": "Adicionar Pagamento",
+    "payment": "Pagamento",
+    "amount": "Valor do Pagamento",
+    "date": "Data do Pagamento",
+    "method": "Método de Pagamento",
+    "notes": "Observações",
+    "notesPlaceholder": "Adicionar observações do pagamento...",
+    "payFull": "Pagar Integral",
+    "newBalance": "Novo Saldo",
+    "processing": "Processando...",
+    "status": "Status do Pagamento",
+    "member": "Membro",
+    "remainingBalance": "Saldo Restante",
+    "balance": "Saldo Pendente",
+    "totalPrice": "Preço Total",
+    "noPayments": "Nenhum histórico de pagamento",
+    "adding": "Adicionando...",
+    "noPendingPayments": "Nenhum pagamento pendente",
+    "pendingPayments": "Pagamentos Pendentes",
+    "pendingPayment": "Pagamento Pendente",
+    "noScheduledDate": "Sem data agendada",
+    "payNow": "Pagar Agora",
+    "scheduledPayments": "Pagamentos Agendados",
+    "scheduledPayment": "Pagamento Agendado",
+    "dueDate": "Data de Vencimento",
+    "markAsPaid": "Marcar como Pago",
+    "confirmPayment": "Confirmar Pagamento",
+    "confirmPaymentDescription": "Tem certeza que deseja marcar este pagamento agendado como pago? Esta ação não pode ser desfeita."
+  },
+
+  "checkIns": "check-ins",
+
+  "create": {
+    "title": "Adicionar Nova Matrícula"
+  },
+
+  "edit": {
+    "title": "Editar Matrícula"
+  },
+
+  "view": {
+    "title": "Detalhes da Matrícula",
+    "memberInfo": "Informações do Membro",
+    "planInfo": "Informações do Plano",
+    "dates": "Período da Matrícula",
+    "paymentInfo": "Informações de Pagamento",
+    "details": "Detalhes",
+    "payments": "Histórico de Pagamentos",
+    "completedPayments": "Pagamentos Concluídos",
+    "pendingPayments": "Pagamentos Pendentes"
+  },
+
+  "delete": {
+    "title": "Excluir Matrícula",
+    "description": "Tem certeza que deseja excluir esta matrícula? Esta ação não pode ser desfeita."
+  },
+
+  "pagination": {
+    "page": "Página",
+    "of": "de",
+    "previous": "Anterior",
+    "next": "Próxima"
+  },
+
+  "errors": {
+    "loadFailed": "Falha ao carregar matrículas",
+    "fetchFailed": "Falha ao buscar detalhes da matrícula",
+    "createFailed": "Falha ao criar matrícula",
+    "updateFailed": "Falha ao atualizar matrícula",
+    "deleteFailed": "Falha ao excluir matrícula",
+    "requiredFields": "Por favor, preencha todos os campos obrigatórios",
+    "membershipOverlap": "Esta matrícula se sobrepõe a uma matrícula existente para este membro. Por favor, escolha datas diferentes.",
+    "extendFail": "Falha na extensão da matrícula",
+    "invalidAmount": "Por favor, insira um valor de pagamento válido",
+    "amountExceedsBalance": "O valor do pagamento excede o saldo restante",
+    "paymentFailed": "Falha ao adicionar pagamento"
+  },
+
+  "success": {
+    "createSuccess": "Matrícula criada com sucesso",
+    "updateSuccess": "Matrícula atualizada com sucesso",
+    "deleteSuccess": "Matrícula excluída com sucesso",
+    "extendSuccess": "A matrícula foi estendida com sucesso",
+    "paymentAdded": "Pagamento adicionado com sucesso"
+  },
+  "alert": {
+    "renewMembership": "Renovar Matrícula",
+    "renewMembershipMessage": "Tem certeza que deseja renovar a matrícula de {{memberName}}? A nova data de término será {{newEndDate}}. Esta ação não pode ser desfeita."
+  }
+}

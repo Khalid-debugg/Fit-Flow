@@ -1,0 +1,67 @@
+{
+  "welcome": "¡Bienvenido de nuevo, Administrador!",
+  "subtitle": "Esto es lo que está sucediendo con tu gimnasio hoy",
+  "refresh": "Actualizar",
+  "searchOrScan": "Buscar miembro o escanear código de barras",
+  "searchMember": "Buscar Miembro",
+  "searchPlaceholder": "Buscar por nombre o teléfono...",
+  "barcodeReady": "Listo para escaneo de código de barras o búsqueda manual",
+  "noMembersFound": "No se encontraron miembros",
+  "cancel": "Cancelar",
+  "confirm": "Confirmar",
+  "revenueChart": {
+    "title": "Resumen de Ingresos",
+    "subtitle": "Análisis de ingresos de los últimos 30 días",
+    "dailyRevenue": "Ingresos Diarios",
+    "movingAverage": "Promedio de 7 Días",
+    "thisMonth": "Este Mes",
+    "lastMonth": "Mes Pasado",
+    "avgDaily": "Promedio/Día",
+    "highestDay": "Día Más Alto"
+  },
+
+  "recentCheckIns": {
+    "title": "Registros Recientes",
+    "noData": "Aún no hay registros hoy"
+  },
+
+  "expiringMemberships": {
+    "title": "Membresías que Vencen Pronto",
+    "noData": "No hay membresías que venzan en los próximos 7 días",
+    "expiringToday": "Vence hoy",
+    "expiringTomorrow": "Vence mañana",
+    "expiringInDays": "Vence en {{days}} días",
+    "renew": "Renovar"
+  },
+
+  "quickActions": {
+    "title": "Acciones Rápidas",
+    "addMember": "Agregar Miembro",
+    "addMembership": "Agregar Membresía",
+    "createPlan": "Crear Plan",
+    "viewMembers": "Ver Miembros",
+    "viewMemberships": "Ver Membresías",
+    "viewPlans": "Ver Planes"
+  },
+
+  "status": {
+    "active": "Activo",
+    "expired": "Vencido",
+    "none": "Sin Membresía"
+  },
+  "errors": { "extendFail": "Error al extender membresía" },
+
+  "success": {
+    "extendSuccess": "La membresía se ha extendido exitosamente"
+  },
+  "pagination": {
+    "page": "Página",
+    "of": "de",
+    "previous": "Anterior",
+    "next": "Siguiente"
+  },
+  "alert": {
+    "renewMembership": "Renovar Membresía",
+    "renewMembershipMessage": "¿Estás seguro de que deseas renovar la membresía de {{memberName}}? La nueva fecha de finalización será {{newEndDate}}. Esta acción no se puede deshacer."
+  }
+}

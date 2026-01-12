@@ -1,0 +1,84 @@
+{
+  "title": "Abonnements",
+  "addNew": "Ajouter un Nouveau Plan",
+  "editPlan": "Modifier le Plan",
+  "name": "Nom",
+  "price": "Prix",
+  "duration": "Durée",
+  "description": "Description",
+  "status": "Statut",
+  "active": "Actif",
+  "inactive": "Inactif",
+  "actions": "Actions",
+  "edit": "Modifier",
+  "delete": "Supprimer",
+  "noPlans": "Aucun plan trouvé",
+  "loading": "Chargement...",
+  "days_one": "{{count}} Jour",
+  "days_other": "{{count}} Jours",
+  "weeks_one": "{{count}} Semaine",
+  "weeks_other": "{{count}} Semaines",
+  "months_one": "{{count}} Mois",
+  "months_other": "{{count}} Mois",
+  "years_one": "{{count}} An",
+  "years_other": "{{count}} Ans",
+  "checkInLimitDisplay_one": "{{count}} Pointage",
+  "checkInLimitDisplay_other": "{{count}} Pointages",
+  "within": "dans",
+  "specialOffer": "Offre Spéciale",
+  "filters": {
+    "title": "Filtres",
+    "search": "Rechercher",
+    "searchPlaceholder": "Rechercher par nom ou description",
+    "status": "Statut",
+    "all": "Tous",
+    "reset": "Réinitialiser",
+    "daily": "Quotidien",
+    "weekly": "Hebdomadaire",
+    "monthly": "Mensuel",
+    "annually": "Annuel",
+    "custom": "Personnalisé",
+    "offer": "Offre"
+  },
+  "pagination": {
+    "page": "Page",
+    "of": "de",
+    "previous": "Précédent",
+    "next": "Suivant"
+  },
+  "errors": {
+    "errorTitle": "Erreur",
+    "ok": "OK",
+    "nameExists": "Ce nom de plan existe déjà",
+    "createFailed": "Échec de la création du plan",
+    "updateFailed": "Échec de la modification du plan",
+    "deleteFailed": "Échec de la suppression du plan",
+    "deleteConfirm": "Êtes-vous sûr de vouloir supprimer ce plan ?"
+  },
+  "success": {
+    "createSuccess": "Plan créé avec succès",
+    "updateSuccess": "Plan modifié avec succès",
+    "deleteSuccess": "Plan supprimé avec succès"
+  },
+  "planTypes": {
+    "duration": "Basé sur la durée",
+    "checkin": "Basé sur les pointages"
+  },
+  "form": {
+    "name": "Nom",
+    "price": "Prix",
+    "duration": "Durée (en jours)",
+    "description": "Description",
+    "status": "Statut",
+    "planType": "Type de Plan",
+    "checkInLimit": "Limite de Pointages",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "submit": "Ajouter le Plan",
+    "update": "Modifier le Plan"
+  },
+  "alert": {
+    "deletePlan": "Supprimer le Plan",
+    "deletePlanMessage": "Êtes-vous sûr de vouloir supprimer ce plan ? Cette action ne peut pas être annulée."
+  }
+}

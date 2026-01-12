@@ -1,0 +1,51 @@
+{
+  "title": "Informes",
+  "subtitle": "Generar y descargar informes detallados",
+  "filters": {
+    "title": "Filtros de Informe",
+    "quickSelect": "Selección Rápida",
+    "thisWeek": "Esta Semana",
+    "thisMonth": "Este Mes",
+    "thisYear": "Este Año",
+    "customRange": "Rango de Fechas Personalizado",
+    "startDate": "Fecha de Inicio",
+    "endDate": "Fecha de Finalización",
+    "generate": "Generar Informe",
+    "generating": "Generando...",
+    "selectDate": "Seleccionar fecha"
+  },
+  "preview": {
+    "title": "Informe",
+    "print": "Imprimir",
+    "download": "Guardar como PDF",
+    "summary": "Resumen"
+  },
+  "pdf": {
+    "title": "Informe de Desempeño Empresarial",
+    "generatedOn": "Generado el",
+    "keyMetrics": "Indicadores Clave de Desempeño",
+    "additionalMetrics": "Métricas Adicionales",
+    "totalRevenue": "Ingresos Totales",
+    "newMembers": "Nuevos Miembros",
+    "newMemberships": "Nuevas Membresías",
+    "totalCheckIns": "Total de Registros",
+    "totalMembers": "Total de Miembros",
+    "activeMembers": "Miembros Activos",
+    "avgDailyRevenue": "Ingresos Promedio Diarios",
+    "avgDailyCheckIns": "Registros Promedio Diarios",
+    "previous": "Período Anterior",
+    "difference": "Diferencia",
+    "footer": "© 2025 Sistema de Gestión de Gimnasio. Todos los derechos reservados."
+  },
+  "empty": {
+    "title": "No se Generó Informe",
+    "description": "Selecciona un rango de fechas y haz clic en 'Generar Informe' para ver análisis"
+  },
+  "messages": {
+    "generated": "Informe generado exitosamente",
+    "downloaded": "Informe guardado exitosamente",
+    "printDialog": "Abriendo diálogo de impresión... Selecciona 'Guardar como PDF' como destino",
+    "error": "Error al generar informe",
+    "downloadError": "Error al guardar informe"
+  }
+}

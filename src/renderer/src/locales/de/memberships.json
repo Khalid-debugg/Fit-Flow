@@ -1,0 +1,201 @@
+{
+  "title": "Mitgliedschaften",
+  "addNew": "Mitgliedschaft hinzufügen",
+  "noMemberships": "Keine Mitgliedschaften gefunden",
+  "loading": "Lädt...",
+  "active": "Aktiv",
+  "expired": "Abgelaufen",
+  "days": "Tage",
+  "renew": "Erneuern",
+
+  "table": {
+    "index": "#",
+    "member": "Mitglied",
+    "plan": "Tarif",
+    "startDate": "Startdatum",
+    "endDate": "Enddatum",
+    "amountPaid": "Bezahlter Betrag",
+    "remaining": "Verbleibend",
+    "paymentMethod": "Zahlungsmethode",
+    "status": "Status",
+    "actions": "Aktionen"
+  },
+
+  "filter": {
+    "search": "Suchen",
+    "searchPlaceholder": "Nach Mitgliedsname oder Telefon suchen...",
+    "plan": "Tarif",
+    "selectPlan": "Tarif auswählen",
+    "searchPlan": "Tarife suchen...",
+    "noPlansFound": "Keine Tarife gefunden",
+    "status": "Status",
+    "startDateFrom": "Startdatum von",
+    "startDateTo": "Startdatum bis",
+    "all": "Alle",
+    "reset": "Zurücksetzen",
+    "pickDate": "Datum auswählen"
+  },
+
+  "paymentMethods": {
+    "cash": "Bargeld",
+    "card": "Karte",
+    "transfer": "Überweisung",
+    "e-wallet": "E-Wallet"
+  },
+
+  "paymentStatus": {
+    "paid": "Bezahlt",
+    "partial": "Teilweise bezahlt",
+    "unpaid": "Unbezahlt"
+  },
+
+  "priceModifierTypes": {
+    "multiplier": "Multiplikator",
+    "discount": "Rabatt",
+    "custom": "Benutzerdefinierter Preis"
+  },
+  "form": {
+    "member": "Mitglied",
+    "selectMember": "Mitglied auswählen",
+    "searchMember": "Nach Name oder Telefon suchen...",
+    "noMembersFound": "Keine Mitglieder gefunden",
+    "plan": "Tarif",
+    "selectPlan": "Tarif auswählen",
+    "searchPlan": "Nach Tarifname suchen...",
+    "noPlansFound": "Keine Tarife gefunden",
+    "startDate": "Startdatum",
+    "endDate": "Enddatum",
+    "totalPrice": "Gesamtpreis",
+    "amountPaid": "Bezahlter Betrag",
+    "initialPayment": "Anfangszahlung",
+    "remainingBalance": "Restbetrag",
+    "paymentType": "Zahlungsart",
+    "fullPayment": "Vollzahlung",
+    "partialPayment": "Teilzahlung",
+    "paymentScheduleSuggestions": "Schnelle Zahlungsbeträge",
+    "partialPaymentNote": "Sie können später weitere Zahlungen aus den Mitgliedschaftsdetails hinzufügen",
+    "schedulePayments": "Zukünftige Zahlungen planen",
+    "schedulePaymentDates": "Zahlungstermine festlegen?",
+    "schedulePaymentDatesHint": "Aktivieren Sie dies, um bestimmte Termine für zukünftige Zahlungen festzulegen",
+    "addScheduledPayment": "Zahlungsplan hinzufügen",
+    "removeScheduledPayment": "Entfernen",
+    "scheduledPaymentAmount": "Betrag",
+    "scheduledPaymentDate": "Zahlungsdatum",
+    "scheduledPaymentMethod": "Zahlungsmethode",
+    "scheduledPaymentNotes": "Notizen (Optional)",
+    "totalScheduled": "Gesamt geplant",
+    "paymentDate": "Zahlungsdatum",
+    "paymentMethod": "Zahlungsmethode",
+    "price": "Tarifpreis",
+    "phone": "Telefon",
+    "priceModifierType": "Preisanpassung",
+    "multiplierValue": "Multiplikatorwert",
+    "discountPercentage": "Rabattprozentsatz",
+    "customPrice": "Benutzerdefinierter Preis",
+    "customPriceName": "Name des benutzerdefinierten Preises (Optional)",
+    "multiplierHint": "z.B. 1,5 = 50% Erhöhung, 0,8 = 20% Senkung",
+    "discountHint": "Prozentsatz eingeben: 20 für 20% Rabatt",
+    "basePrice": "Basispreis",
+    "calculatedPrice": "Berechneter Preis",
+    "usePlanPrice": "Tarifpreis verwenden",
+    "adjustPrice": "Preis anpassen",
+    "notes": "Notizen",
+    "notesPlaceholder": "Zusätzliche Notizen hinzufügen...",
+    "cancel": "Abbrechen",
+    "submit": "Speichern",
+    "update": "Aktualisieren",
+    "confirm": "Bestätigen",
+    "pickDate": "Datum auswählen"
+  },
+
+  "payment": {
+    "addPayment": "Zahlung hinzufügen",
+    "payment": "Zahlung",
+    "amount": "Zahlungsbetrag",
+    "date": "Zahlungsdatum",
+    "method": "Zahlungsmethode",
+    "notes": "Notizen",
+    "notesPlaceholder": "Zahlungsnotizen hinzufügen...",
+    "payFull": "Vollständig bezahlen",
+    "newBalance": "Neuer Saldo",
+    "processing": "Verarbeitung...",
+    "status": "Zahlungsstatus",
+    "member": "Mitglied",
+    "remainingBalance": "Restbetrag",
+    "balance": "Ausstehender Betrag",
+    "totalPrice": "Gesamtpreis",
+    "noPayments": "Keine Zahlungshistorie",
+    "adding": "Wird hinzugefügt...",
+    "noPendingPayments": "Keine ausstehenden Zahlungen",
+    "pendingPayments": "Ausstehende Zahlungen",
+    "pendingPayment": "Ausstehende Zahlung",
+    "noScheduledDate": "Kein geplantes Datum",
+    "payNow": "Jetzt bezahlen",
+    "scheduledPayments": "Geplante Zahlungen",
+    "scheduledPayment": "Geplante Zahlung",
+    "dueDate": "Fälligkeitsdatum",
+    "markAsPaid": "Als bezahlt markieren",
+    "confirmPayment": "Zahlung bestätigen",
+    "confirmPaymentDescription": "Möchten Sie diese geplante Zahlung wirklich als bezahlt markieren? Diese Aktion kann nicht rückgängig gemacht werden."
+  },
+
+  "checkIns": "Check-ins",
+
+  "create": {
+    "title": "Neue Mitgliedschaft hinzufügen"
+  },
+
+  "edit": {
+    "title": "Mitgliedschaft bearbeiten"
+  },
+
+  "view": {
+    "title": "Mitgliedschaftsdetails",
+    "memberInfo": "Mitgliederinformationen",
+    "planInfo": "Tarifinformationen",
+    "dates": "Mitgliedschaftszeitraum",
+    "paymentInfo": "Zahlungsinformationen",
+    "details": "Details",
+    "payments": "Zahlungshistorie",
+    "completedPayments": "Abgeschlossene Zahlungen",
+    "pendingPayments": "Ausstehende Zahlungen"
+  },
+
+  "delete": {
+    "title": "Mitgliedschaft löschen",
+    "description": "Möchten Sie diese Mitgliedschaft wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+  },
+
+  "pagination": {
+    "page": "Seite",
+    "of": "von",
+    "previous": "Zurück",
+    "next": "Weiter"
+  },
+
+  "errors": {
+    "loadFailed": "Mitgliedschaften konnten nicht geladen werden",
+    "fetchFailed": "Mitgliedschaftsdetails konnten nicht abgerufen werden",
+    "createFailed": "Mitgliedschaft konnte nicht erstellt werden",
+    "updateFailed": "Mitgliedschaft konnte nicht aktualisiert werden",
+    "deleteFailed": "Mitgliedschaft konnte nicht gelöscht werden",
+    "requiredFields": "Bitte füllen Sie alle Pflichtfelder aus",
+    "membershipOverlap": "Diese Mitgliedschaft überschneidet sich mit einer bestehenden Mitgliedschaft für dieses Mitglied. Bitte wählen Sie andere Daten.",
+    "extendFail": "Verlängerung der Mitgliedschaft fehlgeschlagen",
+    "invalidAmount": "Bitte geben Sie einen gültigen Zahlungsbetrag ein",
+    "amountExceedsBalance": "Zahlungsbetrag übersteigt den Restbetrag",
+    "paymentFailed": "Zahlung konnte nicht hinzugefügt werden"
+  },
+
+  "success": {
+    "createSuccess": "Mitgliedschaft erfolgreich erstellt",
+    "updateSuccess": "Mitgliedschaft erfolgreich aktualisiert",
+    "deleteSuccess": "Mitgliedschaft erfolgreich gelöscht",
+    "extendSuccess": "Die Mitgliedschaft wurde erfolgreich verlängert",
+    "paymentAdded": "Zahlung erfolgreich hinzugefügt"
+  },
+  "alert": {
+    "renewMembership": "Mitgliedschaft erneuern",
+    "renewMembershipMessage": "Möchten Sie die Mitgliedschaft von {{memberName}} wirklich erneuern? Das neue Enddatum wird {{newEndDate}} sein. Diese Aktion kann nicht rückgängig gemacht werden."
+  }
+}

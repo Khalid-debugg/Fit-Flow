@@ -1,0 +1,93 @@
+{
+  "title": "Configurações",
+  "subtitle": "Configure seu sistema de gestão de academia",
+  "save": "Salvar Alterações",
+  "saving": "Salvando...",
+  "gymSettings": "Configurações da Academia",
+  "regional": {
+    "title": "Configurações Regionais",
+    "language": "Idioma",
+    "arabic": "العربية (Árabe)",
+    "english": "English (Inglês)",
+    "spanish": "Español (Espanhol)",
+    "portuguese": "Português",
+    "french": "Français (Francês)",
+    "german": "Deutsch (Alemão)",
+    "currency": "Moeda",
+    "dateFormat": "Formato de Data",
+    "searchCurrency": "Buscar por código ou nome da moeda...",
+    "noCurrencyFound": "Nenhuma moeda encontrada"
+  },
+  "gym": {
+    "title": "Informações da Academia",
+    "name": "Nome da Academia",
+    "namePlaceholder": "Digite o nome da academia",
+    "address": "Endereço (Opcional)",
+    "addressPlaceholder": "Digite o endereço da academia",
+    "phone": "Número de Telefone (Opcional)",
+    "phonePlaceholder": "Digite o número de telefone",
+    "logo": "Logo da Academia",
+    "selectLogo": "Selecionar Logo",
+    "changeLogo": "Alterar Logo",
+    "defaultLogo": "Usando logo padrão FitFlow",
+    "logoTip": "Este logo aparecerá nos códigos de barras dos membros e recibos",
+    "barcodeSize": "Tamanho do Cartão de Código de Barras",
+    "keychainSize": "Chaveiro (54x32mm)",
+    "cardSize": "Cartão de ID (85.6x54mm)"
+  },
+  "members": {
+    "title": "Configurações de Membros",
+    "allowedGenders": "Gêneros Permitidos",
+    "both": "Ambos (Masculino e Feminino)",
+    "maleOnly": "Somente Masculino",
+    "femaleOnly": "Somente Feminino"
+  },
+  "payment": {
+    "title": "Configurações de Pagamento",
+    "defaultMethod": "Método de Pagamento Padrão",
+    "cash": "Dinheiro",
+    "card": "Cartão",
+    "transfer": "Transferência Bancária",
+    "e-wallet": "Carteira Digital"
+  },
+  "checkIns": {
+    "title": "Configurações de Check-In",
+    "allowInstantCheckIn": "Permitir Check-In Instantâneo",
+    "allowInstantCheckInDesc": "Fazer check-in de membros imediatamente sem diálogo de confirmação"
+  },
+  "backup": {
+    "title": "Backup e Gerenciamento de Dados",
+    "autoBackup": "Backup Automático",
+    "frequency": "Frequência de Backup",
+    "daily": "Diário",
+    "weekly": "Semanal",
+    "monthly": "Mensal",
+    "createNow": "Criar Backup Agora",
+    "creating": "Criando Backup...",
+    "info": "Informações de Backup",
+    "lastBackup": "Último Backup",
+    "never": "Nunca",
+    "totalBackups": "Total de Backups",
+    "totalSize": "Tamanho Total",
+    "tip": "Backups são mantidos automaticamente para as últimas 10 versões. Backups mais antigos são excluídos automaticamente.",
+    "success": "Backup criado com sucesso",
+    "failed": "Falha ao criar backup",
+    "size": "Tamanho",
+    "loading": "Carregando informações de backup...",
+    "selectFolder": "Selecionar Pasta de Backup",
+    "backupFolder": "Pasta de Backup",
+    "noFolderSelected": "Nenhuma pasta selecionada",
+    "availableBackups": "Backups Disponíveis",
+    "noBackups": "Nenhum backup disponível",
+    "restore": "Restaurar",
+    "restoring": "Restaurando...",
+    "restoreSuccess": "Banco de dados restaurado com sucesso",
+    "restoreFailed": "Falha ao restaurar backup",
+    "restoreWarning": "Isso substituirá seu banco de dados atual. Tem certeza?",
+    "openFolder": "Abrir Pasta"
+  },
+  "messages": {
+    "saved": "Configurações salvas com sucesso",
+    "error": "Falha ao salvar configurações"
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "title": "Check-ins",
+  "quickCheckIn": "Check-in Rápido",
+  "scanPrompt": "Escaneie o código de barras ou insira o ID do membro",
+  "barcodeReady": "Leitor de código de barras pronto",
+  "phoneNumber": "Número de Telefone",
+  "enterPhoneNumber": "Digite o número de telefone...",
+  "pressEnter": "Pressione Enter para fazer check-in",
+  "confirm": "Confirmar Check-in",
+  "confirmCheckIn": "Confirmar Check-in",
+  "cancel": "Cancelar",
+  "close": "Fechar",
+  "processing": "Processando...",
+  "loading": "Carregando...",
+  "noCheckIns": "Nenhum check-in encontrado",
+  "memberName": "Nome do Membro",
+  "phone": "Telefone",
+  "membershipStatus": "Status da Matrícula",
+  "plan": "Plano",
+  "endDate": "Data de Término",
+  "remainingCheckIns": "Check-ins Restantes",
+
+  "stats": {
+    "today": "Hoje",
+    "week": "Esta Semana",
+    "month": "Este Mês",
+    "active": "Membros Ativos"
+  },
+
+  "status": {
+    "active": "Ativo",
+    "inactive": "Inativo",
+    "expired": "Expirado",
+    "none": "Sem Matrícula"
+  },
+
+  "messages": {
+    "welcome": "Bem-vindo de volta!",
+    "daysRemaining": "dias restantes",
+    "expired": "Expirado",
+    "daysAgo": "dias atrás",
+    "noMembership": "Nenhuma matrícula ativa",
+    "expiredWarning": "A matrícula deste membro expirou. Por favor, renove antes do check-in.",
+    "noMembershipWarning": "Este membro não tem matrícula ativa. Por favor, inscreva antes do check-in.",
+    "alreadyCheckedInWarning": "Este membro já fez check-in hoje às {{time}}. Deseja fazer check-in novamente?",
+    "pendingPaymentWarning": "Pagamento pendente: {{amount}}",
+    "pendingPaymentScheduledWarning": "Pagamento pendente: {{amount}} (Vencimento: {{date}})",
+    "noCheckInsRemaining": "Nenhum check-in restante. Por favor, renove ou atualize sua matrícula.",
+    "lowCheckInsWarning": "Apenas {{count}} check-ins restantes. Considere renovar em breve.",
+    "checkInSuccess": "Check-in realizado com sucesso!",
+    "memberNotFound": "Membro não encontrado com este número de telefone",
+    "alreadyCheckedIn": "Já fez check-in hoje"
+  },
+
+  "table": {
+    "index": "#",
+    "member": "Membro",
+    "phone": "Telefone",
+    "date": "Data",
+    "time": "Hora",
+    "status": "Status",
+    "actions": "Ações"
+  },
+
+  "filter": {
+    "search": "Buscar",
+    "searchPlaceholder": "Buscar por nome ou telefone do membro...",
+    "dateFrom": "Data De",
+    "dateTo": "Data Até",
+    "status": "Status",
+    "all": "Todos",
+    "reset": "Redefinir",
+    "pickDate": "Selecione uma data"
+  },
+
+  "pagination": {
+    "page": "Página",
+    "of": "de",
+    "previous": "Anterior",
+    "next": "Próxima"
+  },
+
+  "history": {
+    "title": "Histórico de Check-ins",
+    "subtitle": "Últimos 30 check-ins",
+    "noHistory": "Nenhum histórico de check-in encontrado",
+    "showing": "Mostrando",
+    "records": "registros"
+  },
+
+  "viewHistory": "Ver Histórico",
+
+  "alert": {
+    "deleteCheckIn": "Excluir Check-in",
+    "deleteCheckInMessage": "Tem certeza que deseja excluir este check-in? Esta ação não pode ser desfeita."
+  },
+
+  "form": {
+    "cancel": "Cancelar",
+    "confirm": "Confirmar"
+  },
+
+  "success": {
+    "deleteSuccess": "Check-in excluído com sucesso"
+  },
+
+  "barcode": {
+    "title": "Cartão de Membro",
+    "gymCard": "CARTÃO DE ACADEMIA",
+    "joined": "Entrou em",
+    "download": "Baixar PDF",
+    "print": "Imprimir Cartão",
+    "downloadSuccess": "PDF baixado com sucesso",
+    "downloadError": "Falha ao baixar PDF",
+    "printError": "Falha ao imprimir cartão"
+  },
+
+  "errors": {
+    "loadFailed": "Falha ao carregar check-ins",
+    "createFailed": "Falha ao criar check-in",
+    "deleteFailed": "Falha ao excluir check-in"
+  }
+}

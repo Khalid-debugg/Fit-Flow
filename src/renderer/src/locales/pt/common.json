@@ -1,0 +1,55 @@
+{
+  "app": {
+    "name": "FitFlow",
+    "tagline": "Gestão de Academia"
+  },
+  "nav": {
+    "dashboard": "Painel",
+    "members": "Membros",
+    "plans": "Planos",
+    "checkin": "Check-in",
+    "memberships": "Matrículas",
+    "reports": "Relatórios",
+    "accounts": "Contas",
+    "settings": "Configurações"
+  },
+  "user": {
+    "admin": "Administrador",
+    "gymOwner": "Proprietário da Academia",
+    "administrator": "Administrador",
+    "user": "Usuário",
+    "logout": "Sair",
+    "logoutSuccess": "Desconectado com sucesso",
+    "logoutFailed": "Falha ao desconectar"
+  },
+  "login": {
+    "welcomeBack": "Entre na sua conta",
+    "username": "Nome de usuário",
+    "usernamePlaceholder": "Digite seu nome de usuário",
+    "password": "Senha",
+    "passwordPlaceholder": "Digite sua senha",
+    "login": "Entrar",
+    "loggingIn": "Entrando...",
+    "success": "Bem-vindo de volta!",
+    "failed": "Falha no login. Por favor, tente novamente.",
+    "invalidCredentials": "Nome de usuário ou senha inválidos",
+    "accountInactive": "Sua conta está inativa. Entre em contato com o administrador.",
+    "fillFields": "Por favor, preencha todos os campos",
+    "defaultCredentials": "Credenciais padrão:"
+  },
+  "dashboard": {
+    "welcome": "Bem-vindo de volta!",
+    "overview": "Visão geral",
+    "totalMembers": "Total de Membros",
+    "activeMembers": "Membros Ativos",
+    "todayCheckins": "Check-ins de Hoje",
+    "monthlyRevenue": "Receita Mensal",
+    "recentActivity": "Atividade Recente",
+    "expiringMemberships": "Vencendo em Breve",
+    "quickActions": "Ações Rápidas",
+    "checkInMember": "Check-in de Membro",
+    "addMember": "Adicionar Membro",
+    "recordPayment": "Registrar Pagamento",
+    "viewReports": "Ver Relatórios"
+  }
+}

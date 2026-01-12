@@ -1,0 +1,84 @@
+{
+  "title": "Tarife",
+  "addNew": "Neuen Tarif hinzufügen",
+  "editPlan": "Tarif bearbeiten",
+  "name": "Name",
+  "price": "Preis",
+  "duration": "Laufzeit",
+  "description": "Beschreibung",
+  "status": "Status",
+  "active": "Aktiv",
+  "inactive": "Inaktiv",
+  "actions": "Aktionen",
+  "edit": "Bearbeiten",
+  "delete": "Löschen",
+  "noPlans": "Keine Tarife gefunden",
+  "loading": "Lädt...",
+  "days_one": "{{count}} Tag",
+  "days_other": "{{count}} Tage",
+  "weeks_one": "{{count}} Woche",
+  "weeks_other": "{{count}} Wochen",
+  "months_one": "{{count}} Monat",
+  "months_other": "{{count}} Monate",
+  "years_one": "{{count}} Jahr",
+  "years_other": "{{count}} Jahre",
+  "checkInLimitDisplay_one": "{{count}} Check-in",
+  "checkInLimitDisplay_other": "{{count}} Check-ins",
+  "within": "innerhalb",
+  "specialOffer": "Sonderangebot",
+  "filters": {
+    "title": "Filter",
+    "search": "Suchen",
+    "searchPlaceholder": "Nach Name oder Beschreibung suchen",
+    "status": "Status",
+    "all": "Alle",
+    "reset": "Zurücksetzen",
+    "daily": "Täglich",
+    "weekly": "Wöchentlich",
+    "monthly": "Monatlich",
+    "annually": "Jährlich",
+    "custom": "Benutzerdefiniert",
+    "offer": "Angebot"
+  },
+  "pagination": {
+    "page": "Seite",
+    "of": "von",
+    "previous": "Zurück",
+    "next": "Weiter"
+  },
+  "errors": {
+    "errorTitle": "Fehler",
+    "ok": "OK",
+    "nameExists": "Dieser Tarifname existiert bereits",
+    "createFailed": "Tarif konnte nicht erstellt werden",
+    "updateFailed": "Tarif konnte nicht aktualisiert werden",
+    "deleteFailed": "Tarif konnte nicht gelöscht werden",
+    "deleteConfirm": "Möchten Sie diesen Tarif wirklich löschen?"
+  },
+  "success": {
+    "createSuccess": "Tarif erfolgreich erstellt",
+    "updateSuccess": "Tarif erfolgreich aktualisiert",
+    "deleteSuccess": "Tarif erfolgreich gelöscht"
+  },
+  "planTypes": {
+    "duration": "Zeitbasiert",
+    "checkin": "Check-in basiert"
+  },
+  "form": {
+    "name": "Name",
+    "price": "Preis",
+    "duration": "Laufzeit (in Tagen)",
+    "description": "Beschreibung",
+    "status": "Status",
+    "planType": "Tariftyp",
+    "checkInLimit": "Check-in Limit",
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen",
+    "submit": "Tarif hinzufügen",
+    "update": "Tarif aktualisieren"
+  },
+  "alert": {
+    "deletePlan": "Tarif löschen",
+    "deletePlanMessage": "Möchten Sie diesen Tarif wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+  }
+}
