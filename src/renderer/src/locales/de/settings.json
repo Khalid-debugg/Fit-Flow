@@ -86,6 +86,31 @@
     "restoreWarning": "Dies ersetzt Ihre aktuelle Datenbank. Sind Sie sicher?",
     "openFolder": "Ordner öffnen"
   },
+  "license": {
+    "title": "Lizenzverwaltung",
+    "viewOnly": "Nur Ansicht",
+    "information": "Lizenzinformationen",
+    "status": "Status",
+    "active": "Aktiv",
+    "notActive": "Nicht Aktiv",
+    "activated": "Aktiviert",
+    "subscription": "Abonnement",
+    "trialEnds": "Testphase Endet",
+    "daysRemaining": "Verbleibende Tage",
+    "days": "Tage",
+    "loading": "Laden...",
+    "deactivate": "Lizenz Deaktivieren",
+    "deactivating": "Deaktivierung...",
+    "deactivateSuccess": "Lizenz erfolgreich deaktiviert",
+    "deactivateFailed": "Fehler beim Deaktivieren der Lizenz",
+    "deactivateInfo": "Die Deaktivierung Ihrer Lizenz entfernt sie von diesem Gerät. Sie können sie später erneut aktivieren oder auf einem anderen Gerät verwenden.",
+    "alert": {
+      "title": "Lizenz Deaktivieren",
+      "message": "Sind Sie sicher, dass Sie Ihre Lizenz deaktivieren möchten? Sie müssen sie erneut aktivieren, um die Anwendung weiter zu nutzen.",
+      "cancel": "Abbrechen",
+      "confirm": "Deaktivieren"
+    }
+  },
   "messages": {
     "saved": "Einstellungen erfolgreich gespeichert",
     "error": "Einstellungen konnten nicht gespeichert werden"

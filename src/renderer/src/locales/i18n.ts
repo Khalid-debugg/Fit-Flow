@@ -15,7 +15,8 @@ export const namespaces = [
   'checkIns',
   'dashboard',
   'reports',
-  'settings'
+  'settings',
+  'license'
 ] as const
 
 // Lazy load translation resources

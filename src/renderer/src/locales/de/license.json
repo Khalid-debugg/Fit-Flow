@@ -1,0 +1,35 @@
+{
+  "title": "FitFlow aktivieren",
+  "description": "Befolgen Sie diese einfachen Schritte, um Ihre FitFlow-Anwendung zu aktivieren",
+  "step1": {
+    "title": "Aktivierungsportal besuchen",
+    "description": "Gehen Sie zum FitFlow-Aktivierungsportal, um Ihren Lizenzschlüssel zu erhalten",
+    "button": "Portal öffnen"
+  },
+  "step2": {
+    "title": "Lizenzschlüssel kopieren",
+    "description": "Melden Sie sich an und kopieren Sie Ihren Lizenzschlüssel aus dem Portal wie unten gezeigt",
+    "imageAlt": "Screenshot zeigt, wo der Lizenzschlüssel kopiert werden soll"
+  },
+  "step3": {
+    "title": "App aktivieren",
+    "description": "Fügen Sie Ihren Lizenzschlüssel unten ein, um FitFlow zu aktivieren",
+    "inputLabel": "Lizenzschlüssel",
+    "inputPlaceholder": "XXXX-XXXX-XXXX-XXXX-XXXX-XXXX",
+    "activateButton": "Jetzt aktivieren",
+    "activatingButton": "Aktivierung..."
+  },
+  "messages": {
+    "enterKey": "Bitte geben Sie einen Lizenzschlüssel ein",
+    "activationSuccess": "Lizenz erfolgreich aktiviert!",
+    "activationFailed": "Ungültiger Lizenzschlüssel",
+    "activationError": "Fehler beim Aktivieren der Lizenz"
+  },
+  "language": {
+    "label": "Sprache",
+    "select": "Sprache auswählen"
+  },
+  "navigation": {
+    "back": "Zurück"
+  }
+}

@@ -86,6 +86,31 @@
     "restoreWarning": "Esto reemplazará tu base de datos actual. ¿Estás seguro?",
     "openFolder": "Abrir Carpeta"
   },
+  "license": {
+    "title": "Gestión de Licencia",
+    "viewOnly": "Solo lectura",
+    "information": "Información de Licencia",
+    "status": "Estado",
+    "active": "Activa",
+    "notActive": "No Activa",
+    "activated": "Activada",
+    "subscription": "Suscripción",
+    "trialEnds": "Finaliza Prueba",
+    "daysRemaining": "Días Restantes",
+    "days": "días",
+    "loading": "Cargando...",
+    "deactivate": "Desactivar Licencia",
+    "deactivating": "Desactivando...",
+    "deactivateSuccess": "Licencia desactivada exitosamente",
+    "deactivateFailed": "Error al desactivar licencia",
+    "deactivateInfo": "Desactivar tu licencia la eliminará de este dispositivo. Puedes activarla nuevamente más tarde o usarla en otro dispositivo.",
+    "alert": {
+      "title": "Desactivar Licencia",
+      "message": "¿Estás seguro de que deseas desactivar tu licencia? Necesitarás activarla nuevamente para continuar usando la aplicación.",
+      "cancel": "Cancelar",
+      "confirm": "Desactivar"
+    }
+  },
   "messages": {
     "saved": "Configuración guardada exitosamente",
     "error": "Error al guardar configuración"

@@ -86,6 +86,31 @@
     "restoreWarning": "Cela remplacera votre base de données actuelle. Êtes-vous sûr ?",
     "openFolder": "Ouvrir le Dossier"
   },
+  "license": {
+    "title": "Gestion de Licence",
+    "viewOnly": "Lecture seule",
+    "information": "Informations de Licence",
+    "status": "Statut",
+    "active": "Active",
+    "notActive": "Non Active",
+    "activated": "Activée",
+    "subscription": "Abonnement",
+    "trialEnds": "Fin d'Essai",
+    "daysRemaining": "Jours Restants",
+    "days": "jours",
+    "loading": "Chargement...",
+    "deactivate": "Désactiver la Licence",
+    "deactivating": "Désactivation...",
+    "deactivateSuccess": "Licence désactivée avec succès",
+    "deactivateFailed": "Échec de la désactivation de la licence",
+    "deactivateInfo": "La désactivation de votre licence la supprimera de cet appareil. Vous pourrez la réactiver plus tard ou l'utiliser sur un autre appareil.",
+    "alert": {
+      "title": "Désactiver la Licence",
+      "message": "Êtes-vous sûr de vouloir désactiver votre licence ? Vous devrez la réactiver pour continuer à utiliser l'application.",
+      "cancel": "Annuler",
+      "confirm": "Désactiver"
+    }
+  },
   "messages": {
     "saved": "Paramètres enregistrés avec succès",
     "error": "Échec de l'enregistrement des paramètres"

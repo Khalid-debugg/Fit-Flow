@@ -1,0 +1,35 @@
+{
+  "title": "Activate FitFlow",
+  "description": "Follow these simple steps to activate your FitFlow application",
+  "step1": {
+    "title": "Visit Activation Portal",
+    "description": "Go to the FitFlow activation portal to get your license key",
+    "button": "Open Portal"
+  },
+  "step2": {
+    "title": "Copy Your License Key",
+    "description": "Log in and copy your license key from the portal as shown below",
+    "imageAlt": "Screenshot showing where to copy the license key"
+  },
+  "step3": {
+    "title": "Activate Your App",
+    "description": "Paste your license key below to activate FitFlow",
+    "inputLabel": "License Key",
+    "inputPlaceholder": "XXXX-XXXX-XXXX-XXXX-XXXX-XXXX",
+    "activateButton": "Activate Now",
+    "activatingButton": "Activating..."
+  },
+  "messages": {
+    "enterKey": "Please enter a license key",
+    "activationSuccess": "License activated successfully!",
+    "activationFailed": "Invalid license key",
+    "activationError": "Failed to activate license"
+  },
+  "language": {
+    "label": "Language",
+    "select": "Select language"
+  },
+  "navigation": {
+    "back": "Back"
+  }
+}

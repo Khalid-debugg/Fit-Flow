@@ -86,6 +86,31 @@
     "restoreWarning": "This will replace your current database. Are you sure?",
     "openFolder": "Open Folder"
   },
+  "license": {
+    "title": "License Management",
+    "viewOnly": "View-only",
+    "information": "License Information",
+    "status": "Status",
+    "active": "Active",
+    "notActive": "Not Active",
+    "activated": "Activated",
+    "subscription": "Subscription",
+    "trialEnds": "Trial Ends",
+    "daysRemaining": "Days Remaining",
+    "days": "days",
+    "loading": "Loading...",
+    "deactivate": "Deactivate License",
+    "deactivating": "Deactivating...",
+    "deactivateSuccess": "License deactivated successfully",
+    "deactivateFailed": "Failed to deactivate license",
+    "deactivateInfo": "Deactivating your license will remove it from this device. You can activate it again later or use it on a different device.",
+    "alert": {
+      "title": "Deactivate License",
+      "message": "Are you sure you want to deactivate your license? You will need to activate it again to continue using the application.",
+      "cancel": "Cancel",
+      "confirm": "Deactivate"
+    }
+  },
   "messages": {
     "saved": "Settings saved successfully",
     "error": "Failed to save settings"

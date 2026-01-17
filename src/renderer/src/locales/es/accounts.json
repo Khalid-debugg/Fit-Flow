@@ -149,6 +149,7 @@
     "settings.view": "Puede ver configuración",
     "settings.edit": "Puede editar configuración",
     "settings.manage_backups": "Puede gestionar copias de seguridad",
+    "settings.manage_license": "Puede gestionar activación de licencia",
     "accounts.view": "Puede ver cuentas de usuario",
     "accounts.create": "Puede crear cuentas de usuario",
     "accounts.edit": "Puede editar cuentas de usuario",

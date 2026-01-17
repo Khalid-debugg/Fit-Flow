@@ -149,6 +149,7 @@
     "settings.view": "Kann Einstellungen einsehen",
     "settings.edit": "Kann Einstellungen bearbeiten",
     "settings.manage_backups": "Kann Backups verwalten",
+    "settings.manage_license": "Kann Lizenzaktivierung verwalten",
     "accounts.view": "Kann Benutzerkonten einsehen",
     "accounts.create": "Kann Benutzerkonten erstellen",
     "accounts.edit": "Kann Benutzerkonten bearbeiten",

@@ -86,6 +86,31 @@
     "restoreWarning": "Isso substituirá seu banco de dados atual. Tem certeza?",
     "openFolder": "Abrir Pasta"
   },
+  "license": {
+    "title": "Gerenciamento de Licença",
+    "viewOnly": "Somente leitura",
+    "information": "Informações da Licença",
+    "status": "Status",
+    "active": "Ativa",
+    "notActive": "Não Ativa",
+    "activated": "Ativada",
+    "subscription": "Assinatura",
+    "trialEnds": "Fim do Teste",
+    "daysRemaining": "Dias Restantes",
+    "days": "dias",
+    "loading": "Carregando...",
+    "deactivate": "Desativar Licença",
+    "deactivating": "Desativando...",
+    "deactivateSuccess": "Licença desativada com sucesso",
+    "deactivateFailed": "Falha ao desativar licença",
+    "deactivateInfo": "Desativar sua licença irá removê-la deste dispositivo. Você pode ativá-la novamente mais tarde ou usá-la em outro dispositivo.",
+    "alert": {
+      "title": "Desativar Licença",
+      "message": "Tem certeza de que deseja desativar sua licença? Você precisará ativá-la novamente para continuar usando o aplicativo.",
+      "cancel": "Cancelar",
+      "confirm": "Desativar"
+    }
+  },
   "messages": {
     "saved": "Configurações salvas com sucesso",
     "error": "Falha ao salvar configurações"

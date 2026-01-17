@@ -1,0 +1,35 @@
+{
+  "title": "Activar FitFlow",
+  "description": "Siga estos sencillos pasos para activar su aplicación FitFlow",
+  "step1": {
+    "title": "Visitar Portal de Activación",
+    "description": "Vaya al portal de activación de FitFlow para obtener su clave de licencia",
+    "button": "Abrir Portal"
+  },
+  "step2": {
+    "title": "Copiar su Clave de Licencia",
+    "description": "Inicie sesión y copie su clave de licencia del portal como se muestra a continuación",
+    "imageAlt": "Captura de pantalla que muestra dónde copiar la clave de licencia"
+  },
+  "step3": {
+    "title": "Activar su Aplicación",
+    "description": "Pegue su clave de licencia a continuación para activar FitFlow",
+    "inputLabel": "Clave de Licencia",
+    "inputPlaceholder": "XXXX-XXXX-XXXX-XXXX-XXXX-XXXX",
+    "activateButton": "Activar Ahora",
+    "activatingButton": "Activando..."
+  },
+  "messages": {
+    "enterKey": "Por favor ingrese una clave de licencia",
+    "activationSuccess": "¡Licencia activada exitosamente!",
+    "activationFailed": "Clave de licencia inválida",
+    "activationError": "Error al activar la licencia"
+  },
+  "language": {
+    "label": "Idioma",
+    "select": "Seleccionar idioma"
+  },
+  "navigation": {
+    "back": "Atrás"
+  }
+}

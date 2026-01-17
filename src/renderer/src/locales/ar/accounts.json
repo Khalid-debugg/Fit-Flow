@@ -149,6 +149,7 @@
     "settings.view": "يمكنه عرض الإعدادات",
     "settings.edit": "يمكنه تعديل الإعدادات",
     "settings.manage_backups": "يمكنه إدارة النسخ الاحتياطية",
+    "settings.manage_license": "يمكنه إدارة تفعيل الترخيص",
     "accounts.view": "يمكنه عرض حسابات المستخدمين",
     "accounts.create": "يمكنه إنشاء حسابات مستخدمين",
     "accounts.edit": "يمكنه تعديل حسابات المستخدمين",
