@@ -42,7 +42,8 @@ export const PERMISSIONS = {
   settings: {
     view: 'settings.view',
     edit: 'settings.edit',
-    manage_backups: 'settings.manage_backups'
+    manage_backups: 'settings.manage_backups',
+    manage_license: 'settings.manage_license'
   },
   accounts: {
     view: 'accounts.view',
@@ -103,6 +104,7 @@ export const PERMISSION_LABELS: Record<string, string> = {
   'settings.view': 'Can view settings',
   'settings.edit': 'Can edit settings',
   'settings.manage_backups': 'Can manage backups',
+  'settings.manage_license': 'Can manage license activation',
 
   // Accounts
   'accounts.view': 'Can view user accounts',
@@ -156,6 +158,7 @@ export const PERMISSION_DEPENDENCIES: Record<string, string[]> = {
   // Settings
   'settings.edit': ['settings.view'],
   'settings.manage_backups': ['settings.view'],
+  'settings.manage_license': ['settings.view'],
 
   // Accounts
   'accounts.create': ['accounts.view'],
@@ -270,6 +273,7 @@ const ROLE_PERMISSIONS: Record<UserRole, UserPermissions> = {
     'settings.view': true,
     'settings.edit': false,
     'settings.manage_backups': false,
+    'settings.manage_license': false,
 
     // Accounts - View and create only (no delete, edit permissions, or admin management)
     'accounts.view': true,

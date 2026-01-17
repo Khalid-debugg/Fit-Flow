@@ -1,9 +1,10 @@
 import { PAYMENT_METHODS } from './membership'
+import { SupportedLanguage } from '../locales/i18n'
 
 export interface Settings {
   id?: string
 
-  language: 'ar' | 'en'
+  language: SupportedLanguage
   currency: string
 
   gymName: string
@@ -31,7 +32,7 @@ export interface Settings {
 export interface SettingsDbRow {
   id: '1'
 
-  language: 'ar' | 'en'
+  language: SupportedLanguage
   currency: string
 
   gym_name: string
