@@ -6,6 +6,19 @@ import crypto from 'crypto'
 const LICENSE_FILE = 'license.dat'
 
 /**
+ * License data structure stored locally
+ */
+export interface StoredLicenseData {
+  licenseKey: string
+  deviceId: string
+  activatedAt: string
+  trialEndsAt: string | null
+  subscriptionStatus: string
+  signedLicense: string // Server-signed data for offline validation
+  lastOnlineCheck: string
+}
+
+/**
  * Get the path to store license file
  */
 function getLicensePath(): string {
@@ -58,12 +71,13 @@ function decryptData(data: string): string {
 }
 
 /**
- * Save license key to disk
+ * Save complete license data to disk
  */
-export function saveLicense(licenseKey: string): void {
+export function saveLicense(licenseData: StoredLicenseData): void {
   try {
     const licensePath = getLicensePath()
-    const encrypted = encryptData(licenseKey)
+    const jsonData = JSON.stringify(licenseData)
+    const encrypted = encryptData(jsonData)
     fs.writeFileSync(licensePath, encrypted, 'utf8')
   } catch (error) {
     console.error('Error saving license:', error)
@@ -72,9 +86,9 @@ export function saveLicense(licenseKey: string): void {
 }
 
 /**
- * Load license key from disk
+ * Load complete license data from disk
  */
-export function loadLicense(): string | null {
+export function loadLicense(): StoredLicenseData | null {
   try {
     const licensePath = getLicensePath()
 
@@ -85,7 +99,21 @@ export function loadLicense(): string | null {
     const encrypted = fs.readFileSync(licensePath, 'utf8')
     const decrypted = decryptData(encrypted)
 
-    return decrypted || null
+    if (!decrypted) {
+      return null
+    }
+
+    // Try to parse as JSON (new format)
+    try {
+      const data = JSON.parse(decrypted) as StoredLicenseData
+      return data
+    } catch (jsonError) {
+      // Old format - just a license key string
+      // Delete the old file so user can activate again with new format
+      console.log('Old license format detected, deleting legacy file')
+      deleteLicense()
+      return null
+    }
   } catch (error) {
     console.error('Error loading license:', error)
     return null
@@ -108,8 +136,27 @@ export function deleteLicense(): void {
     const licensePath = getLicensePath()
     if (fs.existsSync(licensePath)) {
       fs.unlinkSync(licensePath)
+      console.log('License file deleted successfully:', licensePath)
+    } else {
+      console.log('License file does not exist:', licensePath)
     }
   } catch (error) {
     console.error('Error deleting license:', error)
+    throw error // Re-throw to handle in caller
+  }
+}
+
+/**
+ * Update last online check timestamp
+ */
+export function updateLastOnlineCheck(): void {
+  try {
+    const licenseData = loadLicense()
+    if (licenseData) {
+      licenseData.lastOnlineCheck = new Date().toISOString()
+      saveLicense(licenseData)
+    }
+  } catch (error) {
+    console.error('Error updating last online check:', error)
   }
 }

@@ -14,9 +14,17 @@ interface LicenseAPI {
   }>
   getStatus: () => Promise<{
     isLicensed: boolean
+    reason?: string
+    trialDaysRemaining?: number
+    requiresPayment?: boolean
     hardwareId?: string
     formattedHardwareId?: string
     hasLicenseFile?: boolean
+    licenseData?: {
+      activatedAt: string
+      trialEndsAt: string | null
+      subscriptionStatus: string
+    } | null
     error?: string
   }>
 }
