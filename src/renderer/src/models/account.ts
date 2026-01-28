@@ -43,7 +43,8 @@ export const PERMISSIONS = {
     view: 'settings.view',
     edit: 'settings.edit',
     manage_backups: 'settings.manage_backups',
-    manage_license: 'settings.manage_license'
+    manage_license: 'settings.manage_license',
+    manage_whatsapp: 'settings.manage_whatsapp'
   },
   accounts: {
     view: 'accounts.view',
@@ -105,6 +106,7 @@ export const PERMISSION_LABELS: Record<string, string> = {
   'settings.edit': 'Can edit settings',
   'settings.manage_backups': 'Can manage backups',
   'settings.manage_license': 'Can manage license activation',
+  'settings.manage_whatsapp': 'Can manage WhatsApp notifications',
 
   // Accounts
   'accounts.view': 'Can view user accounts',
@@ -159,6 +161,7 @@ export const PERMISSION_DEPENDENCIES: Record<string, string[]> = {
   'settings.edit': ['settings.view'],
   'settings.manage_backups': ['settings.view'],
   'settings.manage_license': ['settings.view'],
+  'settings.manage_whatsapp': ['settings.view'],
 
   // Accounts
   'accounts.create': ['accounts.view'],

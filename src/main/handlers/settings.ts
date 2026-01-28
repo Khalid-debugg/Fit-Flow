@@ -132,6 +132,14 @@ export function registerSettingsHandlers() {
       backupFrequency: settings.backup_frequency,
       backupFolderPath: settings.backup_folder_path || undefined,
       lastBackupDate: settings.last_backup_date || undefined,
+      whatsappEnabled: settings.whatsapp_enabled === 1,
+      whatsappAutoSend: settings.whatsapp_auto_send === 1,
+      whatsappDaysBeforeExpiry: settings.whatsapp_days_before_expiry || 3,
+      whatsappMessageTemplate:
+        settings.whatsapp_message_template ||
+        'مرحباً {name}، عضويتك في {gym_name} ستنتهي في {days_left} أيام بتاريخ {end_date}. يرجى التجديد للاستمرار في استخدام النادي.',
+      whatsappMessageLanguage: settings.whatsapp_message_language || 'ar',
+      whatsappLastCheckDate: settings.whatsapp_last_check_date || undefined,
       createdAt: settings.created_at,
       updatedAt: settings.updated_at
     }
@@ -141,7 +149,7 @@ export function registerSettingsHandlers() {
     const db = getDatabase()
 
     db.prepare(
-      `UPDATE settings SET language = ?, currency = ?, gym_name = ?, gym_address = ?, gym_country_code = ?, gym_phone = ?, gym_logo_path = ?, barcode_size = ?, allowed_genders = ?, default_payment_method = ?, allow_instant_checkin = ?, auto_backup = ?, backup_frequency = ?, backup_folder_path = ? WHERE id = '1'`
+      `UPDATE settings SET language = ?, currency = ?, gym_name = ?, gym_address = ?, gym_country_code = ?, gym_phone = ?, gym_logo_path = ?, barcode_size = ?, allowed_genders = ?, default_payment_method = ?, allow_instant_checkin = ?, auto_backup = ?, backup_frequency = ?, backup_folder_path = ?, whatsapp_enabled = ?, whatsapp_auto_send = ?, whatsapp_days_before_expiry = ?, whatsapp_message_template = ?, whatsapp_message_language = ? WHERE id = '1'`
     ).run(
       settings.language,
       settings.currency,
@@ -156,7 +164,13 @@ export function registerSettingsHandlers() {
       settings.allowInstantCheckIn ? 1 : 0,
       settings.autoBackup ? 1 : 0,
       settings.backupFrequency,
-      settings.backupFolderPath || null
+      settings.backupFolderPath || null,
+      settings.whatsappEnabled ? 1 : 0,
+      settings.whatsappAutoSend ? 1 : 0,
+      settings.whatsappDaysBeforeExpiry || 3,
+      settings.whatsappMessageTemplate ||
+        'مرحباً {name}، عضويتك في {gym_name} ستنتهي في {days_left} أيام بتاريخ {end_date}. يرجى التجديد للاستمرار في استخدام النادي.',
+      settings.whatsappMessageLanguage || 'ar'
     )
 
     return { success: true }

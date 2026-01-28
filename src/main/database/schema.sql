@@ -20,6 +20,13 @@ CREATE TABLE IF NOT EXISTS settings (
   backup_folder_path TEXT,
   last_backup_date DATETIME,
 
+  whatsapp_enabled INTEGER DEFAULT 1 CHECK (whatsapp_enabled IN (0, 1)),
+  whatsapp_auto_send INTEGER DEFAULT 1 CHECK (whatsapp_auto_send IN (0, 1)),
+  whatsapp_days_before_expiry INTEGER DEFAULT 3,
+  whatsapp_message_template TEXT DEFAULT 'مرحباً {name}، عضويتك في {gym_name} ستنتهي في {days_left} أيام بتاريخ {end_date}. يرجى التجديد للاستمرار في استخدام النادي.',
+  whatsapp_message_language TEXT DEFAULT 'ar' CHECK (whatsapp_message_language IN ('ar', 'en', 'es', 'pt', 'fr', 'de')),
+  whatsapp_last_check_date DATETIME,
+
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
@@ -148,6 +155,27 @@ CREATE INDEX IF NOT EXISTS idx_check_ins_member_id ON check_ins(member_id);
 CREATE INDEX IF NOT EXISTS idx_members_phone ON members(phone);
 CREATE INDEX IF NOT EXISTS idx_check_ins_member_date ON check_ins(member_id, DATE(check_in_time));
 CREATE INDEX IF NOT EXISTS idx_membership_payments_membership_id ON membership_payments(membership_id);
+
+CREATE TABLE IF NOT EXISTS whatsapp_notifications (
+  id TEXT PRIMARY KEY,
+  membership_id TEXT NOT NULL,
+  member_id TEXT NOT NULL,
+  phone_number TEXT NOT NULL,
+  message TEXT NOT NULL,
+  sent_date DATETIME NOT NULL,
+  days_before_expiry INTEGER NOT NULL,
+  expiry_date DATE NOT NULL,
+  status TEXT DEFAULT 'sent' CHECK (status IN ('sent', 'failed')),
+  error_message TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (membership_id) REFERENCES memberships(id) ON DELETE CASCADE,
+  FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_whatsapp_notifications_membership ON whatsapp_notifications(membership_id);
+CREATE INDEX IF NOT EXISTS idx_whatsapp_notifications_member ON whatsapp_notifications(member_id);
+CREATE INDEX IF NOT EXISTS idx_whatsapp_notifications_sent_date ON whatsapp_notifications(sent_date);
+CREATE INDEX IF NOT EXISTS idx_whatsapp_notifications_expiry ON whatsapp_notifications(expiry_date);
 
 INSERT OR IGNORE INTO settings (
   id,

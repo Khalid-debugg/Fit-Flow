@@ -111,6 +111,38 @@
       "confirm": "Deaktivieren"
     }
   },
+  "whatsapp": {
+    "title": "WhatsApp-Benachrichtigungen",
+    "subtitle": "Mitglieder automatisch über Ablauf der Mitgliedschaft benachrichtigen",
+    "enabled": "WhatsApp-Benachrichtigungen aktivieren",
+    "enabledDesc": "Automatische WhatsApp-Nachrichten an Mitglieder senden, bevor ihre Mitgliedschaft abläuft",
+    "noPermission": "Sie haben keine Berechtigung, WhatsApp-Benachrichtigungen zu verwalten",
+    "notificationSettings": "Benachrichtigungseinstellungen",
+    "daysBeforeExpiry": "Tage vor Ablauf",
+    "daysBeforeExpiryDesc": "Benachrichtigungen senden, wenn Mitgliedschaft in so vielen Tagen abläuft",
+    "messageTemplate": "Nachrichtenvorlage",
+    "languages": {
+      "ar": "Arabisch",
+      "en": "Englisch",
+      "es": "Spanisch",
+      "pt": "Portugiesisch",
+      "fr": "Französisch",
+      "de": "Deutsch"
+    },
+    "availableVariables": "Verfügbare Variablen",
+    "varMemberName": "Name des Mitglieds",
+    "varGymName": "Name des Fitnessstudios",
+    "varDaysLeft": "Tage bis zum Ablauf",
+    "varEndDate": "Enddatum der Mitgliedschaft",
+    "autoSend": "Automatisches Senden",
+    "autoSendDesc": "Benachrichtigungen automatisch täglich prüfen und senden",
+    "checkAndSend": "Jetzt Benachrichtigungen prüfen und senden",
+    "checkAndSendDesc": "Ablaufende Mitgliedschaften manuell prüfen und Benachrichtigungen senden",
+    "lastCheck": "Letzte Überprüfung",
+    "checkSuccess": "Benachrichtigungen erfolgreich gesendet",
+    "checkDescription": "Gesendet: {{sent}}, Übersprungen: {{skipped}}, Fehlgeschlagen: {{failed}}, Gesamt: {{total}}",
+    "checkFailed": "Fehler beim Senden der Benachrichtigungen"
+  },
   "messages": {
     "saved": "Einstellungen erfolgreich gespeichert",
     "error": "Einstellungen konnten nicht gespeichert werden"

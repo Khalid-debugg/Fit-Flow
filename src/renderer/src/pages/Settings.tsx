@@ -5,17 +5,18 @@ import { Settings as SettingsType } from '@renderer/models/settings'
 import { PERMISSIONS } from '@renderer/models/account'
 import { useAuth } from '@renderer/hooks/useAuth'
 import { Button } from '@renderer/components/ui/button'
-import { Save, Loader2, ShieldAlert } from 'lucide-react'
+import { Save, Loader2, ShieldAlert, AlertTriangle, RefreshCw } from 'lucide-react'
 import { toast } from 'sonner'
 import DeveloperTools from '@renderer/components/settings/DeveloperTools'
 import { GymInformationSection } from '@renderer/components/settings/GymInformationSection'
 import { GymSettingsSection } from '@renderer/components/settings/GymSettingsSection'
 import { LicenseManagementSection } from '@renderer/components/settings/LicenseManagementSection'
 import { BackupManagementSection } from '@renderer/components/settings/BackupManagementSection'
+import { WhatsAppNotificationSection } from '@renderer/components/settings/WhatsAppNotificationSection'
 
 export default function Settings() {
   const { t } = useTranslation('settings')
-  const { settings: contextSettings, updateSettings, loading: contextLoading } = useSettings()
+  const { settings: contextSettings, updateSettings, loading: contextLoading, error, refreshSettings } = useSettings()
   const { hasPermission } = useAuth()
   const [formData, setFormData] = useState<SettingsType | null>(null)
   const [saving, setSaving] = useState(false)
@@ -26,7 +27,8 @@ export default function Settings() {
       canView: hasPermission(PERMISSIONS.settings.view),
       canEdit: hasPermission(PERMISSIONS.settings.edit),
       canManageBackups: hasPermission(PERMISSIONS.settings.manage_backups),
-      canManageLicense: hasPermission(PERMISSIONS.settings.manage_license)
+      canManageLicense: hasPermission(PERMISSIONS.settings.manage_license),
+      canManageWhatsApp: hasPermission(PERMISSIONS.settings.manage_whatsapp)
     }),
     [hasPermission]
   )
@@ -56,10 +58,54 @@ export default function Settings() {
     }
   }, [formData, updateSettings, t])
 
-  if (contextLoading || !formData) {
+  if (contextLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
         <Loader2 className="w-20 h-20 animate-spin text-gray-400" />
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <AlertTriangle className="w-20 h-20 text-yellow-500 mb-4" />
+        <h2 className="text-2xl font-bold text-white mb-2">Unable to Load Settings</h2>
+        <p className="text-gray-400 mb-6 max-w-md text-center">
+          We couldn't load your settings. This might be a temporary issue. Please try again.
+        </p>
+        {import.meta.env.DEV && (
+          <div className="bg-gray-800 rounded-lg p-3 mb-4 max-w-md">
+            <p className="text-xs text-yellow-400 mb-1">Development Mode - Error:</p>
+            <p className="text-xs font-mono text-red-400">{error.message}</p>
+          </div>
+        )}
+        <Button
+          variant="primary"
+          onClick={() => refreshSettings()}
+          className="gap-2"
+        >
+          <RefreshCw className="w-4 h-4" />
+          Retry
+        </Button>
+      </div>
+    )
+  }
+
+  if (!formData) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <AlertTriangle className="w-20 h-20 text-yellow-500 mb-4" />
+        <h2 className="text-2xl font-bold text-white mb-2">No Settings Available</h2>
+        <p className="text-gray-400 mb-4">Settings data is not available</p>
+        <Button
+          variant="primary"
+          onClick={() => refreshSettings()}
+          className="gap-2"
+        >
+          <RefreshCw className="w-4 h-4" />
+          Reload
+        </Button>
       </div>
     )
   }
@@ -133,6 +179,17 @@ export default function Settings() {
           backupFolderPath={formData.backupFolderPath || ''}
           language={formData.language}
           canManageBackups={permissions.canManageBackups}
+          onUpdate={handleUpdate}
+        />
+
+        <WhatsAppNotificationSection
+          whatsappEnabled={formData.whatsappEnabled}
+          whatsappAutoSend={formData.whatsappAutoSend}
+          whatsappDaysBeforeExpiry={formData.whatsappDaysBeforeExpiry}
+          whatsappMessageTemplate={formData.whatsappMessageTemplate}
+          whatsappMessageLanguage={formData.whatsappMessageLanguage}
+          whatsappLastCheckDate={formData.whatsappLastCheckDate}
+          canManageWhatsApp={permissions.canManageWhatsApp}
           onUpdate={handleUpdate}
         />
 

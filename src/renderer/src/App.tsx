@@ -10,6 +10,7 @@ import { LicenseActivation } from './components/license/LicenseActivation'
 import { useLicense } from './hooks/useLicense'
 import { useAuth } from './hooks/useAuth'
 import Login from './pages/Login'
+import { ErrorBoundary } from './components/ErrorBoundary'
 const Dashboard = lazy(() => import('./pages/Dashboard'))
 const Members = lazy(() => import('./pages/Members'))
 const Memberships = lazy(() => import('./pages/Memberships'))
@@ -95,9 +96,11 @@ function AppContent() {
         <Route
           path="/settings"
           element={
-            <Suspense fallback={<LoaderCircle className="mx-auto h-20 w-20 animate-spin" />}>
-              <Settings />
-            </Suspense>
+            <ErrorBoundary>
+              <Suspense fallback={<LoaderCircle className="mx-auto h-20 w-20 animate-spin" />}>
+                <Settings />
+              </Suspense>
+            </ErrorBoundary>
           }
         />
       </Routes>
@@ -133,24 +136,26 @@ function App() {
   }
 
   return (
-    <HashRouter>
-      <AuthProvider>
-        <SettingsProvider>
-          <Toaster
-            toastOptions={{
-              classNames: {
-                toast: 'text-white!',
-                success: 'bg-green-600!',
-                error: 'bg-red-600!',
-                warning: 'bg-yellow-800! text-black!',
-                info: 'bg-blue-600!'
-              }
-            }}
-          />
-          <AppContent />
-        </SettingsProvider>
-      </AuthProvider>
-    </HashRouter>
+    <ErrorBoundary>
+      <HashRouter>
+        <AuthProvider>
+          <SettingsProvider>
+            <Toaster
+              toastOptions={{
+                classNames: {
+                  toast: 'text-white!',
+                  success: 'bg-green-600!',
+                  error: 'bg-red-600!',
+                  warning: 'bg-yellow-800! text-black!',
+                  info: 'bg-blue-600!'
+                }
+              }}
+            />
+            <AppContent />
+          </SettingsProvider>
+        </AuthProvider>
+      </HashRouter>
+    </ErrorBoundary>
   )
 }
 

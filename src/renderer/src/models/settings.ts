@@ -25,6 +25,13 @@ export interface Settings {
   backupFolderPath?: string
   lastBackupDate?: string
 
+  whatsappEnabled: boolean
+  whatsappAutoSend: boolean
+  whatsappDaysBeforeExpiry: number
+  whatsappMessageTemplate: string
+  whatsappMessageLanguage: SupportedLanguage
+  whatsappLastCheckDate?: string
+
   createdAt?: string
   updatedAt?: string
 }
@@ -52,6 +59,13 @@ export interface SettingsDbRow {
   backup_frequency: 'daily' | 'weekly' | 'monthly'
   backup_folder_path: string | null
   last_backup_date: string | null
+
+  whatsapp_enabled: 0 | 1
+  whatsapp_auto_send: 0 | 1
+  whatsapp_days_before_expiry: number
+  whatsapp_message_template: string
+  whatsapp_message_language: SupportedLanguage
+  whatsapp_last_check_date: string | null
 
   created_at: string
   updated_at: string

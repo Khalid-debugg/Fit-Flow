@@ -111,6 +111,38 @@
       "confirm": "Desativar"
     }
   },
+  "whatsapp": {
+    "title": "Notificações do WhatsApp",
+    "subtitle": "Notificar automaticamente membros sobre expiração de associação",
+    "enabled": "Ativar Notificações do WhatsApp",
+    "enabledDesc": "Enviar mensagens automáticas do WhatsApp para membros antes que sua associação expire",
+    "noPermission": "Você não tem permissão para gerenciar notificações do WhatsApp",
+    "notificationSettings": "Configurações de Notificação",
+    "daysBeforeExpiry": "Dias Antes da Expiração",
+    "daysBeforeExpiryDesc": "Enviar notificações quando a associação expirar em tantos dias",
+    "messageTemplate": "Modelo de Mensagem",
+    "languages": {
+      "ar": "Árabe",
+      "en": "Inglês",
+      "es": "Espanhol",
+      "pt": "Português",
+      "fr": "Francês",
+      "de": "Alemão"
+    },
+    "availableVariables": "Variáveis Disponíveis",
+    "varMemberName": "Nome do membro",
+    "varGymName": "Nome da academia",
+    "varDaysLeft": "Dias até a expiração",
+    "varEndDate": "Data de término da associação",
+    "autoSend": "Envio Automático",
+    "autoSendDesc": "Verificar e enviar notificações automaticamente todos os dias",
+    "checkAndSend": "Verificar e Enviar Notificações Agora",
+    "checkAndSendDesc": "Verificar manualmente associações expirando e enviar notificações",
+    "lastCheck": "Última verificação",
+    "checkSuccess": "Notificações enviadas com sucesso",
+    "checkDescription": "Enviados: {{sent}}, Ignorados: {{skipped}}, Falhados: {{failed}}, Total: {{total}}",
+    "checkFailed": "Falha ao enviar notificações"
+  },
   "messages": {
     "saved": "Configurações salvas com sucesso",
     "error": "Falha ao salvar configurações"

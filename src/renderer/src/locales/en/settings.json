@@ -111,6 +111,38 @@
       "confirm": "Deactivate"
     }
   },
+  "whatsapp": {
+    "title": "WhatsApp Notifications",
+    "subtitle": "Automatically notify members about membership expiry",
+    "enabled": "Enable WhatsApp Notifications",
+    "enabledDesc": "Send automatic WhatsApp messages to members before their membership expires",
+    "noPermission": "You don't have permission to manage WhatsApp notifications",
+    "notificationSettings": "Notification Settings",
+    "daysBeforeExpiry": "Days Before Expiry",
+    "daysBeforeExpiryDesc": "Send notifications when membership expires in this many days",
+    "messageTemplate": "Message Template",
+    "languages": {
+      "ar": "Arabic",
+      "en": "English",
+      "es": "Spanish",
+      "pt": "Portuguese",
+      "fr": "French",
+      "de": "German"
+    },
+    "availableVariables": "Available Variables",
+    "varMemberName": "Member's name",
+    "varGymName": "Gym name",
+    "varDaysLeft": "Days until expiry",
+    "varEndDate": "Membership end date",
+    "autoSend": "Automatic Sending",
+    "autoSendDesc": "Automatically check and send notifications daily",
+    "checkAndSend": "Check & Send Notifications Now",
+    "checkAndSendDesc": "Manually check for expiring memberships and send notifications",
+    "lastCheck": "Last check",
+    "checkSuccess": "Notifications sent successfully",
+    "checkDescription": "Sent: {{sent}}, Skipped: {{skipped}}, Failed: {{failed}}, Total: {{total}}",
+    "checkFailed": "Failed to send notifications"
+  },
   "messages": {
     "saved": "Settings saved successfully",
     "error": "Failed to save settings"

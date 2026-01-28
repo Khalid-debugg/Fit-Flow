@@ -111,6 +111,38 @@
       "confirm": "Desactivar"
     }
   },
+  "whatsapp": {
+    "title": "Notificaciones de WhatsApp",
+    "subtitle": "Notificar automáticamente a los miembros sobre la expiración de membresía",
+    "enabled": "Activar Notificaciones de WhatsApp",
+    "enabledDesc": "Enviar mensajes automáticos de WhatsApp a miembros antes de que expire su membresía",
+    "noPermission": "No tienes permiso para gestionar notificaciones de WhatsApp",
+    "notificationSettings": "Configuración de Notificaciones",
+    "daysBeforeExpiry": "Días Antes de Expiración",
+    "daysBeforeExpiryDesc": "Enviar notificaciones cuando la membresía expire en esta cantidad de días",
+    "messageTemplate": "Plantilla de Mensaje",
+    "languages": {
+      "ar": "Árabe",
+      "en": "Inglés",
+      "es": "Español",
+      "pt": "Portugués",
+      "fr": "Francés",
+      "de": "Alemán"
+    },
+    "availableVariables": "Variables Disponibles",
+    "varMemberName": "Nombre del miembro",
+    "varGymName": "Nombre del gimnasio",
+    "varDaysLeft": "Días hasta la expiración",
+    "varEndDate": "Fecha de fin de membresía",
+    "autoSend": "Envío Automático",
+    "autoSendDesc": "Verificar y enviar notificaciones automáticamente todos los días",
+    "checkAndSend": "Verificar y Enviar Notificaciones Ahora",
+    "checkAndSendDesc": "Verificar manualmente membresías por expirar y enviar notificaciones",
+    "lastCheck": "Última verificación",
+    "checkSuccess": "Notificaciones enviadas exitosamente",
+    "checkDescription": "Enviados: {{sent}}, Omitidos: {{skipped}}, Fallidos: {{failed}}, Total: {{total}}",
+    "checkFailed": "Error al enviar notificaciones"
+  },
   "messages": {
     "saved": "Configuración guardada exitosamente",
     "error": "Error al guardar configuración"

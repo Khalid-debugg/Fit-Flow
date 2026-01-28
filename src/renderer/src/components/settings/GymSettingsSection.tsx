@@ -44,7 +44,7 @@ export const GymSettingsSection = memo(function GymSettingsSection({
 
   const handleLanguageChange = useCallback(
     (value: string) => {
-      onUpdate({ language: value as 'ar' | 'en' })
+      onUpdate({ language: value as SupportedLanguage })
     },
     [onUpdate]
   )
@@ -103,6 +103,10 @@ export const GymSettingsSection = memo(function GymSettingsSection({
             <SelectContent>
               <SelectItem value="ar">{t('regional.arabic')}</SelectItem>
               <SelectItem value="en">{t('regional.english')}</SelectItem>
+              <SelectItem value="es">{t('regional.spanish')}</SelectItem>
+              <SelectItem value="pt">{t('regional.portuguese')}</SelectItem>
+              <SelectItem value="fr">{t('regional.french')}</SelectItem>
+              <SelectItem value="de">{t('regional.german')}</SelectItem>
             </SelectContent>
           </Select>
         </div>

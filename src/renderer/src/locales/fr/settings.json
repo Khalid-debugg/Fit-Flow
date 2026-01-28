@@ -111,6 +111,38 @@
       "confirm": "Désactiver"
     }
   },
+  "whatsapp": {
+    "title": "Notifications WhatsApp",
+    "subtitle": "Notifier automatiquement les membres de l'expiration de l'adhésion",
+    "enabled": "Activer les Notifications WhatsApp",
+    "enabledDesc": "Envoyer des messages WhatsApp automatiques aux membres avant l'expiration de leur adhésion",
+    "noPermission": "Vous n'avez pas la permission de gérer les notifications WhatsApp",
+    "notificationSettings": "Paramètres de Notification",
+    "daysBeforeExpiry": "Jours Avant Expiration",
+    "daysBeforeExpiryDesc": "Envoyer des notifications lorsque l'adhésion expire dans ce nombre de jours",
+    "messageTemplate": "Modèle de Message",
+    "languages": {
+      "ar": "Arabe",
+      "en": "Anglais",
+      "es": "Espagnol",
+      "pt": "Portugais",
+      "fr": "Français",
+      "de": "Allemand"
+    },
+    "availableVariables": "Variables Disponibles",
+    "varMemberName": "Nom du membre",
+    "varGymName": "Nom de la salle",
+    "varDaysLeft": "Jours jusqu'à l'expiration",
+    "varEndDate": "Date de fin d'adhésion",
+    "autoSend": "Envoi Automatique",
+    "autoSendDesc": "Vérifier et envoyer les notifications automatiquement tous les jours",
+    "checkAndSend": "Vérifier et Envoyer les Notifications Maintenant",
+    "checkAndSendDesc": "Vérifier manuellement les adhésions expirant et envoyer les notifications",
+    "lastCheck": "Dernière vérification",
+    "checkSuccess": "Notifications envoyées avec succès",
+    "checkDescription": "Envoyés: {{sent}}, Ignorés: {{skipped}}, Échecs: {{failed}}, Total: {{total}}",
+    "checkFailed": "Échec de l'envoi des notifications"
+  },
   "messages": {
     "saved": "Paramètres enregistrés avec succès",
     "error": "Échec de l'enregistrement des paramètres"

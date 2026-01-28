@@ -15,6 +15,7 @@ import { registerSettingsHandlers, performAutoBackup } from './handlers/settings
 import { registerLicenseHandlers } from './license'
 import { registerSeedHandlers } from './handlers/seed'
 import { registerAccountHandlers } from './handlers/accounts'
+import { registerWhatsAppHandlers } from './handlers/whatsapp'
 
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
@@ -68,6 +69,7 @@ app.whenReady().then(async () => {
   registerSettingsHandlers()
   registerSeedHandlers()
   registerAccountHandlers()
+  registerWhatsAppHandlers()
   await performAutoBackup()
 
   createWindow()
