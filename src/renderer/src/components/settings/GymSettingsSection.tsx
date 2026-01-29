@@ -16,6 +16,7 @@ interface GymSettingsSectionProps {
   defaultPaymentMethod: (typeof PAYMENT_METHODS)[number]
   barcodeSize: 'keychain' | 'card'
   allowInstantCheckIn: boolean
+  allowCustomMemberId: boolean
   canEdit: boolean
   onUpdate: (updates: Partial<Settings>) => void
 }
@@ -27,6 +28,7 @@ export const GymSettingsSection = memo(function GymSettingsSection({
   defaultPaymentMethod,
   barcodeSize,
   allowInstantCheckIn,
+  allowCustomMemberId,
   canEdit,
   onUpdate
 }: GymSettingsSectionProps) {
@@ -80,6 +82,13 @@ export const GymSettingsSection = memo(function GymSettingsSection({
   const handleInstantCheckInChange = useCallback(
     (checked: boolean) => {
       onUpdate({ allowInstantCheckIn: checked })
+    },
+    [onUpdate]
+  )
+
+  const handleCustomMemberIdChange = useCallback(
+    (checked: boolean) => {
+      onUpdate({ allowCustomMemberId: checked })
     },
     [onUpdate]
   )
@@ -191,6 +200,23 @@ export const GymSettingsSection = memo(function GymSettingsSection({
           <Checkbox
             checked={allowInstantCheckIn}
             onCheckedChange={handleInstantCheckInChange}
+            className="w-5 h-5"
+            disabled={!canEdit}
+          />
+        </div>
+
+        <div className="flex items-center justify-between p-4 bg-gray-900 rounded-lg">
+          <div className="flex-1">
+            <span className="text-sm font-medium text-gray-300 block">
+              {t('members.allowCustomId')}
+            </span>
+            <span className="text-xs text-gray-400 mt-1 block">
+              {t('members.allowCustomIdDesc')}
+            </span>
+          </div>
+          <Checkbox
+            checked={allowCustomMemberId}
+            onCheckedChange={handleCustomMemberIdChange}
             className="w-5 h-5"
             disabled={!canEdit}
           />

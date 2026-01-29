@@ -322,41 +322,43 @@ export default function MemberForm({
       <div>
         <h3 className="text-lg font-semibold mb-4 text-gray-200">{t('basicInfo')}</h3>
         <div className="flex flex-col gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="id" className="text-gray-200">
-              {t('form.id')} *
-            </Label>
-            <div className="flex gap-2">
-              <Input
-                id="id"
-                type="number"
-                min="1"
-                required
-                className="bg-gray-800 border-gray-700 text-white flex-1"
-                value={formData.id ?? ''}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    id: e.target.value
-                  })
-                }
-                placeholder={isCreateMode ? t('form.id') : ''}
-              />
-              {isCreateMode && (
-                <Button
-                  type="button"
-                  variant="secondary"
-                  onClick={async () => {
-                    const nextId = await window.electron.ipcRenderer.invoke('members:getNextId')
-                    setFormData({ ...formData, id: nextId })
-                  }}
-                  className="whitespace-nowrap"
-                >
-                  {t('form.autoGenerate')}
-                </Button>
-              )}
+          {settings?.allowCustomMemberId && (
+            <div className="space-y-2">
+              <Label htmlFor="id" className="text-gray-200">
+                {t('form.id')} *
+              </Label>
+              <div className="flex gap-2">
+                <Input
+                  id="id"
+                  type="number"
+                  min="1"
+                  required
+                  className="bg-gray-800 border-gray-700 text-white flex-1"
+                  value={formData.id ?? ''}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      id: e.target.value
+                    })
+                  }
+                  placeholder={isCreateMode ? t('form.id') : ''}
+                />
+                {isCreateMode && (
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={async () => {
+                      const nextId = await window.electron.ipcRenderer.invoke('members:getNextId')
+                      setFormData({ ...formData, id: nextId })
+                    }}
+                    className="whitespace-nowrap"
+                  >
+                    {t('form.autoGenerate')}
+                  </Button>
+                )}
+              </div>
             </div>
-          </div>
+          )}
           <div className="space-y-2">
             <Label htmlFor="name" className="text-gray-200">
               {t('form.name')} *

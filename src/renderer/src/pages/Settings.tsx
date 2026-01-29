@@ -167,6 +167,7 @@ export default function Settings() {
           defaultPaymentMethod={formData.defaultPaymentMethod}
           barcodeSize={formData.barcodeSize || 'keychain'}
           allowInstantCheckIn={formData.allowInstantCheckIn}
+          allowCustomMemberId={formData.allowCustomMemberId}
           canEdit={permissions.canEdit}
           onUpdate={handleUpdate}
         />
