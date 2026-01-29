@@ -7,9 +7,18 @@ import { Checkbox } from '@renderer/components/ui/checkbox'
 import { Input } from '@renderer/components/ui/input'
 import { Textarea } from '@renderer/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@renderer/components/ui/select'
+import { NotificationResultsDialog } from './NotificationResultsDialog'
 import type { Settings } from '@renderer/models/settings'
 import type { SupportedLanguage } from '@renderer/locales/i18n'
 import { DEFAULT_WHATSAPP_TEMPLATES } from '@renderer/constants/whatsappTemplates'
+
+interface NotificationResult {
+  memberName: string
+  phoneNumber: string
+  status: 'sent' | 'failed' | 'skipped'
+  reason?: string
+  daysLeft: number
+}
 
 interface WhatsAppNotificationSectionProps {
   whatsappEnabled: boolean
@@ -34,6 +43,18 @@ export const WhatsAppNotificationSection = memo(function WhatsAppNotificationSec
 }: WhatsAppNotificationSectionProps) {
   const { t } = useTranslation('settings')
   const [checkingNotifications, setCheckingNotifications] = useState(false)
+  const [showResultsDialog, setShowResultsDialog] = useState(false)
+  const [notificationResults, setNotificationResults] = useState<{
+    results: NotificationResult[]
+    sentCount: number
+    failedCount: number
+    skippedCount: number
+  }>({
+    results: [],
+    sentCount: 0,
+    failedCount: 0,
+    skippedCount: 0
+  })
 
   const handleLanguageChange = useCallback(
     (value: string) => {
@@ -53,22 +74,55 @@ export const WhatsAppNotificationSection = memo(function WhatsAppNotificationSec
       const result = await window.electron.ipcRenderer.invoke('whatsapp:checkAndSendNotifications')
 
       if (result.success) {
-        toast.success(t('whatsapp.checkSuccess'), {
-          description: t('whatsapp.checkDescription', {
-            sent: result.sentCount,
-            skipped: result.skippedCount,
-            failed: result.failedCount,
-            total: result.totalChecked
+        // Show success message with counts
+        const { sentCount, skippedCount, failedCount, totalChecked, message, failureReason, results } = result
+
+        // Store results for dialog
+        if (results && results.length > 0) {
+          setNotificationResults({
+            results,
+            sentCount,
+            failedCount,
+            skippedCount
           })
-        })
+          setShowResultsDialog(true)
+        }
+
+        if (totalChecked === 0) {
+          toast.info(t('whatsapp.resultsDialog.noActionNeeded'), {
+            description: message || t('whatsapp.resultsDialog.noMembershipsExpiring')
+          })
+        } else if (failedCount > 0) {
+          // Some messages failed - show warning with details
+          toast.warning(t('whatsapp.resultsDialog.notificationsSentWithIssues'), {
+            description: t('whatsapp.resultsDialog.issuesDescription', {
+              sent: sentCount,
+              failed: failedCount,
+              reason: failureReason || ''
+            })
+          })
+        } else {
+          // All messages sent successfully
+          toast.success(t('whatsapp.checkSuccess'), {
+            description: t('whatsapp.checkDescription', {
+              sent: sentCount,
+              skipped: skippedCount,
+              failed: failedCount,
+              total: totalChecked
+            })
+          })
+        }
       } else {
-        toast.error(t('whatsapp.checkFailed'), {
-          description: result.error
+        // Operation failed entirely
+        toast.error(t('whatsapp.resultsDialog.unableToSend'), {
+          description: result.error || t('whatsapp.resultsDialog.unexpectedError')
         })
       }
     } catch (error) {
       console.error('Failed to check and send notifications:', error)
-      toast.error(t('messages.error'))
+      toast.error(t('whatsapp.resultsDialog.connectionError'), {
+        description: t('whatsapp.resultsDialog.checkConnection')
+      })
     } finally {
       setCheckingNotifications(false)
     }
@@ -230,6 +284,16 @@ export const WhatsAppNotificationSection = memo(function WhatsAppNotificationSec
           </>
         )}
       </div>
+
+      {/* Notification Results Dialog */}
+      <NotificationResultsDialog
+        open={showResultsDialog}
+        onOpenChange={setShowResultsDialog}
+        results={notificationResults.results}
+        sentCount={notificationResults.sentCount}
+        failedCount={notificationResults.failedCount}
+        skippedCount={notificationResults.skippedCount}
+      />
     </div>
   )
 })
