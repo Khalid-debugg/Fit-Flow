@@ -40,7 +40,9 @@
     "allowedGenders": "الأجناس المسموح بها",
     "both": "كلاهما (ذكور وإناث)",
     "maleOnly": "ذكور فقط",
-    "femaleOnly": "إناث فقط"
+    "femaleOnly": "إناث فقط",
+    "allowCustomId": "السماح برقم عضوية مخصص",
+    "allowCustomIdDesc": "السماح بإدخال رقم عضوية مخصص عند إنشاء الأعضاء"
   },
   "payment": {
     "title": "إعدادات الدفع",
@@ -141,10 +143,36 @@
     "lastCheck": "آخر فحص",
     "checkSuccess": "تم إرسال الإشعارات بنجاح",
     "checkDescription": "تم الإرسال: {{sent}}، تم التخطي: {{skipped}}، فشل: {{failed}}، الإجمالي: {{total}}",
-    "checkFailed": "فشل إرسال الإشعارات"
+    "checkFailed": "فشل إرسال الإشعارات",
+    "resultsDialog": {
+      "title": "نتائج الإشعارات",
+      "description": "ملخص إشعارات واتساب المرسلة للأعضاء الذين تنتهي عضويتهم قريباً",
+      "sent": "تم الإرسال",
+      "failed": "فشل",
+      "skipped": "تم التخطي",
+      "successSection": "تم الإرسال بنجاح ({{count}})",
+      "failedSection": "فشل الإرسال ({{count}})",
+      "skippedSection": "تم إشعارهم مسبقاً ({{count}})",
+      "daysLeft": "{{days}} يوم متبقي",
+      "noResults": "لا توجد نتائج إشعارات للعرض",
+      "noActionNeeded": "لا يوجد إجراء مطلوب",
+      "noMembershipsExpiring": "لا توجد عضويات تنتهي قريباً",
+      "notificationsSentWithIssues": "تم إرسال الإشعارات مع وجود مشاكل",
+      "issuesDescription": "{{sent}} تم إرساله بنجاح، {{failed}} فشل. {{reason}}",
+      "unableToSend": "تعذر إرسال الإشعارات",
+      "unexpectedError": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.",
+      "connectionError": "خطأ في الاتصال",
+      "checkConnection": "تعذر الاتصال. يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى."
+    }
   },
   "messages": {
     "saved": "تم حفظ الإعدادات بنجاح",
     "error": "فشل في حفظ الإعدادات"
+  },
+  "pagination": {
+    "page": "صفحة",
+    "of": "من",
+    "previous": "السابق",
+    "next": "التالي"
   }
 }

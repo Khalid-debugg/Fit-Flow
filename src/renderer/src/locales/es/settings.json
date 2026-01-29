@@ -40,7 +40,9 @@
     "allowedGenders": "Géneros Permitidos",
     "both": "Ambos (Masculino y Femenino)",
     "maleOnly": "Solo Masculino",
-    "femaleOnly": "Solo Femenino"
+    "femaleOnly": "Solo Femenino",
+    "allowCustomId": "Permitir ID de Miembro Personalizado",
+    "allowCustomIdDesc": "Permitir la entrada manual de IDs de miembros personalizados al crear miembros"
   },
   "payment": {
     "title": "Configuración de Pagos",
@@ -141,10 +143,36 @@
     "lastCheck": "Última verificación",
     "checkSuccess": "Notificaciones enviadas exitosamente",
     "checkDescription": "Enviados: {{sent}}, Omitidos: {{skipped}}, Fallidos: {{failed}}, Total: {{total}}",
-    "checkFailed": "Error al enviar notificaciones"
+    "checkFailed": "Error al enviar notificaciones",
+    "resultsDialog": {
+      "title": "Resultados de Notificaciones",
+      "description": "Resumen de notificaciones de WhatsApp enviadas a miembros con membresías por expirar",
+      "sent": "Enviados",
+      "failed": "Fallidos",
+      "skipped": "Omitidos",
+      "successSection": "Enviados Exitosamente ({{count}})",
+      "failedSection": "Error al Enviar ({{count}})",
+      "skippedSection": "Ya Notificados ({{count}})",
+      "daysLeft": "{{days}} días restantes",
+      "noResults": "No hay resultados de notificaciones para mostrar",
+      "noActionNeeded": "No se Requiere Acción",
+      "noMembershipsExpiring": "No hay membresías por expirar pronto",
+      "notificationsSentWithIssues": "Notificaciones Enviadas con Problemas",
+      "issuesDescription": "{{sent}} enviados exitosamente, {{failed}} fallidos. {{reason}}",
+      "unableToSend": "No se Pudieron Enviar Notificaciones",
+      "unexpectedError": "Ocurrió un error inesperado. Por favor, inténtalo de nuevo.",
+      "connectionError": "Error de Conexión",
+      "checkConnection": "No se pudo conectar. Por favor, verifica tu conexión a internet e inténtalo de nuevo."
+    }
   },
   "messages": {
     "saved": "Configuración guardada exitosamente",
     "error": "Error al guardar configuración"
+  },
+  "pagination": {
+    "page": "Página",
+    "of": "de",
+    "previous": "Anterior",
+    "next": "Siguiente"
   }
 }

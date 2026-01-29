@@ -40,7 +40,9 @@
     "allowedGenders": "Sexes Autorisés",
     "both": "Les Deux (Homme et Femme)",
     "maleOnly": "Hommes Uniquement",
-    "femaleOnly": "Femmes Uniquement"
+    "femaleOnly": "Femmes Uniquement",
+    "allowCustomId": "Autoriser l'ID de Membre Personnalisé",
+    "allowCustomIdDesc": "Autoriser la saisie manuelle d'IDs de membres personnalisés lors de la création de membres"
   },
   "payment": {
     "title": "Paramètres de Paiement",
@@ -141,10 +143,36 @@
     "lastCheck": "Dernière vérification",
     "checkSuccess": "Notifications envoyées avec succès",
     "checkDescription": "Envoyés: {{sent}}, Ignorés: {{skipped}}, Échecs: {{failed}}, Total: {{total}}",
-    "checkFailed": "Échec de l'envoi des notifications"
+    "checkFailed": "Échec de l'envoi des notifications",
+    "resultsDialog": {
+      "title": "Résultats des Notifications",
+      "description": "Résumé des notifications WhatsApp envoyées aux membres dont l'adhésion expire",
+      "sent": "Envoyés",
+      "failed": "Échecs",
+      "skipped": "Ignorés",
+      "successSection": "Envoyés avec Succès ({{count}})",
+      "failedSection": "Échec d'Envoi ({{count}})",
+      "skippedSection": "Déjà Notifiés ({{count}})",
+      "daysLeft": "{{days}} jours restants",
+      "noResults": "Aucun résultat de notification à afficher",
+      "noActionNeeded": "Aucune Action Nécessaire",
+      "noMembershipsExpiring": "Aucune adhésion n'expire bientôt",
+      "notificationsSentWithIssues": "Notifications Envoyées avec des Problèmes",
+      "issuesDescription": "{{sent}} envoyés avec succès, {{failed}} ont échoué. {{reason}}",
+      "unableToSend": "Impossible d'Envoyer les Notifications",
+      "unexpectedError": "Une erreur inattendue s'est produite. Veuillez réessayer.",
+      "connectionError": "Erreur de Connexion",
+      "checkConnection": "Impossible de se connecter. Veuillez vérifier votre connexion Internet et réessayer."
+    }
   },
   "messages": {
     "saved": "Paramètres enregistrés avec succès",
     "error": "Échec de l'enregistrement des paramètres"
+  },
+  "pagination": {
+    "page": "Page",
+    "of": "de",
+    "previous": "Précédent",
+    "next": "Suivant"
   }
 }

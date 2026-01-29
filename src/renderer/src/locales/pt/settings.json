@@ -40,7 +40,9 @@
     "allowedGenders": "Gêneros Permitidos",
     "both": "Ambos (Masculino e Feminino)",
     "maleOnly": "Somente Masculino",
-    "femaleOnly": "Somente Feminino"
+    "femaleOnly": "Somente Feminino",
+    "allowCustomId": "Permitir ID de Membro Personalizado",
+    "allowCustomIdDesc": "Permitir entrada manual de IDs de membros personalizados ao criar membros"
   },
   "payment": {
     "title": "Configurações de Pagamento",
@@ -141,10 +143,36 @@
     "lastCheck": "Última verificação",
     "checkSuccess": "Notificações enviadas com sucesso",
     "checkDescription": "Enviados: {{sent}}, Ignorados: {{skipped}}, Falhados: {{failed}}, Total: {{total}}",
-    "checkFailed": "Falha ao enviar notificações"
+    "checkFailed": "Falha ao enviar notificações",
+    "resultsDialog": {
+      "title": "Resultados das Notificações",
+      "description": "Resumo das notificações do WhatsApp enviadas aos membros com associações expirando",
+      "sent": "Enviados",
+      "failed": "Falhados",
+      "skipped": "Ignorados",
+      "successSection": "Enviados com Sucesso ({{count}})",
+      "failedSection": "Falha ao Enviar ({{count}})",
+      "skippedSection": "Já Notificados ({{count}})",
+      "daysLeft": "{{days}} dias restantes",
+      "noResults": "Nenhum resultado de notificação para exibir",
+      "noActionNeeded": "Nenhuma Ação Necessária",
+      "noMembershipsExpiring": "Nenhuma associação expirando em breve",
+      "notificationsSentWithIssues": "Notificações Enviadas com Problemas",
+      "issuesDescription": "{{sent}} enviados com sucesso, {{failed}} falharam. {{reason}}",
+      "unableToSend": "Não Foi Possível Enviar Notificações",
+      "unexpectedError": "Ocorreu um erro inesperado. Por favor, tente novamente.",
+      "connectionError": "Erro de Conexão",
+      "checkConnection": "Não foi possível conectar. Por favor, verifique sua conexão com a internet e tente novamente."
+    }
   },
   "messages": {
     "saved": "Configurações salvas com sucesso",
     "error": "Falha ao salvar configurações"
+  },
+  "pagination": {
+    "page": "Página",
+    "of": "de",
+    "previous": "Anterior",
+    "next": "Próximo"
   }
 }

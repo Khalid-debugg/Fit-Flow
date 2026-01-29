@@ -40,7 +40,9 @@
     "allowedGenders": "Zulässige Geschlechter",
     "both": "Beide (Männlich & Weiblich)",
     "maleOnly": "Nur Männlich",
-    "femaleOnly": "Nur Weiblich"
+    "femaleOnly": "Nur Weiblich",
+    "allowCustomId": "Benutzerdefinierte Mitglieds-ID Zulassen",
+    "allowCustomIdDesc": "Manuelle Eingabe benutzerdefinierter Mitglieds-IDs beim Erstellen von Mitgliedern erlauben"
   },
   "payment": {
     "title": "Zahlungseinstellungen",
@@ -141,10 +143,36 @@
     "lastCheck": "Letzte Überprüfung",
     "checkSuccess": "Benachrichtigungen erfolgreich gesendet",
     "checkDescription": "Gesendet: {{sent}}, Übersprungen: {{skipped}}, Fehlgeschlagen: {{failed}}, Gesamt: {{total}}",
-    "checkFailed": "Fehler beim Senden der Benachrichtigungen"
+    "checkFailed": "Fehler beim Senden der Benachrichtigungen",
+    "resultsDialog": {
+      "title": "Benachrichtigungsergebnisse",
+      "description": "Zusammenfassung der WhatsApp-Benachrichtigungen an Mitglieder mit ablaufenden Mitgliedschaften",
+      "sent": "Gesendet",
+      "failed": "Fehlgeschlagen",
+      "skipped": "Übersprungen",
+      "successSection": "Erfolgreich Gesendet ({{count}})",
+      "failedSection": "Sendefehler ({{count}})",
+      "skippedSection": "Bereits Benachrichtigt ({{count}})",
+      "daysLeft": "{{days}} Tage übrig",
+      "noResults": "Keine Benachrichtigungsergebnisse zum Anzeigen",
+      "noActionNeeded": "Keine Aktion Erforderlich",
+      "noMembershipsExpiring": "Keine Mitgliedschaften laufen bald ab",
+      "notificationsSentWithIssues": "Benachrichtigungen mit Problemen Gesendet",
+      "issuesDescription": "{{sent}} erfolgreich gesendet, {{failed}} fehlgeschlagen. {{reason}}",
+      "unableToSend": "Benachrichtigungen Konnten Nicht Gesendet Werden",
+      "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
+      "connectionError": "Verbindungsfehler",
+      "checkConnection": "Verbindung fehlgeschlagen. Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut."
+    }
   },
   "messages": {
     "saved": "Einstellungen erfolgreich gespeichert",
     "error": "Einstellungen konnten nicht gespeichert werden"
+  },
+  "pagination": {
+    "page": "Seite",
+    "of": "von",
+    "previous": "Zurück",
+    "next": "Weiter"
   }
 }

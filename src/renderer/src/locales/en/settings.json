@@ -40,7 +40,9 @@
     "allowedGenders": "Allowed Genders",
     "both": "Both (Male & Female)",
     "maleOnly": "Male Only",
-    "femaleOnly": "Female Only"
+    "femaleOnly": "Female Only",
+    "allowCustomId": "Allow Custom Member ID",
+    "allowCustomIdDesc": "Allow manual entry of custom member IDs when creating members"
   },
   "payment": {
     "title": "Payment Settings",
@@ -141,10 +143,36 @@
     "lastCheck": "Last check",
     "checkSuccess": "Notifications sent successfully",
     "checkDescription": "Sent: {{sent}}, Skipped: {{skipped}}, Failed: {{failed}}, Total: {{total}}",
-    "checkFailed": "Failed to send notifications"
+    "checkFailed": "Failed to send notifications",
+    "resultsDialog": {
+      "title": "Notification Results",
+      "description": "Summary of WhatsApp notifications sent to members with expiring memberships",
+      "sent": "Sent",
+      "failed": "Failed",
+      "skipped": "Skipped",
+      "successSection": "Successfully Sent ({{count}})",
+      "failedSection": "Failed to Send ({{count}})",
+      "skippedSection": "Already Notified ({{count}})",
+      "daysLeft": "{{days}} days left",
+      "noResults": "No notification results to display",
+      "noActionNeeded": "No Action Needed",
+      "noMembershipsExpiring": "No memberships are expiring soon",
+      "notificationsSentWithIssues": "Notifications Sent with Issues",
+      "issuesDescription": "{{sent}} sent successfully, {{failed}} failed. {{reason}}",
+      "unableToSend": "Unable to Send Notifications",
+      "unexpectedError": "An unexpected error occurred. Please try again.",
+      "connectionError": "Connection Error",
+      "checkConnection": "Unable to connect. Please check your internet connection and try again."
+    }
   },
   "messages": {
     "saved": "Settings saved successfully",
     "error": "Failed to save settings"
+  },
+  "pagination": {
+    "page": "Page",
+    "of": "of",
+    "previous": "Previous",
+    "next": "Next"
   }
 }
