@@ -42,15 +42,39 @@ async function sendWhatsAppMessage(
         message: 'Message sent successfully'
       }
     } else {
+      // Map technical API errors to user-friendly messages
+      const apiError = data.message || data.data?.details?.[0] || ''
+      let friendlyMessage = 'Unable to send message'
+
+      if (apiError.toLowerCase().includes('token') || apiError.toLowerCase().includes('auth')) {
+        friendlyMessage = 'WhatsApp connection issue - please check your configuration'
+      } else if (apiError.toLowerCase().includes('instance')) {
+        friendlyMessage = 'WhatsApp instance not connected - please scan QR code'
+      } else if (apiError.toLowerCase().includes('phone') || apiError.toLowerCase().includes('number')) {
+        friendlyMessage = 'Invalid phone number'
+      }
+
+      console.error('WhatsApp API error:', apiError)
       return {
         success: false,
-        message: data.message || data.data?.details?.[0] || 'Failed to send message'
+        message: friendlyMessage
       }
     }
   } catch (error) {
+    // Map connection errors to user-friendly messages
+    const errorMsg = error instanceof Error ? error.message : ''
+    let friendlyMessage = 'Unable to connect to WhatsApp service'
+
+    if (errorMsg.includes('fetch') || errorMsg.includes('network') || errorMsg.includes('ECONNREFUSED')) {
+      friendlyMessage = 'No internet connection - please check your network'
+    } else if (errorMsg.includes('timeout')) {
+      friendlyMessage = 'Connection timeout - please try again'
+    }
+
+    console.error('WhatsApp send error:', error)
     return {
       success: false,
-      message: error instanceof Error ? error.message : 'Unknown error occurred'
+      message: friendlyMessage
     }
   }
 }
@@ -279,7 +303,7 @@ export function registerWhatsAppHandlers() {
       if (!settings || !settings.whatsapp_enabled) {
         return {
           success: false,
-          error: 'WhatsApp notifications are not enabled'
+          error: 'WhatsApp notifications are not enabled. Please enable them in settings.'
         }
       }
 
@@ -289,19 +313,49 @@ export function registerWhatsAppHandlers() {
       if (!token || !instanceId) {
         return {
           success: false,
-          error: 'Please configure your WhatsApp credentials'
+          error: 'WhatsApp is not configured. Please add your WhatsApp credentials in the .env file.'
         }
       }
 
       const expiringMemberships = getExpiringMemberships(settings.whatsapp_days_before_expiry)
 
+      if (expiringMemberships.length === 0) {
+        return {
+          success: true,
+          sentCount: 0,
+          skippedCount: 0,
+          failedCount: 0,
+          totalChecked: 0,
+          message: 'No memberships expiring soon'
+        }
+      }
+
       let sentCount = 0
       let skippedCount = 0
       let failedCount = 0
+      let firstFailureReason: string | undefined
+
+      // Track detailed results for each member
+      const notificationResults: Array<{
+        memberName: string
+        phoneNumber: string
+        status: 'sent' | 'failed' | 'skipped'
+        reason?: string
+        daysLeft: number
+      }> = []
 
       for (const membership of expiringMemberships) {
+        const fullPhoneNumber = membership.countryCode + membership.phoneNumber
+
         if (wasNotificationSent(membership.membershipId)) {
           skippedCount++
+          notificationResults.push({
+            memberName: membership.memberName,
+            phoneNumber: fullPhoneNumber,
+            status: 'skipped',
+            reason: 'Already notified in the last 24 hours',
+            daysLeft: membership.daysLeft
+          })
           continue
         }
 
@@ -312,7 +366,6 @@ export function registerWhatsAppHandlers() {
           endDate: membership.endDate
         })
 
-        const fullPhoneNumber = membership.countryCode + membership.phoneNumber
         const result = await sendWhatsAppMessage(fullPhoneNumber, message, token, instanceId)
 
         logNotification({
@@ -328,8 +381,25 @@ export function registerWhatsAppHandlers() {
 
         if (result.success) {
           sentCount++
+          notificationResults.push({
+            memberName: membership.memberName,
+            phoneNumber: fullPhoneNumber,
+            status: 'sent',
+            daysLeft: membership.daysLeft
+          })
         } else {
           failedCount++
+          notificationResults.push({
+            memberName: membership.memberName,
+            phoneNumber: fullPhoneNumber,
+            status: 'failed',
+            reason: result.message,
+            daysLeft: membership.daysLeft
+          })
+          // Store the first failure reason to show to the user
+          if (!firstFailureReason) {
+            firstFailureReason = result.message
+          }
         }
 
         // Rate limiting delay
@@ -346,12 +416,25 @@ export function registerWhatsAppHandlers() {
         sentCount,
         skippedCount,
         failedCount,
-        totalChecked: expiringMemberships.length
+        totalChecked: expiringMemberships.length,
+        failureReason: firstFailureReason,
+        results: notificationResults
       }
     } catch (error) {
+      console.error('WhatsApp check error:', error)
+      // Map unexpected errors to user-friendly messages
+      const errorMsg = error instanceof Error ? error.message : ''
+      let friendlyMessage = 'An unexpected error occurred while sending notifications'
+
+      if (errorMsg.includes('database') || errorMsg.includes('SQL')) {
+        friendlyMessage = 'Database error - please try again or contact support'
+      } else if (errorMsg.includes('network') || errorMsg.includes('connection')) {
+        friendlyMessage = 'Network error - please check your internet connection'
+      }
+
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: friendlyMessage
       }
     }
   })
