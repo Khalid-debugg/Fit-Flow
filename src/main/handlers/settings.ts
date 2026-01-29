@@ -110,6 +110,7 @@ export function registerSettingsHandlers() {
         allowedGenders: 'both' as const,
         defaultPaymentMethod: 'cash' as const,
         allowInstantCheckIn: false,
+        allowCustomMemberId: false,
         autoBackup: true,
         backupFrequency: 'daily' as const
       }
@@ -128,6 +129,7 @@ export function registerSettingsHandlers() {
       allowedGenders: settings.allowed_genders,
       defaultPaymentMethod: settings.default_payment_method,
       allowInstantCheckIn: settings.allow_instant_checkin === 1,
+      allowCustomMemberId: settings.allow_custom_member_id === 1,
       autoBackup: settings.auto_backup === 1,
       backupFrequency: settings.backup_frequency,
       backupFolderPath: settings.backup_folder_path || undefined,
@@ -149,7 +151,7 @@ export function registerSettingsHandlers() {
     const db = getDatabase()
 
     db.prepare(
-      `UPDATE settings SET language = ?, currency = ?, gym_name = ?, gym_address = ?, gym_country_code = ?, gym_phone = ?, gym_logo_path = ?, barcode_size = ?, allowed_genders = ?, default_payment_method = ?, allow_instant_checkin = ?, auto_backup = ?, backup_frequency = ?, backup_folder_path = ?, whatsapp_enabled = ?, whatsapp_auto_send = ?, whatsapp_days_before_expiry = ?, whatsapp_message_template = ?, whatsapp_message_language = ? WHERE id = '1'`
+      `UPDATE settings SET language = ?, currency = ?, gym_name = ?, gym_address = ?, gym_country_code = ?, gym_phone = ?, gym_logo_path = ?, barcode_size = ?, allowed_genders = ?, default_payment_method = ?, allow_instant_checkin = ?, allow_custom_member_id = ?, auto_backup = ?, backup_frequency = ?, backup_folder_path = ?, whatsapp_enabled = ?, whatsapp_auto_send = ?, whatsapp_days_before_expiry = ?, whatsapp_message_template = ?, whatsapp_message_language = ? WHERE id = '1'`
     ).run(
       settings.language,
       settings.currency,
@@ -162,6 +164,7 @@ export function registerSettingsHandlers() {
       settings.allowedGenders,
       settings.defaultPaymentMethod,
       settings.allowInstantCheckIn ? 1 : 0,
+      settings.allowCustomMemberId ? 1 : 0,
       settings.autoBackup ? 1 : 0,
       settings.backupFrequency,
       settings.backupFolderPath || null,
