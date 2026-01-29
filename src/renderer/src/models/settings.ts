@@ -19,6 +19,7 @@ export interface Settings {
   defaultPaymentMethod: (typeof PAYMENT_METHODS)[number]
 
   allowInstantCheckIn: boolean
+  allowCustomMemberId: boolean
 
   autoBackup: boolean
   backupFrequency: 'daily' | 'weekly' | 'monthly'
@@ -54,6 +55,7 @@ export interface SettingsDbRow {
   default_payment_method: (typeof PAYMENT_METHODS)[number]
 
   allow_instant_checkin: 0 | 1
+  allow_custom_member_id: 0 | 1
 
   auto_backup: 0 | 1
   backup_frequency: 'daily' | 'weekly' | 'monthly'
