@@ -4,7 +4,7 @@
   "refresh": "Refresh",
   "searchOrScan": "Search member or scan barcode",
   "searchMember": "Search Member",
-  "searchPlaceholder": "Search by name or phone...",
+  "searchPlaceholder": "Search by name, phone, or card number...",
   "barcodeReady": "Ready for barcode scan or manual search",
   "noMembersFound": "No members found",
   "cancel": "Cancel",

@@ -65,7 +65,7 @@
 
   "filter": {
     "search": "بحث",
-    "searchPlaceholder": "ابحث باسم العضو أو رقم الهاتف...",
+    "searchPlaceholder": "ابحث باسم العضو أو رقم الهاتف أو رقم البطاقة...",
     "dateFrom": "من تاريخ",
     "dateTo": "إلى تاريخ",
     "status": "الحالة",

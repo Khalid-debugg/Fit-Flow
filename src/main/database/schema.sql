@@ -20,6 +20,10 @@ CREATE TABLE IF NOT EXISTS settings (
   backup_folder_path TEXT,
   last_backup_date DATETIME,
 
+  cloud_backup_enabled INTEGER DEFAULT 0 CHECK (cloud_backup_enabled IN (0, 1)),
+  cloud_backup_api_url TEXT,
+  last_cloud_backup_date DATETIME,
+
   whatsapp_enabled INTEGER DEFAULT 1 CHECK (whatsapp_enabled IN (0, 1)),
   whatsapp_auto_send INTEGER DEFAULT 1 CHECK (whatsapp_auto_send IN (0, 1)),
   whatsapp_days_before_expiry INTEGER DEFAULT 3,
@@ -83,8 +87,8 @@ CREATE TABLE IF NOT EXISTS memberships (
   custom_price_name TEXT,
   notes TEXT,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE,
-  FOREIGN KEY (plan_id) REFERENCES membership_plans(id)
+  FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (plan_id) REFERENCES membership_plans(id) ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS check_ins (
@@ -92,7 +96,7 @@ CREATE TABLE IF NOT EXISTS check_ins (
   member_id TEXT NOT NULL,
   check_in_time DATETIME DEFAULT CURRENT_TIMESTAMP,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE
+  FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS membership_payments (
@@ -104,7 +108,7 @@ CREATE TABLE IF NOT EXISTS membership_payments (
   payment_status TEXT DEFAULT 'completed' CHECK (payment_status IN ('completed', 'scheduled', 'pending')),
   notes TEXT,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (membership_id) REFERENCES memberships(id) ON DELETE CASCADE
+  FOREIGN KEY (membership_id) REFERENCES memberships(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS reports (
@@ -168,8 +172,8 @@ CREATE TABLE IF NOT EXISTS whatsapp_notifications (
   status TEXT DEFAULT 'sent' CHECK (status IN ('sent', 'failed')),
   error_message TEXT,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (membership_id) REFERENCES memberships(id) ON DELETE CASCADE,
-  FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE
+  FOREIGN KEY (membership_id) REFERENCES memberships(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE INDEX IF NOT EXISTS idx_whatsapp_notifications_membership ON whatsapp_notifications(membership_id);

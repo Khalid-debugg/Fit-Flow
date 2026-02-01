@@ -33,7 +33,7 @@
   "filters": {
     "title": "Filtros",
     "search": "Buscar",
-    "searchPlaceholder": "Nome, e-mail, telefone ou endereço",
+    "searchPlaceholder": "Nome, e-mail, telefone, endereço ou número do cartão",
     "gender": "Gênero",
     "status": "Status",
     "all": "Todos",

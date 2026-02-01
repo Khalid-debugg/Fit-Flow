@@ -4,7 +4,7 @@
   "refresh": "Actualiser",
   "searchOrScan": "Rechercher un membre ou scanner le code-barres",
   "searchMember": "Rechercher un Membre",
-  "searchPlaceholder": "Rechercher par nom ou téléphone...",
+  "searchPlaceholder": "Rechercher par nom, téléphone ou numéro de carte...",
   "barcodeReady": "Prêt pour le scan de code-barres ou la recherche manuelle",
   "noMembersFound": "Aucun membre trouvé",
   "cancel": "Annuler",

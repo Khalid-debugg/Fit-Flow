@@ -4,7 +4,7 @@
   "refresh": "تحديث",
   "searchOrScan": "ابحث عن عضو أو امسح الباركود",
   "searchMember": "بحث عن عضو",
-  "searchPlaceholder": "ابحث بالاسم أو رقم الهاتف...",
+  "searchPlaceholder": "ابحث بالاسم أو رقم الهاتف أو رقم البطاقة...",
   "barcodeReady": "جاهز لمسح الباركود أو البحث اليدوي",
   "noMembersFound": "لم يتم العثور على أعضاء",
   "cancel": "إلغاء",

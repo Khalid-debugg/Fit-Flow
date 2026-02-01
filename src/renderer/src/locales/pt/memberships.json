@@ -23,7 +23,7 @@
 
   "filter": {
     "search": "Buscar",
-    "searchPlaceholder": "Buscar por nome ou telefone do membro...",
+    "searchPlaceholder": "Buscar por nome, telefone ou número do cartão do membro...",
     "plan": "Plano",
     "selectPlan": "Selecione um plano",
     "searchPlan": "Buscar planos...",
@@ -57,7 +57,7 @@
   "form": {
     "member": "Membro",
     "selectMember": "Selecione um membro",
-    "searchMember": "Buscar por nome ou telefone...",
+    "searchMember": "Buscar por nome, telefone ou número do cartão...",
     "noMembersFound": "Nenhum membro encontrado",
     "plan": "Plano",
     "selectPlan": "Selecione um plano",

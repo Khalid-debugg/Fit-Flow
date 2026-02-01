@@ -22,7 +22,7 @@
 
   "filter": {
     "search": "بحث",
-    "searchPlaceholder": "ابحث باسم العضو أو رقم الهاتف...",
+    "searchPlaceholder": "ابحث باسم العضو أو رقم الهاتف أو رقم البطاقة...",
     "plan": "الباقة",
     "selectPlan": "اختر باقة",
     "searchPlan": "ابحث عن الباقات...",
@@ -56,7 +56,7 @@
   "form": {
     "member": "العضو",
     "selectMember": "اختر عضو",
-    "searchMember": "ابحث بالاسم أو رقم الهاتف...",
+    "searchMember": "ابحث بالاسم أو رقم الهاتف أو رقم البطاقة...",
     "noMembersFound": "لم يتم العثور على أعضاء",
     "plan": "الباقة",
     "selectPlan": "اختر باقة",

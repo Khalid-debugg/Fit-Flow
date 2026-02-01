@@ -64,7 +64,7 @@
 
   "filter": {
     "search": "Search",
-    "searchPlaceholder": "Search by member name or phone...",
+    "searchPlaceholder": "Search by member name, phone, or card number...",
     "dateFrom": "Date From",
     "dateTo": "Date To",
     "status": "Status",

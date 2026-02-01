@@ -15,9 +15,9 @@ export function registerMemberHandlers() {
     if (filters.query?.trim()) {
       const search = `%${filters.query.trim()}%`
       whereConditions.push(
-        "(m.name LIKE ? OR m.email LIKE ? OR (REPLACE(m.country_code, '+', '') || m.phone) LIKE ? OR m.address LIKE ?)"
+        "(m.name LIKE ? OR m.email LIKE ? OR (REPLACE(m.country_code, '+', '') || m.phone) LIKE ? OR m.address LIKE ? OR CAST(m.id AS TEXT) LIKE ?)"
       )
-      params.push(search, search, search, search)
+      params.push(search, search, search, search, search)
     }
 
     if (filters.gender !== 'all') {
@@ -282,18 +282,15 @@ export function registerMemberHandlers() {
   ipcMain.handle('members:updateId', async (_event, currentId: number, newId: number) => {
     const db = getDatabase()
 
-    // Check if the new ID already exists (excluding current member)
-    const existing = db
-      .prepare('SELECT id FROM members WHERE id = ? AND id != ?')
-      .get(newId, currentId)
+    // Check if the new ID already exists
+    const existing = db.prepare('SELECT id FROM members WHERE id = ?').get(newId)
 
     if (existing) {
       throw new Error('ID_ALREADY_EXISTS')
     }
 
-    // Update the member's ID
-    const stmt = db.prepare('UPDATE members SET id = ? WHERE id = ?')
-    stmt.run(newId, currentId)
+    // Update the member's ID - foreign keys with ON UPDATE CASCADE will handle related records
+    db.prepare('UPDATE members SET id = ? WHERE id = ?').run(newId, currentId)
 
     return { success: true, newId }
   })
@@ -384,12 +381,12 @@ ipcMain.handle('members:search', async (_event, query: string, page: number = 1)
     FROM members m
     LEFT JOIN memberships ms ON m.id = ms.member_id
       AND ms.end_date >= date('now')
-    WHERE m.name LIKE ? OR (REPLACE(m.country_code, '+', '') || m.phone) LIKE ?
+    WHERE m.name LIKE ? OR (REPLACE(m.country_code, '+', '') || m.phone) LIKE ? OR CAST(m.id AS TEXT) LIKE ?
     ORDER BY m.name ASC
     LIMIT ? OFFSET ?
   `
     )
-    .all(search, search, limit, offset)
+    .all(search, search, search, limit, offset)
 
   const today = new Date().toISOString().split('T')[0]
 

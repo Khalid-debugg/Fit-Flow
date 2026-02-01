@@ -28,8 +28,8 @@ export function registerMembershipHandlers() {
 
       if (filters.query?.trim()) {
         const search = `%${filters.query.trim()}%`
-        whereConditions.push('(m.name LIKE ? OR m.phone LIKE ?)')
-        params.push(search, search)
+        whereConditions.push('(m.name LIKE ? OR m.phone LIKE ? OR CAST(m.id AS TEXT) LIKE ?)')
+        params.push(search, search, search)
       }
 
       if (filters.memberId) {

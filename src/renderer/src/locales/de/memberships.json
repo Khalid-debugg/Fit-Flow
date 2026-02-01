@@ -23,7 +23,7 @@
 
   "filter": {
     "search": "Suchen",
-    "searchPlaceholder": "Nach Mitgliedsname oder Telefon suchen...",
+    "searchPlaceholder": "Nach Mitgliedsname, Telefon oder Kartennummer suchen...",
     "plan": "Tarif",
     "selectPlan": "Tarif auswählen",
     "searchPlan": "Tarife suchen...",
@@ -57,7 +57,7 @@
   "form": {
     "member": "Mitglied",
     "selectMember": "Mitglied auswählen",
-    "searchMember": "Nach Name oder Telefon suchen...",
+    "searchMember": "Nach Name, Telefon oder Kartennummer suchen...",
     "noMembersFound": "Keine Mitglieder gefunden",
     "plan": "Tarif",
     "selectPlan": "Tarif auswählen",
