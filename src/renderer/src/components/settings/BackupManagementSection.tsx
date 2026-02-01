@@ -1,11 +1,17 @@
 import { memo, useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Shield, FolderOpen, Database, Loader2 } from 'lucide-react'
+import { Shield, FolderOpen, Database, Loader2, Cloud } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@renderer/components/ui/button'
 import { Input } from '@renderer/components/ui/input'
 import { Checkbox } from '@renderer/components/ui/checkbox'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@renderer/components/ui/select'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@renderer/components/ui/select'
 import { BackupInfoCard } from './BackupInfoCard'
 import { BackupListItem } from './BackupListItem'
 import type { Settings, BackupInfo, BackupFile } from '@renderer/models/settings'
@@ -15,6 +21,7 @@ interface BackupManagementSectionProps {
   autoBackup: boolean
   backupFrequency: 'daily' | 'weekly' | 'monthly'
   backupFolderPath: string
+  cloudBackupEnabled: boolean
   language: SupportedLanguage
   canManageBackups: boolean
   onUpdate: (updates: Partial<Settings>) => void
@@ -24,6 +31,7 @@ export const BackupManagementSection = memo(function BackupManagementSection({
   autoBackup,
   backupFrequency,
   backupFolderPath,
+  cloudBackupEnabled,
   language,
   canManageBackups,
   onUpdate
@@ -159,6 +167,13 @@ export const BackupManagementSection = memo(function BackupManagementSection({
     [onUpdate]
   )
 
+  const handleCloudBackupChange = useCallback(
+    (checked: boolean) => {
+      onUpdate({ cloudBackupEnabled: checked })
+    },
+    [onUpdate]
+  )
+
   return (
     <div className="lg:col-span-2 bg-gray-800 p-6 rounded-lg border border-gray-700">
       <div className="flex items-center gap-3 mb-6">
@@ -170,7 +185,7 @@ export const BackupManagementSection = memo(function BackupManagementSection({
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="space-y-4">
+        <div className="space-y-[18px]">
           <div className="flex items-center justify-between p-4 bg-gray-900 rounded-lg">
             <span className="text-sm font-medium text-gray-300">{t('backup.autoBackup')}</span>
             <Checkbox
@@ -247,13 +262,29 @@ export const BackupManagementSection = memo(function BackupManagementSection({
           </Button>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-2">
           <BackupInfoCard
             backupInfo={backupInfo}
             language={language}
             onOpenFolder={handleOpenFolder}
           />
-
+          <div className="flex items-center justify-between p-4 bg-gray-900 rounded-lg">
+            <div className="flex items-center gap-3">
+              <Cloud className="w-5 h-5 text-blue-400" />
+              <div>
+                <span className="text-sm font-medium text-gray-300 block">
+                  {t('backup.cloudBackup')}
+                </span>
+                <span className="text-xs text-gray-500">{t('backup.cloudBackupDesc')}</span>
+              </div>
+            </div>
+            <Checkbox
+              checked={cloudBackupEnabled}
+              onCheckedChange={handleCloudBackupChange}
+              className="w-5 h-5"
+              disabled={!canManageBackups}
+            />
+          </div>
           <div className="bg-blue-900/20 border border-blue-700/50 rounded-lg p-4">
             <p className="text-xs text-blue-300">{t('backup.tip')}</p>
           </div>

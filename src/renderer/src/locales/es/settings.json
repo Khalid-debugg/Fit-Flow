@@ -71,7 +71,7 @@
     "never": "Nunca",
     "totalBackups": "Total de Copias de Seguridad",
     "totalSize": "Tamaño Total",
-    "tip": "Las copias de seguridad se mantienen automáticamente para las últimas 10 versiones. Las copias de seguridad más antiguas se eliminan automáticamente.",
+    "tip": "Las copias de seguridad se gestionan automáticamente según la frecuencia: Diaria (30 copias/1 mes), Semanal (12 copias/3 meses), Mensual (12 copias/1 año).",
     "success": "Copia de seguridad creada exitosamente",
     "failed": "Error al crear copia de seguridad",
     "size": "Tamaño",
@@ -86,7 +86,9 @@
     "restoreSuccess": "Base de datos restaurada exitosamente",
     "restoreFailed": "Error al restaurar copia de seguridad",
     "restoreWarning": "Esto reemplazará tu base de datos actual. ¿Estás seguro?",
-    "openFolder": "Abrir Carpeta"
+    "openFolder": "Abrir Carpeta",
+    "cloudBackup": "Sincronización de Copia de Seguridad en la Nube",
+    "cloudBackupDesc": "Sincronizar automáticamente copias de seguridad al almacenamiento en la nube"
   },
   "license": {
     "title": "Gestión de Licencia",

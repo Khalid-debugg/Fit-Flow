@@ -71,7 +71,7 @@
     "never": "Never",
     "totalBackups": "Total Backups",
     "totalSize": "Total Size",
-    "tip": "Backups are automatically kept for the last 10 versions. Older backups are deleted automatically.",
+    "tip": "Backups are automatically managed based on your frequency: Daily (30 backups/1 month), Weekly (12 backups/3 months), Monthly (12 backups/1 year).",
     "success": "Backup created successfully",
     "failed": "Backup creation failed",
     "size": "Size",
@@ -86,7 +86,9 @@
     "restoreSuccess": "Database restored successfully",
     "restoreFailed": "Failed to restore backup",
     "restoreWarning": "This will replace your current database. Are you sure?",
-    "openFolder": "Open Folder"
+    "openFolder": "Open Folder",
+    "cloudBackup": "Cloud Backup Sync",
+    "cloudBackupDesc": "Automatically sync backups to cloud storage"
   },
   "license": {
     "title": "License Management",

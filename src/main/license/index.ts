@@ -17,6 +17,19 @@ export * from './storage'
 // API Base URL - should match your fitflow-landing deployment
 const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:3000'
 
+/**
+ * Get the current license key
+ */
+export function getLicenseKey(): string | null {
+  try {
+    const licenseData = loadLicense()
+    return licenseData?.licenseKey || null
+  } catch (error) {
+    console.error('Error getting license key:', error)
+    return null
+  }
+}
+
 // Log the API URL on startup for debugging
 console.log('License API configured with base URL:', API_BASE_URL)
 

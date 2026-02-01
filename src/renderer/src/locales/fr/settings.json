@@ -71,7 +71,7 @@
     "never": "Jamais",
     "totalBackups": "Total des Sauvegardes",
     "totalSize": "Taille Totale",
-    "tip": "Les sauvegardes sont automatiquement conservées pour les 10 dernières versions. Les anciennes sauvegardes sont supprimées automatiquement.",
+    "tip": "Les sauvegardes sont gérées automatiquement selon la fréquence: Quotidienne (30 sauvegardes/1 mois), Hebdomadaire (12 sauvegardes/3 mois), Mensuelle (12 sauvegardes/1 an).",
     "success": "Sauvegarde créée avec succès",
     "failed": "Échec de la création de la sauvegarde",
     "size": "Taille",
@@ -86,7 +86,9 @@
     "restoreSuccess": "Base de données restaurée avec succès",
     "restoreFailed": "Échec de la restauration de la sauvegarde",
     "restoreWarning": "Cela remplacera votre base de données actuelle. Êtes-vous sûr ?",
-    "openFolder": "Ouvrir le Dossier"
+    "openFolder": "Ouvrir le Dossier",
+    "cloudBackup": "Synchronisation de Sauvegarde Cloud",
+    "cloudBackupDesc": "Synchroniser automatiquement les sauvegardes vers le stockage cloud"
   },
   "license": {
     "title": "Gestion de Licence",

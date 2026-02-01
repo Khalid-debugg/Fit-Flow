@@ -71,7 +71,7 @@
     "never": "Nunca",
     "totalBackups": "Total de Backups",
     "totalSize": "Tamanho Total",
-    "tip": "Backups são mantidos automaticamente para as últimas 10 versões. Backups mais antigos são excluídos automaticamente.",
+    "tip": "Backups são gerenciados automaticamente com base na frequência: Diário (30 backups/1 mês), Semanal (12 backups/3 meses), Mensal (12 backups/1 ano).",
     "success": "Backup criado com sucesso",
     "failed": "Falha ao criar backup",
     "size": "Tamanho",
@@ -86,7 +86,9 @@
     "restoreSuccess": "Banco de dados restaurado com sucesso",
     "restoreFailed": "Falha ao restaurar backup",
     "restoreWarning": "Isso substituirá seu banco de dados atual. Tem certeza?",
-    "openFolder": "Abrir Pasta"
+    "openFolder": "Abrir Pasta",
+    "cloudBackup": "Sincronização de Backup na Nuvem",
+    "cloudBackupDesc": "Sincronizar automaticamente backups para o armazenamento na nuvem"
   },
   "license": {
     "title": "Gerenciamento de Licença",

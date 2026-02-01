@@ -71,7 +71,7 @@
     "never": "Nie",
     "totalBackups": "Gesamte Backups",
     "totalSize": "Gesamtgröße",
-    "tip": "Backups werden automatisch für die letzten 10 Versionen aufbewahrt. Ältere Backups werden automatisch gelöscht.",
+    "tip": "Backups werden automatisch nach Häufigkeit verwaltet: Täglich (30 Backups/1 Monat), Wöchentlich (12 Backups/3 Monate), Monatlich (12 Backups/1 Jahr).",
     "success": "Backup erfolgreich erstellt",
     "failed": "Backup-Erstellung fehlgeschlagen",
     "size": "Größe",
@@ -86,7 +86,9 @@
     "restoreSuccess": "Datenbank erfolgreich wiederhergestellt",
     "restoreFailed": "Wiederherstellung des Backups fehlgeschlagen",
     "restoreWarning": "Dies ersetzt Ihre aktuelle Datenbank. Sind Sie sicher?",
-    "openFolder": "Ordner öffnen"
+    "openFolder": "Ordner öffnen",
+    "cloudBackup": "Cloud-Backup-Synchronisierung",
+    "cloudBackupDesc": "Backups automatisch mit Cloud-Speicher synchronisieren"
   },
   "license": {
     "title": "Lizenzverwaltung",

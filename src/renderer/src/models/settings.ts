@@ -26,6 +26,10 @@ export interface Settings {
   backupFolderPath?: string
   lastBackupDate?: string
 
+  cloudBackupEnabled: boolean
+  cloudBackupApiUrl?: string
+  lastCloudBackupDate?: string
+
   whatsappEnabled: boolean
   whatsappAutoSend: boolean
   whatsappDaysBeforeExpiry: number
@@ -61,6 +65,10 @@ export interface SettingsDbRow {
   backup_frequency: 'daily' | 'weekly' | 'monthly'
   backup_folder_path: string | null
   last_backup_date: string | null
+
+  cloud_backup_enabled: 0 | 1
+  cloud_backup_api_url: string | null
+  last_cloud_backup_date: string | null
 
   whatsapp_enabled: 0 | 1
   whatsapp_auto_send: 0 | 1

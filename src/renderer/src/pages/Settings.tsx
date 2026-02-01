@@ -178,6 +178,7 @@ export default function Settings() {
           autoBackup={formData.autoBackup}
           backupFrequency={formData.backupFrequency}
           backupFolderPath={formData.backupFolderPath || ''}
+          cloudBackupEnabled={formData.cloudBackupEnabled || false}
           language={formData.language}
           canManageBackups={permissions.canManageBackups}
           onUpdate={handleUpdate}

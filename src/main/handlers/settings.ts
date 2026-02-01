@@ -3,6 +3,13 @@ import { getDatabase } from '../database'
 import * as fs from 'fs'
 import * as path from 'path'
 import { Settings, SettingsDbRow, BackupFile, BackupInfo } from '@renderer/models/settings'
+import {
+  uploadBackupToCloud,
+  listCloudBackups,
+  downloadBackupFromCloud,
+  deleteCloudBackup,
+  performAutoCloudBackup
+} from '../services/cloudBackupService'
 
 // Helper function to get MIME type from file extension
 function getMimeType(extension: string): string {
@@ -112,7 +119,10 @@ export function registerSettingsHandlers() {
         allowInstantCheckIn: false,
         allowCustomMemberId: false,
         autoBackup: true,
-        backupFrequency: 'daily' as const
+        backupFrequency: 'daily' as const,
+        cloudBackupEnabled: false,
+        cloudBackupApiUrl: undefined,
+        lastCloudBackupDate: undefined
       }
     }
 
@@ -134,6 +144,9 @@ export function registerSettingsHandlers() {
       backupFrequency: settings.backup_frequency,
       backupFolderPath: settings.backup_folder_path || undefined,
       lastBackupDate: settings.last_backup_date || undefined,
+      cloudBackupEnabled: settings.cloud_backup_enabled === 1,
+      cloudBackupApiUrl: settings.cloud_backup_api_url || undefined,
+      lastCloudBackupDate: settings.last_cloud_backup_date || undefined,
       whatsappEnabled: settings.whatsapp_enabled === 1,
       whatsappAutoSend: settings.whatsapp_auto_send === 1,
       whatsappDaysBeforeExpiry: settings.whatsapp_days_before_expiry || 3,
@@ -151,7 +164,7 @@ export function registerSettingsHandlers() {
     const db = getDatabase()
 
     db.prepare(
-      `UPDATE settings SET language = ?, currency = ?, gym_name = ?, gym_address = ?, gym_country_code = ?, gym_phone = ?, gym_logo_path = ?, barcode_size = ?, allowed_genders = ?, default_payment_method = ?, allow_instant_checkin = ?, allow_custom_member_id = ?, auto_backup = ?, backup_frequency = ?, backup_folder_path = ?, whatsapp_enabled = ?, whatsapp_auto_send = ?, whatsapp_days_before_expiry = ?, whatsapp_message_template = ?, whatsapp_message_language = ? WHERE id = '1'`
+      `UPDATE settings SET language = ?, currency = ?, gym_name = ?, gym_address = ?, gym_country_code = ?, gym_phone = ?, gym_logo_path = ?, barcode_size = ?, allowed_genders = ?, default_payment_method = ?, allow_instant_checkin = ?, allow_custom_member_id = ?, auto_backup = ?, backup_frequency = ?, backup_folder_path = ?, cloud_backup_enabled = ?, cloud_backup_api_url = ?, whatsapp_enabled = ?, whatsapp_auto_send = ?, whatsapp_days_before_expiry = ?, whatsapp_message_template = ?, whatsapp_message_language = ? WHERE id = '1'`
     ).run(
       settings.language,
       settings.currency,
@@ -168,6 +181,8 @@ export function registerSettingsHandlers() {
       settings.autoBackup ? 1 : 0,
       settings.backupFrequency,
       settings.backupFolderPath || null,
+      settings.cloudBackupEnabled ? 1 : 0,
+      settings.cloudBackupApiUrl || null,
       settings.whatsappEnabled ? 1 : 0,
       settings.whatsappAutoSend ? 1 : 0,
       settings.whatsappDaysBeforeExpiry || 3,
@@ -226,6 +241,14 @@ export function registerSettingsHandlers() {
         new Date().toISOString(),
         '1'
       )
+
+      console.log('[Backup] Local backup created successfully:', backupPath)
+      console.log('[Backup] Attempting cloud backup upload...')
+
+      // Attempt cloud backup if enabled
+      performAutoCloudBackup(backupPath).catch((err) => {
+        console.error('[Backup] Cloud backup failed:', err)
+      })
 
       return {
         success: true,
@@ -362,6 +385,16 @@ export function registerSettingsHandlers() {
         return { success: true, deleted: 0 }
       }
 
+      // Define retention limits based on backup frequency
+      const retentionLimits: Record<string, number> = {
+        daily: 30,    // 1 month of daily backups
+        weekly: 12,   // 3 months of weekly backups
+        monthly: 12   // 1 year of monthly backups
+      }
+
+      const backupFrequency = settings?.backup_frequency || 'daily'
+      const retentionLimit = retentionLimits[backupFrequency] || 30
+
       const files = fs
         .readdirSync(backupDir)
         .filter((f) => f.startsWith('fitflow-backup-') && f.endsWith('.db'))
@@ -375,7 +408,7 @@ export function registerSettingsHandlers() {
         })
         .sort((a, b) => b.created.getTime() - a.created.getTime())
 
-      const toDelete = files.slice(10)
+      const toDelete = files.slice(retentionLimit)
       toDelete.forEach((f) => fs.unlinkSync(f.path))
 
       return {
@@ -495,6 +528,147 @@ export function registerSettingsHandlers() {
         return { success: true, path: devLogoPath }
       }
       return { success: false, error: 'Default logo not found' }
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      }
+    }
+  })
+
+  // Cloud Backup Handlers
+  ipcMain.handle('cloudBackup:upload', async (_event, backupPath: string) => {
+    try {
+      const db = getDatabase()
+      const settings = db.prepare('SELECT * FROM settings WHERE id = ?').get('1') as
+        | SettingsDbRow
+        | undefined
+
+      if (!settings || settings.cloud_backup_enabled !== 1) {
+        return {
+          success: false,
+          error: 'Cloud backup is not enabled'
+        }
+      }
+
+      // Get license key
+      const licenseModule = await import('../license')
+      const licenseKey = licenseModule.getLicenseKey()
+
+      if (!licenseKey) {
+        return {
+          success: false,
+          error: 'No license key available'
+        }
+      }
+
+      const result = await uploadBackupToCloud(
+        backupPath,
+        licenseKey,
+        settings.cloud_backup_api_url || undefined
+      )
+
+      if (result.success) {
+        db.prepare('UPDATE settings SET last_cloud_backup_date = ? WHERE id = ?').run(
+          new Date().toISOString(),
+          '1'
+        )
+      }
+
+      return result
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      }
+    }
+  })
+
+  ipcMain.handle('cloudBackup:list', async () => {
+    try {
+      const db = getDatabase()
+      const settings = db.prepare('SELECT * FROM settings WHERE id = ?').get('1') as
+        | SettingsDbRow
+        | undefined
+
+      // Get license key
+      const licenseModule = await import('../license')
+      const licenseKey = licenseModule.getLicenseKey()
+
+      if (!licenseKey) {
+        return {
+          success: false,
+          error: 'No license key available'
+        }
+      }
+
+      return await listCloudBackups(licenseKey, settings?.cloud_backup_api_url || undefined)
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      }
+    }
+  })
+
+  ipcMain.handle(
+    'cloudBackup:download',
+    async (_event, backupId: string, destinationPath: string) => {
+      try {
+        const db = getDatabase()
+        const settings = db.prepare('SELECT * FROM settings WHERE id = ?').get('1') as
+          | SettingsDbRow
+          | undefined
+
+        // Get license key
+        const licenseModule = await import('../license')
+        const licenseKey = licenseModule.getLicenseKey()
+
+        if (!licenseKey) {
+          return {
+            success: false,
+            error: 'No license key available'
+          }
+        }
+
+        return await downloadBackupFromCloud(
+          backupId,
+          licenseKey,
+          destinationPath,
+          settings?.cloud_backup_api_url || undefined
+        )
+      } catch (error) {
+        return {
+          success: false,
+          error: error instanceof Error ? error.message : 'Unknown error'
+        }
+      }
+    }
+  )
+
+  ipcMain.handle('cloudBackup:delete', async (_event, backupId: string) => {
+    try {
+      const db = getDatabase()
+      const settings = db.prepare('SELECT * FROM settings WHERE id = ?').get('1') as
+        | SettingsDbRow
+        | undefined
+
+      // Get license key
+      const licenseModule = await import('../license')
+      const licenseKey = licenseModule.getLicenseKey()
+
+      if (!licenseKey) {
+        return {
+          success: false,
+          error: 'No license key available'
+        }
+      }
+
+      return await deleteCloudBackup(
+        backupId,
+        licenseKey,
+        settings?.cloud_backup_api_url || undefined
+      )
     } catch (error) {
       return {
         success: false,
