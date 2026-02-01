@@ -29,11 +29,7 @@ export const BackupInfoCard = memo(function BackupInfoCard({
           {t('backup.info')}
         </h3>
         {backupInfo?.folderPath && (
-          <Button
-            variant="primary"
-            onClick={onOpenFolder}
-            className="gap-2 text-xs py-1 px-2"
-          >
+          <Button variant="primary" onClick={onOpenFolder} className="gap-2 text-xs py-1 px-2">
             <HardDrive className="w-3 h-3" />
             {t('backup.openFolder')}
           </Button>
@@ -55,13 +51,6 @@ export const BackupInfoCard = memo(function BackupInfoCard({
           <div className="flex items-center justify-between text-sm">
             <span className="text-gray-400">{t('backup.totalBackups')}:</span>
             <span className="text-white font-medium">{backupInfo.backupCount}</span>
-          </div>
-
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-400">{t('backup.totalSize')}:</span>
-            <span className="text-white font-medium">
-              {(backupInfo.totalSize / 1024 / 1024).toFixed(2)} MB
-            </span>
           </div>
         </div>
       ) : (
