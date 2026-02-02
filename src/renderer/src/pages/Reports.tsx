@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ReportFilters, ReportPreview } from '@renderer/components/reports'
+import { ReportFilters, ReportPreview, DataExport } from '@renderer/components/reports'
 import { ReportData, ReportFilters as IReportFilters } from '@renderer/models/report'
 import { toast } from 'sonner'
 import { useAuth } from '@renderer/hooks/useAuth'
@@ -114,8 +114,9 @@ export default function Reports() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Filters Sidebar */}
-        <div className="lg:col-span-1">
+        <div className="lg:col-span-1 space-y-6">
           <ReportFilters onGenerate={handleGenerate} loading={loading} />
+          <DataExport />
         </div>
 
         {/* Report Preview */}

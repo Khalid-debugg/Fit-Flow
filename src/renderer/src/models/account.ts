@@ -37,7 +37,8 @@ export const PERMISSIONS = {
     generate: 'reports.generate',
     view: 'reports.view',
     save: 'reports.save',
-    delete: 'reports.delete'
+    delete: 'reports.delete',
+    export: 'reports.export'
   },
   settings: {
     view: 'settings.view',
@@ -100,6 +101,7 @@ export const PERMISSION_LABELS: Record<string, string> = {
   'reports.view': 'Can view reports',
   'reports.save': 'Can save/download reports',
   'reports.delete': 'Can delete reports',
+  'reports.export': 'Can export data to CSV',
 
   // Settings
   'settings.view': 'Can view settings',
@@ -156,6 +158,7 @@ export const PERMISSION_DEPENDENCIES: Record<string, string[]> = {
   // Reports
   'reports.save': ['reports.view'],
   'reports.delete': ['reports.view'],
+  'reports.export': ['reports.view'],
 
   // Settings
   'settings.edit': ['settings.view'],
@@ -318,6 +321,7 @@ const ROLE_PERMISSIONS: Record<UserRole, UserPermissions> = {
     'reports.view': true,
     'reports.save': true,
     'reports.delete': false,
+    'reports.export': true,
 
     // Settings - No access
     ...Object.fromEntries(Object.values(PERMISSIONS.settings).map((p) => [p, false])),
