@@ -312,6 +312,20 @@ export async function performAutoCloudBackup(backupPath: string): Promise<void> 
       return
     }
 
+    // Check if cloud backup was already performed today (rate limiting - 1 per day)
+    if (settings.last_cloud_backup_date) {
+      const now = new Date()
+      const lastCloudBackup = new Date(settings.last_cloud_backup_date)
+      const timeDiff = now.getTime() - lastCloudBackup.getTime()
+      const hoursDiff = timeDiff / (1000 * 3600)
+
+      // Allow 1 upload per day (24 hours)
+      if (hoursDiff < 24) {
+        console.log('[Cloud Backup] Skipped: Already uploaded today (last upload:', settings.last_cloud_backup_date, ')')
+        return
+      }
+    }
+
     // Get license key from license module
     const licenseModule = await import('../license')
     const licenseKey = licenseModule.getLicenseKey()
