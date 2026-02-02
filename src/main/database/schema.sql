@@ -86,6 +86,11 @@ CREATE TABLE IF NOT EXISTS memberships (
   price_modifier_value REAL,
   custom_price_name TEXT,
   notes TEXT,
+  is_paused INTEGER DEFAULT 0 CHECK (is_paused IN (0, 1)),
+  paused_date DATE,
+  original_end_date DATE,
+  pause_duration_days INTEGER,
+  remaining_days_before_pause INTEGER,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (plan_id) REFERENCES membership_plans(id) ON UPDATE CASCADE
@@ -155,6 +160,7 @@ CREATE INDEX IF NOT EXISTS idx_reports_dates ON reports(start_date, end_date);
 CREATE INDEX IF NOT EXISTS idx_reports_type ON reports(report_type);
 CREATE INDEX IF NOT EXISTS idx_memberships_member_id ON memberships(member_id);
 CREATE INDEX IF NOT EXISTS idx_memberships_payment_status ON memberships(payment_status);
+CREATE INDEX IF NOT EXISTS idx_memberships_is_paused ON memberships(is_paused);
 CREATE INDEX IF NOT EXISTS idx_check_ins_member_id ON check_ins(member_id);
 CREATE INDEX IF NOT EXISTS idx_members_phone ON members(phone);
 CREATE INDEX IF NOT EXISTS idx_check_ins_member_date ON check_ins(member_id, DATE(check_in_time));
