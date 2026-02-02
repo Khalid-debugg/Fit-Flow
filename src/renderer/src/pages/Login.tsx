@@ -7,9 +7,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@renderer/components/ui/dropdown-menu'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '@renderer/components/ui/dialog'
 import { Input } from '@renderer/components/ui/input'
 import { Label } from '@renderer/components/ui/label'
-import { Loader2, Dumbbell, LogIn, Languages } from 'lucide-react'
+import { Loader2, Dumbbell, LogIn, Languages, ShieldCheck } from 'lucide-react'
 import { toast } from 'sonner'
 import { useTranslation } from 'react-i18next'
 import type { SupportedLanguage } from '@renderer/locales/i18n'
@@ -20,6 +28,13 @@ export default function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
+
+  // Recovery modal state
+  const [recoveryOpen, setRecoveryOpen] = useState(false)
+  const [recoveryLicenseKey, setRecoveryLicenseKey] = useState('')
+  const [recoveryUsername, setRecoveryUsername] = useState('')
+  const [recoveryPassword, setRecoveryPassword] = useState('')
+  const [recoveryLoading, setRecoveryLoading] = useState(false)
 
   const languages: { code: SupportedLanguage; label: string }[] = [
     { code: 'ar', label: 'العربية' },
@@ -58,6 +73,56 @@ export default function Login() {
       console.error('Login failed:', error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleRecovery = async (e: FormEvent) => {
+    e.preventDefault()
+
+    if (!recoveryLicenseKey || !recoveryUsername || !recoveryPassword) {
+      toast.error(t('login.recovery.fillAllFields'))
+      return
+    }
+
+    setRecoveryLoading(true)
+    try {
+      // Validate license key first
+      const licenseResult = await window.api.license.activate(recoveryLicenseKey)
+
+      if (!licenseResult.success) {
+        toast.error(t('login.recovery.invalidLicense'))
+        setRecoveryLoading(false)
+        return
+      }
+
+      // Get all users and find the first admin (oldest admin account)
+      const usersResult = await window.electron.ipcRenderer.invoke('accounts:get', 1, {})
+      const firstAdmin = usersResult.users
+        .filter((user) => user.isAdmin)
+        .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())[0]
+
+      if (!firstAdmin) {
+        toast.error(t('login.recovery.noAdminFound'))
+        setRecoveryLoading(false)
+        return
+      }
+
+      // Update the first admin account with new credentials
+      await window.electron.ipcRenderer.invoke('accounts:update', firstAdmin.id, {
+        username: recoveryUsername,
+        password: recoveryPassword
+      })
+
+      toast.success(t('login.recovery.success'))
+      setRecoveryOpen(false)
+      setRecoveryLicenseKey('')
+      setRecoveryUsername('')
+      setRecoveryPassword('')
+    } catch (error) {
+      console.error('Recovery failed:', error)
+      toast.error(t('login.recovery.failed'))
+    } finally {
+      setRecoveryLoading(false)
     }
   }
 
@@ -187,6 +252,89 @@ export default function Login() {
               <br />
               <span className="text-yellow-400 font-mono">admin / admin123</span>
             </p>
+          </div>
+
+          {/* Recovery Access Button */}
+          <div className="mt-4">
+            <Dialog open={recoveryOpen} onOpenChange={setRecoveryOpen}>
+              <DialogTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="w-full bg-gray-700/30 border-gray-600/50 hover:bg-gray-700/50 text-gray-300 hover:text-white"
+                >
+                  <ShieldCheck className="mr-2 h-4 w-4" />
+                  {t('login.recovery.button')}
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="bg-gray-800 border-gray-700 text-white">
+                <DialogHeader>
+                  <DialogTitle className="text-xl font-bold bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
+                    {t('login.recovery.title')}
+                  </DialogTitle>
+                  <DialogDescription className="text-gray-400">
+                    {t('login.recovery.description')}
+                  </DialogDescription>
+                </DialogHeader>
+                <form onSubmit={handleRecovery} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="recovery-license" className="text-gray-200">
+                      {t('login.recovery.licenseKey')}
+                    </Label>
+                    <Input
+                      id="recovery-license"
+                      type="text"
+                      value={recoveryLicenseKey}
+                      onChange={(e) => setRecoveryLicenseKey(e.target.value)}
+                      placeholder={t('login.recovery.licenseKeyPlaceholder')}
+                      disabled={recoveryLoading}
+                      className="bg-gray-700/50 border-gray-600 focus:border-yellow-500 text-white placeholder:text-gray-500"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="recovery-username" className="text-gray-200">
+                      {t('login.recovery.newUsername')}
+                    </Label>
+                    <Input
+                      id="recovery-username"
+                      type="text"
+                      value={recoveryUsername}
+                      onChange={(e) => setRecoveryUsername(e.target.value)}
+                      placeholder={t('login.recovery.newUsernamePlaceholder')}
+                      disabled={recoveryLoading}
+                      className="bg-gray-700/50 border-gray-600 focus:border-yellow-500 text-white placeholder:text-gray-500"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="recovery-password" className="text-gray-200">
+                      {t('login.recovery.newPassword')}
+                    </Label>
+                    <Input
+                      id="recovery-password"
+                      type="password"
+                      value={recoveryPassword}
+                      onChange={(e) => setRecoveryPassword(e.target.value)}
+                      placeholder={t('login.recovery.newPasswordPlaceholder')}
+                      disabled={recoveryLoading}
+                      className="bg-gray-700/50 border-gray-600 focus:border-yellow-500 text-white placeholder:text-gray-500"
+                    />
+                  </div>
+                  <Button
+                    type="submit"
+                    disabled={recoveryLoading}
+                    className="w-full bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-500 hover:to-orange-500"
+                  >
+                    {recoveryLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        {t('login.recovery.processing')}
+                      </>
+                    ) : (
+                      t('login.recovery.submit')
+                    )}
+                  </Button>
+                </form>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
 

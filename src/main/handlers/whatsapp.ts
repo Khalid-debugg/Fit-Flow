@@ -23,7 +23,7 @@ async function sendWhatsAppMessage(
   instanceId: string
 ): Promise<{ success: boolean; message: string }> {
   try {
-    const formattedPhone = phoneNumber.replace(/[\+@]/g, '')
+    const formattedPhone = phoneNumber.replace(/[+@]/g, '')
     const apiUrl = `https://wawp.net/wp-json/awp/v1/send?instance_id=${encodeURIComponent(instanceId)}&access_token=${encodeURIComponent(token)}&chatId=${encodeURIComponent(formattedPhone)}&message=${encodeURIComponent(message)}`
 
     const response = await fetch(apiUrl, {
@@ -50,7 +50,10 @@ async function sendWhatsAppMessage(
         friendlyMessage = 'WhatsApp connection issue - please check your configuration'
       } else if (apiError.toLowerCase().includes('instance')) {
         friendlyMessage = 'WhatsApp instance not connected - please scan QR code'
-      } else if (apiError.toLowerCase().includes('phone') || apiError.toLowerCase().includes('number')) {
+      } else if (
+        apiError.toLowerCase().includes('phone') ||
+        apiError.toLowerCase().includes('number')
+      ) {
         friendlyMessage = 'Invalid phone number'
       }
 
@@ -65,7 +68,11 @@ async function sendWhatsAppMessage(
     const errorMsg = error instanceof Error ? error.message : ''
     let friendlyMessage = 'Unable to connect to WhatsApp service'
 
-    if (errorMsg.includes('fetch') || errorMsg.includes('network') || errorMsg.includes('ECONNREFUSED')) {
+    if (
+      errorMsg.includes('fetch') ||
+      errorMsg.includes('network') ||
+      errorMsg.includes('ECONNREFUSED')
+    ) {
       friendlyMessage = 'No internet connection - please check your network'
     } else if (errorMsg.includes('timeout')) {
       friendlyMessage = 'Connection timeout - please try again'
@@ -275,9 +282,12 @@ function startWhatsAppScheduler(): void {
   performAutoWhatsAppCheck()
 
   // Runs every hour, sends only if 24 hours passed since last check
-  whatsappSchedulerInterval = setInterval(() => {
-    performAutoWhatsAppCheck()
-  }, 60 * 60 * 1000)
+  whatsappSchedulerInterval = setInterval(
+    () => {
+      performAutoWhatsAppCheck()
+    },
+    60 * 60 * 1000
+  )
 
   console.log('WhatsApp notification scheduler started')
 }
@@ -313,7 +323,8 @@ export function registerWhatsAppHandlers() {
       if (!token || !instanceId) {
         return {
           success: false,
-          error: 'WhatsApp is not configured. Please add your WhatsApp credentials in the .env file.'
+          error:
+            'WhatsApp is not configured. Please add your WhatsApp credentials in the .env file.'
         }
       }
 
