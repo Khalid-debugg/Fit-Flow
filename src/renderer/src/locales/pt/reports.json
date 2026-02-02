@@ -46,6 +46,54 @@
     "downloaded": "Relatório salvo com sucesso",
     "printDialog": "Abrindo diálogo de impressão... Selecione 'Salvar como PDF' como destino",
     "error": "Falha ao gerar relatório",
-    "downloadError": "Falha ao salvar relatório"
+    "downloadError": "Falha ao salvar relatório",
+    "noPermission": "Você não tem permissão para realizar esta ação"
+  },
+  "export": {
+    "title": "Exportar Dados para CSV",
+    "subtitle": "Selecione tabelas para exportar no formato CSV",
+    "noPermission": "Você não tem permissão para exportar dados. Entre em contato com seu administrador.",
+    "tables": {
+      "members": {
+        "label": "Membros",
+        "description": "Exportar todas as informações de membros incluindo detalhes de contato e status"
+      },
+      "memberships": {
+        "label": "Matrículas",
+        "description": "Exportar registros de matrículas com informações de pagamento e plano"
+      },
+      "checkins": {
+        "label": "Check-ins",
+        "description": "Exportar histórico de check-ins de todos os membros"
+      },
+      "accounts": {
+        "label": "Contas de Usuário",
+        "description": "Exportar contas de usuário e suas funções (senhas excluídas)"
+      },
+      "plans": {
+        "label": "Planos de Matrícula",
+        "description": "Exportar todas as configurações de planos de matrícula"
+      }
+    },
+    "buttons": {
+      "export": "Exportar CSV",
+      "exporting": "Exportando..."
+    },
+    "status": {
+      "noSelection": "Nenhuma tabela selecionada",
+      "selected": "{{count}} tabela selecionada",
+      "selected_plural": "{{count}} tabelas selecionadas"
+    },
+    "info": {
+      "single": "Você será solicitado a escolher onde salvar o arquivo.",
+      "multiple": "Você será solicitado a escolher uma pasta onde todos os arquivos serão salvos."
+    },
+    "messages": {
+      "selectAtLeastOne": "Por favor selecione pelo menos uma tabela para exportar",
+      "canceled": "Exportação cancelada",
+      "successSingle": "{{filename}} exportado com sucesso",
+      "successMultiple": "{{count}} arquivos exportados para {{directory}}",
+      "error": "Falha ao exportar dados. Por favor tente novamente."
+    }
   }
 }

@@ -16,6 +16,7 @@
   "edit": "Editar",
   "delete": "Excluir",
   "active": "Ativo",
+  "paused": "Pausado",
   "expired": "Expirado",
   "inactive": "Inativo",
   "noMembers": "Nenhum membro encontrado",
@@ -29,7 +30,9 @@
   "expiresOn": "Expira em",
   "startDate": "Data de Início",
   "endDate": "Data de Término",
+  "endDateTbd": "A Definir",
   "price": "Preço",
+
   "filters": {
     "title": "Filtros",
     "search": "Buscar",

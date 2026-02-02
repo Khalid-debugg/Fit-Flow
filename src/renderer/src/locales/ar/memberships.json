@@ -5,8 +5,11 @@
   "loading": "جاري التحميل...",
   "active": "نشط",
   "expired": "منتهي",
+  "paused": "متوقف مؤقتاً",
   "days": "يوم",
   "renew": "تمديد",
+  "endDateTbd": "سيتم تحديده لاحقاً",
+
   "table": {
     "index": "#",
     "member": "العضو",
@@ -172,6 +175,26 @@
     "next": "التالي"
   },
 
+  "alert": {
+    "renewMembership": "تمديد الإشتراك",
+    "renewMembershipMessage": "هل أنت متأكد من رغبتك في تمديد اشتراك {{memberName}}؟ تاريخ الانتهاء الجديد سيكون {{newEndDate}}. لا يمكن التراجع عن هذا الإجراء."
+  },
+
+  "pause": {
+    "title": "إيقاف الاشتراك مؤقتاً",
+    "description": "إيقاف اشتراك {{memberName}} مؤقتاً عن طريق تمديد تاريخ الانتهاء. يمكنك إضافة رسوم إيقاف اختيارية.",
+    "pauseDays": "مدة الإيقاف (أيام)",
+    "pauseDaysPlaceholder": "أدخل عدد أيام الإيقاف",
+    "pauseDaysHint": "اتركه فارغاً للإيقاف إلى أجل غير مسمى حتى الاستئناف",
+    "additionalTax": "رسوم إيقاف إضافية",
+    "additionalTaxPlaceholder": "أدخل رسوم الإيقاف (اختياري)"
+  },
+
+  "resume": {
+    "title": "استئناف الاشتراك",
+    "description": "هل أنت متأكد من رغبتك في استئناف اشتراك {{memberName}}؟ سيعود الاشتراك إلى حالته الصحيحة."
+  },
+
   "errors": {
     "loadFailed": "فشل تحميل الاشتراكات",
     "fetchFailed": "فشل جلب تفاصيل الاشتراك",
@@ -183,7 +206,11 @@
     "extendFail": "فشل فى تمديد الإشتراك",
     "invalidAmount": "يرجى إدخال مبلغ دفع صحيح",
     "amountExceedsBalance": "مبلغ الدفع يتجاوز الرصيد المتبقي",
-    "paymentFailed": "فشل إضافة الدفعة"
+    "paymentFailed": "فشل إضافة الدفعة",
+    "invalidPauseDays": "يرجى إدخال عدد أيام صحيح للإيقاف",
+    "pauseFailed": "فشل إيقاف الاشتراك مؤقتاً",
+    "resumeFailed": "فشل استئناف الاشتراك",
+    "noPermission": "ليس لديك صلاحية لتنفيذ هذا الإجراء"
   },
 
   "success": {
@@ -191,10 +218,8 @@
     "updateSuccess": "تم تحديث الاشتراك بنجاح",
     "deleteSuccess": "تم حذف الاشتراك بنجاح",
     "extendSuccess": "تم تمديد الإشتراك بنجاح",
-    "paymentAdded": "تمت إضافة الدفعة بنجاح"
-  },
-  "alert": {
-    "renewMembership": "تمديد الإشتراك",
-    "renewMembershipMessage": "هل أنت متأكد من رغبتك في تمديد اشتراك {{memberName}}؟ تاريخ الانتهاء الجديد سيكون {{newEndDate}}. لا يمكن التراجع عن هذا الإجراء."
+    "paymentAdded": "تمت إضافة الدفعة بنجاح",
+    "pauseSuccess": "تم إيقاف الاشتراك مؤقتاً بنجاح",
+    "resumeSuccess": "تم استئناف الاشتراك بنجاح"
   }
 }

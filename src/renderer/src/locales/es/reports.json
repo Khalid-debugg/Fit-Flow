@@ -46,6 +46,54 @@
     "downloaded": "Informe guardado exitosamente",
     "printDialog": "Abriendo diálogo de impresión... Selecciona 'Guardar como PDF' como destino",
     "error": "Error al generar informe",
-    "downloadError": "Error al guardar informe"
+    "downloadError": "Error al guardar informe",
+    "noPermission": "No tienes permiso para realizar esta acción"
+  },
+  "export": {
+    "title": "Exportar Datos a CSV",
+    "subtitle": "Selecciona tablas para exportar en formato CSV",
+    "noPermission": "No tienes permiso para exportar datos. Por favor contacta a tu administrador.",
+    "tables": {
+      "members": {
+        "label": "Miembros",
+        "description": "Exportar toda la información de miembros incluyendo detalles de contacto y estado"
+      },
+      "memberships": {
+        "label": "Membresías",
+        "description": "Exportar registros de membresías con información de pago y plan"
+      },
+      "checkins": {
+        "label": "Registros",
+        "description": "Exportar historial de registros de todos los miembros"
+      },
+      "accounts": {
+        "label": "Cuentas de Usuario",
+        "description": "Exportar cuentas de usuario y sus roles (contraseñas excluidas)"
+      },
+      "plans": {
+        "label": "Planes de Membresía",
+        "description": "Exportar todas las configuraciones de planes de membresía"
+      }
+    },
+    "buttons": {
+      "export": "Exportar CSV",
+      "exporting": "Exportando..."
+    },
+    "status": {
+      "noSelection": "No hay tablas seleccionadas",
+      "selected": "{{count}} tabla seleccionada",
+      "selected_plural": "{{count}} tablas seleccionadas"
+    },
+    "info": {
+      "single": "Se te pedirá que elijas dónde guardar el archivo.",
+      "multiple": "Se te pedirá que elijas una carpeta donde se guardarán todos los archivos."
+    },
+    "messages": {
+      "selectAtLeastOne": "Por favor selecciona al menos una tabla para exportar",
+      "canceled": "Exportación cancelada",
+      "successSingle": "{{filename}} exportado exitosamente",
+      "successMultiple": "{{count}} archivos exportados a {{directory}}",
+      "error": "Error al exportar datos. Por favor intenta nuevamente."
+    }
   }
 }

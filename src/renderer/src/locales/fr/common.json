@@ -35,7 +35,25 @@
     "invalidCredentials": "Nom d'utilisateur ou mot de passe invalide",
     "accountInactive": "Votre compte est inactif. Veuillez contacter l'administrateur.",
     "fillFields": "Veuillez remplir tous les champs",
-    "defaultCredentials": "Identifiants par défaut :"
+    "defaultCredentials": "Identifiants par défaut :",
+    "recovery": {
+      "button": "Récupération du Compte Administrateur",
+      "title": "Récupérer l'Accès Administrateur",
+      "description": "Utilisez votre clé de licence pour réinitialiser les identifiants du premier compte administrateur",
+      "licenseKey": "Clé de Licence",
+      "licenseKeyPlaceholder": "Entrez votre clé de licence",
+      "newUsername": "Nouveau Nom d'Utilisateur",
+      "newUsernamePlaceholder": "Entrez le nouveau nom d'utilisateur",
+      "newPassword": "Nouveau Mot de Passe",
+      "newPasswordPlaceholder": "Entrez le nouveau mot de passe",
+      "submit": "Récupérer l'Accès",
+      "processing": "Traitement en cours...",
+      "fillAllFields": "Veuillez remplir tous les champs",
+      "invalidLicense": "Clé de licence invalide",
+      "noAdminFound": "Aucun compte administrateur trouvé",
+      "success": "Compte administrateur récupéré avec succès ! Vous pouvez maintenant vous connecter avec les nouveaux identifiants.",
+      "failed": "La récupération a échoué. Veuillez réessayer."
+    }
   },
   "dashboard": {
     "welcome": "Bon Retour !",

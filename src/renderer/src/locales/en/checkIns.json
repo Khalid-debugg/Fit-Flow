@@ -30,6 +30,7 @@
   "status": {
     "active": "Active",
     "inactive": "Inactive",
+    "paused": "Paused",
     "expired": "Expired",
     "none": "No Membership"
   },
@@ -40,6 +41,7 @@
     "expired": "Expired",
     "daysAgo": "days ago",
     "noMembership": "No active membership",
+    "pausedWarning": "This member's membership is currently paused. Check-in may proceed but the membership is paused.",
     "expiredWarning": "This member's membership has expired. Please renew before check-in.",
     "noMembershipWarning": "This member has no active membership. Please subscribe before check-in.",
     "alreadyCheckedInWarning": "This member already checked in today at {{time}}. Do you want to check in again?",

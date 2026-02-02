@@ -46,6 +46,54 @@
     "downloaded": "Report saved successfully",
     "printDialog": "Opening print dialog... Select 'Save as PDF' as destination",
     "error": "Failed to generate report",
-    "downloadError": "Failed to save report"
+    "downloadError": "Failed to save report",
+    "noPermission": "You do not have permission to perform this action"
+  },
+  "export": {
+    "title": "Export Data to CSV",
+    "subtitle": "Select tables to export to CSV format",
+    "noPermission": "You do not have permission to export data. Please contact your administrator.",
+    "tables": {
+      "members": {
+        "label": "Members",
+        "description": "Export all member information including contact details and status"
+      },
+      "memberships": {
+        "label": "Memberships",
+        "description": "Export membership records with payment and plan information"
+      },
+      "checkins": {
+        "label": "Check-ins",
+        "description": "Export check-in history for all members"
+      },
+      "accounts": {
+        "label": "User Accounts",
+        "description": "Export user accounts and their roles (passwords excluded)"
+      },
+      "plans": {
+        "label": "Membership Plans",
+        "description": "Export all membership plan configurations"
+      }
+    },
+    "buttons": {
+      "export": "Export CSV",
+      "exporting": "Exporting..."
+    },
+    "status": {
+      "noSelection": "No tables selected",
+      "selected": "{{count}} table selected",
+      "selected_plural": "{{count}} tables selected"
+    },
+    "info": {
+      "single": "You will be prompted to choose where to save the file.",
+      "multiple": "You will be prompted to choose a folder where all files will be saved."
+    },
+    "messages": {
+      "selectAtLeastOne": "Please select at least one table to export",
+      "canceled": "Export canceled",
+      "successSingle": "Exported {{filename}} successfully",
+      "successMultiple": "Exported {{count}} files to {{directory}}",
+      "error": "Failed to export data. Please try again."
+    }
   }
 }

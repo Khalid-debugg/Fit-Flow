@@ -30,6 +30,7 @@
   "status": {
     "active": "Actif",
     "inactive": "Inactif",
+    "paused": "En pause",
     "expired": "Expiré",
     "none": "Aucune Adhésion"
   },
@@ -40,6 +41,7 @@
     "expired": "Expiré",
     "daysAgo": "il y a",
     "noMembership": "Aucune adhésion active",
+    "pausedWarning": "L'adhésion de ce membre est actuellement en pause. Le pointage peut continuer mais l'adhésion est en pause.",
     "expiredWarning": "L'adhésion de ce membre a expiré. Veuillez renouveler avant de pointer.",
     "noMembershipWarning": "Ce membre n'a aucune adhésion active. Veuillez souscrire avant de pointer.",
     "alreadyCheckedInWarning": "Ce membre a déjà pointé aujourd'hui à {{time}}. Voulez-vous pointer à nouveau ?",

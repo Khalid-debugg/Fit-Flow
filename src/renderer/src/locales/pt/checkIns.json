@@ -30,6 +30,7 @@
   "status": {
     "active": "Ativo",
     "inactive": "Inativo",
+    "paused": "Pausado",
     "expired": "Expirado",
     "none": "Sem Matrícula"
   },
@@ -40,6 +41,7 @@
     "expired": "Expirado",
     "daysAgo": "dias atrás",
     "noMembership": "Nenhuma matrícula ativa",
+    "pausedWarning": "A matrícula deste membro está atualmente pausada. O check-in pode continuar, mas a matrícula está pausada.",
     "expiredWarning": "A matrícula deste membro expirou. Por favor, renove antes do check-in.",
     "noMembershipWarning": "Este membro não tem matrícula ativa. Por favor, inscreva antes do check-in.",
     "alreadyCheckedInWarning": "Este membro já fez check-in hoje às {{time}}. Deseja fazer check-in novamente?",

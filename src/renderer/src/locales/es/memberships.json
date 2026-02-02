@@ -5,8 +5,10 @@
   "loading": "Cargando...",
   "active": "Activo",
   "expired": "Vencido",
+  "paused": "Pausado",
   "days": "días",
   "renew": "Renovar",
+  "endDateTbd": "Por Determinar",
 
   "table": {
     "index": "#",
@@ -173,6 +175,26 @@
     "next": "Siguiente"
   },
 
+  "alert": {
+    "renewMembership": "Renovar Membresía",
+    "renewMembershipMessage": "¿Estás seguro de que deseas renovar la membresía de {{memberName}}? La nueva fecha de finalización será {{newEndDate}}. Esta acción no se puede deshacer."
+  },
+
+  "pause": {
+    "title": "Pausar Membresía",
+    "description": "Pausar la membresía de {{memberName}} extendiendo la fecha de finalización. Puedes añadir opcionalmente una tarifa de pausa.",
+    "pauseDays": "Duración de la Pausa (Días)",
+    "pauseDaysPlaceholder": "Ingresa el número de días a pausar",
+    "pauseDaysHint": "Déjalo vacío para pausar indefinidamente hasta reanudar",
+    "additionalTax": "Tarifa Adicional de Pausa",
+    "additionalTaxPlaceholder": "Ingresa la tarifa de pausa (opcional)"
+  },
+
+  "resume": {
+    "title": "Reanudar Membresía",
+    "description": "¿Estás seguro de que deseas reanudar la membresía de {{memberName}}? La membresía volverá a su estado correcto."
+  },
+
   "errors": {
     "loadFailed": "Error al cargar membresías",
     "fetchFailed": "Error al obtener detalles de membresía",
@@ -184,7 +206,11 @@
     "extendFail": "Error al extender membresía",
     "invalidAmount": "Por favor, ingresa un monto de pago válido",
     "amountExceedsBalance": "El monto del pago excede el saldo restante",
-    "paymentFailed": "Error al agregar pago"
+    "paymentFailed": "Error al agregar pago",
+    "invalidPauseDays": "Por favor, ingresa un número válido de días para pausar",
+    "pauseFailed": "Error al pausar membresía",
+    "resumeFailed": "Error al reanudar membresía",
+    "noPermission": "No tienes permiso para realizar esta acción"
   },
 
   "success": {
@@ -192,10 +218,8 @@
     "updateSuccess": "Membresía actualizada exitosamente",
     "deleteSuccess": "Membresía eliminada exitosamente",
     "extendSuccess": "La membresía se ha extendido exitosamente",
-    "paymentAdded": "Pago agregado exitosamente"
-  },
-  "alert": {
-    "renewMembership": "Renovar Membresía",
-    "renewMembershipMessage": "¿Estás seguro de que deseas renovar la membresía de {{memberName}}? La nueva fecha de finalización será {{newEndDate}}. Esta acción no se puede deshacer."
+    "paymentAdded": "Pago agregado exitosamente",
+    "pauseSuccess": "Membresía pausada exitosamente",
+    "resumeSuccess": "Membresía reanudada exitosamente"
   }
 }

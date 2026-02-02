@@ -30,6 +30,7 @@
   "status": {
     "active": "Aktiv",
     "inactive": "Inaktiv",
+    "paused": "Pausiert",
     "expired": "Abgelaufen",
     "none": "Keine Mitgliedschaft"
   },
@@ -40,6 +41,7 @@
     "expired": "Abgelaufen",
     "daysAgo": "Tage her",
     "noMembership": "Keine aktive Mitgliedschaft",
+    "pausedWarning": "Die Mitgliedschaft dieses Mitglieds ist derzeit pausiert. Check-in kann fortgesetzt werden, aber die Mitgliedschaft ist pausiert.",
     "expiredWarning": "Die Mitgliedschaft dieses Mitglieds ist abgelaufen. Bitte erneuern Sie vor dem Check-in.",
     "noMembershipWarning": "Dieses Mitglied hat keine aktive Mitgliedschaft. Bitte vor dem Check-in abonnieren.",
     "alreadyCheckedInWarning": "Dieses Mitglied hat sich heute bereits um {{time}} eingecheckt. Möchten Sie erneut einchecken?",

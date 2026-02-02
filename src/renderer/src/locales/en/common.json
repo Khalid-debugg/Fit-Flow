@@ -35,7 +35,25 @@
     "invalidCredentials": "Invalid username or password",
     "accountInactive": "Your account is inactive. Please contact the administrator.",
     "fillFields": "Please fill in all fields",
-    "defaultCredentials": "Default credentials:"
+    "defaultCredentials": "Default credentials:",
+    "recovery": {
+      "button": "Admin Account Recovery",
+      "title": "Recover Admin Access",
+      "description": "Use your license key to reset the first admin account credentials",
+      "licenseKey": "License Key",
+      "licenseKeyPlaceholder": "Enter your license key",
+      "newUsername": "New Username",
+      "newUsernamePlaceholder": "Enter new admin username",
+      "newPassword": "New Password",
+      "newPasswordPlaceholder": "Enter new admin password",
+      "submit": "Recover Access",
+      "processing": "Processing...",
+      "fillAllFields": "Please fill in all fields",
+      "invalidLicense": "Invalid license key",
+      "noAdminFound": "No admin account found",
+      "success": "Admin account recovered successfully! You can now login with the new credentials.",
+      "failed": "Recovery failed. Please try again."
+    }
   },
   "dashboard": {
     "welcome": "Welcome Back!",

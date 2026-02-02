@@ -46,6 +46,54 @@
     "downloaded": "Rapport enregistré avec succès",
     "printDialog": "Ouverture de la boîte de dialogue d'impression... Sélectionnez 'Enregistrer en PDF' comme destination",
     "error": "Échec de la génération du rapport",
-    "downloadError": "Échec de l'enregistrement du rapport"
+    "downloadError": "Échec de l'enregistrement du rapport",
+    "noPermission": "Vous n'avez pas la permission d'effectuer cette action"
+  },
+  "export": {
+    "title": "Exporter les Données en CSV",
+    "subtitle": "Sélectionnez les tables à exporter au format CSV",
+    "noPermission": "Vous n'avez pas la permission d'exporter des données. Veuillez contacter votre administrateur.",
+    "tables": {
+      "members": {
+        "label": "Membres",
+        "description": "Exporter toutes les informations des membres incluant les coordonnées et le statut"
+      },
+      "memberships": {
+        "label": "Adhésions",
+        "description": "Exporter les enregistrements d'adhésions avec les informations de paiement et de plan"
+      },
+      "checkins": {
+        "label": "Pointages",
+        "description": "Exporter l'historique des pointages de tous les membres"
+      },
+      "accounts": {
+        "label": "Comptes Utilisateur",
+        "description": "Exporter les comptes utilisateur et leurs rôles (mots de passe exclus)"
+      },
+      "plans": {
+        "label": "Plans d'Adhésion",
+        "description": "Exporter toutes les configurations des plans d'adhésion"
+      }
+    },
+    "buttons": {
+      "export": "Exporter CSV",
+      "exporting": "Exportation..."
+    },
+    "status": {
+      "noSelection": "Aucune table sélectionnée",
+      "selected": "{{count}} table sélectionnée",
+      "selected_plural": "{{count}} tables sélectionnées"
+    },
+    "info": {
+      "single": "Vous serez invité à choisir où enregistrer le fichier.",
+      "multiple": "Vous serez invité à choisir un dossier où tous les fichiers seront enregistrés."
+    },
+    "messages": {
+      "selectAtLeastOne": "Veuillez sélectionner au moins une table à exporter",
+      "canceled": "Exportation annulée",
+      "successSingle": "{{filename}} exporté avec succès",
+      "successMultiple": "{{count}} fichiers exportés vers {{directory}}",
+      "error": "Échec de l'exportation des données. Veuillez réessayer."
+    }
   }
 }

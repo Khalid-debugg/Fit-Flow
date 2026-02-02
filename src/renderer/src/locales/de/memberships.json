@@ -5,8 +5,10 @@
   "loading": "Lädt...",
   "active": "Aktiv",
   "expired": "Abgelaufen",
+  "paused": "Pausiert",
   "days": "Tage",
   "renew": "Erneuern",
+  "endDateTbd": "Noch Festzulegen",
 
   "table": {
     "index": "#",
@@ -173,6 +175,26 @@
     "next": "Weiter"
   },
 
+  "alert": {
+    "renewMembership": "Mitgliedschaft erneuern",
+    "renewMembershipMessage": "Möchten Sie die Mitgliedschaft von {{memberName}} wirklich erneuern? Das neue Enddatum wird {{newEndDate}} sein. Diese Aktion kann nicht rückgängig gemacht werden."
+  },
+
+  "pause": {
+    "title": "Mitgliedschaft pausieren",
+    "description": "Pausieren Sie die Mitgliedschaft von {{memberName}}, indem Sie das Enddatum verlängern. Sie können optional eine Pausengebühr hinzufügen.",
+    "pauseDays": "Pausendauer (Tage)",
+    "pauseDaysPlaceholder": "Anzahl der Tage eingeben",
+    "pauseDaysHint": "Leer lassen, um unbegrenzt zu pausieren, bis zur Wiederaufnahme",
+    "additionalTax": "Zusätzliche Pausengebühr",
+    "additionalTaxPlaceholder": "Pausengebühr eingeben (optional)"
+  },
+
+  "resume": {
+    "title": "Mitgliedschaft fortsetzen",
+    "description": "Möchten Sie die Mitgliedschaft von {{memberName}} wirklich fortsetzen? Die Mitgliedschaft wird zu ihrem angemessenen Status zurückkehren."
+  },
+
   "errors": {
     "loadFailed": "Mitgliedschaften konnten nicht geladen werden",
     "fetchFailed": "Mitgliedschaftsdetails konnten nicht abgerufen werden",
@@ -184,7 +206,11 @@
     "extendFail": "Verlängerung der Mitgliedschaft fehlgeschlagen",
     "invalidAmount": "Bitte geben Sie einen gültigen Zahlungsbetrag ein",
     "amountExceedsBalance": "Zahlungsbetrag übersteigt den Restbetrag",
-    "paymentFailed": "Zahlung konnte nicht hinzugefügt werden"
+    "paymentFailed": "Zahlung konnte nicht hinzugefügt werden",
+    "invalidPauseDays": "Bitte geben Sie eine gültige Anzahl von Tagen zum Pausieren ein",
+    "pauseFailed": "Pausieren der Mitgliedschaft fehlgeschlagen",
+    "resumeFailed": "Fortsetzen der Mitgliedschaft fehlgeschlagen",
+    "noPermission": "Sie haben keine Berechtigung, diese Aktion auszuführen"
   },
 
   "success": {
@@ -192,10 +218,8 @@
     "updateSuccess": "Mitgliedschaft erfolgreich aktualisiert",
     "deleteSuccess": "Mitgliedschaft erfolgreich gelöscht",
     "extendSuccess": "Die Mitgliedschaft wurde erfolgreich verlängert",
-    "paymentAdded": "Zahlung erfolgreich hinzugefügt"
-  },
-  "alert": {
-    "renewMembership": "Mitgliedschaft erneuern",
-    "renewMembershipMessage": "Möchten Sie die Mitgliedschaft von {{memberName}} wirklich erneuern? Das neue Enddatum wird {{newEndDate}} sein. Diese Aktion kann nicht rückgängig gemacht werden."
+    "paymentAdded": "Zahlung erfolgreich hinzugefügt",
+    "pauseSuccess": "Mitgliedschaft erfolgreich pausiert",
+    "resumeSuccess": "Mitgliedschaft erfolgreich fortgesetzt"
   }
 }

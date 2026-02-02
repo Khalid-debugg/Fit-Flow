@@ -35,7 +35,25 @@
     "invalidCredentials": "Ungültiger Benutzername oder Passwort",
     "accountInactive": "Ihr Konto ist inaktiv. Bitte kontaktieren Sie den Administrator.",
     "fillFields": "Bitte füllen Sie alle Felder aus",
-    "defaultCredentials": "Standard-Anmeldedaten:"
+    "defaultCredentials": "Standard-Anmeldedaten:",
+    "recovery": {
+      "button": "Administrator-Konto-Wiederherstellung",
+      "title": "Administrator-Zugang Wiederherstellen",
+      "description": "Verwenden Sie Ihren Lizenzschlüssel, um die Anmeldedaten des ersten Administrator-Kontos zurückzusetzen",
+      "licenseKey": "Lizenzschlüssel",
+      "licenseKeyPlaceholder": "Geben Sie Ihren Lizenzschlüssel ein",
+      "newUsername": "Neuer Benutzername",
+      "newUsernamePlaceholder": "Geben Sie den neuen Benutzernamen ein",
+      "newPassword": "Neues Passwort",
+      "newPasswordPlaceholder": "Geben Sie das neue Passwort ein",
+      "submit": "Zugang Wiederherstellen",
+      "processing": "Verarbeitung läuft...",
+      "fillAllFields": "Bitte füllen Sie alle Felder aus",
+      "invalidLicense": "Ungültiger Lizenzschlüssel",
+      "noAdminFound": "Kein Administrator-Konto gefunden",
+      "success": "Administrator-Konto erfolgreich wiederhergestellt! Sie können sich jetzt mit den neuen Anmeldedaten anmelden.",
+      "failed": "Wiederherstellung fehlgeschlagen. Bitte versuchen Sie es erneut."
+    }
   },
   "dashboard": {
     "welcome": "Willkommen zurück!",

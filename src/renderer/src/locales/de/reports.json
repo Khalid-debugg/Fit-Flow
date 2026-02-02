@@ -46,6 +46,54 @@
     "downloaded": "Bericht erfolgreich gespeichert",
     "printDialog": "Druckdialog wird geöffnet... Wählen Sie 'Als PDF speichern' als Ziel",
     "error": "Bericht konnte nicht generiert werden",
-    "downloadError": "Bericht konnte nicht gespeichert werden"
+    "downloadError": "Bericht konnte nicht gespeichert werden",
+    "noPermission": "Sie haben keine Berechtigung, diese Aktion auszuführen"
+  },
+  "export": {
+    "title": "Daten in CSV exportieren",
+    "subtitle": "Wählen Sie Tabellen zum Exportieren im CSV-Format aus",
+    "noPermission": "Sie haben keine Berechtigung zum Exportieren von Daten. Bitte wenden Sie sich an Ihren Administrator.",
+    "tables": {
+      "members": {
+        "label": "Mitglieder",
+        "description": "Alle Mitgliederinformationen einschließlich Kontaktdaten und Status exportieren"
+      },
+      "memberships": {
+        "label": "Mitgliedschaften",
+        "description": "Mitgliedschaftsdatensätze mit Zahlungs- und Planinformationen exportieren"
+      },
+      "checkins": {
+        "label": "Check-ins",
+        "description": "Check-in-Verlauf für alle Mitglieder exportieren"
+      },
+      "accounts": {
+        "label": "Benutzerkonten",
+        "description": "Benutzerkonten und ihre Rollen exportieren (Passwörter ausgeschlossen)"
+      },
+      "plans": {
+        "label": "Mitgliedschaftspläne",
+        "description": "Alle Mitgliedschaftsplan-Konfigurationen exportieren"
+      }
+    },
+    "buttons": {
+      "export": "CSV exportieren",
+      "exporting": "Exportiert..."
+    },
+    "status": {
+      "noSelection": "Keine Tabellen ausgewählt",
+      "selected": "{{count}} Tabelle ausgewählt",
+      "selected_plural": "{{count}} Tabellen ausgewählt"
+    },
+    "info": {
+      "single": "Sie werden aufgefordert auszuwählen, wo die Datei gespeichert werden soll.",
+      "multiple": "Sie werden aufgefordert, einen Ordner auszuwählen, in dem alle Dateien gespeichert werden."
+    },
+    "messages": {
+      "selectAtLeastOne": "Bitte wählen Sie mindestens eine Tabelle zum Exportieren aus",
+      "canceled": "Export abgebrochen",
+      "successSingle": "{{filename}} erfolgreich exportiert",
+      "successMultiple": "{{count}} Dateien nach {{directory}} exportiert",
+      "error": "Fehler beim Exportieren der Daten. Bitte versuchen Sie es erneut."
+    }
   }
 }

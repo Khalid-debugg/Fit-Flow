@@ -5,8 +5,10 @@
   "loading": "Carregando...",
   "active": "Ativo",
   "expired": "Expirado",
+  "paused": "Pausado",
   "days": "dias",
   "renew": "Renovar",
+  "endDateTbd": "A Definir",
 
   "table": {
     "index": "#",
@@ -173,6 +175,26 @@
     "next": "Próxima"
   },
 
+  "alert": {
+    "renewMembership": "Renovar Matrícula",
+    "renewMembershipMessage": "Tem certeza que deseja renovar a matrícula de {{memberName}}? A nova data de término será {{newEndDate}}. Esta ação não pode ser desfeita."
+  },
+
+  "pause": {
+    "title": "Pausar Matrícula",
+    "description": "Pausar a matrícula de {{memberName}} estendendo a data de término. Você pode opcionalmente adicionar uma taxa de pausa.",
+    "pauseDays": "Duração da Pausa (Dias)",
+    "pauseDaysPlaceholder": "Insira o número de dias para pausar",
+    "pauseDaysHint": "Deixe vazio para pausar indefinidamente até retomar",
+    "additionalTax": "Taxa Adicional de Pausa",
+    "additionalTaxPlaceholder": "Insira a taxa de pausa (opcional)"
+  },
+
+  "resume": {
+    "title": "Retomar Matrícula",
+    "description": "Tem certeza que deseja retomar a matrícula de {{memberName}}? A matrícula retornará ao seu status adequado."
+  },
+
   "errors": {
     "loadFailed": "Falha ao carregar matrículas",
     "fetchFailed": "Falha ao buscar detalhes da matrícula",
@@ -184,7 +206,11 @@
     "extendFail": "Falha na extensão da matrícula",
     "invalidAmount": "Por favor, insira um valor de pagamento válido",
     "amountExceedsBalance": "O valor do pagamento excede o saldo restante",
-    "paymentFailed": "Falha ao adicionar pagamento"
+    "paymentFailed": "Falha ao adicionar pagamento",
+    "invalidPauseDays": "Por favor, insira um número válido de dias para pausar",
+    "pauseFailed": "Falha ao pausar matrícula",
+    "resumeFailed": "Falha ao retomar matrícula",
+    "noPermission": "Você não tem permissão para executar esta ação"
   },
 
   "success": {
@@ -192,10 +218,8 @@
     "updateSuccess": "Matrícula atualizada com sucesso",
     "deleteSuccess": "Matrícula excluída com sucesso",
     "extendSuccess": "A matrícula foi estendida com sucesso",
-    "paymentAdded": "Pagamento adicionado com sucesso"
-  },
-  "alert": {
-    "renewMembership": "Renovar Matrícula",
-    "renewMembershipMessage": "Tem certeza que deseja renovar a matrícula de {{memberName}}? A nova data de término será {{newEndDate}}. Esta ação não pode ser desfeita."
+    "paymentAdded": "Pagamento adicionado com sucesso",
+    "pauseSuccess": "Matrícula pausada com sucesso",
+    "resumeSuccess": "Matrícula retomada com sucesso"
   }
 }

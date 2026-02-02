@@ -30,6 +30,7 @@
   "status": {
     "active": "Activo",
     "inactive": "Inactivo",
+    "paused": "Pausado",
     "expired": "Vencido",
     "none": "Sin Membresía"
   },
@@ -40,6 +41,7 @@
     "expired": "Vencido",
     "daysAgo": "días atrás",
     "noMembership": "Sin membresía activa",
+    "pausedWarning": "La membresía de este miembro está actualmente pausada. El registro puede continuar pero la membresía está pausada.",
     "expiredWarning": "La membresía de este miembro ha vencido. Por favor, renueva antes de registrar.",
     "noMembershipWarning": "Este miembro no tiene membresía activa. Por favor, suscribe antes de registrar.",
     "alreadyCheckedInWarning": "Este miembro ya se registró hoy a las {{time}}. ¿Deseas registrar de nuevo?",

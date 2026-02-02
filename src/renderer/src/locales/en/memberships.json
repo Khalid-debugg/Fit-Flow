@@ -5,8 +5,10 @@
   "loading": "Loading...",
   "active": "Active",
   "expired": "Expired",
+  "paused": "Paused",
   "days": "days",
   "renew": "Renew",
+  "endDateTbd": "TBD",
 
   "table": {
     "index": "#",
@@ -173,6 +175,26 @@
     "next": "Next"
   },
 
+  "alert": {
+    "renewMembership": "Renew Membership",
+    "renewMembershipMessage": "Are you sure you want to renew {{memberName}}'s membership? The new end date will be {{newEndDate}}. This action cannot be undone."
+  },
+
+  "pause": {
+    "title": "Pause Membership",
+    "description": "Pause {{memberName}}'s membership by extending the end date. You can optionally add a pause fee.",
+    "pauseDays": "Pause Duration (Days)",
+    "pauseDaysPlaceholder": "Enter number of days to pause",
+    "pauseDaysHint": "Leave empty to pause indefinitely until resumed",
+    "additionalTax": "Additional Pause Fee",
+    "additionalTaxPlaceholder": "Enter pause fee (optional)"
+  },
+
+  "resume": {
+    "title": "Resume Membership",
+    "description": "Are you sure you want to resume {{memberName}}'s membership? The membership will return to its proper status."
+  },
+
   "errors": {
     "loadFailed": "Failed to load memberships",
     "fetchFailed": "Failed to fetch membership details",
@@ -184,7 +206,11 @@
     "extendFail": "Membership extension failed",
     "invalidAmount": "Please enter a valid payment amount",
     "amountExceedsBalance": "Payment amount exceeds remaining balance",
-    "paymentFailed": "Failed to add payment"
+    "paymentFailed": "Failed to add payment",
+    "invalidPauseDays": "Please enter a valid number of days to pause",
+    "pauseFailed": "Failed to pause membership",
+    "resumeFailed": "Failed to resume membership",
+    "noPermission": "You don't have permission to perform this action"
   },
 
   "success": {
@@ -192,10 +218,8 @@
     "updateSuccess": "Membership updated successfully",
     "deleteSuccess": "Membership deleted successfully",
     "extendSuccess": "The membership is extended successfully",
-    "paymentAdded": "Payment added successfully"
-  },
-  "alert": {
-    "renewMembership": "Renew Membership",
-    "renewMembershipMessage": "Are you sure you want to renew {{memberName}}'s membership? The new end date will be {{newEndDate}}. This action cannot be undone."
+    "paymentAdded": "Payment added successfully",
+    "pauseSuccess": "Membership paused successfully",
+    "resumeSuccess": "Membership resumed successfully"
   }
 }

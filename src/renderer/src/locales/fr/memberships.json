@@ -5,8 +5,10 @@
   "loading": "Chargement...",
   "active": "Actif",
   "expired": "Expiré",
+  "paused": "Suspendu",
   "days": "jours",
   "renew": "Renouveler",
+  "endDateTbd": "À Déterminer",
 
   "table": {
     "index": "#",
@@ -173,6 +175,26 @@
     "next": "Suivant"
   },
 
+  "alert": {
+    "renewMembership": "Renouveler l'Adhésion",
+    "renewMembershipMessage": "Êtes-vous sûr de vouloir renouveler l'adhésion de {{memberName}} ? La nouvelle date de fin sera {{newEndDate}}. Cette action ne peut pas être annulée."
+  },
+
+  "pause": {
+    "title": "Suspendre l'Adhésion",
+    "description": "Suspendre l'adhésion de {{memberName}} en prolongeant la date de fin. Vous pouvez éventuellement ajouter des frais de suspension.",
+    "pauseDays": "Durée de Suspension (Jours)",
+    "pauseDaysPlaceholder": "Entrez le nombre de jours à suspendre",
+    "pauseDaysHint": "Laissez vide pour suspendre indéfiniment jusqu'à la reprise",
+    "additionalTax": "Frais de Suspension Supplémentaires",
+    "additionalTaxPlaceholder": "Entrez les frais de suspension (facultatif)"
+  },
+
+  "resume": {
+    "title": "Reprendre l'Adhésion",
+    "description": "Êtes-vous sûr de vouloir reprendre l'adhésion de {{memberName}} ? L'adhésion reviendra à son statut approprié."
+  },
+
   "errors": {
     "loadFailed": "Échec du chargement des adhésions",
     "fetchFailed": "Échec de la récupération des détails de l'adhésion",
@@ -184,7 +206,11 @@
     "extendFail": "Échec de la prolongation de l'adhésion",
     "invalidAmount": "Veuillez entrer un montant de paiement valide",
     "amountExceedsBalance": "Le montant du paiement dépasse le solde restant",
-    "paymentFailed": "Échec de l'ajout du paiement"
+    "paymentFailed": "Échec de l'ajout du paiement",
+    "invalidPauseDays": "Veuillez entrer un nombre de jours valide pour suspendre",
+    "pauseFailed": "Échec de la suspension de l'adhésion",
+    "resumeFailed": "Échec de la reprise de l'adhésion",
+    "noPermission": "Vous n'avez pas la permission d'effectuer cette action"
   },
 
   "success": {
@@ -192,10 +218,8 @@
     "updateSuccess": "Adhésion modifiée avec succès",
     "deleteSuccess": "Adhésion supprimée avec succès",
     "extendSuccess": "L'adhésion a été prolongée avec succès",
-    "paymentAdded": "Paiement ajouté avec succès"
-  },
-  "alert": {
-    "renewMembership": "Renouveler l'Adhésion",
-    "renewMembershipMessage": "Êtes-vous sûr de vouloir renouveler l'adhésion de {{memberName}} ? La nouvelle date de fin sera {{newEndDate}}. Cette action ne peut pas être annulée."
+    "paymentAdded": "Paiement ajouté avec succès",
+    "pauseSuccess": "Adhésion suspendue avec succès",
+    "resumeSuccess": "Adhésion reprise avec succès"
   }
 }

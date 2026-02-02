@@ -35,7 +35,25 @@
     "invalidCredentials": "Usuario o contraseña incorrectos",
     "accountInactive": "Tu cuenta está inactiva. Por favor, contacta al administrador.",
     "fillFields": "Por favor, completa todos los campos",
-    "defaultCredentials": "Credenciales predeterminadas:"
+    "defaultCredentials": "Credenciales predeterminadas:",
+    "recovery": {
+      "button": "Recuperar Cuenta de Administrador",
+      "title": "Recuperar Acceso de Administrador",
+      "description": "Usa tu clave de licencia para restablecer las credenciales de la primera cuenta de administrador",
+      "licenseKey": "Clave de Licencia",
+      "licenseKeyPlaceholder": "Ingresa tu clave de licencia",
+      "newUsername": "Nuevo Usuario",
+      "newUsernamePlaceholder": "Ingresa el nuevo nombre de usuario",
+      "newPassword": "Nueva Contraseña",
+      "newPasswordPlaceholder": "Ingresa la nueva contraseña",
+      "submit": "Recuperar Acceso",
+      "processing": "Procesando...",
+      "fillAllFields": "Por favor, completa todos los campos",
+      "invalidLicense": "Clave de licencia inválida",
+      "noAdminFound": "No se encontró cuenta de administrador",
+      "success": "¡Cuenta de administrador recuperada exitosamente! Ahora puedes iniciar sesión con las nuevas credenciales.",
+      "failed": "La recuperación falló. Por favor, intenta de nuevo."
+    }
   },
   "dashboard": {
     "welcome": "¡Bienvenido de Nuevo!",
