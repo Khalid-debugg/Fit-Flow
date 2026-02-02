@@ -8,7 +8,7 @@ import {
 } from '@renderer/components/ui/dialog'
 import { Button } from '@renderer/components/ui/button'
 import { Member } from '@renderer/models/member'
-import { User, Phone, Calendar, AlertCircle, CheckCircle, DollarSign } from 'lucide-react'
+import { User, Phone, Calendar, AlertCircle, CheckCircle, DollarSign, PauseCircle } from 'lucide-react'
 import { useSettings } from '@renderer/hooks/useSettings'
 
 interface MemberCheckInCardProps {
@@ -47,8 +47,10 @@ export default function MemberCheckInCard({
     switch (status) {
       case 'active':
         return 'bg-green-500/20 text-green-400 border-green-500/30'
-      case 'expired':
+      case 'paused':
         return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'
+      case 'expired':
+        return 'bg-orange-500/20 text-orange-400 border-orange-500/30'
       default:
         return 'bg-red-500/20 text-red-400 border-red-500/30'
     }
@@ -58,6 +60,8 @@ export default function MemberCheckInCard({
     switch (status) {
       case 'active':
         return <CheckCircle className="w-5 h-5" />
+      case 'paused':
+        return <PauseCircle className="w-5 h-5" />
       default:
         return <AlertCircle className="w-5 h-5" />
     }
@@ -215,15 +219,18 @@ export default function MemberCheckInCard({
 
           {(member.status === 'expired' ||
             member.status === 'inactive' ||
+            member.status === 'paused' ||
             member.alreadyCheckedIn) && (
             <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3 flex items-start gap-3">
               <AlertCircle className="w-5 h-5 text-yellow-400 mt-0.5 shrink-0" />
               <p className="text-sm text-yellow-200">
                 {member.alreadyCheckedIn
                   ? t('messages.alreadyCheckedInWarning', { time: member.checkInTime })
-                  : member.status === 'expired'
-                    ? t('messages.expiredWarning')
-                    : t('messages.noMembershipWarning')}
+                  : member.status === 'paused'
+                    ? t('messages.pausedWarning')
+                    : member.status === 'expired'
+                      ? t('messages.expiredWarning')
+                      : t('messages.noMembershipWarning')}
               </p>
             </div>
           )}

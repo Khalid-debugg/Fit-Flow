@@ -150,7 +150,11 @@ export default function ViewMember({ member, open, onClose }: ViewMemberProps) {
                 <InfoRow
                   icon={Calendar}
                   label={t('endDate')}
-                  value={new Date(member.currentMembership.endDate).toLocaleDateString()}
+                  value={
+                    member.currentMembership.isPaused && !member.currentMembership.pauseDurationDays
+                      ? t('endDateTbd')
+                      : new Date(member.currentMembership.endDate).toLocaleDateString()
+                  }
                 />
               </div>
             </div>

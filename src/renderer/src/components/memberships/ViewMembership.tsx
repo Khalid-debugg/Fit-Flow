@@ -299,7 +299,11 @@ export default function ViewMembership({
                     <InfoRow
                       icon={Calendar}
                       label={t('table.endDate')}
-                      value={new Date(membership.endDate).toLocaleDateString()}
+                      value={
+                        membership.isPaused && !membership.pauseDurationDays
+                          ? t('endDateTbd')
+                          : new Date(membership.endDate).toLocaleDateString()
+                      }
                     />
                   </div>
                 </div>

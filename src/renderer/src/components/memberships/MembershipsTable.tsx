@@ -1,3 +1,4 @@
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button } from '@renderer/components/ui/button'
 import {
@@ -9,7 +10,7 @@ import {
   TableRow
 } from '@renderer/components/ui/table'
 
-import { Pencil, Trash2, ChevronLeft, ChevronRight, RefreshCcw } from 'lucide-react'
+import { Pencil, Trash2, ChevronLeft, ChevronRight, RefreshCcw, PauseCircle, PlayCircle } from 'lucide-react'
 import { Membership } from '@renderer/models/membership'
 import { PERMISSIONS } from '@renderer/models/account'
 import {
@@ -23,6 +24,17 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from '@renderer/components/ui/alert-dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '@renderer/components/ui/dialog'
+import { Input } from '@renderer/components/ui/input'
+import { Label } from '@renderer/components/ui/label'
 import { toast } from 'sonner'
 import { useSettings } from '@renderer/hooks/useSettings'
 import { useAuth } from '@renderer/hooks/useAuth'
@@ -52,6 +64,12 @@ export default function MembershipsTable({
   const { settings } = useSettings()
   const today = new Date().toISOString().split('T')[0]
   const dateLocale = i18n.language === 'ar' ? ar : enUS
+
+  const [pauseDialogOpen, setPauseDialogOpen] = React.useState(false)
+  const [resumeDialogOpen, setResumeDialogOpen] = React.useState(false)
+  const [selectedMembershipId, setSelectedMembershipId] = React.useState<string | null>(null)
+  const [pauseDays, setPauseDays] = React.useState('')
+  const [pauseTax, setPauseTax] = React.useState('')
 
   const calculateNewEndDate = (membership: Membership) => {
     const today = new Date()
@@ -95,9 +113,61 @@ export default function MembershipsTable({
       console.error('Failed to load member:', error)
     }
   }
-  const getStatusBadge = (endDate: string) => {
+
+  const handlePauseMembership = async () => {
+    if (!hasPermission(PERMISSIONS.memberships.extend)) {
+      toast.error(t('errors.noPermission'))
+      return
+    }
+
+    try {
+      await window.electron.ipcRenderer.invoke('memberships:pause', selectedMembershipId, {
+        pauseDays: pauseDays ? parseInt(pauseDays) : null,
+        additionalTax: pauseTax ? parseFloat(pauseTax) : 0
+      })
+      toast.success(t('success.pauseSuccess'))
+      setPauseDialogOpen(false)
+      setPauseDays('')
+      setPauseTax('')
+      setSelectedMembershipId(null)
+      onPageChange(page)
+    } catch (error) {
+      toast.error(t('errors.pauseFailed'))
+      console.error('Failed to pause membership:', error)
+    }
+  }
+
+  const handleResumeMembership = async () => {
+    if (!hasPermission(PERMISSIONS.memberships.extend)) {
+      toast.error(t('errors.noPermission'))
+      return
+    }
+
+    try {
+      await window.electron.ipcRenderer.invoke('memberships:resume', selectedMembershipId)
+      toast.success(t('success.resumeSuccess'))
+      setResumeDialogOpen(false)
+      setSelectedMembershipId(null)
+      onPageChange(page)
+    } catch (error) {
+      toast.error(t('errors.resumeFailed'))
+      console.error('Failed to resume membership:', error)
+    }
+  }
+  const getStatusBadge = (endDate: string, isPaused?: boolean) => {
+    if (isPaused) {
+      return 'bg-yellow-500/20 text-yellow-400'
+    }
     const isActive = endDate >= today
     return isActive ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
+  }
+
+  const getStatusText = (endDate: string, isPaused?: boolean) => {
+    if (isPaused) {
+      return t('paused')
+    }
+    const isActive = endDate >= today
+    return isActive ? t('active') : t('expired')
   }
 
   const getPaymentStatusBadge = (status: string) => {
@@ -181,7 +251,9 @@ export default function MembershipsTable({
                     </div>
                   </TableCell>
                   <TableCell className="text-gray-400">{membership.startDate}</TableCell>
-                  <TableCell className="text-gray-400">{membership.endDate}</TableCell>
+                  <TableCell className="text-gray-400">
+                    {membership.isPaused && !membership.pauseDurationDays ? t('endDateTbd') : membership.endDate}
+                  </TableCell>
                   <TableCell>
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
@@ -205,9 +277,9 @@ export default function MembershipsTable({
                   </TableCell>
                   <TableCell>
                     <span
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadge(membership.endDate)}`}
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadge(membership.endDate, membership.isPaused)}`}
                     >
-                      {isActive ? t('active') : t('expired')}
+                      {getStatusText(membership.endDate, membership.isPaused)}
                     </span>
                   </TableCell>
                   <TableCell className="text-end min-h-[40px] h-[40px]" onClick={(e) => e.stopPropagation()}>
@@ -238,6 +310,126 @@ export default function MembershipsTable({
                                   onPageChange(1)
                                 }}
                                 className="bg-red-600 hover:bg-red-700 text-white"
+                              >
+                                {t('form.confirm')}
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      )}
+                      {hasPermission(PERMISSIONS.memberships.extend) && !membership.isPaused && (
+                        <Dialog
+                          open={pauseDialogOpen && selectedMembershipId === membership.id}
+                          onOpenChange={(open) => {
+                            setPauseDialogOpen(open)
+                            if (!open) {
+                              setPauseDays('')
+                              setPauseTax('')
+                              setSelectedMembershipId(null)
+                            }
+                          }}
+                        >
+                          <DialogTrigger asChild>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => setSelectedMembershipId(membership.id!)}
+                              disabled={!isActive}
+                            >
+                              <PauseCircle className="w-4 h-4" />
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="bg-[#101727] border border-white">
+                            <DialogHeader>
+                              <DialogTitle>{t('pause.title')}</DialogTitle>
+                              <DialogDescription className="text-white/70">
+                                {t('pause.description', { memberName: membership.memberName })}
+                              </DialogDescription>
+                            </DialogHeader>
+                            <div className="space-y-4">
+                              <div className="space-y-2">
+                                <Label htmlFor="pauseDays" className="text-white/90">{t('pause.pauseDays')}</Label>
+                                <Input
+                                  id="pauseDays"
+                                  type="number"
+                                  min="1"
+                                  placeholder={t('pause.pauseDaysPlaceholder')}
+                                  value={pauseDays}
+                                  onChange={(e) => setPauseDays(e.target.value)}
+                                  className="bg-gray-800 border-gray-600 text-white"
+                                />
+                                <p className="text-xs text-gray-400">{t('pause.pauseDaysHint')}</p>
+                              </div>
+                              <div className="space-y-2">
+                                <Label htmlFor="pauseTax" className="text-white/90">
+                                  {t('pause.additionalTax')} ({settings?.currency})
+                                </Label>
+                                <Input
+                                  id="pauseTax"
+                                  type="number"
+                                  min="0"
+                                  step="0.01"
+                                  placeholder={t('pause.additionalTaxPlaceholder')}
+                                  value={pauseTax}
+                                  onChange={(e) => setPauseTax(e.target.value)}
+                                  className="bg-gray-800 border-gray-600 text-white"
+                                />
+                              </div>
+                            </div>
+                            <DialogFooter>
+                              <Button
+                                variant="primary"
+                                onClick={() => {
+                                  setPauseDialogOpen(false)
+                                  setPauseDays('')
+                                  setPauseTax('')
+                                  setSelectedMembershipId(null)
+                                }}
+                              >
+                                {t('form.cancel')}
+                              </Button>
+                              <Button
+                                onClick={handlePauseMembership}
+                                variant="secondary"
+                                className="bg-red-600 hover:bg-red-700 text-white"
+                              >
+                                {t('form.confirm')}
+                              </Button>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
+                      )}
+                      {hasPermission(PERMISSIONS.memberships.extend) && membership.isPaused && (
+                        <AlertDialog
+                          open={resumeDialogOpen && selectedMembershipId === membership.id}
+                          onOpenChange={(open) => {
+                            setResumeDialogOpen(open)
+                            if (!open) {
+                              setSelectedMembershipId(null)
+                            }
+                          }}
+                        >
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => setSelectedMembershipId(membership.id!)}
+                            >
+                              <PlayCircle className="w-4 h-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>{t('resume.title')}</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                {t('resume.description', { memberName: membership.memberName })}
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>{t('form.cancel')}</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={handleResumeMembership}
+                                className="bg-green-600 hover:bg-green-700 text-white"
                               >
                                 {t('form.confirm')}
                               </AlertDialogAction>
