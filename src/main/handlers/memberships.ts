@@ -52,14 +52,16 @@ export function registerMembershipHandlers() {
         params.push(filters.dateTo)
       }
 
-      // Filter by status (active/expired)
+      // Filter by status (active/expired/paused)
       const today = new Date().toISOString().split('T')[0]
       if (filters.status === 'active') {
-        whereConditions.push('ms.end_date >= ?')
+        whereConditions.push('ms.end_date >= ? AND ms.is_paused = 0')
         params.push(today)
       } else if (filters.status === 'expired') {
-        whereConditions.push('ms.end_date < ?')
+        whereConditions.push('ms.end_date < ? AND ms.is_paused = 0')
         params.push(today)
+      } else if (filters.status === 'paused') {
+        whereConditions.push('ms.is_paused = 1')
       }
 
       const whereClause = whereConditions.length ? `WHERE ${whereConditions.join(' AND ')}` : ''
@@ -112,6 +114,9 @@ export function registerMembershipHandlers() {
         membership.priceModifierType = row.price_modifier_type
         membership.priceModifierValue = row.price_modifier_value
         membership.customPriceName = row.custom_price_name
+        membership.isPaused = Boolean(row.is_paused)
+        membership.pauseDurationDays = row.pause_duration_days
+        membership.remainingDaysBeforePause = row.remaining_days_before_pause
         membership.memberName = row.member_name
         membership.memberPhone = row.member_phone
         membership.memberCountryCode = row.member_country_code
@@ -169,6 +174,9 @@ export function registerMembershipHandlers() {
     membership.priceModifierType = row.price_modifier_type
     membership.priceModifierValue = row.price_modifier_value
     membership.customPriceName = row.custom_price_name
+    membership.isPaused = Boolean(row.is_paused)
+    membership.pauseDurationDays = row.pause_duration_days
+    membership.remainingDaysBeforePause = row.remaining_days_before_pause
     membership.memberName = row.member_name
     membership.memberPhone = row.member_phone
     membership.planName = row.plan_name
@@ -523,6 +531,170 @@ export function registerMembershipHandlers() {
     )
 
     return { id, newEndDate, newAmountPaid }
+  })
+
+  ipcMain.handle(
+    'memberships:pause',
+    async (_event, id: string, pauseData: { pauseDays: number | null; additionalTax: number }) => {
+      const db = getDatabase()
+
+      const row = db
+        .prepare(
+          'SELECT start_date, end_date, total_price, amount_paid, remaining_balance, payment_method, is_paused FROM memberships WHERE id = ?'
+        )
+        .get(id) as MembershipDbRow
+
+      if (!row) throw new Error('MEMBERSHIP_NOT_FOUND')
+      if (row.is_paused) throw new Error('MEMBERSHIP_ALREADY_PAUSED')
+
+      const currentEndDate = row.end_date
+      const pausedDate = new Date().toISOString().split('T')[0]
+
+      // Calculate remaining days before pause (from today to original end date)
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+      const endDate = new Date(row.end_date)
+      endDate.setHours(0, 0, 0, 0)
+
+      const remainingDaysBeforePause = Math.max(
+        0,
+        Math.ceil((endDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
+      )
+
+      // Calculate new end date if pauseDays is provided
+      let newEndDate: string | null = null
+      if (pauseData.pauseDays && pauseData.pauseDays > 0) {
+        // If pause days specified, just extend from current end date
+        newEndDate = new Date(endDate.getTime() + pauseData.pauseDays * 24 * 60 * 60 * 1000)
+          .toISOString()
+          .split('T')[0]
+      }
+
+      // Add additional tax if provided
+      const newTotalPrice = row.total_price + pauseData.additionalTax
+      const newRemainingBalance = newTotalPrice - row.amount_paid
+
+      const paymentStatus =
+        row.amount_paid >= newTotalPrice ? 'paid' : row.amount_paid > 0 ? 'partial' : 'unpaid'
+
+      // Update membership with paused status
+      db.prepare(
+        `
+      UPDATE memberships
+      SET
+        end_date = COALESCE(?, end_date),
+        total_price = ?,
+        remaining_balance = ?,
+        payment_status = ?,
+        is_paused = 1,
+        paused_date = ?,
+        original_end_date = ?,
+        pause_duration_days = ?,
+        remaining_days_before_pause = ?
+      WHERE id = ?
+    `
+      ).run(
+        newEndDate,
+        newTotalPrice,
+        newRemainingBalance,
+        paymentStatus,
+        pausedDate,
+        currentEndDate,
+        pauseData.pauseDays,
+        remainingDaysBeforePause,
+        id
+      )
+
+      // If there's an additional tax, create a payment record
+      if (pauseData.additionalTax > 0) {
+        const paymentId = generateEncryptedId()
+        const paymentDate = new Date().toISOString().split('T')[0]
+        db.prepare(
+          `
+          INSERT INTO membership_payments (
+            id, membership_id, amount, payment_method, payment_date, payment_status, notes
+          )
+          VALUES (?, ?, ?, ?, ?, ?, ?)
+        `
+        ).run(
+          paymentId,
+          id,
+          pauseData.additionalTax,
+          row.payment_method,
+          paymentDate,
+          'pending',
+          'Pause fee'
+        )
+      }
+
+      return { id, newEndDate: newEndDate || currentEndDate, newTotalPrice, newRemainingBalance }
+    }
+  )
+
+  ipcMain.handle('memberships:resume', async (_event, id: string) => {
+    const db = getDatabase()
+
+    const row = db
+      .prepare(
+        'SELECT end_date, original_end_date, paused_date, pause_duration_days, remaining_days_before_pause, is_paused FROM memberships WHERE id = ?'
+      )
+      .get(id) as MembershipDbRow
+
+    if (!row) throw new Error('MEMBERSHIP_NOT_FOUND')
+    if (!row.is_paused) throw new Error('MEMBERSHIP_NOT_PAUSED')
+
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    const pausedDate = new Date(row.paused_date!)
+    pausedDate.setHours(0, 0, 0, 0)
+
+    // Calculate the actual pause duration in days (from pause date to today)
+    const actualPauseDurationDays = Math.ceil(
+      (today.getTime() - pausedDate.getTime()) / (1000 * 60 * 60 * 24)
+    )
+
+    let newEndDate: string
+
+    if (row.pause_duration_days !== null && row.pause_duration_days !== undefined) {
+      // Case 1: User specified pause duration
+      if (actualPauseDurationDays < row.pause_duration_days) {
+        // Resumed early: add remaining days to resume date
+        const remainingDaysBeforePause = row.remaining_days_before_pause || 0
+        newEndDate = new Date(today.getTime() + remainingDaysBeforePause * 24 * 60 * 60 * 1000)
+          .toISOString()
+          .split('T')[0]
+      } else {
+        // Resumed after or on specified pause duration: add remaining days to resume date
+        const remainingDaysBeforePause = row.remaining_days_before_pause || 0
+        newEndDate = new Date(today.getTime() + remainingDaysBeforePause * 24 * 60 * 60 * 1000)
+          .toISOString()
+          .split('T')[0]
+      }
+    } else {
+      // Case 2: No pause duration specified (unknown end date scenario)
+      // Add the remaining days that were left before pause
+      const remainingDaysBeforePause = row.remaining_days_before_pause || 0
+      newEndDate = new Date(today.getTime() + remainingDaysBeforePause * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .split('T')[0]
+    }
+
+    // Resume membership
+    db.prepare(
+      `
+      UPDATE memberships
+      SET
+        is_paused = 0,
+        end_date = ?,
+        paused_date = NULL,
+        original_end_date = NULL,
+        pause_duration_days = NULL,
+        remaining_days_before_pause = NULL
+      WHERE id = ?
+    `
+    ).run(newEndDate, id)
+
+    return { id, newEndDate }
   })
 
   // Payment handlers

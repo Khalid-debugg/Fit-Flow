@@ -61,6 +61,8 @@ export function registerMemberHandlers() {
         ms.start_date,
         ms.end_date,
         ms.remaining_check_ins,
+        ms.is_paused,
+        ms.pause_duration_days,
         (
           SELECT COUNT(*) FROM memberships WHERE member_id = m.id
         ) AS membership_count
@@ -81,11 +83,15 @@ export function registerMemberHandlers() {
     const rows = db.prepare(query).all(...params, limit, offset) as MemberDbRow[]
 
     const processedMembers = rows.map((row) => {
-      let status: 'active' | 'inactive' | 'expired' = 'inactive'
+      let status: 'active' | 'inactive' | 'expired' | 'paused' = 'inactive'
       const today = new Date().toISOString().split('T')[0]
 
       if (row.membership_id && row.end_date && row.end_date >= today) {
-        status = 'active'
+        if (row.is_paused === 1) {
+          status = 'paused'
+        } else {
+          status = 'active'
+        }
       } else if (row.membership_count > 0) {
         status = 'expired'
       }
@@ -109,7 +115,9 @@ export function registerMemberHandlers() {
               planPrice: row.plan_price!,
               startDate: row.start_date!,
               endDate: row.end_date!,
-              remainingCheckIns: row.remaining_check_ins
+              remainingCheckIns: row.remaining_check_ins,
+              isPaused: row.is_paused === 1,
+              pauseDurationDays: row.pause_duration_days
             }
           : undefined
       }
@@ -151,6 +159,7 @@ export function registerMemberHandlers() {
           ms.start_date,
           ms.end_date,
           ms.remaining_check_ins,
+          ms.is_paused,
           (
             SELECT COUNT(*) FROM memberships WHERE member_id = m.id
           ) AS membership_count
@@ -165,10 +174,14 @@ export function registerMemberHandlers() {
 
     if (!row) return null
 
-    let status: 'active' | 'inactive' | 'expired' = 'inactive'
+    let status: 'active' | 'inactive' | 'expired' | 'paused' = 'inactive'
     const today = new Date().toISOString().split('T')[0]
     if (row.membership_id && row.end_date && row.end_date >= today) {
-      status = 'active'
+      if (row.is_paused === 1) {
+        status = 'paused'
+      } else {
+        status = 'active'
+      }
     } else if (row.membership_count > 0) {
       status = 'expired'
     }
@@ -192,7 +205,8 @@ export function registerMemberHandlers() {
             planPrice: row.plan_price!,
             startDate: row.start_date!,
             endDate: row.end_date!,
-            remainingCheckIns: row.remaining_check_ins
+            remainingCheckIns: row.remaining_check_ins,
+            isPaused: row.is_paused === 1
           }
         : undefined
     }
@@ -313,6 +327,8 @@ export function registerMemberHandlers() {
         ms.start_date,
         ms.end_date,
         ms.remaining_check_ins,
+        ms.is_paused,
+        ms.pause_duration_days,
         (
           SELECT COUNT(*) FROM memberships WHERE member_id = m.id
         ) AS membership_count
@@ -327,10 +343,14 @@ export function registerMemberHandlers() {
 
     if (!row) return null
 
-    let status: 'active' | 'inactive' | 'expired' = 'inactive'
+    let status: 'active' | 'inactive' | 'expired' | 'paused' = 'inactive'
     const today = new Date().toISOString().split('T')[0]
     if (row.membership_id && row.end_date && row.end_date >= today) {
-      status = 'active'
+      if (row.is_paused === 1) {
+        status = 'paused'
+      } else {
+        status = 'active'
+      }
     } else if (row.membership_count > 0) {
       status = 'expired'
     }
@@ -354,7 +374,8 @@ export function registerMemberHandlers() {
             planPrice: row.plan_price!,
             startDate: row.start_date!,
             endDate: row.end_date!,
-            remainingCheckIns: row.remaining_check_ins
+            remainingCheckIns: row.remaining_check_ins,
+            isPaused: row.is_paused === 1
           }
         : undefined
     }
@@ -377,7 +398,8 @@ ipcMain.handle('members:search', async (_event, query: string, page: number = 1)
       m.country_code,
       m.phone,
       m.email,
-      ms.end_date
+      ms.end_date,
+      ms.is_paused
     FROM members m
     LEFT JOIN memberships ms ON m.id = ms.member_id
       AND ms.end_date >= date('now')
@@ -397,6 +419,11 @@ ipcMain.handle('members:search', async (_event, query: string, page: number = 1)
     countryCode: row.country_code,
     phone: row.phone,
     email: row.email,
-    membershipStatus: row.end_date && row.end_date >= today ? 'active' : 'inactive'
+    membershipStatus:
+      row.end_date && row.end_date >= today
+        ? row.is_paused === 1
+          ? 'paused'
+          : 'active'
+        : 'inactive'
   }))
 })

@@ -1,5 +1,5 @@
 export const GENDER = ['male', 'female'] as const
-export const STATUS = ['active', 'inactive', 'expired'] as const
+export const STATUS = ['active', 'inactive', 'expired', 'paused'] as const
 export type Member = {
   id?: string
   name: string
@@ -20,6 +20,8 @@ export type Member = {
     endDate: string
     status: string
     remainingCheckIns?: number | null
+    isPaused?: boolean
+    pauseDurationDays?: number | null
   }
   alreadyCheckedIn?: boolean
   checkInTime?: string
@@ -45,6 +47,8 @@ export type MemberDbRow = {
   start_date: string | null
   end_date: string | null
   remaining_check_ins: number | null
+  is_paused: number | null
+  pause_duration_days: number | null
   membership_count: number
 }
 export interface MemberFilters {

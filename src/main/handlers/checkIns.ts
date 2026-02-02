@@ -43,7 +43,10 @@ export function registerCheckInHandlers() {
 
     // Build the status filter for the WHERE clause
     if (filters.status === 'active') {
-      whereConditions.push('latest_ms.end_date >= ?')
+      whereConditions.push('latest_ms.end_date >= ? AND (latest_ms.is_paused IS NULL OR latest_ms.is_paused = 0)')
+      params.push(today)
+    } else if (filters.status === 'paused') {
+      whereConditions.push('latest_ms.end_date >= ? AND latest_ms.is_paused = 1')
       params.push(today)
     } else if (filters.status === 'expired') {
       whereConditions.push('latest_ms.end_date < ?')
@@ -57,9 +60,13 @@ export function registerCheckInHandlers() {
     // Join with the most recent membership per member (not just active ones)
     const membershipJoin = `
       LEFT JOIN (
-        SELECT member_id, MAX(end_date) as end_date
-        FROM memberships
-        GROUP BY member_id
+        SELECT ms.member_id, ms.end_date, ms.is_paused
+        FROM memberships ms
+        INNER JOIN (
+          SELECT member_id, MAX(end_date) as max_end_date
+          FROM memberships
+          GROUP BY member_id
+        ) latest ON ms.member_id = latest.member_id AND ms.end_date = latest.max_end_date
       ) latest_ms ON m.id = latest_ms.member_id`
 
     // Get total count first (before applying limit/offset)
@@ -82,7 +89,8 @@ export function registerCheckInHandlers() {
         m.name AS member_name,
         m.country_code AS member_country_code,
         m.phone AS member_phone,
-        latest_ms.end_date AS membership_end_date
+        latest_ms.end_date AS membership_end_date,
+        latest_ms.is_paused AS membership_is_paused
       FROM check_ins ci
       INNER JOIN members m ON ci.member_id = m.id
       ${membershipJoin}
@@ -103,7 +111,11 @@ export function registerCheckInHandlers() {
       checkIn.membershipEndDate = row.membership_end_date || null
 
       if (row.membership_end_date && row.membership_end_date >= today) {
-        checkIn.membershipStatus = 'active'
+        if (row.membership_is_paused === 1) {
+          checkIn.membershipStatus = 'paused'
+        } else {
+          checkIn.membershipStatus = 'active'
+        }
       } else if (row.membership_end_date && row.membership_end_date < today) {
         checkIn.membershipStatus = 'expired'
       } else {

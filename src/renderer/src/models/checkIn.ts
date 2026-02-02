@@ -6,7 +6,7 @@ export type CheckIn = {
   memberName?: string
   memberCountryCode?: string
   memberPhone?: string
-  membershipStatus?: 'active' | 'expired' | 'none'
+  membershipStatus?: 'active' | 'expired' | 'paused' | 'none'
   membershipEndDate?: string | null
 }
 
@@ -19,13 +19,14 @@ export type CheckInDbRow = {
   member_country_code?: string
   member_phone?: string
   membership_end_date?: string | null
+  membership_is_paused?: number | null
 }
 
 export interface CheckInFilters {
   query: string
   dateFrom: string
   dateTo: string
-  status: 'all' | 'active' | 'expired' | 'none'
+  status: 'all' | 'active' | 'expired' | 'paused' | 'none'
 }
 
 export const DEFAULT_FILTERS: CheckInFilters = {

@@ -41,6 +41,9 @@ export type Membership = {
   planName?: string
   planPrice?: number
   planType?: string
+  isPaused?: boolean
+  pauseDurationDays?: number | null
+  remainingDaysBeforePause?: number | null
 }
 
 export type MembershipDbRow = {
@@ -61,6 +64,11 @@ export type MembershipDbRow = {
   price_modifier_value?: number | null
   custom_price_name?: string | null
   notes: string | null
+  is_paused: number
+  paused_date?: string | null
+  original_end_date?: string | null
+  pause_duration_days?: number | null
+  remaining_days_before_pause?: number | null
   created_at: string
   member_name?: string
   member_phone?: string
@@ -98,7 +106,7 @@ export interface MembershipFilters {
   planId: string
   dateFrom: string
   dateTo: string
-  status: 'all' | 'active' | 'expired'
+  status: 'all' | 'active' | 'expired' | 'paused'
 }
 
 export const DEFAULT_FILTERS: MembershipFilters = {
