@@ -2,6 +2,7 @@ import { ipcMain } from 'electron'
 import { getDatabase } from '../database'
 import { SettingsDbRow } from '@renderer/models/settings'
 import { randomUUID } from 'crypto'
+import { sendNotificationToRenderer } from '../utils/notificationBridge'
 
 let whatsappSchedulerInterval: NodeJS.Timeout | null = null
 
@@ -148,8 +149,11 @@ function getExpiringMemberships(daysBeforeExpiry: number): ExpiringMembership[] 
     INNER JOIN members mem ON m.member_id = mem.id
     WHERE
       m.payment_status = 'paid' AND
-      julianday(m.end_date) - julianday('now') <= ? AND
-      julianday(m.end_date) - julianday('now') >= 0
+      (
+        (julianday(m.end_date) - julianday('now') <= ? AND julianday(m.end_date) - julianday('now') >= 0)
+        OR
+        julianday(m.end_date) - julianday('now') < 0
+      )
   `
 
   const results = db.prepare(query).all(daysBeforeExpiry) as ExpiringMembership[]
@@ -165,10 +169,48 @@ function replaceTemplateVariables(
     endDate: string
   }
 ): string {
-  return template
+  let adjustedTemplate = template
+
+  if (data.daysLeft < 0) {
+    const daysExpired = Math.abs(data.daysLeft)
+
+    if (template.includes('will expire in')) {
+      adjustedTemplate = template.replace(
+        'will expire in {days_left} days on {end_date}',
+        `expired ${daysExpired} ${daysExpired === 1 ? 'day' : 'days'} ago on {end_date}`
+      )
+    } else if (template.includes('ستنتهي في')) {
+      adjustedTemplate = template.replace(
+        'ستنتهي في {days_left} أيام بتاريخ',
+        `انتهت منذ ${daysExpired} ${daysExpired === 1 ? 'يوم' : 'أيام'} بتاريخ`
+      )
+    } else if (template.includes('expirará en')) {
+      adjustedTemplate = template.replace(
+        'expirará en {days_left} días el',
+        `expiró hace ${daysExpired} ${daysExpired === 1 ? 'día' : 'días'} el`
+      )
+    } else if (template.includes('expirará em')) {
+      adjustedTemplate = template.replace(
+        'expirará em {days_left} dias no dia',
+        `expirou há ${daysExpired} ${daysExpired === 1 ? 'dia' : 'dias'} no dia`
+      )
+    } else if (template.includes('expirera dans')) {
+      adjustedTemplate = template.replace(
+        'expirera dans {days_left} jours le',
+        `a expiré il y a ${daysExpired} ${daysExpired === 1 ? 'jour' : 'jours'} le`
+      )
+    } else if (template.includes('läuft in')) {
+      adjustedTemplate = template.replace(
+        'läuft in {days_left} Tagen am',
+        `ist vor ${daysExpired} ${daysExpired === 1 ? 'Tag' : 'Tagen'} am`
+      )
+    }
+  }
+
+  return adjustedTemplate
     .replace(/{name}/g, data.name)
     .replace(/{gym_name}/g, data.gymName)
-    .replace(/{days_left}/g, data.daysLeft.toString())
+    .replace(/{days_left}/g, Math.abs(data.daysLeft).toString())
     .replace(/{end_date}/g, data.endDate)
 }
 
@@ -220,11 +262,35 @@ async function performAutoWhatsAppCheck(): Promise<void> {
 
     const expiringMemberships = getExpiringMemberships(settings.whatsapp_days_before_expiry)
 
+    if (expiringMemberships.length === 0) {
+      console.log('No memberships expiring, skipping auto-check')
+      return
+    }
+
     let sentCount = 0
     let failedCount = 0
+    let skippedCount = 0
+
+    const notificationResults: Array<{
+      memberName: string
+      phoneNumber: string
+      status: 'sent' | 'failed' | 'skipped'
+      reason?: string
+      daysLeft: number
+    }> = []
 
     for (const membership of expiringMemberships) {
+      const fullPhoneNumber = membership.countryCode + membership.phoneNumber
+
       if (wasNotificationSent(membership.membershipId)) {
+        skippedCount++
+        notificationResults.push({
+          memberName: membership.memberName,
+          phoneNumber: fullPhoneNumber,
+          status: 'skipped',
+          reason: 'Already notified in the last 24 hours',
+          daysLeft: membership.daysLeft
+        })
         continue
       }
 
@@ -235,7 +301,6 @@ async function performAutoWhatsAppCheck(): Promise<void> {
         endDate: membership.endDate
       })
 
-      const fullPhoneNumber = membership.countryCode + membership.phoneNumber
       const result = await sendWhatsAppMessage(fullPhoneNumber, message, token, instanceId)
 
       logNotification({
@@ -251,8 +316,21 @@ async function performAutoWhatsAppCheck(): Promise<void> {
 
       if (result.success) {
         sentCount++
+        notificationResults.push({
+          memberName: membership.memberName,
+          phoneNumber: fullPhoneNumber,
+          status: 'sent',
+          daysLeft: membership.daysLeft
+        })
       } else {
         failedCount++
+        notificationResults.push({
+          memberName: membership.memberName,
+          phoneNumber: fullPhoneNumber,
+          status: 'failed',
+          reason: result.message,
+          daysLeft: membership.daysLeft
+        })
       }
 
       // Rate limiting delay
@@ -265,8 +343,22 @@ async function performAutoWhatsAppCheck(): Promise<void> {
     )
 
     console.log(
-      `WhatsApp auto-check completed: ${sentCount} sent, ${failedCount} failed, ${expiringMemberships.length} total`
+      `WhatsApp auto-check completed: ${sentCount} sent, ${failedCount} failed, ${skippedCount} skipped, ${expiringMemberships.length} total`
     )
+
+    if (expiringMemberships.length > 0) {
+      sendNotificationToRenderer({
+        type: 'success',
+        title: 'settings:whatsapp.toasts.checkComplete',
+        translationKey: 'settings:whatsapp.toasts.checkComplete',
+        whatsappResults: {
+          results: notificationResults,
+          sentCount,
+          failedCount,
+          skippedCount
+        }
+      })
+    }
   } catch (error) {
     console.error('Auto WhatsApp check failed:', error)
   }
