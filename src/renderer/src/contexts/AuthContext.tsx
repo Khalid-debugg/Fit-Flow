@@ -1,5 +1,6 @@
-import { createContext, useState, ReactNode, useCallback } from 'react'
+import { createContext, useState, ReactNode, useCallback, useContext } from 'react'
 import { User } from '@renderer/models/account'
+import { SettingsContext } from './SettingsContext'
 
 export interface AuthContextType {
   user: User | null
@@ -16,6 +17,7 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [loading] = useState(false)
+  const settingsContext = useContext(SettingsContext)
 
   const login = async (username: string, password: string) => {
     try {
@@ -25,6 +27,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         password
       )
       setUser(loggedInUser)
+
+      // Initialize periodic notifications after successful login (no immediate execution)
+      if (settingsContext?.initializeNotifications) {
+        settingsContext.initializeNotifications()
+      }
     } catch (error) {
       console.error('Login failed:', error)
       throw error

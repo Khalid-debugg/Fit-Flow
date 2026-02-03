@@ -1,13 +1,13 @@
 import { memo, useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MessageCircle, Loader2, CheckCircle, AlertCircle } from 'lucide-react'
-import { toast } from 'sonner'
 import { Button } from '@renderer/components/ui/button'
 import { Checkbox } from '@renderer/components/ui/checkbox'
 import { Input } from '@renderer/components/ui/input'
 import { Textarea } from '@renderer/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@renderer/components/ui/select'
 import { NotificationResultsDialog } from './NotificationResultsDialog'
+import { notificationService } from '@renderer/services/notificationService'
 import type { Settings } from '@renderer/models/settings'
 import type { SupportedLanguage } from '@renderer/locales/i18n'
 import { DEFAULT_WHATSAPP_TEMPLATES } from '@renderer/constants/whatsappTemplates'
@@ -67,66 +67,27 @@ export const WhatsAppNotificationSection = memo(function WhatsAppNotificationSec
     [onUpdate]
   )
 
+  const handleShowDetails = useCallback((results: NotificationResult[], sentCount: number, failedCount: number, skippedCount: number) => {
+    setNotificationResults({
+      results,
+      sentCount,
+      failedCount,
+      skippedCount
+    })
+    setShowResultsDialog(true)
+  }, [])
+
   const handleCheckAndSend = useCallback(async () => {
+    if (checkingNotifications) return
+
     setCheckingNotifications(true)
 
     try {
-      const result = await window.electron.ipcRenderer.invoke('whatsapp:checkAndSendNotifications')
-
-      if (result.success) {
-        // Show success message with counts
-        const { sentCount, skippedCount, failedCount, totalChecked, message, failureReason, results } = result
-
-        // Store results for dialog
-        if (results && results.length > 0) {
-          setNotificationResults({
-            results,
-            sentCount,
-            failedCount,
-            skippedCount
-          })
-          setShowResultsDialog(true)
-        }
-
-        if (totalChecked === 0) {
-          toast.info(t('whatsapp.resultsDialog.noActionNeeded'), {
-            description: message || t('whatsapp.resultsDialog.noMembershipsExpiring')
-          })
-        } else if (failedCount > 0) {
-          // Some messages failed - show warning with details
-          toast.warning(t('whatsapp.resultsDialog.notificationsSentWithIssues'), {
-            description: t('whatsapp.resultsDialog.issuesDescription', {
-              sent: sentCount,
-              failed: failedCount,
-              reason: failureReason || ''
-            })
-          })
-        } else {
-          // All messages sent successfully
-          toast.success(t('whatsapp.checkSuccess'), {
-            description: t('whatsapp.checkDescription', {
-              sent: sentCount,
-              skipped: skippedCount,
-              failed: failedCount,
-              total: totalChecked
-            })
-          })
-        }
-      } else {
-        // Operation failed entirely
-        toast.error(t('whatsapp.resultsDialog.unableToSend'), {
-          description: result.error || t('whatsapp.resultsDialog.unexpectedError')
-        })
-      }
-    } catch (error) {
-      console.error('Failed to check and send notifications:', error)
-      toast.error(t('whatsapp.resultsDialog.connectionError'), {
-        description: t('whatsapp.resultsDialog.checkConnection')
-      })
+      await notificationService.handleWhatsAppCheck(true, handleShowDetails)
     } finally {
       setCheckingNotifications(false)
     }
-  }, [t])
+  }, [checkingNotifications, handleShowDetails])
 
   return (
     <div className="bg-dark-surface rounded-lg p-6 border border-gray-800">
