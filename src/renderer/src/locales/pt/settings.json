@@ -88,7 +88,26 @@
     "restoreWarning": "Isso substituirá seu banco de dados atual. Tem certeza?",
     "openFolder": "Abrir Pasta",
     "cloudBackup": "Sincronização de Backup na Nuvem",
-    "cloudBackupDesc": "Sincronizar automaticamente backups para o armazenamento na nuvem"
+    "cloudBackupDesc": "Sincronizar automaticamente backups para o armazenamento na nuvem",
+    "autoErrors": {
+      "cloudUploadFailed": "Falha no Backup Automático na Nuvem",
+      "cloudUploadFailedDesc": "Não foi possível fazer upload do backup para o armazenamento na nuvem. Verifique sua conexão com a internet.",
+      "cloudUploadNoLicense": "O backup na nuvem requer uma chave de licença ativa.",
+      "cloudUploadError": "Falha no backup na nuvem: {{error}}",
+      "cloudUploadRateLimited": "Backup na nuvem já enviado hoje. Por favor aguarde {{hours}} hora(s) antes de enviar novamente."
+    },
+    "autoSuccess": {
+      "cloudUploadSuccess": "Backup enviado para a nuvem com sucesso"
+    },
+    "toasts": {
+      "alreadyUploaded": "Backup na nuvem já enviado hoje",
+      "waitHours": "Por favor aguarde {{hours}} hora(s) antes de enviar para a nuvem novamente.",
+      "uploadSuccess": "Backup na nuvem enviado com sucesso",
+      "uploadSuccessDescription": "Seus dados agora estão seguros no armazenamento em nuvem.",
+      "uploadFailed": "Falha ao enviar backup na nuvem",
+      "backupFailed": "Falha no envio do backup na nuvem",
+      "checkConnection": "Por favor verifique sua conexão com a internet e configuração de armazenamento em nuvem."
+    }
   },
   "license": {
     "title": "Gerenciamento de Licença",
@@ -146,6 +165,21 @@
     "checkSuccess": "Notificações enviadas com sucesso",
     "checkDescription": "Enviados: {{sent}}, Ignorados: {{skipped}}, Falhados: {{failed}}, Total: {{total}}",
     "checkFailed": "Falha ao enviar notificações",
+    "toasts": {
+      "alreadySent": "Notificações do WhatsApp já enviadas",
+      "waitHours": "Por favor aguarde {{hours}} hora(s) antes de enviar novamente.",
+      "checkComplete": "Verificação do WhatsApp concluída",
+      "sentSuccess": "Notificações do WhatsApp enviadas com sucesso",
+      "sentWithIssues": "Notificações do WhatsApp enviadas com problemas",
+      "sentDescription": "Enviados: {{sent}}, Ignorados: {{skipped}}",
+      "sentWithFailuresDescription": "Enviados: {{sent}}, Falhados: {{failed}}, Ignorados: {{skipped}}",
+      "noActionNeeded": "Nenhuma ação necessária",
+      "noMembershipsExpiring": "Nenhuma associação expirando em breve.",
+      "sendFailed": "Falha ao enviar notificações do WhatsApp",
+      "connectionError": "Erro de conexão",
+      "checkConnection": "Por favor verifique sua conexão com a internet.",
+      "showDetails": "Ver Detalhes"
+    },
     "resultsDialog": {
       "title": "Resultados das Notificações",
       "description": "Resumo das notificações do WhatsApp enviadas aos membros com associações expirando",
@@ -165,6 +199,18 @@
       "unexpectedError": "Ocorreu um erro inesperado. Por favor, tente novamente.",
       "connectionError": "Erro de Conexão",
       "checkConnection": "Não foi possível conectar. Por favor, verifique sua conexão com a internet e tente novamente."
+    },
+    "autoErrors": {
+      "autoCheckFailed": "Falha na Verificação Automática do WhatsApp",
+      "autoCheckFailedDesc": "Não foi possível verificar associações expirando. Por favor, verifique sua conexão com a internet.",
+      "autoSendFailed": "Falha ao enviar algumas notificações automáticas do WhatsApp",
+      "autoSendFailedDesc": "{{failed}} notificações falharam. Por favor, verifique sua configuração do WhatsApp.",
+      "connectionError": "Sem conexão com a internet disponível para notificações automáticas do WhatsApp.",
+      "configError": "O WhatsApp não está configurado corretamente para notificações automáticas."
+    },
+    "autoSuccess": {
+      "autoSendSuccess": "{{sent}} notificações do WhatsApp enviadas com sucesso",
+      "allAlreadySent": "Todas as {{total}} associações expirando já foram notificadas"
     }
   },
   "messages": {

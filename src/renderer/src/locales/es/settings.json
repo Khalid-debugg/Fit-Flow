@@ -88,7 +88,26 @@
     "restoreWarning": "Esto reemplazará tu base de datos actual. ¿Estás seguro?",
     "openFolder": "Abrir Carpeta",
     "cloudBackup": "Sincronización de Copia de Seguridad en la Nube",
-    "cloudBackupDesc": "Sincronizar automáticamente copias de seguridad al almacenamiento en la nube"
+    "cloudBackupDesc": "Sincronizar automáticamente copias de seguridad al almacenamiento en la nube",
+    "autoErrors": {
+      "cloudUploadFailed": "Falló la Copia de Seguridad Automática en la Nube",
+      "cloudUploadFailedDesc": "No se pudo subir la copia de seguridad al almacenamiento en la nube. Verifique su conexión a internet.",
+      "cloudUploadNoLicense": "La copia de seguridad en la nube requiere una clave de licencia activa.",
+      "cloudUploadError": "Falló la copia de seguridad en la nube: {{error}}",
+      "cloudUploadRateLimited": "La copia de seguridad en la nube ya fue subida hoy. Por favor espere {{hours}} hora(s) antes de subir nuevamente."
+    },
+    "autoSuccess": {
+      "cloudUploadSuccess": "Copia de seguridad subida a la nube exitosamente"
+    },
+    "toasts": {
+      "alreadyUploaded": "Copia de seguridad en la nube ya subida hoy",
+      "waitHours": "Por favor espera {{hours}} hora(s) antes de subir a la nube nuevamente.",
+      "uploadSuccess": "Copia de seguridad en la nube subida exitosamente",
+      "uploadSuccessDescription": "Tus datos ahora están respaldados de forma segura en almacenamiento en la nube.",
+      "uploadFailed": "Error al subir copia de seguridad en la nube",
+      "backupFailed": "Error al subir copia de seguridad en la nube",
+      "checkConnection": "Por favor verifica tu conexión a internet y configuración de almacenamiento en la nube."
+    }
   },
   "license": {
     "title": "Gestión de Licencia",
@@ -146,6 +165,21 @@
     "checkSuccess": "Notificaciones enviadas exitosamente",
     "checkDescription": "Enviados: {{sent}}, Omitidos: {{skipped}}, Fallidos: {{failed}}, Total: {{total}}",
     "checkFailed": "Error al enviar notificaciones",
+    "toasts": {
+      "alreadySent": "Notificaciones de WhatsApp ya enviadas",
+      "waitHours": "Por favor espera {{hours}} hora(s) antes de enviar nuevamente.",
+      "checkComplete": "Verificación de WhatsApp completa",
+      "sentSuccess": "Notificaciones de WhatsApp enviadas exitosamente",
+      "sentWithIssues": "Notificaciones de WhatsApp enviadas con problemas",
+      "sentDescription": "Enviados: {{sent}}, Omitidos: {{skipped}}",
+      "sentWithFailuresDescription": "Enviados: {{sent}}, Fallidos: {{failed}}, Omitidos: {{skipped}}",
+      "noActionNeeded": "No se requiere acción",
+      "noMembershipsExpiring": "No hay membresías por expirar pronto.",
+      "sendFailed": "Error al enviar notificaciones de WhatsApp",
+      "connectionError": "Error de conexión",
+      "checkConnection": "Por favor verifica tu conexión a internet.",
+      "showDetails": "Ver Detalles"
+    },
     "resultsDialog": {
       "title": "Resultados de Notificaciones",
       "description": "Resumen de notificaciones de WhatsApp enviadas a miembros con membresías por expirar",
@@ -165,6 +199,18 @@
       "unexpectedError": "Ocurrió un error inesperado. Por favor, inténtalo de nuevo.",
       "connectionError": "Error de Conexión",
       "checkConnection": "No se pudo conectar. Por favor, verifica tu conexión a internet e inténtalo de nuevo."
+    },
+    "autoErrors": {
+      "autoCheckFailed": "Falló la Verificación Automática de WhatsApp",
+      "autoCheckFailedDesc": "No se pudo verificar las membresías que expiran. Por favor, verifica tu conexión a internet.",
+      "autoSendFailed": "Falló el envío de algunas notificaciones automáticas de WhatsApp",
+      "autoSendFailedDesc": "{{failed}} notificaciones fallaron. Por favor, verifica tu configuración de WhatsApp.",
+      "connectionError": "No hay conexión a internet disponible para las notificaciones automáticas de WhatsApp.",
+      "configError": "WhatsApp no está configurado correctamente para las notificaciones automáticas."
+    },
+    "autoSuccess": {
+      "autoSendSuccess": "{{sent}} notificaciones de WhatsApp enviadas exitosamente",
+      "allAlreadySent": "Ya se notificaron todas las {{total}} membresías que expiran"
     }
   },
   "messages": {

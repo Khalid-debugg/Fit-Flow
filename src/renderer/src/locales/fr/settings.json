@@ -88,7 +88,26 @@
     "restoreWarning": "Cela remplacera votre base de données actuelle. Êtes-vous sûr ?",
     "openFolder": "Ouvrir le Dossier",
     "cloudBackup": "Synchronisation de Sauvegarde Cloud",
-    "cloudBackupDesc": "Synchroniser automatiquement les sauvegardes vers le stockage cloud"
+    "cloudBackupDesc": "Synchroniser automatiquement les sauvegardes vers le stockage cloud",
+    "autoErrors": {
+      "cloudUploadFailed": "Échec de la Sauvegarde Automatique Cloud",
+      "cloudUploadFailedDesc": "Impossible de télécharger la sauvegarde vers le stockage cloud. Veuillez vérifier votre connexion Internet.",
+      "cloudUploadNoLicense": "La sauvegarde cloud nécessite une clé de licence active.",
+      "cloudUploadError": "Échec de la sauvegarde cloud: {{error}}",
+      "cloudUploadRateLimited": "Sauvegarde cloud déjà téléchargée aujourd'hui. Veuillez attendre {{hours}} heure(s) avant de télécharger à nouveau."
+    },
+    "autoSuccess": {
+      "cloudUploadSuccess": "Sauvegarde téléchargée vers le cloud avec succès"
+    },
+    "toasts": {
+      "alreadyUploaded": "Sauvegarde cloud déjà téléchargée aujourd'hui",
+      "waitHours": "Veuillez attendre {{hours}} heure(s) avant de télécharger vers le cloud à nouveau.",
+      "uploadSuccess": "Sauvegarde cloud téléchargée avec succès",
+      "uploadSuccessDescription": "Vos données sont maintenant sauvegardées en toute sécurité dans le stockage cloud.",
+      "uploadFailed": "Échec du téléchargement de la sauvegarde cloud",
+      "backupFailed": "Échec du téléchargement de la sauvegarde cloud",
+      "checkConnection": "Veuillez vérifier votre connexion Internet et configuration de stockage cloud."
+    }
   },
   "license": {
     "title": "Gestion de Licence",
@@ -146,6 +165,21 @@
     "checkSuccess": "Notifications envoyées avec succès",
     "checkDescription": "Envoyés: {{sent}}, Ignorés: {{skipped}}, Échecs: {{failed}}, Total: {{total}}",
     "checkFailed": "Échec de l'envoi des notifications",
+    "toasts": {
+      "alreadySent": "Notifications WhatsApp déjà envoyées",
+      "waitHours": "Veuillez attendre {{hours}} heure(s) avant d'envoyer à nouveau.",
+      "checkComplete": "Vérification WhatsApp terminée",
+      "sentSuccess": "Notifications WhatsApp envoyées avec succès",
+      "sentWithIssues": "Notifications WhatsApp envoyées avec des problèmes",
+      "sentDescription": "Envoyés: {{sent}}, Ignorés: {{skipped}}",
+      "sentWithFailuresDescription": "Envoyés: {{sent}}, Échecs: {{failed}}, Ignorés: {{skipped}}",
+      "noActionNeeded": "Aucune action nécessaire",
+      "noMembershipsExpiring": "Aucune adhésion n'expire bientôt.",
+      "sendFailed": "Échec de l'envoi des notifications WhatsApp",
+      "connectionError": "Erreur de connexion",
+      "checkConnection": "Veuillez vérifier votre connexion Internet.",
+      "showDetails": "Voir les Détails"
+    },
     "resultsDialog": {
       "title": "Résultats des Notifications",
       "description": "Résumé des notifications WhatsApp envoyées aux membres dont l'adhésion expire",
@@ -165,6 +199,18 @@
       "unexpectedError": "Une erreur inattendue s'est produite. Veuillez réessayer.",
       "connectionError": "Erreur de Connexion",
       "checkConnection": "Impossible de se connecter. Veuillez vérifier votre connexion Internet et réessayer."
+    },
+    "autoErrors": {
+      "autoCheckFailed": "Échec de la Vérification Automatique WhatsApp",
+      "autoCheckFailedDesc": "Impossible de vérifier les adhésions expirant. Veuillez vérifier votre connexion Internet.",
+      "autoSendFailed": "Échec de l'envoi de certaines notifications automatiques WhatsApp",
+      "autoSendFailedDesc": "{{failed}} notifications ont échoué. Veuillez vérifier votre configuration WhatsApp.",
+      "connectionError": "Aucune connexion Internet disponible pour les notifications automatiques WhatsApp.",
+      "configError": "WhatsApp n'est pas correctement configuré pour les notifications automatiques."
+    },
+    "autoSuccess": {
+      "autoSendSuccess": "{{sent}} notifications WhatsApp envoyées avec succès",
+      "allAlreadySent": "Toutes les {{total}} adhésions expirant ont déjà été notifiées"
     }
   },
   "messages": {

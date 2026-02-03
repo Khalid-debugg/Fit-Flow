@@ -88,7 +88,26 @@
     "restoreWarning": "Dies ersetzt Ihre aktuelle Datenbank. Sind Sie sicher?",
     "openFolder": "Ordner öffnen",
     "cloudBackup": "Cloud-Backup-Synchronisierung",
-    "cloudBackupDesc": "Backups automatisch mit Cloud-Speicher synchronisieren"
+    "cloudBackupDesc": "Backups automatisch mit Cloud-Speicher synchronisieren",
+    "autoErrors": {
+      "cloudUploadFailed": "Automatisches Cloud-Backup Fehlgeschlagen",
+      "cloudUploadFailedDesc": "Backup konnte nicht in den Cloud-Speicher hochgeladen werden. Bitte überprüfen Sie Ihre Internetverbindung.",
+      "cloudUploadNoLicense": "Cloud-Backup erfordert einen aktiven Lizenzschlüssel.",
+      "cloudUploadError": "Cloud-Backup fehlgeschlagen: {{error}}",
+      "cloudUploadRateLimited": "Cloud-Backup wurde heute bereits hochgeladen. Bitte warten Sie {{hours}} Stunde(n), bevor Sie erneut hochladen."
+    },
+    "autoSuccess": {
+      "cloudUploadSuccess": "Backup erfolgreich in die Cloud hochgeladen"
+    },
+    "toasts": {
+      "alreadyUploaded": "Cloud-Backup wurde heute bereits hochgeladen",
+      "waitHours": "Bitte warten Sie {{hours}} Stunde(n), bevor Sie erneut in die Cloud hochladen.",
+      "uploadSuccess": "Cloud-Backup erfolgreich hochgeladen",
+      "uploadSuccessDescription": "Ihre Daten sind jetzt sicher im Cloud-Speicher gesichert.",
+      "uploadFailed": "Fehler beim Hochladen des Cloud-Backups",
+      "backupFailed": "Cloud-Backup-Upload fehlgeschlagen",
+      "checkConnection": "Bitte überprüfen Sie Ihre Internetverbindung und Cloud-Speicher-Konfiguration."
+    }
   },
   "license": {
     "title": "Lizenzverwaltung",
@@ -146,6 +165,21 @@
     "checkSuccess": "Benachrichtigungen erfolgreich gesendet",
     "checkDescription": "Gesendet: {{sent}}, Übersprungen: {{skipped}}, Fehlgeschlagen: {{failed}}, Gesamt: {{total}}",
     "checkFailed": "Fehler beim Senden der Benachrichtigungen",
+    "toasts": {
+      "alreadySent": "WhatsApp-Benachrichtigungen bereits gesendet",
+      "waitHours": "Bitte warten Sie {{hours}} Stunde(n), bevor Sie erneut senden.",
+      "checkComplete": "WhatsApp-Überprüfung abgeschlossen",
+      "sentSuccess": "WhatsApp-Benachrichtigungen erfolgreich gesendet",
+      "sentWithIssues": "WhatsApp-Benachrichtigungen mit Problemen gesendet",
+      "sentDescription": "Gesendet: {{sent}}, Übersprungen: {{skipped}}",
+      "sentWithFailuresDescription": "Gesendet: {{sent}}, Fehlgeschlagen: {{failed}}, Übersprungen: {{skipped}}",
+      "noActionNeeded": "Keine Aktion erforderlich",
+      "noMembershipsExpiring": "Keine Mitgliedschaften laufen bald ab.",
+      "sendFailed": "Fehler beim Senden der WhatsApp-Benachrichtigungen",
+      "connectionError": "Verbindungsfehler",
+      "checkConnection": "Bitte überprüfen Sie Ihre Internetverbindung.",
+      "showDetails": "Details Anzeigen"
+    },
     "resultsDialog": {
       "title": "Benachrichtigungsergebnisse",
       "description": "Zusammenfassung der WhatsApp-Benachrichtigungen an Mitglieder mit ablaufenden Mitgliedschaften",
@@ -165,6 +199,18 @@
       "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
       "connectionError": "Verbindungsfehler",
       "checkConnection": "Verbindung fehlgeschlagen. Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut."
+    },
+    "autoErrors": {
+      "autoCheckFailed": "Automatische WhatsApp-Überprüfung Fehlgeschlagen",
+      "autoCheckFailedDesc": "Ablaufende Mitgliedschaften konnten nicht überprüft werden. Bitte überprüfen Sie Ihre Internetverbindung.",
+      "autoSendFailed": "Fehler beim Senden einiger automatischer WhatsApp-Benachrichtigungen",
+      "autoSendFailedDesc": "{{failed}} Benachrichtigungen fehlgeschlagen. Bitte überprüfen Sie Ihre WhatsApp-Konfiguration.",
+      "connectionError": "Keine Internetverbindung für automatische WhatsApp-Benachrichtigungen verfügbar.",
+      "configError": "WhatsApp ist nicht korrekt für automatische Benachrichtigungen konfiguriert."
+    },
+    "autoSuccess": {
+      "autoSendSuccess": "{{sent}} WhatsApp-Benachrichtigungen erfolgreich gesendet",
+      "allAlreadySent": "Alle {{total}} ablaufenden Mitgliedschaften wurden bereits benachrichtigt"
     }
   },
   "messages": {

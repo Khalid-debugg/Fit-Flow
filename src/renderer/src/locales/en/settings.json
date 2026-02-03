@@ -88,7 +88,28 @@
     "restoreWarning": "This will replace your current database. Are you sure?",
     "openFolder": "Open Folder",
     "cloudBackup": "Cloud Backup Sync",
-    "cloudBackupDesc": "Automatically sync backups to cloud storage"
+    "cloudBackupDesc": "Automatically sync backups to cloud storage",
+    "uploadNow": "Upload to Cloud Now",
+    "uploading": "Uploading...",
+    "autoErrors": {
+      "cloudUploadFailed": "Automatic Cloud Backup Failed",
+      "cloudUploadFailedDesc": "Unable to upload backup to cloud storage. Please check your internet connection.",
+      "cloudUploadNoLicense": "Cloud backup requires an active license key.",
+      "cloudUploadError": "Cloud backup failed: {{error}}",
+      "cloudUploadRateLimited": "Cloud backup already uploaded today. Please wait {{hours}} hour(s) before uploading again."
+    },
+    "autoSuccess": {
+      "cloudUploadSuccess": "Backup uploaded to cloud successfully"
+    },
+    "toasts": {
+      "alreadyUploaded": "Cloud backup already uploaded today",
+      "waitHours": "Please wait {{hours}} hour(s) before uploading to cloud again.",
+      "uploadSuccess": "Cloud backup uploaded successfully",
+      "uploadSuccessDescription": "Your data is now safely backed up to cloud storage.",
+      "uploadFailed": "Failed to upload cloud backup",
+      "backupFailed": "Cloud backup upload failed",
+      "checkConnection": "Please check your internet connection and cloud storage configuration."
+    }
   },
   "license": {
     "title": "License Management",
@@ -146,6 +167,21 @@
     "checkSuccess": "Notifications sent successfully",
     "checkDescription": "Sent: {{sent}}, Skipped: {{skipped}}, Failed: {{failed}}, Total: {{total}}",
     "checkFailed": "Failed to send notifications",
+    "toasts": {
+      "alreadySent": "WhatsApp notifications already sent",
+      "waitHours": "Please wait {{hours}} hour(s) before sending again.",
+      "checkComplete": "WhatsApp check complete",
+      "sentSuccess": "WhatsApp notifications sent successfully",
+      "sentWithIssues": "WhatsApp notifications sent with issues",
+      "sentDescription": "Sent: {{sent}}, Skipped: {{skipped}}",
+      "sentWithFailuresDescription": "Sent: {{sent}}, Failed: {{failed}}, Skipped: {{skipped}}",
+      "noActionNeeded": "No action needed",
+      "noMembershipsExpiring": "No memberships expiring soon.",
+      "sendFailed": "Failed to send WhatsApp notifications",
+      "connectionError": "Connection error",
+      "checkConnection": "Please check your internet connection.",
+      "showDetails": "Show Details"
+    },
     "resultsDialog": {
       "title": "Notification Results",
       "description": "Summary of WhatsApp notifications sent to members with expiring memberships",
@@ -165,6 +201,18 @@
       "unexpectedError": "An unexpected error occurred. Please try again.",
       "connectionError": "Connection Error",
       "checkConnection": "Unable to connect. Please check your internet connection and try again."
+    },
+    "autoErrors": {
+      "autoCheckFailed": "Automatic WhatsApp Check Failed",
+      "autoCheckFailedDesc": "Unable to check for expiring memberships. Please check your internet connection.",
+      "autoSendFailed": "Failed to send some automatic WhatsApp notifications",
+      "autoSendFailedDesc": "{{failed}} notifications failed. Please check your WhatsApp configuration.",
+      "connectionError": "No internet connection available for automatic WhatsApp notifications.",
+      "configError": "WhatsApp is not properly configured for automatic notifications."
+    },
+    "autoSuccess": {
+      "autoSendSuccess": "{{sent}} WhatsApp notifications sent successfully",
+      "allAlreadySent": "All {{total}} expiring memberships were already notified"
     }
   },
   "messages": {
