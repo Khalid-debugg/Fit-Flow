@@ -1,8 +1,8 @@
 import { HashRouter, Routes, Route } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from './components/Layout/Layout'
-import { Toaster } from 'sonner'
-import { lazy, Suspense } from 'react'
+import { Toaster, toast } from 'sonner'
+import { lazy, Suspense, useEffect, useState, useRef } from 'react'
 import { LoaderCircle } from 'lucide-react'
 import { SettingsProvider } from './contexts/SettingsContext'
 import { AuthProvider } from './contexts/AuthContext'
@@ -11,6 +11,32 @@ import { useLicense } from './hooks/useLicense'
 import { useAuth } from './hooks/useAuth'
 import Login from './pages/Login'
 import { ErrorBoundary } from './components/ErrorBoundary'
+import { NotificationResultsDialog } from './components/settings/NotificationResultsDialog'
+
+interface WhatsAppNotificationResult {
+  memberName: string
+  phoneNumber: string
+  status: 'sent' | 'failed' | 'skipped'
+  reason?: string
+  daysLeft: number
+}
+
+interface WhatsAppDialogData {
+  results: WhatsAppNotificationResult[]
+  sentCount: number
+  failedCount: number
+  skippedCount: number
+}
+
+interface Notification {
+  type: 'success' | 'error' | 'warning' | 'info'
+  title: string
+  description?: string
+  translationKey?: string
+  translationParams?: Record<string, string | number>
+  whatsappResults?: WhatsAppDialogData
+}
+
 const Dashboard = lazy(() => import('./pages/Dashboard'))
 const Members = lazy(() => import('./pages/Members'))
 const Memberships = lazy(() => import('./pages/Memberships'))
@@ -109,10 +135,68 @@ function AppContent() {
 }
 
 function App() {
-  const { i18n } = useTranslation()
+  const { i18n, t } = useTranslation(['settings', 'common'])
   const { isLicensed, isCheckingLicense, setIsLicensed } = useLicense()
+  const [showWhatsAppDialog, setShowWhatsAppDialog] = useState(false)
+  const [whatsAppDialogData, setWhatsAppDialogData] = useState<WhatsAppDialogData>({
+    results: [],
+    sentCount: 0,
+    failedCount: 0,
+    skippedCount: 0
+  })
+  const notificationListenerInitialized = useRef(false)
 
   document.documentElement.dir = i18n.language === 'ar' ? 'rtl' : 'ltr'
+
+  useEffect(() => {
+    if (notificationListenerInitialized.current) {
+      return
+    }
+    notificationListenerInitialized.current = true
+    const handleNotification = (_event: unknown, notification: Notification) => {
+      const title = notification.translationKey
+        ? t(notification.translationKey, notification.translationParams || {})
+        : notification.title
+
+      const description = notification.description?.startsWith('settings:') || notification.description?.startsWith('common:')
+        ? t(notification.description, notification.translationParams || {})
+        : notification.description
+
+      if (notification.whatsappResults) {
+        setWhatsAppDialogData(notification.whatsappResults)
+
+        toast.success(title, {
+          description,
+          action: {
+            label: t('settings:whatsapp.toasts.showDetails'),
+            onClick: () => setShowWhatsAppDialog(true)
+          }
+        })
+        return
+      }
+
+      switch (notification.type) {
+        case 'success':
+          toast.success(title, { description })
+          break
+        case 'error':
+          toast.error(title, { description })
+          break
+        case 'warning':
+          toast.warning(title, { description })
+          break
+        case 'info':
+          toast.info(title, { description })
+          break
+      }
+    }
+
+    window.electron.ipcRenderer.on('show-notification', handleNotification)
+
+    return () => {
+      window.electron.ipcRenderer.removeListener('show-notification', handleNotification)
+    }
+  }, [t])
 
   const handleActivated = (): void => {
     setIsLicensed(true)
@@ -138,8 +222,8 @@ function App() {
   return (
     <ErrorBoundary>
       <HashRouter>
-        <AuthProvider>
-          <SettingsProvider>
+        <SettingsProvider>
+          <AuthProvider>
             <Toaster
               toastOptions={{
                 classNames: {
@@ -152,8 +236,17 @@ function App() {
               }}
             />
             <AppContent />
-          </SettingsProvider>
-        </AuthProvider>
+            {/* Global WhatsApp notification results dialog */}
+            <NotificationResultsDialog
+              open={showWhatsAppDialog}
+              onOpenChange={setShowWhatsAppDialog}
+              results={whatsAppDialogData.results}
+              sentCount={whatsAppDialogData.sentCount}
+              failedCount={whatsAppDialogData.failedCount}
+              skippedCount={whatsAppDialogData.skippedCount}
+            />
+          </AuthProvider>
+        </SettingsProvider>
       </HashRouter>
     </ErrorBoundary>
   )
