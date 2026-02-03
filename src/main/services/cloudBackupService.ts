@@ -60,11 +60,7 @@ function createMultipartFormData(
 
   // Add file field
   parts.push(Buffer.from(`--${boundary}\r\n`))
-  parts.push(
-    Buffer.from(
-      `Content-Disposition: form-data; name="file"; filename="${fileName}"\r\n`
-    )
-  )
+  parts.push(Buffer.from(`Content-Disposition: form-data; name="file"; filename="${fileName}"\r\n`))
   parts.push(Buffer.from('Content-Type: application/octet-stream\r\n\r\n'))
   parts.push(fileBuffer)
   parts.push(Buffer.from('\r\n'))
@@ -101,7 +97,11 @@ export async function uploadBackupToCloud(
     const fileName = path.basename(backupPath)
     const deviceInfo = getDeviceInfo()
 
-    console.log('[Cloud Backup] File info:', { fileName, size: stats.size, deviceId: deviceInfo.deviceId })
+    console.log('[Cloud Backup] File info:', {
+      fileName,
+      size: stats.size,
+      deviceId: deviceInfo.deviceId
+    })
 
     // Create multipart form data
     const { boundary, body } = createMultipartFormData(backupPath, fileName, {
@@ -171,7 +171,10 @@ export async function listCloudBackups(
     })
 
     const result = await response.json()
-    console.log('[Cloud Backup] List response:', { status: response.status, count: result.data?.backups?.length })
+    console.log('[Cloud Backup] List response:', {
+      status: response.status,
+      count: result.data?.backups?.length
+    })
 
     if (!response.ok) {
       console.error('[Cloud Backup] List failed:', result)
@@ -312,26 +315,45 @@ export async function performAutoCloudBackup(backupPath: string): Promise<void> 
       return
     }
 
-    // Check if cloud backup was already performed today (rate limiting - 1 per day)
     if (settings.last_cloud_backup_date) {
       const now = new Date()
       const lastCloudBackup = new Date(settings.last_cloud_backup_date)
       const timeDiff = now.getTime() - lastCloudBackup.getTime()
       const hoursDiff = timeDiff / (1000 * 3600)
 
-      // Allow 1 upload per day (24 hours)
       if (hoursDiff < 24) {
-        console.log('[Cloud Backup] Skipped: Already uploaded today (last upload:', settings.last_cloud_backup_date, ')')
+        const hoursRemaining = Math.ceil(24 - hoursDiff)
+        console.log(
+          '[Cloud Backup] Skipped: Already uploaded today (last upload:',
+          settings.last_cloud_backup_date,
+          ')'
+        )
+
+        const { sendNotificationToRenderer } = await import('../utils/notificationBridge')
+        sendNotificationToRenderer({
+          type: 'info',
+          title: 'settings:backup.autoErrors.cloudUploadRateLimited',
+          translationKey: 'settings:backup.autoErrors.cloudUploadRateLimited',
+          translationParams: {
+            hours: hoursRemaining
+          }
+        })
         return
       }
     }
 
-    // Get license key from license module
     const licenseModule = await import('../license')
     const licenseKey = licenseModule.getLicenseKey()
 
     if (!licenseKey) {
       console.log('[Cloud Backup] Skipped: No license key available')
+
+      const { sendNotificationToRenderer } = await import('../utils/notificationBridge')
+      sendNotificationToRenderer({
+        type: 'warning',
+        title: 'settings:backup.autoErrors.cloudUploadNoLicense',
+        translationKey: 'settings:backup.autoErrors.cloudUploadNoLicense'
+      })
       return
     }
 
@@ -345,16 +367,60 @@ export async function performAutoCloudBackup(backupPath: string): Promise<void> 
     )
 
     if (result.success) {
-      // Update last cloud backup date
       db.prepare('UPDATE settings SET last_cloud_backup_date = ? WHERE id = ?').run(
         new Date().toISOString(),
         '1'
       )
       console.log('[Cloud Backup] Success:', result.data?.fileName)
+
+      const { sendNotificationToRenderer } = await import('../utils/notificationBridge')
+      sendNotificationToRenderer({
+        type: 'success',
+        title: 'settings:backup.autoSuccess.cloudUploadSuccess',
+        translationKey: 'settings:backup.autoSuccess.cloudUploadSuccess',
+        translationParams: {
+          fileName: result.data?.fileName || 'backup'
+        }
+      })
     } else {
       console.error('[Cloud Backup] Failed:', result.error)
+
+      const { sendNotificationToRenderer } = await import('../utils/notificationBridge')
+      sendNotificationToRenderer({
+        type: 'error',
+        title: 'settings:backup.autoErrors.cloudUploadFailed',
+        description: result.error || 'settings:backup.autoErrors.cloudUploadFailedDesc',
+        translationKey: 'settings:backup.autoErrors.cloudUploadFailed'
+      })
     }
   } catch (error) {
     console.error('[Cloud Backup] Auto cloud backup error:', error)
+
+    const { sendNotificationToRenderer } = await import('../utils/notificationBridge')
+    const errorMsg = error instanceof Error ? error.message : ''
+
+    if (
+      errorMsg.includes('fetch') ||
+      errorMsg.includes('network') ||
+      errorMsg.includes('ECONNREFUSED') ||
+      errorMsg.includes('ENOTFOUND')
+    ) {
+      sendNotificationToRenderer({
+        type: 'error',
+        title: 'settings:backup.autoErrors.cloudUploadFailed',
+        description: 'settings:backup.autoErrors.cloudUploadFailedDesc',
+        translationKey: 'settings:backup.autoErrors.cloudUploadFailed'
+      })
+    } else {
+      sendNotificationToRenderer({
+        type: 'error',
+        title: 'settings:backup.autoErrors.cloudUploadError',
+        description: errorMsg,
+        translationKey: 'settings:backup.autoErrors.cloudUploadError',
+        translationParams: {
+          error: errorMsg
+        }
+      })
+    }
   }
 }
