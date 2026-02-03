@@ -371,17 +371,14 @@ function startWhatsAppScheduler(): void {
     clearInterval(whatsappSchedulerInterval)
   }
 
-  performAutoWhatsAppCheck()
-
-  // Runs every hour, sends only if 24 hours passed since last check
   whatsappSchedulerInterval = setInterval(
     () => {
       performAutoWhatsAppCheck()
     },
-    60 * 60 * 1000
+    24 * 60 * 60 * 1000
   )
 
-  console.log('WhatsApp notification scheduler started')
+  console.log('WhatsApp notification scheduler started (checks every 24 hours)')
 }
 
 export function stopWhatsAppScheduler(): void {
