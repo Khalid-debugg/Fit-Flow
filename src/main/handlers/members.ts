@@ -1,7 +1,7 @@
 import { ipcMain } from 'electron'
 import { getDatabase } from '../database'
 import type { MemberDbRow, MemberFilters } from '../../renderer/src/models/member'
-import { toSnake } from './utils'
+import { toSnake, generateEncryptedId } from './utils'
 
 export function registerMemberHandlers() {
   ipcMain.handle('members:get', async (_event, page: number = 1, filters: MemberFilters) => {
@@ -214,61 +214,61 @@ export function registerMemberHandlers() {
 
   ipcMain.handle('members:getNextId', async () => {
     const db = getDatabase()
-    const result = db.prepare('SELECT MAX(id) as maxId FROM members').get() as {
-      maxId: number | null
+
+    // Generate a unique encrypted ID
+    let newId = generateEncryptedId()
+
+    // Ensure the generated ID is unique (very unlikely to collide, but check anyway)
+    let existing = db.prepare('SELECT id FROM members WHERE id = ?').get(newId)
+    while (existing) {
+      newId = generateEncryptedId()
+      existing = db.prepare('SELECT id FROM members WHERE id = ?').get(newId)
     }
-    return (result.maxId || 0) + 1
+
+    return newId
   })
 
   ipcMain.handle('members:create', async (_event, member) => {
     const db = getDatabase()
     const snake = toSnake(member)
 
-    // If a custom ID is provided, use it; otherwise, let SQLite auto-increment
+    // Generate an encrypted ID if none is provided
+    let memberId: string
     if (member.id) {
-      // Check if ID already exists
+      // Custom ID provided - check if it already exists
       const existing = db.prepare('SELECT id FROM members WHERE id = ?').get(member.id)
       if (existing) {
         throw new Error('ID_ALREADY_EXISTS')
       }
-
-      const stmt = db.prepare(`
-        INSERT INTO members (id, name, email, country_code, phone, gender, address, join_date, notes)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `)
-
-      stmt.run(
-        member.id,
-        snake.name,
-        snake.email || null,
-        snake.country_code || '+20',
-        snake.phone,
-        snake.gender,
-        snake.address || null,
-        snake.join_date,
-        snake.notes || null
-      )
-
-      return { id: String(member.id), ...member }
+      memberId = String(member.id)
     } else {
-      const stmt = db.prepare(`
-        INSERT INTO members (name, email, country_code, phone, gender, address, join_date, notes)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-      `)
-
-      const result = stmt.run(
-        snake.name,
-        snake.email || null,
-        snake.country_code || '+20',
-        snake.phone,
-        snake.gender,
-        snake.address || null,
-        snake.join_date,
-        snake.notes || null
-      )
-
-      return { id: String(result.lastInsertRowid), ...member }
+      // Generate a unique encrypted ID
+      memberId = generateEncryptedId()
+      let existing = db.prepare('SELECT id FROM members WHERE id = ?').get(memberId)
+      while (existing) {
+        memberId = generateEncryptedId()
+        existing = db.prepare('SELECT id FROM members WHERE id = ?').get(memberId)
+      }
     }
+
+    const stmt = db.prepare(`
+      INSERT INTO members (id, name, email, country_code, phone, gender, address, join_date, notes)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `)
+
+    stmt.run(
+      memberId,
+      snake.name,
+      snake.email || null,
+      snake.country_code || '+20',
+      snake.phone,
+      snake.gender,
+      snake.address || null,
+      snake.join_date,
+      snake.notes || null
+    )
+
+    return { id: memberId, ...member }
   })
 
   ipcMain.handle('members:update', async (_event, id: string, member) => {
