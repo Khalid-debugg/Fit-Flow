@@ -1,6 +1,6 @@
 // src/renderer/src/pages/Reports.tsx
 
-import { useState } from 'react'
+import { useState, useCallback, memo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ReportFilters, ReportPreview, DataExport } from '@renderer/components/reports'
 import { ReportData, ReportFilters as IReportFilters } from '@renderer/models/report'
@@ -8,9 +8,10 @@ import { toast } from 'sonner'
 import { useAuth } from '@renderer/hooks/useAuth'
 import { PERMISSIONS } from '@renderer/models/account'
 import { ShieldOff } from 'lucide-react'
+import { generateReportPDF } from '@renderer/utils/reportPdfGenerator'
 
-export default function Reports() {
-  const { t } = useTranslation('reports')
+function Reports() {
+  const { t, i18n } = useTranslation('reports')
   const { hasPermission } = useAuth()
   const [loading, setLoading] = useState(false)
   const [reportData, setReportData] = useState<ReportData | null>(null)
@@ -19,7 +20,7 @@ export default function Reports() {
   // Check if user has permission to view reports
   const canView = hasPermission(PERMISSIONS.reports.view)
 
-  const handleGenerate = async (filters: IReportFilters) => {
+  const handleGenerate = useCallback(async (filters: IReportFilters) => {
     // Check permission before generating
     if (!hasPermission(PERMISSIONS.reports.generate)) {
       toast.error(t('messages.noPermission') || 'You do not have permission to generate reports')
@@ -42,18 +43,21 @@ export default function Reports() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [hasPermission, t])
 
-  const handlePrint = () => {
-    window.print()
-  }
+  const handlePrint = useCallback(() => {
+    // Add small delay to ensure print styles are applied
+    setTimeout(() => {
+      window.print()
+    }, 100)
+  }, [])
 
-  const handleDownload = async () => {
+  const handleDownload = useCallback(async () => {
     if (!reportData || !currentFilters) return
 
     // Check permission before saving/downloading
     if (!hasPermission(PERMISSIONS.reports.save)) {
-      toast.error(t('messages.noPermission') || 'You do not have permission to save reports')
+      toast.error(t('messages.noPermission'))
       return
     }
 
@@ -71,16 +75,20 @@ export default function Reports() {
         totalCheckIns: reportData.summary.totalCheckIns
       })
 
-      // Open print dialog (users can save as PDF from there)
-      toast.info(t('messages.printDialog'))
-      setTimeout(() => {
-        window.print()
-      }, 500)
+      // Generate and download PDF
+      await generateReportPDF({
+        data: reportData,
+        startDate: currentFilters.startDate,
+        endDate: currentFilters.endDate,
+        language: i18n.language
+      })
+
+      toast.success(t('messages.downloadSuccess'))
     } catch (error) {
-      console.error('Failed to save report:', error)
+      console.error('Failed to download report:', error)
       toast.error(t('messages.downloadError'))
     }
-  }
+  }, [reportData, currentFilters, hasPermission, t, i18n.language])
 
   // Show access denied if user doesn't have permission to view reports
   if (!canView) {
@@ -160,29 +168,36 @@ export default function Reports() {
         {`
           @media print {
             /* Reset and base styles */
-            * {
+            *,
+            *::before,
+            *::after {
               -webkit-print-color-adjust: exact !important;
               print-color-adjust: exact !important;
               color-adjust: exact !important;
             }
-            
+
             /* Hide everything except report */
-            body * {
-              visibility: hidden;
+            body > *:not(script):not(style) {
+              display: none !important;
             }
-            
-            #report-content,
-            #report-content * {
-              visibility: visible;
-            }
-            
+
+            /* Show only report content */
             #report-content {
-              position: absolute;
-              left: 0;
-              top: 0;
-              width: 100%;
+              display: block !important;
+              visibility: visible !important;
+              position: fixed !important;
+              left: 0 !important;
+              top: 0 !important;
+              width: 100% !important;
+              height: 100% !important;
               background: white !important;
               padding: 12mm !important;
+              margin: 0 !important;
+              box-sizing: border-box !important;
+            }
+
+            #report-content * {
+              visibility: visible !important;
             }
             
             /* Hide screen-only elements */
@@ -257,17 +272,28 @@ export default function Reports() {
             /* Chart sizing - keep them visible */
             .chart-container {
               page-break-inside: avoid !important;
+              break-inside: avoid !important;
             }
-            
-            .recharts-wrapper {
+
+            .recharts-wrapper,
+            .recharts-responsive-container {
               height: 140px !important;
-              display: flex;
-              justify-content: center;
-              align-items: center;
+              width: 100% !important;
+              display: block !important;
             }
-            
-            .recharts-wrapper svg {
+
+            .recharts-wrapper svg,
+            .recharts-surface {
               overflow: visible !important;
+              display: block !important;
+            }
+
+            /* Ensure all backgrounds and colors are preserved */
+            .bg-linear-to-br,
+            .bg-linear-to-r,
+            [class*="bg-"] {
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
             }
             
             /* Compact text sizes */
@@ -322,3 +348,5 @@ export default function Reports() {
     </div>
   )
 }
+
+export default memo(Reports)
