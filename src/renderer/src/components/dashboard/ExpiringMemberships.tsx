@@ -1,3 +1,4 @@
+import { memo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button } from '@renderer/components/ui/button'
 import { AlertCircle, RefreshCw, ChevronLeft, ChevronRight, RefreshCcw } from 'lucide-react'
@@ -27,7 +28,7 @@ interface ExpiringMembershipsProps {
   canRenew?: boolean
 }
 
-export default function ExpiringMemberships({
+function ExpiringMemberships({
   data,
   onRenew,
   page,
@@ -38,7 +39,7 @@ export default function ExpiringMemberships({
   const { t, i18n } = useTranslation('dashboard')
   const dateLocale = i18n.language === 'ar' ? ar : enUS
 
-  const calculateNewEndDate = (membership: ExpiringMembership) => {
+  const calculateNewEndDate = useCallback((membership: ExpiringMembership) => {
     const today = new Date()
     today.setHours(0, 0, 0, 0)
 
@@ -64,13 +65,13 @@ export default function ExpiringMemberships({
     const newEndDate = new Date(newStartDate.getTime() + durationDays * 24 * 60 * 60 * 1000)
 
     return format(newEndDate, 'PPP', { locale: dateLocale })
-  }
+  }, [dateLocale])
 
-  const getDaysColor = (days: number) => {
+  const getDaysColor = useCallback((days: number) => {
     if (days <= 2) return 'text-red-400'
     if (days <= 5) return 'text-yellow-400'
     return 'text-green-400'
-  }
+  }, [])
 
   return (
     <div className="flex flex-col bg-gray-800 p-6 min-h-140 rounded-lg border border-gray-700">
@@ -184,3 +185,5 @@ export default function ExpiringMemberships({
     </div>
   )
 }
+
+export default memo(ExpiringMemberships)

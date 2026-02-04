@@ -1,3 +1,4 @@
+import { memo, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@renderer/components/ui/button'
@@ -11,7 +12,7 @@ interface QuickActionsProps {
   onCreatePlan?: () => void
 }
 
-export default function QuickActions({
+function QuickActions({
   onCreateMember,
   onCreateMembership,
   onCreatePlan
@@ -20,7 +21,7 @@ export default function QuickActions({
   const navigate = useNavigate()
   const { hasPermission } = useAuth()
 
-  const allActions = [
+  const allActions = useMemo(() => [
     {
       label: t('quickActions.addMember'),
       icon: UserPlus,
@@ -57,10 +58,13 @@ export default function QuickActions({
       onClick: () => navigate('/plans'),
       permission: PERMISSIONS.plans.view
     }
-  ]
+  ], [t, onCreateMember, onCreateMembership, onCreatePlan, navigate])
 
   // Filter actions based on permissions
-  const actions = allActions.filter((action) => hasPermission(action.permission))
+  const actions = useMemo(() =>
+    allActions.filter((action) => hasPermission(action.permission)),
+    [allActions, hasPermission]
+  )
 
   // Don't render if no actions are available
   if (actions.length === 0) {
@@ -90,3 +94,5 @@ export default function QuickActions({
     </div>
   )
 }
+
+export default memo(QuickActions)

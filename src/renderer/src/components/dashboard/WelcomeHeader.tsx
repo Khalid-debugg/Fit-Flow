@@ -1,7 +1,8 @@
+import { memo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Sparkles } from 'lucide-react'
 
-export default function WelcomeHeader() {
+function WelcomeHeader() {
   const { t } = useTranslation('dashboard')
 
   return (
@@ -18,3 +19,5 @@ export default function WelcomeHeader() {
     </div>
   )
 }
+
+export default memo(WelcomeHeader)

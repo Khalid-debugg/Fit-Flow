@@ -1,3 +1,4 @@
+import { memo, useMemo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   AreaChart,
@@ -26,21 +27,24 @@ interface RevenueChartProps {
   data: RevenueData
 }
 
-export default function RevenueChart({ data }: RevenueChartProps) {
+function RevenueChart({ data }: RevenueChartProps) {
   const { t } = useTranslation('dashboard')
   const { settings } = useSettings()
-  const chartData = data.dailyRevenue.map((item) => ({
-    date: new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-    revenue: item.revenue
-  }))
 
-  const formatCurrency = (value: number) => {
+  const chartData = useMemo(() => {
+    return data.dailyRevenue.map((item) => ({
+      date: new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+      revenue: item.revenue
+    }))
+  }, [data.dailyRevenue])
+
+  const formatCurrency = useCallback((value: number) => {
     return new Intl.NumberFormat(settings?.language, {
       style: 'currency',
       currency: settings?.currency,
       minimumFractionDigits: 0
     }).format(value)
-  }
+  }, [settings?.language, settings?.currency])
 
   return (
     <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">
@@ -150,3 +154,5 @@ export default function RevenueChart({ data }: RevenueChartProps) {
     </div>
   )
 }
+
+export default memo(RevenueChart)

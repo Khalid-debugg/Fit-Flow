@@ -1,3 +1,4 @@
+import { memo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button } from '@renderer/components/ui/button'
 import { Clock, ChevronLeft, ChevronRight, RefreshCcw } from 'lucide-react'
@@ -23,7 +24,7 @@ interface RecentCheckInsProps {
   onPageChange: (page: number) => void
 }
 
-export default function RecentCheckIns({
+function RecentCheckIns({
   data,
   onViewMember,
   onRowClick,
@@ -34,22 +35,22 @@ export default function RecentCheckIns({
   const { t, i18n } = useTranslation('dashboard')
   const dateLocale = i18n.language === 'ar' ? ar : enUS
 
-  const getStatusBadge = (status: string) => {
+  const getStatusBadge = useCallback((status: string) => {
     const colors = {
       active: 'bg-green-500/20 text-green-400',
       expired: 'bg-yellow-500/20 text-yellow-400',
       none: 'bg-red-500/20 text-red-400'
     }
     return colors[status] || colors.none
-  }
+  }, [])
 
-  const getTimeAgo = (dateTime: string) => {
+  const getTimeAgo = useCallback((dateTime: string) => {
     try {
       return formatDistanceToNow(new Date(dateTime), { addSuffix: true, locale: dateLocale })
     } catch {
       return new Date(dateTime).toLocaleTimeString()
     }
-  }
+  }, [dateLocale])
 
   return (
     <div className="flex flex-col bg-gray-800 p-6 min-h-140 rounded-lg border border-gray-700">
@@ -135,3 +136,5 @@ export default function RecentCheckIns({
     </div>
   )
 }
+
+export default memo(RecentCheckIns)
