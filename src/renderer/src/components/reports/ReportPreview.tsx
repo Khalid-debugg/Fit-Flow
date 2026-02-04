@@ -89,9 +89,7 @@ export default function ReportPreview({
               variant="secondary"
               size="sm"
               onClick={onPrint}
-              disabled={!canSave}
               className="gap-2 bg-white hover:bg-gray-100 text-blue-700"
-              title={!canSave ? 'You do not have permission to print reports' : ''}
             >
               <Printer className="w-4 h-4" />
               {t('preview.print')}
