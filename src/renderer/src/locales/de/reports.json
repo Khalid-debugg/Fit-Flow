@@ -44,6 +44,7 @@
   "messages": {
     "generated": "Bericht erfolgreich generiert",
     "downloaded": "Bericht erfolgreich gespeichert",
+    "downloadSuccess": "Bericht erfolgreich heruntergeladen",
     "printDialog": "Druckdialog wird geöffnet... Wählen Sie 'Als PDF speichern' als Ziel",
     "error": "Bericht konnte nicht generiert werden",
     "downloadError": "Bericht konnte nicht gespeichert werden",

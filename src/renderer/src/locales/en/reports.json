@@ -44,6 +44,7 @@
   "messages": {
     "generated": "Report generated successfully",
     "downloaded": "Report saved successfully",
+    "downloadSuccess": "Report downloaded successfully",
     "printDialog": "Opening print dialog... Select 'Save as PDF' as destination",
     "error": "Failed to generate report",
     "downloadError": "Failed to save report",

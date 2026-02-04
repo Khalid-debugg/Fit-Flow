@@ -44,6 +44,7 @@
   "messages": {
     "generated": "Relatório gerado com sucesso",
     "downloaded": "Relatório salvo com sucesso",
+    "downloadSuccess": "Relatório baixado com sucesso",
     "printDialog": "Abrindo diálogo de impressão... Selecione 'Salvar como PDF' como destino",
     "error": "Falha ao gerar relatório",
     "downloadError": "Falha ao salvar relatório",

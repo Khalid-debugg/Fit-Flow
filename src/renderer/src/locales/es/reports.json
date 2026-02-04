@@ -44,6 +44,7 @@
   "messages": {
     "generated": "Informe generado exitosamente",
     "downloaded": "Informe guardado exitosamente",
+    "downloadSuccess": "Informe descargado exitosamente",
     "printDialog": "Abriendo diálogo de impresión... Selecciona 'Guardar como PDF' como destino",
     "error": "Error al generar informe",
     "downloadError": "Error al guardar informe",

@@ -44,6 +44,7 @@
   "messages": {
     "generated": "Rapport généré avec succès",
     "downloaded": "Rapport enregistré avec succès",
+    "downloadSuccess": "Rapport téléchargé avec succès",
     "printDialog": "Ouverture de la boîte de dialogue d'impression... Sélectionnez 'Enregistrer en PDF' comme destination",
     "error": "Échec de la génération du rapport",
     "downloadError": "Échec de l'enregistrement du rapport",
