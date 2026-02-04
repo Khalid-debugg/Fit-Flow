@@ -6,6 +6,7 @@ import type {
   UserFilters,
   UserPermissions
 } from '../../renderer/src/models/account'
+import { detectRoleFromPermissions } from '../../renderer/src/models/account'
 import crypto from 'crypto'
 
 function generateEncryptedId() {
@@ -27,21 +28,15 @@ export function registerAccountHandlers() {
   ipcMain.handle('accounts:get', async (_event, page: number = 1, filters: UserFilters) => {
     const db = getDatabase()
     const limit = 10
-    const offset = (page - 1) * limit
 
     const whereConditions: string[] = []
     const params: (string | number)[] = []
 
+    // Apply SQL-compatible filters
     if (filters.query?.trim()) {
       const search = `%${filters.query.trim()}%`
       whereConditions.push('(username LIKE ? OR full_name LIKE ? OR email LIKE ?)')
       params.push(search, search, search)
-    }
-
-    if (filters.role === 'admin') {
-      whereConditions.push('is_admin = 1')
-    } else if (filters.role === 'receptionist') {
-      whereConditions.push('is_admin = 0')
     }
 
     if (filters.status === 'active') {
@@ -52,41 +47,55 @@ export function registerAccountHandlers() {
 
     const whereClause = whereConditions.length ? `WHERE ${whereConditions.join(' AND ')}` : ''
 
-    const countQuery = `SELECT COUNT(*) as total FROM users ${whereClause}`
-    const totalResult = db.prepare(countQuery).get(...params) as { total: number }
-
+    // Fetch all matching users (before role filtering)
     const query = `
       SELECT id, username, full_name, email, is_admin, is_active,
              permissions, last_login, created_at, updated_at
       FROM users
       ${whereClause}
       ORDER BY created_at DESC
-      LIMIT ? OFFSET ?
     `
 
-    const rows = db.prepare(query).all(...params, limit, offset) as Omit<
-      UserDbRow,
-      'password_hash'
-    >[]
+    const rows = db.prepare(query).all(...params) as Omit<UserDbRow, 'password_hash'>[]
 
-    const users = rows.map((row) => ({
-      id: row.id,
-      username: row.username,
-      fullName: row.full_name,
-      email: row.email,
-      isAdmin: Boolean(row.is_admin),
-      isActive: Boolean(row.is_active),
-      permissions: JSON.parse(row.permissions) as UserPermissions,
-      lastLogin: row.last_login,
-      createdAt: row.created_at,
-      updatedAt: row.updated_at
-    }))
+    // Convert rows to User objects and detect roles
+    let users = rows.map((row) => {
+      const permissions = JSON.parse(row.permissions) as UserPermissions
+      const isAdmin = Boolean(row.is_admin)
+
+      return {
+        id: row.id,
+        username: row.username,
+        fullName: row.full_name,
+        email: row.email,
+        isAdmin,
+        isActive: Boolean(row.is_active),
+        permissions,
+        role: isAdmin && Object.keys(permissions).length === 0
+          ? 'admin' as const
+          : detectRoleFromPermissions(permissions),
+        lastLogin: row.last_login,
+        createdAt: row.created_at,
+        updatedAt: row.updated_at
+      }
+    })
+
+    // Apply role filter in application layer
+    if (filters.role !== 'all') {
+      users = users.filter((user) => user.role === filters.role)
+    }
+
+    // Calculate pagination after filtering
+    const total = users.length
+    const totalPages = Math.ceil(total / limit)
+    const offset = (page - 1) * limit
+    const paginatedUsers = users.slice(offset, offset + limit)
 
     return {
-      users,
-      total: totalResult.total,
+      users: paginatedUsers,
+      total,
       page,
-      totalPages: Math.ceil(totalResult.total / limit)
+      totalPages
     }
   })
 
