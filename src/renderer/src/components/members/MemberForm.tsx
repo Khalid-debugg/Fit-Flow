@@ -330,8 +330,7 @@ export default function MemberForm({
               <div className="flex gap-2">
                 <Input
                   id="id"
-                  type="number"
-                  min="1"
+                  type="text"
                   required
                   className="bg-gray-800 border-gray-700 text-white flex-1"
                   value={formData.id ?? ''}

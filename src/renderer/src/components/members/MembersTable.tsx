@@ -61,7 +61,6 @@ export default function MembersTable({
             <TableRow>
               <TableHead className="text-start">#</TableHead>
               <TableHead className="text-start">{t('name')}</TableHead>
-              <TableHead className="text-start">{t('id')}</TableHead>
               <TableHead className="text-start">{t('phone')}</TableHead>
               <TableHead className="text-start">{t('email')}</TableHead>
               <TableHead className="text-start">{t('gender')}</TableHead>
@@ -81,7 +80,6 @@ export default function MembersTable({
                   {members.length === 1 ? '-' : idx + 1 + (page - 1) * 10}
                 </TableCell>
                 <TableCell className="font-medium">{member.name}</TableCell>
-                <TableCell className="font-medium">{member.id}</TableCell>
                 <TableCell className="text-gray-400">
                   <span dir="ltr">{`${member.countryCode}${member.phone}`}</span>
                 </TableCell>
