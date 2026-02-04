@@ -14,7 +14,6 @@ import {
 } from '@renderer/components/ui/select'
 import { BackupInfoCard } from './BackupInfoCard'
 import { BackupListItem } from './BackupListItem'
-import { notificationService } from '@renderer/services/notificationService'
 import type { Settings, BackupInfo, BackupFile } from '@renderer/models/settings'
 import type { SupportedLanguage } from '@renderer/locales/i18n'
 

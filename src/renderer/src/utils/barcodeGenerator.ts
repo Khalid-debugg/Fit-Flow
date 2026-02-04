@@ -453,15 +453,19 @@ export function printBarcode(
   joinDate: string,
   gymInfo?: GymInfo
 ) {
-  try {
-    // Get dimensions based on card size
-    const size = gymInfo?.barcodeSize || 'keychain'
-    const dim = CARD_DIMENSIONS[size]
+  return new Promise<void>((resolve, reject) => {
+    try {
+      // Get dimensions based on card size
+      const size = gymInfo?.barcodeSize || 'keychain'
+      const dim = CARD_DIMENSIONS[size]
 
-    const printContainer = document.createElement('div')
-    printContainer.style.position = 'fixed'
-    printContainer.style.left = '-9999px'
-    document.body.appendChild(printContainer)
+      const printContainer = document.createElement('div')
+      printContainer.id = 'barcode-print-container'
+      printContainer.style.position = 'fixed'
+      printContainer.style.left = '-9999px'
+      printContainer.style.top = '0'
+      printContainer.style.zIndex = '-9999'
+      document.body.appendChild(printContainer)
 
     // Generate barcode with better resolution for printing
     const canvas = document.createElement('canvas')
@@ -626,51 +630,91 @@ export function printBarcode(
       </div>
     `
 
-    // Open print window
-    const printWindow = window.open('', '_blank')
-    if (!printWindow) throw new Error('Could not open print window')
+      // Add print styles to the page
+      const printStyles = document.createElement('style')
+      printStyles.id = 'barcode-print-styles'
+      printStyles.textContent = `
+        @media print {
+          * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+          }
 
-    printWindow.document.write(`
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>Print Member Card</title>
-          <style>
-            @media print {
-              @page {
-                size: ${dim.width}mm ${dim.height}mm;
-                margin: 0;
-              }
-              body {
-                margin: 0;
-                padding: 0;
-              }
+          @page {
+            size: ${dim.width}mm ${dim.height}mm;
+            margin: 0;
+          }
+
+          body > *:not(#barcode-print-container) {
+            display: none !important;
+          }
+
+          #barcode-print-container {
+            display: block !important;
+            position: fixed !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: ${dim.width}mm !important;
+            height: ${dim.height}mm !important;
+            z-index: 9999 !important;
+            background: white !important;
+            padding: 0 !important;
+            margin: 0 !important;
+          }
+
+          #barcode-print-container > div {
+            width: 100% !important;
+            height: 100% !important;
+          }
+        }
+      `
+      document.head.appendChild(printStyles)
+
+      // Wait for images to load
+      const images = printContainer.getElementsByTagName('img')
+      const imageLoadPromises = Array.from(images).map(img => {
+        return new Promise<void>((resolve) => {
+          if (img.complete) {
+            resolve()
+          } else {
+            img.onload = () => resolve()
+            img.onerror = () => resolve() // Continue even if image fails
+          }
+        })
+      })
+
+      Promise.all(imageLoadPromises).then(() => {
+        // Small delay to ensure styles are applied
+        setTimeout(() => {
+          window.print()
+
+          // Clean up after print dialog
+          setTimeout(() => {
+            if (document.body.contains(printContainer)) {
+              document.body.removeChild(printContainer)
             }
-            body {
-              margin: 0;
-              padding: 0;
-              display: flex;
-              justify-content: center;
-              align-items: center;
+            const styles = document.getElementById('barcode-print-styles')
+            if (styles) {
+              document.head.removeChild(styles)
             }
-          </style>
-        </head>
-        <body>
-          ${printContainer.innerHTML}
-        </body>
-      </html>
-    `)
-
-    printWindow.document.close()
-    printWindow.focus()
-
-    setTimeout(() => {
-      printWindow.print()
-      printWindow.close()
-      document.body.removeChild(printContainer)
-    }, 250)
-  } catch (error) {
-    console.error('Print error:', error)
-    throw error
-  }
+            resolve()
+          }, 500)
+        }, 300)
+      }).catch((error) => {
+        // Clean up on error
+        if (document.body.contains(printContainer)) {
+          document.body.removeChild(printContainer)
+        }
+        const styles = document.getElementById('barcode-print-styles')
+        if (styles) {
+          document.head.removeChild(styles)
+        }
+        reject(error)
+      })
+    } catch (error) {
+      console.error('Print error:', error)
+      reject(error)
+    }
+  })
 }

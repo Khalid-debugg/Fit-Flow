@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, memo } from 'react'
 import { LoaderCircle } from 'lucide-react'
 import {
   WelcomeHeader,
@@ -44,7 +44,7 @@ interface CheckIn {
 
 export type ExpiringMembership = Membership & { daysRemaining: number }
 
-export default function Dashboard() {
+function Dashboard() {
   const { t } = useTranslation('dashboard')
   const { hasPermission } = useAuth()
   const [loading, setLoading] = useState(true)
@@ -124,16 +124,16 @@ export default function Dashboard() {
     loadDashboardData()
   }, [loadDashboardData])
 
-  const handleViewMember = async (memberId: string) => {
+  const handleViewMember = useCallback(async (memberId: string) => {
     try {
       const member = await window.electron.ipcRenderer.invoke('members:getById', memberId)
       setViewMember(member)
     } catch (error) {
       console.error('Failed to load member:', error)
     }
-  }
+  }, [])
 
-  const handleViewMemberCard = async (memberId: string) => {
+  const handleViewMemberCard = useCallback(async (memberId: string) => {
     try {
       const member = await window.electron.ipcRenderer.invoke('members:getById', memberId)
       setViewMemberCard(member)
@@ -141,9 +141,9 @@ export default function Dashboard() {
       console.error('Failed to load member:', error)
       toast.error(t('error.loadFailed'))
     }
-  }
+  }, [t])
 
-  const handleRenewMembership = async (membershipId: string) => {
+  const handleRenewMembership = useCallback(async (membershipId: string) => {
     if (!hasPermission(PERMISSIONS.memberships.extend)) {
       toast.error(t('error.noPermission'))
       return
@@ -156,7 +156,7 @@ export default function Dashboard() {
       toast.warning(t('error.extendFail'))
       console.error('Failed to load member:', error)
     }
-  }
+  }, [hasPermission, t])
 
   if (loading) {
     return (
@@ -248,3 +248,5 @@ export default function Dashboard() {
     </div>
   )
 }
+
+export default memo(Dashboard)

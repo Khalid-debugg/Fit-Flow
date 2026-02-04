@@ -1,11 +1,6 @@
 import { toast } from 'sonner'
 import i18n from '@renderer/locales/i18n'
 
-interface RateLimitConfig {
-  key: string
-  interval: number // in milliseconds
-}
-
 interface NotificationResult {
   memberName: string
   phoneNumber: string
@@ -85,7 +80,7 @@ class NotificationService {
       const result = await window.electron.ipcRenderer.invoke('whatsapp:checkAndSendNotifications')
 
       if (result.success) {
-        const { sentCount, skippedCount, failedCount, totalChecked, message, results } = result
+        const { sentCount, skippedCount, failedCount, results } = result
 
         // Mark as executed only if we actually sent messages successfully
         if (sentCount > 0) {
@@ -229,7 +224,7 @@ class NotificationService {
   initializePeriodicChecks(
     whatsappEnabled: boolean,
     whatsappAutoSend: boolean,
-    cloudBackupEnabled: boolean,
+    _cloudBackupEnabled: boolean,
     onShowDetails?: (results: NotificationResult[], sentCount: number, failedCount: number, skippedCount: number) => void
   ): void {
     // Start periodic WhatsApp checks if enabled and auto-send is on

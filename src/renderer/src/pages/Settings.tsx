@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo, memo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSettings } from '@renderer/hooks/useSettings'
 import { Settings as SettingsType } from '@renderer/models/settings'
@@ -14,23 +14,34 @@ import { LicenseManagementSection } from '@renderer/components/settings/LicenseM
 import { BackupManagementSection } from '@renderer/components/settings/BackupManagementSection'
 import { WhatsAppNotificationSection } from '@renderer/components/settings/WhatsAppNotificationSection'
 
-export default function Settings() {
+function Settings() {
   const { t } = useTranslation('settings')
   const { settings: contextSettings, updateSettings, loading: contextLoading, error, refreshSettings } = useSettings()
   const { hasPermission } = useAuth()
   const [formData, setFormData] = useState<SettingsType | null>(null)
   const [saving, setSaving] = useState(false)
 
-  // Memoize permission checks
+  // Memoize permission checks - only run after loading is complete
   const permissions = useMemo(
-    () => ({
-      canView: hasPermission(PERMISSIONS.settings.view),
-      canEdit: hasPermission(PERMISSIONS.settings.edit),
-      canManageBackups: hasPermission(PERMISSIONS.settings.manage_backups),
-      canManageLicense: hasPermission(PERMISSIONS.settings.manage_license),
-      canManageWhatsApp: hasPermission(PERMISSIONS.settings.manage_whatsapp)
-    }),
-    [hasPermission]
+    () => {
+      if (contextLoading) {
+        return {
+          canView: false,
+          canEdit: false,
+          canManageBackups: false,
+          canManageLicense: false,
+          canManageWhatsApp: false
+        }
+      }
+      return {
+        canView: hasPermission(PERMISSIONS.settings.view),
+        canEdit: hasPermission(PERMISSIONS.settings.edit),
+        canManageBackups: hasPermission(PERMISSIONS.settings.manage_backups),
+        canManageLicense: hasPermission(PERMISSIONS.settings.manage_license),
+        canManageWhatsApp: hasPermission(PERMISSIONS.settings.manage_whatsapp)
+      }
+    },
+    [hasPermission, contextLoading]
   )
 
   useEffect(() => {
@@ -201,3 +212,5 @@ export default function Settings() {
     </div>
   )
 }
+
+export default memo(Settings)

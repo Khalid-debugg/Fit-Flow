@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, memo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { DEFAULT_FILTERS, Member, MemberFilters } from '@renderer/models/member'
 import {
@@ -14,7 +14,7 @@ import { LoaderCircle } from 'lucide-react'
 import { useAuth } from '@renderer/hooks/useAuth'
 import { PERMISSIONS } from '@renderer/models/account'
 
-export default function Members() {
+function Members() {
   const { t } = useTranslation('members')
   const { hasPermission } = useAuth()
   const [members, setMembers] = useState<Member[]>([])
@@ -128,3 +128,5 @@ export default function Members() {
     </div>
   )
 }
+
+export default memo(Members)

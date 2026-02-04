@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, memo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import { DEFAULT_FILTERS, Membership, MembershipFilters } from '@renderer/models/membership'
@@ -13,7 +13,7 @@ import CreateMembership from '@renderer/components/memberships/CreateMembership'
 import MembershipsFilter from '@renderer/components/memberships/MembershipsFilter'
 import MembershipsTable from '@renderer/components/memberships/MembershipsTable'
 
-export default function Memberships() {
+function Memberships() {
   const { t } = useTranslation('memberships')
   const { hasPermission } = useAuth()
   const [searchParams] = useSearchParams()
@@ -151,3 +151,5 @@ export default function Memberships() {
     </div>
   )
 }
+
+export default memo(Memberships)

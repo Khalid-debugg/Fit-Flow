@@ -27,7 +27,7 @@ interface ReportFiltersProps {
 export default function ReportFilters({ onGenerate, loading }: ReportFiltersProps) {
   const { t, i18n } = useTranslation('reports')
   const { hasPermission } = useAuth()
-  const [reportType, setReportType] = useState<ReportType>('month')
+  const [reportType, setReportType] = useState<ReportType>('custom')
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const dateLocale = i18n.language === 'ar' ? ar : enUS

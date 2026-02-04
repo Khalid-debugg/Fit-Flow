@@ -63,9 +63,9 @@ export default function MemberBarcodeCard({
     }
   }
 
-  const handlePrint = () => {
+  const handlePrint = async () => {
     try {
-      printBarcode(memberId, memberName, joinDate, gymInfo)
+      await printBarcode(memberId, memberName, joinDate, gymInfo)
     } catch (error) {
       console.error('Failed to print:', error)
       toast.error(t('barcode.printError'))

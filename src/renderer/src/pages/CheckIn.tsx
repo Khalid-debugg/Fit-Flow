@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, memo } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   DEFAULT_FILTERS,
@@ -22,7 +22,7 @@ import {
 import MemberCheckInCard from '@renderer/components/checkIns/MemberCheckInCard'
 import { Member } from '@renderer/models/member'
 
-export default function CheckIns() {
+function CheckIns() {
   const { t } = useTranslation('checkIns')
   const { hasPermission } = useAuth()
   const [checkIns, setCheckIns] = useState<CheckIn[]>([])
@@ -205,3 +205,5 @@ export default function CheckIns() {
     </div>
   )
 }
+
+export default memo(CheckIns)

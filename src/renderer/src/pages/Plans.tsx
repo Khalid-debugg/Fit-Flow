@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, memo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Plan, PlanFilter } from '@renderer/models/plan'
 import { EditPlan, PlansFilter, PlansGrid, CreatePlan } from '@renderer/components/plans'
@@ -7,7 +7,7 @@ import { LoaderCircle } from 'lucide-react'
 import { useAuth } from '@renderer/hooks/useAuth'
 import { PERMISSIONS } from '@renderer/models/account'
 
-export default function Plans() {
+function Plans() {
   const { t } = useTranslation('plans')
   const { hasPermission } = useAuth()
   const [plans, setPlans] = useState<Plan[]>([])
@@ -108,3 +108,5 @@ export default function Plans() {
     </div>
   )
 }
+
+export default memo(Plans)

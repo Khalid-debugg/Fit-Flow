@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, memo } from 'react'
 import { DEFAULT_FILTERS, User, UserFilters, PERMISSIONS } from '@renderer/models/account'
 import {
   ViewAccount,
@@ -13,7 +13,7 @@ import { useAuth } from '@renderer/hooks/useAuth'
 import { LoaderCircle, ShieldAlert } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
-export default function Accounts() {
+function Accounts() {
   const { t } = useTranslation('accounts')
   const { hasPermission } = useAuth()
   const [users, setUsers] = useState<User[]>([])
@@ -40,7 +40,7 @@ export default function Accounts() {
       setTotalPages(data.totalPages)
     } catch (error) {
       console.error('Failed to load accounts:', error)
-      toast.error('Failed to load accounts')
+      toast.error(t('errors.loadFailed'))
     } finally {
       setLoading(false)
     }
@@ -64,13 +64,13 @@ export default function Accounts() {
     async (id: string) => {
       try {
         await window.electron.ipcRenderer.invoke('accounts:delete', id)
-        toast.success('Account deleted successfully')
+        toast.success(t('success.deleteSuccess'))
         loadUsers()
       } catch (error) {
         if ((error as Error).message === 'CANNOT_DELETE_LAST_ADMIN') {
-          toast.error('Cannot delete the last administrator account')
+          toast.error(t('errors.cannotDeleteLastAdmin'))
         } else {
-          toast.error('Failed to delete account')
+          toast.error(t('errors.deleteFailed'))
         }
         console.error('Failed to delete account:', error)
       }
@@ -122,7 +122,7 @@ export default function Accounts() {
           <LoaderCircle className="mx-auto h-20 w-20 animate-spin" />
         </div>
       ) : users.length === 0 ? (
-        <div className="text-center py-12 text-gray-400">No accounts found</div>
+        <div className="text-center py-12 text-gray-400">{t('noAccounts')}</div>
       ) : (
         <div className={loading ? 'opacity-50 pointer-events-none' : ''}>
           <AccountsTable
@@ -141,3 +141,5 @@ export default function Accounts() {
     </div>
   )
 }
+
+export default memo(Accounts)
