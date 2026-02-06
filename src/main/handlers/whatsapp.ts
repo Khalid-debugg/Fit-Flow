@@ -169,45 +169,7 @@ function replaceTemplateVariables(
     endDate: string
   }
 ): string {
-  let adjustedTemplate = template
-
-  if (data.daysLeft < 0) {
-    const daysExpired = Math.abs(data.daysLeft)
-
-    if (template.includes('will expire in')) {
-      adjustedTemplate = template.replace(
-        'will expire in {days_left} days on {end_date}',
-        `expired ${daysExpired} ${daysExpired === 1 ? 'day' : 'days'} ago on {end_date}`
-      )
-    } else if (template.includes('ستنتهي في')) {
-      adjustedTemplate = template.replace(
-        'ستنتهي في {days_left} أيام بتاريخ',
-        `انتهت منذ ${daysExpired} ${daysExpired === 1 ? 'يوم' : 'أيام'} بتاريخ`
-      )
-    } else if (template.includes('expirará en')) {
-      adjustedTemplate = template.replace(
-        'expirará en {days_left} días el',
-        `expiró hace ${daysExpired} ${daysExpired === 1 ? 'día' : 'días'} el`
-      )
-    } else if (template.includes('expirará em')) {
-      adjustedTemplate = template.replace(
-        'expirará em {days_left} dias no dia',
-        `expirou há ${daysExpired} ${daysExpired === 1 ? 'dia' : 'dias'} no dia`
-      )
-    } else if (template.includes('expirera dans')) {
-      adjustedTemplate = template.replace(
-        'expirera dans {days_left} jours le',
-        `a expiré il y a ${daysExpired} ${daysExpired === 1 ? 'jour' : 'jours'} le`
-      )
-    } else if (template.includes('läuft in')) {
-      adjustedTemplate = template.replace(
-        'läuft in {days_left} Tagen am',
-        `ist vor ${daysExpired} ${daysExpired === 1 ? 'Tag' : 'Tagen'} am`
-      )
-    }
-  }
-
-  return adjustedTemplate
+  return template
     .replace(/{name}/g, data.name)
     .replace(/{gym_name}/g, data.gymName)
     .replace(/{days_left}/g, Math.abs(data.daysLeft).toString())
@@ -375,7 +337,7 @@ function startWhatsAppScheduler(): void {
     () => {
       performAutoWhatsAppCheck()
     },
-    24 * 60 * 60 * 1000
+    6 * 60 * 60 * 1000
   )
 
   console.log('WhatsApp notification scheduler started (checks every 24 hours)')
